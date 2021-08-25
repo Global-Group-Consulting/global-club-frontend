@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "Global Club",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}

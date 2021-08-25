@@ -1,0 +1,8 @@
+{
+  "name": "Global Club",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue",
+  "id": "c62d2270"
+}
