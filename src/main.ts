@@ -24,6 +24,7 @@ import '@ionic/vue/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import './theme/styles.scss';
 
 /* Custom plugins */
 import {authPlugin} from "@/plugins/AuthPlugin"
