@@ -34,7 +34,7 @@ import {store, key} from './store'
 
 const app = createApp(App)
   .use(IonicVue, {
-    mode: "ios", // "md" | "ios",
+    mode: "md", // "md" | "ios",
   })
   .use(store, key)
   .use(httpPlugin)
