@@ -23,7 +23,6 @@ import '@ionic/vue/css/flex-utils.css';
 import '@ionic/vue/css/display.css';
 
 /* Theme variables */
-import './theme/variables.css';
 import './theme/styles.scss';
 
 /* Custom plugins */
@@ -34,7 +33,9 @@ import {store, key} from './store'
 
 
 const app = createApp(App)
-  .use(IonicVue)
+  .use(IonicVue, {
+    mode: "ios", // "md" | "ios",
+  })
   .use(store, key)
   .use(httpPlugin)
   .use(authPlugin)
