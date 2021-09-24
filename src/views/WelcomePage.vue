@@ -2,6 +2,7 @@
 <template>
   <IonPage>
     <IonHeader>
+      <div class="global"></div>
       <div class="vl"></div>
       <IonToolbar> </IonToolbar>
     </IonHeader>
@@ -19,8 +20,8 @@
       <IonButton class="login-bt ion-text-capitalize" shape="round"
         >Login</IonButton
       >
-
-      <img class="img" src="logo_white.png" alt="" />
+      <div class="img-container"></div>
+      <!--<img class="img" src="logo_white.png" alt="" />-->
     </IonContent>
   </IonPage>
 </template>
@@ -102,6 +103,24 @@ p {
   --padding-top: 0px;
 }
 
+p {
+  /* We are so glad to welcome you to Global Club App! Please login to your account to start tracking all your movements and enjoy it! */
+
+  width: 328px;
+  height: 82px;
+
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  color: #969696;
+}
+
 .vl {
   border-left: 2px solid #ab8e54;
   height: 100%;
@@ -117,6 +136,20 @@ p {
   width: 100%;
   position: relative;
 }
-ToolBar {
+.img-container {
+  position: absolute;
+  --background: url(patternlandscape.png);
+}
+
+.global {
+  /* logo-club 1 */
+
+  position: absolute;
+  width: 415px;
+  height: 226px;
+  left: 0px;
+  top: -60px;
+
+  background: url(/public/assets/global.png);
 }
 </style>
