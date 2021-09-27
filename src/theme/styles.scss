@@ -3,25 +3,17 @@
 /* @import "scss/themes/light"; */
 @import "scss/themes/dark";
 
-body {
-  text-align: center;
-  padding-left: 20px;
-}
+@import "scss/buttons";
+@import "scss/forms";
+@import "scss/typography"
 
-/*.bg-image {
-  background-image: url(/public/assets/logo_white.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  height: 30vh;
-}*/
+
+ion-app {
+  --ion-toolbar-background: var(--ion-color-primary-contrast);
+  text-align: center;
+  background-color: var(--ion-color-primary-contrast);
+}
 
 ion-toolbar {
   height: 15vh;
-}
-.md body {
-  background: #000000;
-  --ion-background-color: #ffffff00;
-  --ion-toolbar-background: #ffffff00;
-  z-index: -1;
 }

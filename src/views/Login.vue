@@ -1,6 +1,7 @@
 <template>
   <IonPage>
     <IonHeader :translucent="false">
+      <div class="logo-container"></div>
       <IonToolbar>
         <IonButtons slot="start">
           <IonMenuButton color="primary"></IonMenuButton>
@@ -11,18 +12,28 @@
 
     <IonContent class="ion-padding">
       <h1>Login to your account</h1>
-      <IonInput type="mail" placeholder="Username"></IonInput>
+      <IonInput
+        required="true"
+        type="mail"
+        placeholder="Username"
+        clear-input="true"
+      ></IonInput>
       <br />
-      <IonInput type="password" placeholder="Password"></IonInput>
+      <IonInput
+        required="true"
+        type="password"
+        placeholder="Password"
+        clear-input="true"
+      ></IonInput>
 
       <IonItem position="floating">
-        <IonCheckbox slot="start" checked></IonCheckbox>
-        <IonLabel>Remember me</IonLabel>
+        <IonCheckbox checked></IonCheckbox>
+        <IonLabel class="ion-text-center">Remember me</IonLabel>
       </IonItem>
 
       <IonButton class="login-bt ion-text-capitalize">Login</IonButton>
 
-      <IonItem class="ion-text-center" href="https://www.ionicframework.com">
+      <IonItem class="ion-text-center" href="http://localhost:8100/reset">
         <IonLabel>Forgot your password?</IonLabel>
       </IonItem>
 
@@ -103,20 +114,55 @@ ion-menubutton {
   --background: red;
 }
 
-h1 {
-  color: var(--ion-color-primary);
-  font-weight: bold;
-  font-family: "Open Sans", sans-serif;
+.logo-container {
+  /* logo-club 1 */
+
+  position: absolute;
+  width: 415px;
+  height: 226px;
+  left: 0px;
+  top: -60px;
+
+  background: url(/public/assets/logo-club1.png);
 }
 
 ion-input {
-  --background: #212121;
-  --placeholder-color: var(--ion-color-secondary-tint);
+  background: #212121;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 60vh;
+
+  --padding-start: 15px;
   border-radius: 20px;
   height: 4rem;
+  --placeholder-color: #888;
+
+  color: #969696;
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 27px;
+  text-align: left;
 }
-ion-checkbox {
+
+h1 {
+  /* Login to your account */
+  margin-bottom: 3rem;
+
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  color: #ab8e54;
+  text-shadow: 0px 4px 4px #000000;
+}
+
+ion-checkbox::part(container) {
   --background-checked: var(--ion-color-primary);
+  margin-right: auto;
+  margin-left: auto;
 }
 
 ion-item {
@@ -126,6 +172,8 @@ ion-item {
 }
 
 ion-label {
+  /* Remember me */
+
   color: var(--ion-color-primary);
 
   font-family: Open Sans;
@@ -136,6 +184,8 @@ ion-label {
 }
 
 .login-bt {
+  /* Login */
+
   font-family: "Open Sans", sans-serif;
   font-size: 1.5rem;
   font-weight: 600;
@@ -145,20 +195,5 @@ ion-label {
   width: 20rem;
   height: 4rem;
   margin-top: 3rem;
-}
-
-ion-input {
-  --placeholder-color: #888;
-  background: #212121;
-  border-radius: 25px;
-  font-family: Open Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 20px;
-  line-height: 27px;
-  align-items: center;
-  color: #979797;
-  text-align: left;
-  --padding-start: 15px;
 }
 </style>

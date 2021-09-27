@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
 import WelcomePage from "../views/WelcomePage.vue";
+import ForgetPassword from "../views/ForgetPassword.vue";
 /*import ForgetPassword from "../views/ForgetPassword.vue"*/
 
 const routes: Array<RouteRecordRaw> = [
@@ -12,10 +13,10 @@ const routes: Array<RouteRecordRaw> = [
     path: "/welcome",
     component: WelcomePage,
   },
-  /*{
-    path: "/forget",
+  {
+    path: "/reset",
     component: ForgetPassword,
-  },*/
+  },
   /*{
     path: "/folder/:id",
     component: () => import("../views/Folder.vue"),
@@ -28,6 +29,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/login",
     component: () => import("../views/Login.vue"),
   },
+
   {
     path: "/user",
     component: () => import("../views/User.vue"),
