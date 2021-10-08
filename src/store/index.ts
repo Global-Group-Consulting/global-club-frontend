@@ -11,6 +11,12 @@ export interface State {
 export const key: InjectionKey<Store<State>> = Symbol()
 
 export const store = createStore({
+// @ts-ignore
+  state () {
+    return {
+      ciao: 'aaa'
+    }
+  },
   modules: {
     auth: AuthModule
   }

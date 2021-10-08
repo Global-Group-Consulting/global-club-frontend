@@ -26,6 +26,7 @@ export function installPlugin<Options>(pluginName: string, classToInit: any, opt
   return {
     install(app: App) {
       app.config.globalProperties[`$${pluginName}`] = new classToInit(app.config.globalProperties, options)
+      app.provide(pluginName, app.config.globalProperties[`$${pluginName}`])
     }
   }
 }

@@ -1,12 +1,12 @@
 
 <template>
   <IonPage>
-    <IonHeader>
+<!--    <IonHeader>
       <div class="logo-container"></div>
       <div class="vertical-line"></div>
 
       <IonToolbar> </IonToolbar>
-    </IonHeader>
+    </IonHeader>-->
     <IonContent>
       <div class="vertical-line"></div>
       <div class="container">
@@ -19,9 +19,9 @@
         </p>
 
         <IonButton
-          class="login-bt ion-text-capitalize"
-          shape="round"
-          href="http://localhost:8100/login"
+            class="login-bt ion-text-capitalize"
+            shape="round"
+            @click="$router.push('/login')"
           >Login</IonButton
         >
       </div>
@@ -131,7 +131,7 @@ p {
   left: 289px;
   top: 397px;
 
-  background: url(/public/assets/logo_white.png);
+  background: url("/assets/logo_white.png");
 }
 
 .container {

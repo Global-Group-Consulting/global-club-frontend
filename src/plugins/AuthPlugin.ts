@@ -15,7 +15,7 @@ export interface Tokens {
   refreshToken: string;
 }
 
-class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
+export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
   private isRefreshing = false
   private storage!: Storage
   protected options!: AuthPluginOptions
@@ -83,7 +83,7 @@ class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
       if (user) {
         await this.store.dispatch("auth/setUser", user)
       }
-    } catch (er) {
+    } catch (er: any) {
       throw new Error(`Failed to fetch user: ${er.message}`);
     }
   }
@@ -221,7 +221,7 @@ class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
       })
       
       return result.data[this.options.tokenKey]
-    } catch (error) {
+    } catch (error: any) {
       // Failed to refresh token
       const status = error?.response?.status
       

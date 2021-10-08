@@ -1,161 +1,37 @@
 <template>
   <IonApp>
     <IonSplitPane content-id="main-content">
-      <ion-menu content-id="main-content" type="reveal">
-        <ion-content>
-          <ion-list id="inbox-list">
-            <ion-list-header>Inbox</ion-list-header>
-            <ion-note>hi@ionicframework.com</ion-note>
+      <!--  the side menu  -->
+      <MainMenu v-if="isLoggedIn"></MainMenu>
 
-            <ion-menu-toggle
-              auto-hide="false"
-              v-for="(p, i) in appPages"
-              :key="i"
-            >
-              <ion-item
-                @click="selectedIndex = i"
-                router-direction="root"
-                :router-link="p.url"
-                lines="none"
-                detail="false"
-                class="hydrated"
-                :class="{ selected: selectedIndex === i }"
-              >
-                <ion-icon
-                  slot="start"
-                  :ios="p.iosIcon"
-                  :md="p.mdIcon"
-                ></ion-icon>
-                <ion-label>{{ p.title }}</ion-label>
-              </ion-item>
-            </ion-menu-toggle>
-          </ion-list>
-
-          <ion-list id="labels-list">
-            <ion-list-header>Labels</ion-list-header>
-
-            <ion-item
-              v-for="(label, index) in labels"
-              lines="none"
-              :key="index"
-            >
-              <ion-icon
-                slot="start"
-                :ios="bookmarkOutline"
-                :md="bookmarkSharp"
-              ></ion-icon>
-              <ion-label>{{ label }}</ion-label>
-            </ion-item>
-          </ion-list>
-        </ion-content>
-      </ion-menu>
-      <ion-router-outlet id="main-content"></ion-router-outlet>
+      <!-- the main content -->
+      <IonRouterOutlet id="main-content"></IonRouterOutlet>
     </IonSplitPane>
   </IonApp>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { useRoute } from "vue-router";
-import {
-  archiveOutline,
-  archiveSharp,
-  bookmarkOutline,
-  bookmarkSharp,
-  heartOutline,
-  heartSharp,
-  mailOutline,
-  mailSharp,
-  paperPlaneOutline,
-  paperPlaneSharp,
-  trashOutline,
-  trashSharp,
-  warningOutline,
-  warningSharp,
-} from "ionicons/icons";
+import { computed, defineComponent } from 'vue'
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
+import MainMenu from './components/MainMenu.vue'
+import { key } from '@/store'
 
 export default defineComponent({
-  name: "App",
-  components: {},
-  setup() {
-    const selectedIndex = ref(0);
-    const appPages = [
-      {
-        title: "Inbox",
-        url: "/folder/Inbox",
-        iosIcon: mailOutline,
-        mdIcon: mailSharp,
-      },
-      {
-        title: "Outbox",
-        url: "/folder/Outbox",
-        iosIcon: paperPlaneOutline,
-        mdIcon: paperPlaneSharp,
-      },
-      {
-        title: "Favorites",
-        url: "/folder/Favorites",
-        iosIcon: heartOutline,
-        mdIcon: heartSharp,
-      },
-      {
-        title: "Archived",
-        url: "/folder/Archived",
-        iosIcon: archiveOutline,
-        mdIcon: archiveSharp,
-      },
-      {
-        title: "Trash",
-        url: "/folder/Trash",
-        iosIcon: trashOutline,
-        mdIcon: trashSharp,
-      },
-      {
-        title: "Spam",
-        url: "/folder/Spam",
-        iosIcon: warningOutline,
-        mdIcon: warningSharp,
-      },
-    ];
-    const labels = [
-      "Family",
-      "Friends",
-      "Notes",
-      "Work",
-      "Travel",
-      "Reminders",
-    ];
+  name: 'App',
+  components: { MainMenu },
+  setup () {
+    const store = useStore(key)
+    const route = useRoute()
+    //const auth: AuthPlugin = inject('auth') as AuthPlugin
 
-    const path = window.location.pathname.split("folder/")[1];
-    if (path !== undefined) {
-      selectedIndex.value = appPages.findIndex(
-        (page) => page.title.toLowerCase() === path.toLowerCase()
-      );
-    }
-
-    const route = useRoute();
+    const isLoggedIn = computed(() => store.getters['auth/isLoggedIn'])
 
     return {
-      selectedIndex,
-      appPages,
-      labels,
-      archiveOutline,
-      archiveSharp,
-      bookmarkOutline,
-      bookmarkSharp,
-      heartOutline,
-      heartSharp,
-      mailOutline,
-      mailSharp,
-      paperPlaneOutline,
-      paperPlaneSharp,
-      trashOutline,
-      trashSharp,
-      warningOutline,
-      warningSharp,
-      isSelected: (url: string) => (url === route.path ? "selected" : ""),
-    };
-  },
+      isLoggedIn,
+      isSelected: (url: string) => (url === route.path ? 'selected' : ''),
+    }
+  }
 });
 </script>
 

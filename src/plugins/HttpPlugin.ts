@@ -114,7 +114,7 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
     try {
       accessToken = await this.auth.refreshTokenIfNeeded(accessToken as string)
       //this.queue.resolve(accessToken)
-    } catch (error) {
+    } catch (error: any) {
       //this.queue.decline(error)
       throw new Error(`Unable to refresh access token for request due to token refresh error: ${error.message}`)
     }

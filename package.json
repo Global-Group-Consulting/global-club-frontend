@@ -19,7 +19,6 @@
     "@ionic/vue": "^5.4.0",
     "@ionic/vue-router": "^5.4.0",
     "@servie/events": "^3.0.0",
-    "@types/axios": "^0.14.0",
     "@types/jsonwebtoken": "^8.5.5",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
@@ -33,7 +32,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.14.5",
     "@capacitor/cli": "3.2.0",
-    "@types/jest": "^24.0.19",
+    "@types/jest": "^27.0.2",
     "@types/lodash": "^4.14.172",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
@@ -43,17 +42,17 @@
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-typescript": "~4.5.0",
     "@vue/cli-plugin-unit-jest": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-service": "^4.5.13",
     "@vue/compiler-sfc": "^3.0.0-0",
     "@vue/eslint-config-typescript": "^5.0.2",
     "@vue/test-utils": "^2.0.0-0",
-    "eslint": "^6.7.2",
+    "eslint": "^7.32.0",
     "eslint-plugin-vue": "^7.0.0-0",
     "sass": "^1.39.0",
     "sass-loader": "^10",
     "typescript": "^4.3.5",
     "vue-class-component": "^7.2.6",
-    "vue-jest": "^5.0.0-0"
+    "vue-jest": "^5.0.0-alpha.10"
   },
   "description": "An Ionic project"
 }

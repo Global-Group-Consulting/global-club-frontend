@@ -1,6 +1,6 @@
 <template>
   <IonPage>
-    <IonHeader :translucent="false">
+<!--    <IonHeader :translucent="false">
       <div class="logo-container"></div>
       <IonToolbar>
         <IonButtons slot="start">
@@ -8,40 +8,50 @@
         </IonButtons>
         <IonTitle>{{ $route.params.id }}</IonTitle>
       </IonToolbar>
-    </IonHeader>
+    </IonHeader>-->
 
     <IonContent class="ion-padding">
-      <h1>Login to your account</h1>
-      <IonInput
-        required="true"
-        type="mail"
-        placeholder="Username"
-        clear-input="true"
-      ></IonInput>
-      <br />
-      <IonInput
-        required="true"
-        type="password"
-        placeholder="Password"
-        clear-input="true"
-      ></IonInput>
+      <ion-grid>
+        <ion-row class="ion-justify-content-center">
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
 
-      <IonItem position="floating">
-        <IonCheckbox checked></IonCheckbox>
-        <IonLabel class="ion-text-center">Remember me</IonLabel>
-      </IonItem>
+            <h1>Login to your account</h1>
+            <IonInput
+                required="true"
+                type="mail"
+                placeholder="Username"
+                clear-input="true"
+            ></IonInput>
+            <br/>
+            <IonInput
+                required="true"
+                type="password"
+                placeholder="Password"
+                clear-input="true"
+            ></IonInput>
 
-      <IonButton class="login-bt ion-text-capitalize">Login</IonButton>
+            <IonItem position="floating" class="checkbox">
+              <IonCheckbox checked></IonCheckbox>
+              <IonLabel class="ion-text-center">Remember me</IonLabel>
+            </IonItem>
 
-      <IonItem class="ion-text-center" href="http://localhost:8100/reset">
-        <IonLabel>Forgot your password?</IonLabel>
-      </IonItem>
+            <IonButton class="login-bt ion-text-capitalize">Login</IonButton>
+
+            <IonItem class="ion-text-center" href="http://localhost:8100/reset">
+              <IonLabel>Forgot your password?</IonLabel>
+            </IonItem>
+
+
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
 
       <!--<div v-if="!$store.getters['auth/isLoggedIn']">
         <h1>Login to your account</h1>
 
-        <ion-input 
-          
+        <ion-input
+
           :value="email"
           type="email"
           placeholder="Username"
@@ -78,7 +88,6 @@ export default defineComponent({
   name: "Login",
   components: {
     IonPage,
-    IonHeader,
     IonContent,
     IonInput,
     IonLabel,
@@ -131,7 +140,7 @@ ion-input {
   align-items: center;
   margin-left: auto;
   margin-right: auto;
-  max-width: 60vh;
+  /*max-width: 60vh;*/
 
   --padding-start: 15px;
   border-radius: 20px;
@@ -166,7 +175,7 @@ ion-checkbox::part(container) {
 }
 
 ion-item {
-  --background: var(--ion-color-primary-contrast);
+  --background: transparent;
   color: var(--ion-color-primary);
   --inner-border-width: 0;
 }
