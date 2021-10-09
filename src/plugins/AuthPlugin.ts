@@ -16,21 +16,26 @@ export interface Tokens {
 }
 
 export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
-  private isRefreshing = false
-  private storage!: Storage
-  protected options!: AuthPluginOptions
+  private isRefreshing = false;
+  private storage!: Storage;
+  protected options!: AuthPluginOptions;
   
-  protected onInit() {
-    this.storage = new Storage()
+  static pendingInitiation;
+  static isInitiated: Promise<AuthPlugin> = new Promise((resolve) => AuthPlugin.pendingInitiation = resolve);
+  
+  protected onInit () {
+    this.storage = new Storage();
     
     this.storage.create()
       .then(async () => {
-        const tokens = await this.readTokens()
+        const tokens = await this.readTokens();
         
         if (tokens) {
-          await this.fetchUser()
+          await this.fetchUser();
         }
-      })
+        
+        AuthPlugin.pendingInitiation();
+      });
   }
   
   //****************************************************************************
@@ -61,6 +66,8 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
       })
       
       await this.fetchUser()
+      
+      await this.plugins.$router.replace("/dashboard")
     } catch (e) {
       console.error(e)
     }
@@ -69,6 +76,7 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
   public async logout() {
     await this.cleanToken()
     await this.store.dispatch("auth/setUser", null)
+    await this.plugins.$router.replace("/")
   }
   
   /**
@@ -98,22 +106,26 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
   public async refreshTokenIfNeeded(token: string): Promise<string> {
     // use access token (if we have it)
     let accessToken = token
-    
+  
     // check if access token is expired
     if (!accessToken || this.isTokenExpired(accessToken)) {
       // do refresh
-      accessToken = await this.refreshRefreshToken()
+      accessToken = await this.refreshRefreshToken();
     }
-    
-    return accessToken
+  
+    return accessToken;
   }
   
-  get http(): HttpPlugin {
-    return this.plugins.$http
+  public async checkStatus (): Promise<boolean> {
+    return !!(await this.readTokens());
   }
   
-  get refreshing() {
-    return this.isRefreshing
+  get http (): HttpPlugin {
+    return this.plugins.$http;
+  }
+  
+  get refreshing () {
+    return this.isRefreshing;
   }
   
   //****************************************************************************
