@@ -2,7 +2,7 @@
   <IonApp>
     <IonSplitPane content-id="main-content">
       <!--  the side menu  -->
-      <MainMenu v-if="isLoggedIn"></MainMenu>
+      <MainMenu v-if="isLoggedIn" ></MainMenu>
 
       <!-- the main content -->
       <IonRouterOutlet id="main-content"></IonRouterOutlet>
@@ -11,11 +11,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, watch } from 'vue';
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import MainMenu from './components/MainMenu.vue'
-import { key } from '@/store'
+import { key } from '@/store';
+import { menuController } from '@ionic/vue';
 
 export default defineComponent({
   name: 'App',
@@ -23,9 +24,12 @@ export default defineComponent({
   setup () {
     const store = useStore(key)
     const route = useRoute()
-    //const auth: AuthPlugin = inject('auth') as AuthPlugin
 
     const isLoggedIn = computed(() => store.getters['auth/isLoggedIn'])
+/*
+    watch(isLoggedIn, () =>{
+
+    })*/
 
     return {
       isLoggedIn,

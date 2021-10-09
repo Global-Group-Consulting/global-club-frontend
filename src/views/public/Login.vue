@@ -1,14 +1,5 @@
 <template>
   <IonPage>
-<!--    <IonHeader :translucent="false">
-      <div class="logo-container"></div>
-      <IonToolbar>
-        <IonButtons slot="start">
-          <IonMenuButton color="primary"></IonMenuButton>
-        </IonButtons>
-        <IonTitle>{{ $route.params.id }}</IonTitle>
-      </IonToolbar>
-    </IonHeader>-->
 
     <IonContent class="ion-padding">
       <ion-grid>

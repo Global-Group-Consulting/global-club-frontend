@@ -136,17 +136,19 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
   
   private async readTokens(): Promise<Tokens | undefined> {
     const tokensJson = await this.storage.get(this.options.storageKey)
-    
-    const tokensObject: Tokens = JSON.parse(tokensJson)
-    
+  
+    const tokensObject: Tokens = JSON.parse(tokensJson);
+  
     if (tokensObject && tokensObject.authToken && tokensObject.refreshToken) {
       // update the auth store module logged state
-      await this.store.dispatch("auth/setLoggedState", !!tokensJson)
-      
-      return tokensObject
-    }
+      await this.store.dispatch('auth/setLoggedState', !!tokensJson);
     
-    await this.logout()
+      return tokensObject;
+    }
+  
+    this.logout().then();
+    
+    return;
   }
   
   private async storeToken(tokens: Tokens) {
