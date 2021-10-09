@@ -1,5 +1,14 @@
 module.exports = {
   outputDir: "dist",
+  devServer: {
+    "public": "staging.globalclub.consulting",
+    proxy: {
+      "/api/": {
+        target: process.env.VUE_APP_BASE_URL,
+        logLevel: "debug"
+      }
+    }
+  },
   css: {
     loaderOptions: {
       css: {

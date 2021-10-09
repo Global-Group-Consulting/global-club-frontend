@@ -35,7 +35,7 @@
               <IonLabel class="ion-text-center">Remember me</IonLabel>
             </IonItem>
 
-            <IonButton class="login-bt ion-text-capitalize">Login</IonButton>
+            <IonButton class="login-bt ion-text-capitalize" @click="login">Login</IonButton>
 
             <IonItem class="ion-text-center" href="http://localhost:8100/reset">
               <IonLabel>Forgot your password?</IonLabel>
@@ -80,12 +80,11 @@ import {
   IonItem,
   IonCheckbox,
   IonPage,
-  IonHeader,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "Login",
+  name: 'Login',
   components: {
     IonPage,
     IonContent,
@@ -95,24 +94,25 @@ export default defineComponent({
     IonCheckbox,
     IonButton,
   },
+  methods: {
+    async login () {
+      try {
+        await this.$auth.login({ email: 'florian.leica@gmail.com', password: 'password1234' })
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    async logout () {
+      await this.$auth.logout()
+    },
+  },
   /*data() {
     //return {
      // email: "",
      // password: "",
     };
   },
-  methods: {
-    async login() {
-      try {
-        await this.$auth.login({ email: this.email, password: this.password });
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    async logout() {
-      await this.$auth.logout();
-    },
-  },*/
+  */
 });
 </script>
 
