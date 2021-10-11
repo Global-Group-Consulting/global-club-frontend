@@ -5,9 +5,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+//import { HttpPlugin } from '@/plugins/HttpPlugin';
+import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
-  name: "Profile",
+  name: 'Profile',
+  setup () {
+    //const http: HttpPlugin = inject('http');
+  }
 });
+
+
 </script>
