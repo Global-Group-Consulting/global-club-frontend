@@ -1,8 +1,8 @@
 <template>
   <IonApp>
-    <IonSplitPane content-id="main-content">
+    <IonSplitPane content-id="main-content" when="md">
       <!--  the side menu  -->
-      <MainMenu v-if="isLoggedIn" ></MainMenu>
+      <MainMenu v-show="isLoggedIn"></MainMenu>
 
       <!-- the main content -->
       <IonRouterOutlet id="main-content"></IonRouterOutlet>
@@ -11,30 +11,34 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, watch } from 'vue';
-import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
-import MainMenu from './components/MainMenu.vue'
+import { computed, defineComponent, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import MainMenu from './components/MainMenu.vue';
 import { key } from '@/store';
-import { menuController } from '@ionic/vue';
 
 export default defineComponent({
   name: 'App',
   components: { MainMenu },
   setup () {
-    const store = useStore(key)
-    const route = useRoute()
+    const store = useStore(key);
+    const route = useRoute();
 
-    const isLoggedIn = computed(() => store.getters['auth/isLoggedIn'])
-/*
-    watch(isLoggedIn, () =>{
+    const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
 
-    })*/
+    window.addEventListener('resize', (e: Event) => {
+      const target = e.target as Window;
+      store.dispatch('updateGridSize', target.outerWidth);
+    });
+
+    onMounted(() => {
+      window.dispatchEvent(new CustomEvent('resize'));
+    });
 
     return {
       isLoggedIn,
       isSelected: (url: string) => (url === route.path ? 'selected' : ''),
-    }
+    };
   }
 });
 </script>
