@@ -1,7 +1,7 @@
 
 <template>
   <IonPage>
-<!--    <IonHeader>
+    <!--    <IonHeader>
       <div class="logo-container"></div>
       <div class="vertical-line"></div>
 
@@ -11,21 +11,22 @@
       <div class="vertical-line"></div>
       <div class="container">
         <h1>Welcome</h1>
-
-        <p>
-          We are so glad to welcome you to <br />Global Club App!<br />Please
-          login to your account to start <br />tracking all your movement and
-          <br />enjoy it!
-        </p>
-
+        <div class="text">
+          <p>
+            We are so glad to welcome you to Global Club App! Please login to
+            your account to start tracking all your movement and enjoy it!
+          </p>
+        </div>
         <IonButton
-            class="login-bt ion-text-capitalize"
-            shape="round"
-            @click="$router.push('/login')"
+          class="login-bt ion-text-capitalize"
+          shape="round"
+          @click="$router.push('/login')"
           >Login</IonButton
         >
       </div>
-      <div class="g-logo"></div>
+      <div class="g-container">
+        <div class="g-logo"></div>
+      </div>
     </IonContent>
   </IonPage>
 </template>
@@ -65,21 +66,24 @@ export default defineComponent({
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;800&display=swap");
 
-.logo-container {
-  /* logo-club 1 */
+/*div .logo-container {
+  /*logo-club 1 */
 
-  position: absolute;
+/*position: fixed;
   width: 415px;
   height: 226px;
   left: 0px;
   top: -60px;
+  z-index: +10;
 
-  background: url(/public/assets/logo-club1.png);
+  background-image: url("/assets/logo trasparent.png");
+}*/
+.container {
+  margin-top: 25vh;
+  margin-bottom: 0;
 }
-
 h1 {
   /* Welcome */
-  margin-top: 6rem;
 
   font-style: normal;
   font-weight: bold;
@@ -92,17 +96,23 @@ h1 {
   color: #ab8e54;
 }
 
+.text {
+  width: 50vmin;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 p {
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 1rem;
   color: #969696;
-  margin: 30px 46px 36px 46px;
+  margin: 30px 0px 36px 0px;
 }
 
 .login-bt {
   font-family: "Open Sans", sans-serif;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 800;
   color: #000000;
   --padding-start: 56px;
@@ -122,19 +132,22 @@ p {
   top: 0;
 }
 
-.g-logo {
+g-container {
+  position: relative;
+}
+div .g-logo {
   /* logo_dark 1 */
 
-  position: fixed;
-  width: 500px;
-  height: 500px;
-  left: 289px;
-  top: 397px;
+  position: absolute;
+  width: 33vmin;
+  height: 66vmin;
 
-  background: url("/assets/logo_white.png");
-}
+  background: url("/assets/logo_grey1.png");
+  background-position: right bottom;
+  background-repeat: no-repeat;
+  background-size: contain;
 
-.container {
-  position: relative;
+  right: 0;
+  bottom: 0;
 }
 </style>

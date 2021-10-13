@@ -1,16 +1,15 @@
 .ion-page {
-
-
   ion-content::part(background):before {
     content: "";
     position: fixed;
-    width: 90vw;
-    max-width: 1024px;
+    width: 70vw;
+    max-width: 700px;
     height: 500px;
     left: 50%;
     top: 0;
     transform: translateX(-50%);
-    background-image: url("/assets/patternlandscape.png");
+    background-image: url("/assets/logo trasparent1.png"),
+      url("/assets/patternlandscape.png");
     background-position: top center;
     background-repeat: no-repeat;
     background-size: contain;
