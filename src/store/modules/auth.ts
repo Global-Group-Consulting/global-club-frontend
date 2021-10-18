@@ -1,4 +1,11 @@
-import {GetterTree, ActionTree, MutationTree} from 'vuex'
+import { ActionTree, GetterTree, MutationTree } from 'vuex';
+import { User } from '@/@types/User';
+import { UserAclRolesEnum } from '@/@enums/user.acl.roles.enum';
+
+export interface AuthState {
+  loggedIn: boolean;
+  user: null | User;
+}
 
 const state = () => ({
   loggedIn: false,
@@ -8,11 +15,11 @@ const state = () => ({
 type RootState = ReturnType<typeof state>
 
 const mutations: MutationTree<RootState> = {
-  SET_LOGGED_STATE(state, payload: boolean) {
-    state.loggedIn = payload
+  SET_LOGGED_STATE (state, payload: boolean) {
+    state.loggedIn = payload;
   },
-  SET_USER(state, payload: any) {
-    state.user = payload
+  SET_USER (state, payload: any) {
+    state.user = payload;
   }
 };
 
@@ -27,11 +34,21 @@ const actions: ActionTree<RootState, RootState> = {
 };
 
 const getters: GetterTree<RootState, RootState> = {
-  isLoggedIn(state) {
-    return state.loggedIn
+  isLoggedIn (state) {
+    return state.loggedIn;
   },
-  user(state) {
-    return state.user
+  user (state) {
+    return state.user;
+  },
+  isAdmin (state: AuthState) {
+    const validAclRoles: string[] = [UserAclRolesEnum.SUPER_ADMIN, UserAclRolesEnum.ADMIN, UserAclRolesEnum.CLIENTS_SERVICE];
+    
+    return state.user?.roles.some(role => validAclRoles.includes(role));
+  },
+  isNormal (state: AuthState) {
+    const validAclRoles: string[] = [UserAclRolesEnum.AGENT, UserAclRolesEnum.CLIENT];
+    
+    return state.user?.roles.some(role => validAclRoles.includes(role));
   }
 };
 

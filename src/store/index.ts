@@ -48,9 +48,9 @@ const actions: ActionTree<RootState, RootState> = {
 };
 
 const getters: GetterTree<RootState, RootState> = {
-  gridSize (state) {
-    return state.gridSize;
-  }
+  gridSize (state): GridSize {
+    return state.gridSize as GridSize;
+  },
 };
 
 export const store = createStore({
