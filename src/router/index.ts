@@ -1,37 +1,40 @@
-import { createRouter, createWebHistory } from "@ionic/vue-router";
-import { RouteRecordRaw } from "vue-router";
-import { AuthPlugin } from "@/plugins/AuthPlugin";
-import { store } from "@/store";
+import { createRouter, createWebHistory } from '@ionic/vue-router';
+import { RouteRecordRaw } from 'vue-router';
+import { AuthPlugin } from '@/plugins/AuthPlugin';
+import { store } from '@/store';
 
-const publicRoutes = [
+const publicRoutes: RouteRecordRaw[] = [
   {
-    path: "/",
-    component: import("../views/public/WelcomePage.vue"),
+    path: '/',
+    component: () => import('../views/public/WelcomePage.vue'),
+    name: 'public.home',
     meta: {
       guest: true,
     },
   },
   {
-    path: "/login",
-    component: () => import("../views/public/Login.vue"),
+    path: '/login',
+    component: () => import('../views/public/Login.vue'),
+    name: 'public.login',
     meta: {
       guest: true,
     },
   },
   {
-    path: "/reset",
-    component: import("../views/public/ForgetPassword.vue"),
+    path: '/reset',
+    component: () => import('../views/public/ForgetPassword.vue'),
+    name: 'public.reset',
     meta: {
       guest: true,
     },
   },
 ];
-const privateRoutes = [
-  {
-    path: "/",
-    redirect: "/tabs/tab1",
-  },
-  {
+const privateRoutes: RouteRecordRaw[] = [
+  /* {
+     path: "/",
+     redirect: "/tabs/tab1",
+   },*/
+  /*{
     path: "/tabs/",
     component: Tabs,
     children: [
@@ -60,103 +63,151 @@ const privateRoutes = [
         component: () => import("@/views/Tab5.vue"),
       },
     ],
-  },
+  },*/
   {
-    path: "/dashboard",
-    component: () => import("../views/private/Dashboard.vue"),
+    path: '/dashboard',
+    component: () => import('../views/private/Dashboard.vue'),
+    name: 'private.home',
     meta: {
-      requiresAuth: true,
+      isPrivate: true,
     },
   },
   {
-    path: "/profile",
-    component: () => import("../views/private/Profile.vue"),
+    path: '/profile',
+    component: () => import('../views/private/Profile.vue'),
+    name: 'private.user',
     meta: {
-      requiresAuth: true,
-    },
-  },
-
-  {
-    path: "/wallet",
-    component: () => import("../views/private/PremiumWallet.vue"),
-    meta: {
-      requiresAuth: true,
+      isPrivate: true,
     },
   },
   {
-    path: "/cart",
-    component: () => import("../views/private/ShoppingCart.vue"),
+    path: '/wallet',
+    component: () => import('../views/private/PremiumWallet.vue'),
+    name: 'private.wallet',
     meta: {
-      requiresAuth: true,
+      isPrivate: true,
     },
   },
   {
-    path: "/products",
-    component: () => import("../views/private/ProductsList.vue"),
+    path: '/cart',
+    component: () => import('../views/private/ShoppingCart.vue'),
+    name: 'private.cart',
     meta: {
-      requiresAuth: true,
-    },
-  },
-
-  {
-    path: "/help",
-    component: () => import("../views/private/ChatHelp.vue"),
-    meta: {
-      requiresAuth: true,
+      isPrivate: true,
     },
   },
   {
-    path: "/wish",
-    component: () => import("../views/private/WishList.vue"),
+    path: '/products',
+    component: () => import('../views/private/ProductsList.vue'),
+    name: 'private.products',
     meta: {
-      requiresAuth: true,
+      isPrivate: true,
+    },
+  },
+  
+  {
+    path: '/help',
+    component: () => import('../views/private/ChatHelp.vue'),
+    name: 'private.help',
+    meta: {
+      isPrivate: true,
     },
   },
   {
-    path: "/wallet",
-    component: () => import("../views/private/WalletStatement.vue"),
+    path: '/wish',
+    component: () => import('../views/private/WishList.vue'),
+    name: 'private.wish',
     meta: {
-      requiresAuth: true,
+      isPrivate: true,
     },
   },
   {
-    path: "/search",
-    component: () => import("../views/private/SearchPage.vue"),
+    path: '/wallet',
+    component: () => import('../views/private/WalletStatement.vue'),
+    name: 'private.wallet',
     meta: {
-      requiresAuth: true,
+      isPrivate: true,
     },
   },
   {
-    path: "/product",
-    component: () => import("../views/private/ProductDetails.vue"),
+    path: '/search',
+    component: () => import('../views/private/SearchPage.vue'),
+    name: 'private.search',
     meta: {
-      requiresAuth: true,
+      isPrivate: true,
     },
   },
   {
-    path: "/history",
-    component: () => import("../views/private/OrdersHistory.vue"),
+    path: '/product',
+    component: () => import('../views/private/ProductDetails.vue'),
+    name: 'private.prduct',
     meta: {
-      requiresAuth: true,
+      isPrivate: true,
     },
   },
   {
-    path: "/order",
-    component: () => import("../views/private/OrderStatus.vue"),
+    path: '/history',
+    component: () => import('../views/private/OrdersHistory.vue'),
+    name: 'private.history',
     meta: {
-      requiresAuth: true,
+      isPrivate: true,
     },
   },
   {
-    path: "/user",
-    component: () => import("../views/private/PersonalData.vue"),
+    path: '/order',
+    component: () => import('../views/private/OrderStatus.vue'),
+    name: 'private.order',
     meta: {
-      requiresAuth: true,
+      isPrivate: true,
+    },
+  },
+  {
+    path: '/user',
+    component: () => import('../views/private/PersonalData.vue'),
+    name: 'private.user',
+    meta: {
+      isPrivate: true,
+      isAdmin: true
     },
   },
 ];
 
-const routes: Array<RouteRecordRaw> = [...publicRoutes, ...privateRoutes];
+const adminRoutes: RouteRecordRaw[] = [
+  {
+    path: '/admin',
+    component: () => import('../views/admin/DashboardPage.vue'),
+    name: 'admin.home',
+    meta: {
+      isAdmin: true
+    }
+  },
+  {
+    path: '/admin/products',
+    component: () => import('../views/admin/products/ProductsPage.vue'),
+    name: 'admin.products',
+    meta: {
+      isAdmin: true
+    }
+  },
+  {
+    path: '/admin/orders',
+    component: () => import('../views/admin/orders/OrdersPage.vue'),
+    name: 'admin.orders',
+    meta: {
+      isAdmin: true
+    }
+  },
+  {
+    path: '/admin/users',
+    component: () => import('../views/admin/users/UsersPage.vue'),
+    name: 'admin.users',
+    meta: {
+      isAdmin: true
+    }
+  }
+];
+
+const routes: Array<RouteRecordRaw> = [...publicRoutes, ...privateRoutes, ...adminRoutes];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
@@ -167,20 +218,38 @@ router.beforeEach(async (to, from, next) => {
   // Due to the fact that this could be accessed
   // before the AuthPlugin gets completed, we await that this first gets initiated
   await AuthPlugin.isInitiated;
-  const loggedIn = store.getters["auth/isLoggedIn"];
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  const guest = to.matched.some((record) => record.meta.guest);
-
-  if (requiresAuth && !loggedIn) {
+  const loggedIn = store.getters['auth/isLoggedIn'];
+  
+  const isPrivateRoute = to.matched.some((record) => record.meta.isPrivate);
+  const isAdminRoute = to.matched.some((record) => record.meta.isAdmin);
+  const isGuestRoute = to.matched.some((record) => record.meta.guest);
+  
+  const userIsAdmin = store.getters['auth/isAdmin'];
+  const userIsPrivate = store.getters['auth/isNormal'];
+  
+  if ((isPrivateRoute || isAdminRoute) && !loggedIn) {
     return next({
-      path: "/",
+      path: 'public.home',
     });
-  } else if (guest && loggedIn) {
-    return next({
-      path: "/dashboard",
-    });
+  } else if (loggedIn) { // if user is logged in
+    let newPage;
+    
+    // If guest route
+    if (isGuestRoute) {
+      newPage = 'private.home';
+    } else if ((isAdminRoute && !isPrivateRoute) && !userIsAdmin) {
+      newPage = 'private.home';
+    } else if ((isPrivateRoute && !isAdminRoute) && userIsAdmin) {
+      newPage = 'admin.home';
+    }
+    
+    if (newPage) {
+      return next({
+        name: newPage,
+      });
+    }
   }
-
+  
   next();
 });
 
