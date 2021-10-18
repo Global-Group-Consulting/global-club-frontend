@@ -190,8 +190,8 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
     
     const expDate = (new Date(decoded.exp * 1000))
     
-    console.log("Checking expiration date", decoded)
-    console.log(new Date(), expDate)
+    // console.log("Checking expiration date", decoded)
+    // console.log(new Date(), expDate)
     
     return decoded ? decoded.exp : undefined
   }
@@ -209,7 +209,7 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
     
     const result = expiration - Date.now() / 1000
     
-    console.log("Token will expire in " + result + "s")
+    // console.log("Token will expire in " + result + "s")
     
     return result
   }
