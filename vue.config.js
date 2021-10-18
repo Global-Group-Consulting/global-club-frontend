@@ -18,5 +18,10 @@ module.exports = {
         // options here will be passed to postcss-loader
       }
     }
-  }
+  },
+/*  pluginOptions: {
+    i18n: {
+      runtimeOnly: false,
+    },
+  },*/
 };
