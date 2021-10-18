@@ -28,6 +28,40 @@ const publicRoutes = [
 ];
 const privateRoutes = [
   {
+    path: "/",
+    redirect: "/tabs/tab1",
+  },
+  {
+    path: "/tabs/",
+    component: Tabs,
+    children: [
+      {
+        path: "",
+        redirect: "tab1",
+      },
+      {
+        path: "tab1",
+        component: () => import("@/views/Tab1.vue"),
+      },
+      {
+        path: "tab2",
+        component: () => import("@/views/Tab2.vue"),
+      },
+      {
+        path: "tab3",
+        component: () => import("@/views/Tab3.vue"),
+      },
+      {
+        path: "tab4",
+        component: () => import("@/views/Tab4.vue"),
+      },
+      {
+        path: "tab5",
+        component: () => import("@/views/Tab5.vue"),
+      },
+    ],
+  },
+  {
     path: "/dashboard",
     component: () => import("../views/private/Dashboard.vue"),
     meta: {
@@ -81,6 +115,41 @@ const privateRoutes = [
   {
     path: "/wallet",
     component: () => import("../views/private/WalletStatement.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/search",
+    component: () => import("../views/private/SearchPage.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/product",
+    component: () => import("../views/private/ProductDetails.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/history",
+    component: () => import("../views/private/OrdersHistory.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/order",
+    component: () => import("../views/private/OrderStatus.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/user",
+    component: () => import("../views/private/PersonalData.vue"),
     meta: {
       requiresAuth: true,
     },
