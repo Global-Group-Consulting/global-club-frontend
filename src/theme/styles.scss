@@ -7,7 +7,12 @@
 @import "scss/forms";
 @import "scss/typography";
 @import "scss/pages";
+@import "scss/toolbars";
 
+
+:root {
+  --basic-space: 16px;
+}
 
 ion-app {
   --ion-toolbar-background: var(--ion-color-primary-contrast);

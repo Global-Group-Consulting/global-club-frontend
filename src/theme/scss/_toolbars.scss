@@ -1,0 +1,19 @@
+.simple-toolbar {
+  display: flex;
+  padding-top: calc(var(--basic-space) / 2);
+  padding-bottom: calc(var(--basic-space) / 2);
+  margin-bottom: calc(var(--basic-space) * 2);
+
+  & > * {
+    flex: 1;
+    display: flex;
+  }
+
+  .toolbar-center {
+    justify-content: center;
+  }
+
+  .toolbar-right {
+    justify-content: end;
+  }
+}
