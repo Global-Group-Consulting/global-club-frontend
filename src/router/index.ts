@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
 import { AuthPlugin } from '@/plugins/AuthPlugin';
 import { store } from '@/store';
+import products from '@/router/admin/products';
 
 const publicRoutes: RouteRecordRaw[] = [
   {
@@ -181,14 +182,7 @@ const adminRoutes: RouteRecordRaw[] = [
       isAdmin: true
     }
   },
-  {
-    path: '/admin/products',
-    component: () => import('../views/admin/products/ProductsPage.vue'),
-    name: 'admin.products',
-    meta: {
-      isAdmin: true
-    }
-  },
+  ...products,
   {
     path: '/admin/orders',
     component: () => import('../views/admin/orders/OrdersPage.vue'),

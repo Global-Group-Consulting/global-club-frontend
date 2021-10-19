@@ -5,7 +5,7 @@ module.exports = {
     proxy: {
       "/api/": {
         target: process.env.VUE_APP_BASE_URL,
-        logLevel: "debug"
+        logLevel: "debug",
       }
     }
   },
