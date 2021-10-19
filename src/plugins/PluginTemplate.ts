@@ -9,7 +9,6 @@ export abstract class PluginTemplate<Options> {
   
   constructor(plugins: ComponentCustomProperties, options?: Options) {
     this.plugins = plugins
-    
     this.options = options;
     
     this.onInit(options)
