@@ -5,5 +5,10 @@ export default {
     users: 'Utenti',
     products: 'Prodotti',
     logout: 'Logout',
+  },
+  pages: {
+    products: {
+      'btn_add': 'Aggiungi'
+    }
   }
 };
