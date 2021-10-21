@@ -219,9 +219,9 @@ router.beforeEach(async (to, from, next) => {
   const isGuestRoute = to.matched.some((record) => record.meta.guest);
   
   const userIsAdmin = store.getters['auth/isAdmin'];
-  const userIsPrivate = store.getters['auth/isNormal'];
+  //const userIsPrivate = store.getters['auth/isNormal'];
   
-  if ((isPrivateRoute || isAdminRoute) && !loggedIn) {
+  /*if ((isPrivateRoute || isAdminRoute) && !loggedIn) {
     return next({
       path: 'public.home',
     });
@@ -242,7 +242,7 @@ router.beforeEach(async (to, from, next) => {
         name: newPage,
       });
     }
-  }
+  }*/
   
   next();
 });
