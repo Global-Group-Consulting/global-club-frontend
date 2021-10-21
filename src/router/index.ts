@@ -3,6 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 import { AuthPlugin } from '@/plugins/AuthPlugin';
 import { store } from '@/store';
 import products from '@/router/admin/products';
+import productCategories from '@/router/admin/productCategories';
 
 const publicRoutes: RouteRecordRaw[] = [
   {
@@ -183,6 +184,7 @@ const adminRoutes: RouteRecordRaw[] = [
     }
   },
   ...products,
+  ...productCategories,
   {
     path: '/admin/orders',
     component: () => import('../views/admin/orders/OrdersPage.vue'),
@@ -223,7 +225,7 @@ router.beforeEach(async (to, from, next) => {
   
   /*if ((isPrivateRoute || isAdminRoute) && !loggedIn) {
     return next({
-      path: 'public.home',
+      path: 'guest.home',
     });
   } else if (loggedIn) { // if user is logged in
     let newPage;

@@ -5,7 +5,7 @@
   <ion-grid fixed>
     <SimpleToolbar>
       <template v-slot:center>
-        <ion-button @click="$router.push({name: 'admin.products.new'})">
+        <ion-button @click="$router.push({name: 'admin.productCategories.new'})">
           {{ t("pages.products.btn_add") }}
         </ion-button>
       </template>
@@ -13,15 +13,25 @@
 
 
     <ion-list>
-      <ion-item v-for="product of productsList" :key="product._id">
+
+      <ion-item v-for="(category) of categoriesList" :key="category._id">
         <ion-thumbnail slot="start">
-          <img :src="formatImgUrl(product.thumbnail.id)">
+          <img :src="formatImgUrl(category.thumbnail.id)">
         </ion-thumbnail>
 
         <ion-label>
-          <h2>{{ product.title }}</h2>
-          <h4>{{ product.description }}</h4>
+          <h2>{{ category.title }}</h2>
+          <h3>{{ category.description }}</h3>
         </ion-label>
+
+        <ion-button slot="end"
+                    @click="$router.push({
+                      name: 'admin.productCategories.details',
+                      params: {id: category._id}
+                    })">
+          Apri
+        </ion-button>
+
       </ion-item>
     </ion-list>
   </ion-grid>
@@ -32,17 +42,19 @@
   import { useI18n } from 'vue-i18n';
   import { inject, onMounted, Ref, ref } from 'vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
+  import { ProductCategory } from '@/@types/ProductCategory';
   import { Product } from '@/@types/Product';
   import { formatImgUrl } from '@/@utilities/images';
 
   const { t } = useI18n();
   const http = inject<HttpPlugin>('http');
-  const productsList: Ref<Product[]> = ref([]);
+
+  const categoriesList: Ref<ProductCategory[]> = ref([]);
 
   onMounted(async () => {
-    const result = await http?.api.products.readAll();
+    const result: ProductCategory[] = await http?.api.productCategories.readAll();
 
-    productsList.value = result;
+    categoriesList.value = result;
   });
 </script>
 

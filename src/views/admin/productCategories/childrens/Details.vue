@@ -11,16 +11,10 @@
       </ion-col>
 
       <ion-col size="4">
-        <input type="file" @change="onFileChange($event, 'images')">
+        <ion-thumbnail>
+          <img :src="formatImgUrl(formData.thumbnail.id)" alt="">
+        </ion-thumbnail>
         <input type="file" @change="onFileChange($event, 'thumbnail')">
-        <!--        <FormInput label="Immagini" type="file"/>
-                <FormInput label="Anteprima"/>-->
-      </ion-col>
-
-      <ion-col size="4">
-        <FormInput label="Prezzo" v-model="formData.price"/>
-        <FormInput label="Categoria" v-model="formData.categories"/>
-        <FormInput label="Tags" v-model="formData.tags"/>
       </ion-col>
     </ion-row>
 
@@ -37,37 +31,41 @@
 
 <script lang="ts" setup>
   import FormInput from '@/components/forms/FormInput.vue';
-  import { inject, reactive, ref } from 'vue';
+  import { inject, onMounted, reactive } from 'vue';
   import { Product } from '@/@types/Product';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
+  import { useRoute } from 'vue-router';
+  import { ProductCategory } from '@/@types/ProductCategory';
+  import { formatImgUrl } from '@/@utilities/images';
 
   const http = inject<HttpPlugin>('http');
+  const route = useRoute();
 
   const formData = reactive<Product>({
-    title: 'aa',
-    description: 'aa',
-    price: '222',
-    tags: '',
-    categories: '615342d394399d0b9ae3934c',
+    title: '',
+    description: '',
     thumbnail: '',
-    images: '',
   });
 
   function onSubmitClick () {
     const formDataToSend = new FormData();
 
     for (const key in formData) {
-      if (['categories', 'images'].includes(key)) {
-        formDataToSend.append(key + '[]', formData[key]);
-      } else {
-        formDataToSend.append(key, formData[key]);
-      }
+      formDataToSend.append(key, formData[key]);
     }
 
-    http?.api.products.create(formDataToSend);
+    http?.api.productCategories.create(formDataToSend);
   }
 
   function onFileChange (e: InputEvent, target: any) {
     formData[target] = e.target.files[0];
   }
+
+  onMounted(async () => {
+    if (route.params.id) {
+      const data: ProductCategory = await http?.api.productCategories.read(route.params.id);
+
+      Object.assign(formData, data);
+    }
+  });
 </script>
