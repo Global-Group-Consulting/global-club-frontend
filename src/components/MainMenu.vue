@@ -57,7 +57,11 @@ const menuEntries: MenuEntry[] = [
     label: 'products',
   },
   {
-    click: () => auth.logout(),
+    route: 'admin.productCategories',
+    label: 'productCategories',
+  },
+  {
+    click: () => auth?.logout(),
     label: 'logout',
   }
 ];
