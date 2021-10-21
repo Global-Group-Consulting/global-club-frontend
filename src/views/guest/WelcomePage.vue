@@ -31,36 +31,8 @@
   </IonPage>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import {
-  IonPage,
-  IonHeader,
-  IonTitle,
-  IonContent,
-  IonImg,
-  IonToolbar,
-  IonButton,
-  IonItem,
-  IonThumbnail,
-  IonList,
-  IonLabel,
-} from "@ionic/vue";
+<script lang="ts" setup>
 
-export default defineComponent({
-  name: "Dashboard",
-  IonPage,
-  IonHeader,
-  IonTitle,
-  IonContent,
-  IonImg,
-  IonToolbar,
-  IonButton,
-  IonItem,
-  IonThumbnail,
-  IonList,
-  IonLabel,
-});
 </script>
 
 <style scoped>

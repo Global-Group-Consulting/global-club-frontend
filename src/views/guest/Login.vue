@@ -12,6 +12,7 @@
                 type="mail"
                 placeholder="Username"
                 clear-input="true"
+                v-model="formData.email"
             ></IonInput>
             <br/>
             <IonInput
@@ -19,12 +20,15 @@
                 type="password"
                 placeholder="Password"
                 clear-input="true"
+                v-model="formData.password"
             ></IonInput>
 
-            <IonItem position="floating" class="checkbox">
-              <IonCheckbox checked></IonCheckbox>
-              <IonLabel class="ion-text-center">Remember me</IonLabel>
-            </IonItem>
+            <!--
+                        <IonItem position="floating" class="checkbox">
+                          <IonCheckbox checked></IonCheckbox>
+                          <IonLabel class="ion-text-center">Remember me</IonLabel>
+                        </IonItem>
+            -->
 
             <IonButton class="login-bt ion-text-capitalize" @click="login">Login</IonButton>
 
@@ -62,49 +66,28 @@
   </IonPage>
 </template>
 
-<script lang="ts">
-import {
-  IonInput,
-  IonLabel,
-  IonButton,
-  IonContent,
-  IonItem,
-  IonCheckbox,
-  IonPage,
-} from "@ionic/vue";
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+  import { inject, reactive } from 'vue';
+  import { AuthPlugin } from '@/plugins/AuthPlugin';
 
-export default defineComponent({
-  name: 'Login',
-  components: {
-    IonPage,
-    IonContent,
-    IonInput,
-    IonLabel,
-    IonItem,
-    IonCheckbox,
-    IonButton,
-  },
-  methods: {
-    async login () {
-      try {
-        await this.$auth.login({ email: 'florian.leica@gmail.com', password: 'password1234' })
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    async logout () {
-      await this.$auth.logout()
-    },
-  },
-  /*data() {
-    //return {
-     // email: "",
-     // password: "",
-    };
-  },
-  */
-});
+  const auth = inject<AuthPlugin>('auth');
+
+  const formData = reactive({
+    email: 'florian.leica@gmail.com',
+    password: 'password1234'
+  });
+
+  async function login () {
+    try {
+      await auth.login({ ...formData });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function logout () {
+    await auth.logout();
+  }
 </script>
 
 <style scoped>

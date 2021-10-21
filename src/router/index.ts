@@ -8,7 +8,7 @@ import productCategories from '@/router/admin/productCategories';
 const publicRoutes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('../views/public/WelcomePage.vue'),
+    component: () => import('../views/guest/WelcomePage.vue'),
     name: 'public.home',
     meta: {
       guest: true,
@@ -16,7 +16,7 @@ const publicRoutes: RouteRecordRaw[] = [
   },
   {
     path: '/login',
-    component: () => import('../views/public/Login.vue'),
+    component: () => import('../views/guest/Login.vue'),
     name: 'public.login',
     meta: {
       guest: true,
@@ -24,7 +24,7 @@ const publicRoutes: RouteRecordRaw[] = [
   },
   {
     path: '/reset',
-    component: () => import('../views/public/ForgetPassword.vue'),
+    component: () => import('../views/guest/ForgetPassword.vue'),
     name: 'public.reset',
     meta: {
       guest: true,
