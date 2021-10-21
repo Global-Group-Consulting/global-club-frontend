@@ -13,6 +13,12 @@ export class ProductApis extends BasicApisClass {
   
   static async read (id: string): Promise<Product> {
     
-    return 'ciao' as any;
+    return 'ciao' + id as any;
+  }
+  
+  static async create (data): Promise<Product> {
+    const result: AxiosResponse<Product> = await this.axiosInstance.post(this.getUrl('products'), data);
+    
+    return result.data;
   }
 }

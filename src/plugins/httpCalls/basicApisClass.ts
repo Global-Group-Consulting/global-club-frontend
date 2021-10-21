@@ -4,7 +4,7 @@ export class BasicApisClass {
    static baseUrl = 'api/ext/';
    static axiosInstance: AxiosInstance;
    
-   static getUrl (endpoint) {
+   static getUrl (endpoint = '') {
       return this.baseUrl + endpoint;
    }
 }

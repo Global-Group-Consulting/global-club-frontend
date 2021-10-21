@@ -1,9 +1,8 @@
-import {installPlugin, PluginTemplate} from "@/plugins/PluginTemplate";
-import {HttpPlugin} from "@/plugins/HttpPlugin"
-import {Storage} from '@ionic/storage';
-import {settings} from "@/config/authPlugin";
-import * as jwt from "jsonwebtoken";
-
+import { installPlugin, PluginTemplate } from '@/plugins/PluginTemplate';
+import { HttpPlugin } from '@/plugins/HttpPlugin';
+import { Storage } from '@ionic/storage';
+import { settings } from '@/config/authPlugin';
+import * as jwt from 'jsonwebtoken';
 
 interface LoginDto {
   email: string;
@@ -76,7 +75,7 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
   public async logout() {
     await this.cleanToken()
     await this.store.dispatch("auth/setUser", null)
-    await this.plugins.$router.replace("/")
+    await this.plugins.$router.replace({ name: "public.login" })
   }
   
   /**
@@ -92,6 +91,10 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
         await this.store.dispatch("auth/setUser", user)
       }
     } catch (er: any) {
+      if (er.response?.status === 401) {
+        await this.logout();
+      }
+  
       throw new Error(`Failed to fetch user: ${er.message}`);
     }
   }
@@ -186,14 +189,14 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
    * @returns {string} Unix timestamp
    */
   private getTimestampFromToken(token: string): number | undefined {
-    const decoded = jwt.decode(token) as { [key: string]: number }
-    
-    const expDate = (new Date(decoded.exp * 1000))
-    
+    const decoded = jwt.decode(token) as { [key: string]: number };
+  
+    // const expDate = (new Date(decoded.exp * 1000))
+  
     // console.log("Checking expiration date", decoded)
     // console.log(new Date(), expDate)
-    
-    return decoded ? decoded.exp : undefined
+  
+    return decoded ? decoded.exp : undefined;
   }
   
   /**

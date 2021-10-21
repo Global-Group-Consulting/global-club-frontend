@@ -3,6 +3,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { settings } from '@/config/httpPlugin';
 import { merge } from 'lodash';
 import { ProductApis } from '@/plugins/httpCalls/ProductApis';
+import { ProductCategoryApis } from '@/plugins/httpCalls/ProductCategoryApis';
 
 type RequestsQueue = {
   resolve: (value?: unknown) => void;
@@ -13,6 +14,7 @@ type Token = string
 
 interface ApiModules {
   products: typeof ProductApis;
+  productCategories: typeof ProductCategoryApis;
 }
 
 class HttpQueue {
@@ -57,7 +59,8 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
   protected onInit (options: HttpPluginOptions) {
     this.setAxiosDefaults();
     this.api = {
-      products: ProductApis
+      products: ProductApis,
+      productCategories: ProductCategoryApis
     };
     
     this.queue = new HttpQueue();
