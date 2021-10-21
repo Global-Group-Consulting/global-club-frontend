@@ -1,5 +1,5 @@
 <template>
-  <IonPage> Dati Personali </IonPage>
+  <IonPage> Dati Personali</IonPage>
 </template>
 
 <script lang="ts">
