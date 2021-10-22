@@ -1,26 +1,29 @@
 <template>
   <IonPage>
-
     <IonContent class="ion-padding">
+      <div class="logo-container"></div>
       <ion-grid>
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-
-            <h1>Login to your account</h1>
+            <div class="testo">
+              <h3>Gentile utente,</h3>
+              <h1>Benvenuto</h1>
+            </div>
             <IonInput
-                required="true"
-                type="mail"
-                placeholder="Username"
-                clear-input="true"
-                v-model="formData.email"
-            ></IonInput>
-            <br/>
+              required="true"
+              type="mail"
+              placeholder="Username"
+              clear-input="true"
+              v-model="formData.email"
+            >
+            </IonInput>
+            <br />
             <IonInput
-                required="true"
-                type="password"
-                placeholder="Password"
-                clear-input="true"
-                v-model="formData.password"
+              required="true"
+              type="password"
+              placeholder="Password"
+              clear-input="true"
+              v-model="formData.password"
             ></IonInput>
 
             <!--
@@ -30,17 +33,21 @@
                         </IonItem>
             -->
 
-            <IonButton class="login-bt ion-text-capitalize" @click="login">Login</IonButton>
+            <IonButton
+              id="icon"
+              class="login-bt ion-text-capitalize"
+              @click="login"
+            >
+              <!-- <ion-icon slot="start" name="log-in"></ion-icon>-->
+              Login
+            </IonButton>
 
             <IonItem class="ion-text-center" href="http://localhost:8100/reset">
-              <IonLabel>Forgot your password?</IonLabel>
+              <IonLabel id="underline">Hai dimenticato la password?</IonLabel>
             </IonItem>
-
-
           </ion-col>
         </ion-row>
       </ion-grid>
-
 
       <!--<div v-if="!$store.getters['auth/isLoggedIn']">
         <h1>Login to your account</h1>
@@ -67,46 +74,46 @@
 </template>
 
 <script lang="ts" setup>
-  import { inject, reactive } from 'vue';
-  import { AuthPlugin } from '@/plugins/AuthPlugin';
+import { defineComponent, inject, reactive } from "vue";
+import { AuthPlugin } from "@/plugins/AuthPlugin";
 
-  const auth = inject<AuthPlugin>('auth');
+const auth = inject<AuthPlugin>("auth");
 
-  const formData = reactive({
-    email: 'florian.leica@gmail.com',
-    password: 'password1234'
-  });
+const formData = reactive({
+  email: "florian.leica@gmail.com",
+  password: "password1234",
+});
 
-  async function login () {
-    try {
-      await auth.login({ ...formData });
-    } catch (e) {
-      console.log(e);
-    }
+async function login() {
+  try {
+    await auth.login({ ...formData });
+  } catch (e) {
+    console.log(e);
   }
+}
 
-  async function logout () {
-    await auth.logout();
-  }
+async function logout() {
+  await auth.logout();
+}
 </script>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;800&display=swap");
-
-ion-menubutton {
-  --background: red;
-}
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
 
 .logo-container {
   /* logo-club 1 */
 
-  position: absolute;
-  width: 415px;
-  height: 226px;
-  left: 0px;
-  top: -60px;
+  width: 75%;
+  max-width: 700px;
+  height: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 8vh;
 
-  background: url(/public/assets/logo-club1.png);
+  background: url(/assets/GlobalClubGold.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 ion-input {
@@ -130,16 +137,20 @@ ion-input {
   text-align: left;
 }
 
-h1 {
-  /* Login to your account */
-  margin-bottom: 3rem;
+.testo {
+  margin-bottom: 4rem;
+  margin-top: -3rem;
 
   font-family: Open Sans;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
-  color: #ab8e54;
+  color: white;
   text-shadow: 0px 4px 4px #000000;
+}
+
+h1 {
+  font-weight: bolder;
 }
 
 ion-checkbox::part(container) {
@@ -169,14 +180,43 @@ ion-label {
 .login-bt {
   /* Login */
 
-  font-family: "Open Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--ion-color-primary-contrast);
+
+  color: white;
 
   --border-radius: 20px;
   width: 20rem;
   height: 4rem;
   margin-top: 3rem;
+}
+
+/**
+* TODO: Il gradient non  viene letto. Capire il perché
+ */
+button::part(native) {
+  --background: linear-gradient(
+    274.3deg,
+    #ab8e54 0%,
+    #d7c7a6 100%,
+    #f7f7f7 100%
+  );
+}
+
+/**
+* TODO:La icon non si vede. Capire il perché
+ */
+
+#icon {
+  background: url(/assets/LoginBtn.svg);
+  background-repeat: no-repeat;
+  background-position: 5px 2px;
+  text-align: left;
+  text-indent: 42px;
+}
+
+#underline {
+  text-decoration: underline;
 }
 </style>

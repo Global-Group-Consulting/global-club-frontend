@@ -74,5 +74,4 @@ ion-tab-button::part(native) {
   --color-focused: red;
   --ripple-color: red;
 }
-da provare a capire perché nn mi crea il hoover su tab///
 </style>

@@ -1,6 +1,6 @@
 <template>
   <IonPage>
-    <!--    <IonHeader :translucent="false">
+    <!--<IonHeader :translucent="false">
       <div class="logo-container"></div>
       <IonToolbar>
         <IonButtons slot="start">
@@ -14,7 +14,7 @@
       <ion-grid>
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <h1>Login to your account</h1>
+            <h1 class="down">Login to your account</h1>
             <IonInput
               required="true"
               type="mail"
@@ -112,15 +112,11 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style >
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;800&display=swap");
 
-ion-menubutton {
-  --background: red;
-}
-
-.logo-container {
-  /* logo-club 1 */
+/*.logo-container {
+ 
 
   position: absolute;
   width: 415px;
@@ -129,31 +125,12 @@ ion-menubutton {
   top: -60px;
 
   background: url(/public/assets/logo-club1.png);
-}
+}*/
 
-ion-input {
-  background: #212121;
-  align-items: center;
-  margin-left: auto;
-  margin-right: auto;
-  /*max-width: 60vh;*/
-
-  --padding-start: 15px;
-  border-radius: 20px;
-  height: 4rem;
-  --placeholder-color: #888;
-
-  color: #969696;
-  font-family: Open Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 20px;
-  line-height: 27px;
-  text-align: left;
-}
+/*
 
 h1 {
-  /* Login to your account */
+  Login to your account 
   margin-bottom: 3rem;
 
   font-family: Open Sans;
@@ -162,8 +139,8 @@ h1 {
   font-size: 24px;
   color: #ab8e54;
   text-shadow: 0px 4px 4px #000000;
-}
-
+}*/
+/*
 ion-checkbox::part(container) {
   --background-checked: var(--ion-color-primary);
   margin-right: auto;
@@ -177,7 +154,7 @@ ion-item {
 }
 
 ion-label {
-  /* Remember me */
+  
 
   color: var(--ion-color-primary);
 
@@ -189,7 +166,7 @@ ion-label {
 }
 
 .login-bt {
-  /* Login */
+  
 
   font-family: "Open Sans", sans-serif;
   font-size: 1.5rem;
@@ -200,5 +177,10 @@ ion-label {
   width: 20rem;
   height: 4rem;
   margin-top: 3rem;
+}*/
+
+h1 {
+  margin-top: 100px;
+  font-size: 3rem;
 }
 </style>
