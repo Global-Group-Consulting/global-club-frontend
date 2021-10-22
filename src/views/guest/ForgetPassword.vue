@@ -10,7 +10,7 @@
       </IonToolbar>
     </IonHeader>
 
-    <IonContent class="ion-padding">
+    <IonContent class="ion-padding" v-if="!emailSent">
       <h1>Forgot your password?</h1>
       <p>
         Don’t worry! Write here your email address and we’ll send a link for
@@ -33,6 +33,10 @@
 
       <IonButton class="reset-bt ion-text-capitalize">Reset password</IonButton>
     </IonContent>
+
+    <ion-content class="ion-padding" v-else>
+      mostro blocco secondario
+    </ion-content>
   </IonPage>
 </template>
 
@@ -55,6 +59,11 @@ export default defineComponent({
     IonInput,
     IonButton,
   },
+  data() {
+    return  {
+      emailSent: true
+    }
+  }
 });
 </script>
 
