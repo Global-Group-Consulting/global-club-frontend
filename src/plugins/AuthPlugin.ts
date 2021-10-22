@@ -54,41 +54,47 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
     
     try {
       const result = await this.http.rawRequest({
-        method: "POST",
+        method: 'POST',
         url: this.options.loginUrl,
         data
-      })
-      
+      });
+  
       await this.storeToken({
         authToken: result.data[this.options.tokenKey],
         refreshToken: result.data[this.options.refreshTokenKey],
-      })
-      
-      await this.fetchUser()
-      
-      await this.plugins.$router.replace("/dashboard")
+      });
+  
+      await this.fetchUser();
+  
+      await this.plugins.$router.replace('/dashboard');
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   }
   
-  public async logout() {
-    await this.cleanToken()
-    await this.store.dispatch("auth/setUser", null)
-    await this.plugins.$router.replace({ name: "public.login" })
+  public async logout (redirect = true) {
+    const logged = await this.store.getters['auth/isLoggedIn'];
+    
+    await this.cleanToken();
+    await this.store.dispatch('auth/setUser', null);
+    
+    if (logged) {
+      await this.plugins.$router.replace({ name: "public.login" })
+      //window.location.assign('/');
+    }
   }
   
   /**
    * Fetch user data
    */
-  public async fetchUser() {
+  public async fetchUser () {
     try {
-      const result = await this.http.get(this.options.userUrl)
+      const result = await this.http.get(this.options.userUrl);
       
       const user = result.data;
       
       if (user) {
-        await this.store.dispatch("auth/setUser", user)
+        await this.store.dispatch('auth/setUser', user);
       }
     } catch (er: any) {
       if (er.response?.status === 401) {
@@ -149,7 +155,7 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
       return tokensObject;
     }
   
-    this.logout().then();
+    this.logout(false).then();
     
     return;
   }
