@@ -26,7 +26,7 @@
     component?: 'ion-input' | 'ion-textarea';
     // A hint to the browser for which keyboard to display
     inputMode?: 'decimal' | 'email' | 'none' | 'numeric' | 'search' | 'tel' | 'text' | 'url' | undefined;
-    // If true, a clear icon will appear in the input when there is a value. Clicking it clears the input.
+    // If true, a clear icons will appear in the input when there is a value. Clicking it clears the input.
     clearInput?: boolean;
     disabled?: boolean;
     placeholder?: string;

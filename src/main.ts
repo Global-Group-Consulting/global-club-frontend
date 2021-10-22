@@ -7,6 +7,9 @@ import { IonicVue } from '@ionic/vue';
 import TopToolbar from '@/components/toolbars/TopToolbar.vue';
 import BottomToolbar from '@/components/toolbars/BottomToolbar.vue';
 import FormCurrency from '@/components/forms/FormCurrency.vue';
+import FormInput from '@/components/forms/FormInput.vue';
+import Icon from '@/components/Icon.vue';
+import Btn from '@/components/Btn.vue';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -52,6 +55,9 @@ Object.entries(IonComponents).forEach((entry) => {
 app.component('TopToolbar', TopToolbar);
 app.component('BottomToolbar', BottomToolbar);
 app.component('FormCurrency', FormCurrency);
+app.component('FormInput', FormInput);
+app.component('Icon', Icon);
+app.component('Btn', Btn);
 
 router.isReady().then(() => {
   app.mount("#app");
