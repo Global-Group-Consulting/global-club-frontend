@@ -1,5 +1,5 @@
 /**
-*!We are defaulting to dark so no Light theme is available. 
+*!We are defaulting to dark so no Light theme is available.
 *TODO In the future will let the user to switch the theme.
 */
 /* @media (prefers-color-scheme: dark) { */
@@ -7,6 +7,15 @@
    * Dark Colors
    * -------------------------------------------
    */
+
+:root {
+  --custom-light-gradient: linear-gradient(
+                  274.3deg,
+                  #ab8e54 0%,
+                  #d7c7a6 100%,
+                  #f7f7f7 100%
+  );
+}
 
 body {
   --ion-color-primary: #ab8e54;

@@ -1,0 +1,23 @@
+ion-button {
+
+  &:not(.button-has-icon-only):not(.button-clear):not(.button-outline) {
+    --background: var(--custom-light-gradient);
+    --border-radius: 20px;
+  }
+
+  &.btn-icon-only {
+    --padding-start: 0;
+    --padding-end: 0;
+    width: 36px;
+
+    ion-icon {
+      font-size: 20px;
+    }
+  }
+
+  &.btn-toolbar {
+
+  }
+}
+
+
