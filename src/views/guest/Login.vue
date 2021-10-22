@@ -9,22 +9,15 @@
               <h3>Gentile utente,</h3>
               <h1>Benvenuto</h1>
             </div>
-            <IonInput
-              required="true"
-              type="mail"
-              placeholder="Username"
-              clear-input="true"
-              v-model="formData.email"
-            >
-            </IonInput>
-            <br />
-            <IonInput
-              required="true"
-              type="password"
-              placeholder="Password"
-              clear-input="true"
-              v-model="formData.password"
-            ></IonInput>
+
+
+            <form-input label="Username" type="mail"
+                        clear-input
+                        v-model="formData.email"/>
+
+            <form-input label="Password" type="password"
+                        clear-input
+                        v-model="formData.email"/>
 
             <!--
                         <IonItem position="floating" class="checkbox">
@@ -33,21 +26,24 @@
                         </IonItem>
             -->
 
-            <IonButton
-              id="icon"
-              class="login-bt ion-text-capitalize"
-              @click="login"
-            >
-              <!-- <ion-icon slot="start" name="log-in"></ion-icon>-->
-              Login
-            </IonButton>
+            <btn size="large" icon-name="login-btn"
+                 expand="block"
+                 @click="login">Login
+            </btn>
 
-            <IonItem class="ion-text-center" href="http://localhost:8100/reset">
-              <IonLabel id="underline">Hai dimenticato la password?</IonLabel>
-            </IonItem>
+
+            <!--
+                        <btn icon-name="login-btn" type="icon-only">asdasdsada</btn>
+                        <btn icon-name="login-btn" size="large" type="toolbar">asdasdsada</btn>
+            -->
+
+            <div class="ion-text-center" href="http://localhost:8100/reset">
+              <IonButton fill="clear" id="underline">Hai dimenticato la password?</IonButton>
+            </div>
           </ion-col>
         </ion-row>
       </ion-grid>
+
 
       <!--<div v-if="!$store.getters['auth/isLoggedIn']">
         <h1>Login to your account</h1>
@@ -74,27 +70,28 @@
 </template>
 
 <script lang="ts" setup>
-import { defineComponent, inject, reactive } from "vue";
-import { AuthPlugin } from "@/plugins/AuthPlugin";
+  import { defineComponent, inject, reactive } from 'vue';
+  import { AuthPlugin } from '@/plugins/AuthPlugin';
+  import Icon from '@/components/Icon.vue';
 
-const auth = inject<AuthPlugin>("auth");
+  const auth: AuthPlugin | undefined = inject<AuthPlugin>('auth');
 
-const formData = reactive({
-  email: "florian.leica@gmail.com",
-  password: "password1234",
-});
+  const formData = reactive({
+    email: 'florian.leica@gmail.com',
+    password: 'password1234',
+  });
 
-async function login() {
-  try {
-    await auth.login({ ...formData });
-  } catch (e) {
-    console.log(e);
+  async function login () {
+    try {
+      await auth?.login({ ...formData });
+    } catch (e) {
+      console.log(e);
+    }
   }
-}
 
-async function logout() {
-  await auth.logout();
-}
+  async function logout () {
+    await auth?.logout();
+  }
 </script>
 
 <style scoped>
@@ -159,11 +156,11 @@ ion-checkbox::part(container) {
   margin-left: auto;
 }
 
-ion-item {
+/*ion-item {
   --background: transparent;
   color: var(--ion-color-primary);
   --inner-border-width: 0;
-}
+}*/
 
 ion-label {
   /* Remember me */
@@ -191,22 +188,6 @@ ion-label {
   height: 4rem;
   margin-top: 3rem;
 }
-
-/**
-* TODO: Il gradient non  viene letto. Capire il perché
- */
-button::part(native) {
-  --background: linear-gradient(
-    274.3deg,
-    #ab8e54 0%,
-    #d7c7a6 100%,
-    #f7f7f7 100%
-  );
-}
-
-/**
-* TODO:La icon non si vede. Capire il perché
- */
 
 #icon {
   background: url(/assets/LoginBtn.svg);
