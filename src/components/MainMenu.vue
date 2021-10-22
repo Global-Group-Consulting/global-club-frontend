@@ -12,7 +12,7 @@
         <ion-item button
                   v-for="(entry, i) of menuEntries" :key="i"
                   :color="$route.name === entry.route ? 'primary' : ''"
-                  @click="entry.click || $router.push({name: entry.route})">
+                  @click="onItemClick(entry)">
           <ion-label>
             {{ t("mainMenu." + entry.label) }}
           </ion-label>
@@ -31,6 +31,7 @@ import { key } from '@/store';
 import { AuthPlugin } from '@/plugins/AuthPlugin';
 import { useI18n } from 'vue-i18n';
 import { MessageSchema } from '@/plugins/I18n';
+import { useRouter } from 'vue-router';
 
 interface MenuEntry {
   route?: string;
@@ -39,6 +40,7 @@ interface MenuEntry {
 }
 
 const store = useStore(key);
+const router = useRouter();
 const { t } = useI18n<{ message: MessageSchema }, 'it'>();
 const auth = inject<AuthPlugin>('auth');
 const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
@@ -65,6 +67,14 @@ const menuEntries: MenuEntry[] = [
     label: 'logout',
   }
 ];
+
+function onItemClick (entry: MenuEntry) {
+  if (entry.click) {
+    entry.click();
+  } else {
+    router.push({ name: entry.route });
+  }
+}
 </script>
 
 <style scoped>
