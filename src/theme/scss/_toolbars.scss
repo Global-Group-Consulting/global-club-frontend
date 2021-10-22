@@ -1,8 +1,9 @@
 .simple-toolbar {
   display: flex;
-  padding-top: calc(var(--basic-space) / 2);
-  padding-bottom: calc(var(--basic-space) / 2);
-  margin-bottom: calc(var(--basic-space) * 2);
+  padding-top: calc(var(--basic-space) * .5);
+  padding-bottom: calc(var(--basic-space) * .5);
+  margin-bottom: calc(var(--basic-space) * .5);
+  margin-top: calc(var(--basic-space) * 1.5);
 
   & > * {
     flex: 1;
@@ -16,4 +17,10 @@
   .toolbar-right {
     justify-content: end;
   }
+}
+
+
+.top-toolbar{
+ /* padding-top: calc(var(--basic-space) * 1.5);
+  padding-bottom: calc(var(--basic-space) * .5);*/
 }
