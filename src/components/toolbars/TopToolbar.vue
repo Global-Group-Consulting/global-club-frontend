@@ -1,28 +1,27 @@
 <template>
   <ion-header>
-    <ion-toolbar>
+    <ion-toolbar color="transparent" class="top-toolbar">
       <ion-buttons slot="start">
-        <ion-menu-button menu="main-menu" ></ion-menu-button>
+        <!--        <ion-menu-button menu="main-menu"></ion-menu-button>-->
+        <btn type="icon-only" icon-name="chevron-left" v-if="includeBack"
+             @click="$router.back()" color="primary"></btn>
       </ion-buttons>
-      <ion-title>My Navigation Bar</ion-title>
+
+      <ion-title>
+        <slot></slot>
+      </ion-title>
     </ion-toolbar>
   </ion-header>
 
 </template>
 
 <script lang="ts" setup>
-import { menuController } from '@ionic/vue' ;
-import { useStore } from 'vuex';
-import { key } from '@/store';
 
-const store = useStore(key);
-window['menuController'] = menuController;
+  const props = defineProps<{
+    includeBack?: boolean;
+  }>();
 
-/*watch(() => store.getters['gridSize'], (value) => {
-  if (['md', 'lg', 'xl'].includes(value)) {
 
-  }
-});*/
 </script>
 
 <style scoped>

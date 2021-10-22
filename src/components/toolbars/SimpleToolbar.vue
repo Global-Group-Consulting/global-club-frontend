@@ -2,7 +2,6 @@
   <div class="simple-toolbar">
     <div class="toolbar-left">
       <slot name="left">
-
       </slot>
     </div>
 
@@ -22,7 +21,10 @@
 
 <script>
   export default {
-    name: "SimpleToolbar"
+    name: "SimpleToolbar",
+    props: {
+
+    }
   };
 </script>
 
