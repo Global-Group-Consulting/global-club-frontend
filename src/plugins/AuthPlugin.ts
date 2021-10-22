@@ -72,7 +72,7 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
     }
   }
   
-  public async logout (redirect = true) {
+  public async logout () {
     const logged = await this.store.getters['auth/isLoggedIn'];
     
     await this.cleanToken();
@@ -155,7 +155,7 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
       return tokensObject;
     }
   
-    this.logout(false).then();
+    this.logout().then();
     
     return;
   }
