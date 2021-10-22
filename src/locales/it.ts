@@ -4,11 +4,26 @@ export default {
     home: 'Home',
     users: 'Utenti',
     products: 'Prodotti',
+    productCategories: 'Categorie Prodotti',
     logout: 'Logout',
   },
   pages: {
     products: {
-      'btn_add': 'Aggiungi'
+      'title': "Elenco prodotti",
+      'btn_add': 'Aggiungi',
+      'btn_open': 'Apri',
+    },
+    productDetails: {
+      'title': "Dettagli prodotto",
+    },
+    productCategories: {
+      'title': "Elenco categorie prodotti",
+      'btn_add': 'Aggiungi',
+      'btn_open': 'Apri',
+    },
+    productCategoryDetails: {
+      'title': "Dettagli categoria prodotto",
     }
+  
   }
 };
