@@ -1,7 +1,13 @@
 <template>
-  <TopToolbar></TopToolbar>
+  <TopToolbar include-back>{{ t('pages.productCategoryDetails.title') }}</TopToolbar>
 
-  <ion-grid class="form" fixed>
+  <ion-grid fixed>
+    <SimpleToolbar>
+      <template v-slot:center>
+        <!--        <SimpleToolbarButton :text="'aaa'"
+                                     @click="$router.push({name: 'admin.products.new'})"/>-->
+      </template>
+    </SimpleToolbar>
 
     <ion-row>
       <ion-col size="4">
@@ -37,9 +43,12 @@
   import { useRoute } from 'vue-router';
   import { ProductCategory } from '@/@types/ProductCategory';
   import { formatImgUrl } from '@/@utilities/images';
+  import { useI18n } from 'vue-i18n';
+  import SimpleToolbar from '@/components/toolbars/SimpleToolbar.vue';
 
   const http = inject<HttpPlugin>('http');
   const route = useRoute();
+  const { t } = useI18n();
 
   const formData = reactive<Product>({
     title: '',

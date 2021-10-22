@@ -1,13 +1,12 @@
 <template>
-  <TopToolbar></TopToolbar>
+  <TopToolbar>{{ t('pages.productCategories.title') }}</TopToolbar>
 
   <!-- must use fixed to prevent contianer from beeing too large -->
   <ion-grid fixed>
     <SimpleToolbar>
       <template v-slot:center>
-        <ion-button @click="$router.push({name: 'admin.productCategories.new'})">
-          {{ t("pages.products.btn_add") }}
-        </ion-button>
+        <SimpleToolbarButton :text="t('pages.productCategories.btn_add')"
+                             @click="$router.push({name: 'admin.productCategories.new'})"/>
       </template>
     </SimpleToolbar>
 
@@ -24,13 +23,10 @@
           <h3>{{ category.description }}</h3>
         </ion-label>
 
-        <ion-button slot="end"
-                    @click="$router.push({
-                      name: 'admin.productCategories.details',
-                      params: {id: category._id}
-                    })">
-          Apri
-        </ion-button>
+        <page-link :to="{ name: 'admin.productCategories.details', params: { id: category._id } }"
+                   :btn-props="{ fill: 'outline', shape: 'round' }">
+          {{ t("pages.productCategories.btn_open") }}
+        </page-link>
 
       </ion-item>
     </ion-list>
@@ -43,8 +39,8 @@
   import { inject, onMounted, Ref, ref } from 'vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { ProductCategory } from '@/@types/ProductCategory';
-  import { Product } from '@/@types/Product';
   import { formatImgUrl } from '@/@utilities/images';
+  import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
 
   const { t } = useI18n();
   const http = inject<HttpPlugin>('http');

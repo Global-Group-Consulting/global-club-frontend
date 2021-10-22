@@ -1,13 +1,11 @@
 <template>
-  <TopToolbar></TopToolbar>
+  <TopToolbar>{{ t('pages.products.title') }}</TopToolbar>
 
-  <!-- must use fixed to prevent contianer from beeing too large -->
   <ion-grid fixed>
     <SimpleToolbar>
       <template v-slot:center>
-        <ion-button @click="$router.push({name: 'admin.products.new'})">
-          {{ t("pages.products.btn_add") }}
-        </ion-button>
+        <SimpleToolbarButton :text="t('pages.products.btn_add')"
+                             @click="$router.push({name: 'admin.products.new'})"/>
       </template>
     </SimpleToolbar>
 
@@ -22,6 +20,11 @@
           <h2>{{ product.title }}</h2>
           <h4>{{ product.description }}</h4>
         </ion-label>
+
+        <page-link :to="{ name: 'admin.products.details', params: { id: product._id } }"
+                   :btn-props="{ fill: 'outline', shape: 'round' }">
+          {{ t("pages.products.btn_open") }}
+        </page-link>
       </ion-item>
     </ion-list>
   </ion-grid>
@@ -34,13 +37,28 @@
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { Product } from '@/@types/Product';
   import { formatImgUrl } from '@/@utilities/images';
+  import { useRouter } from 'vue-router';
+  import PageLink from '@/components/PageLink.vue';
+  import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
 
   const { t } = useI18n();
-  const http = inject<HttpPlugin>('http');
+  const router = useRouter();
+  const http: HttpPlugin = inject<HttpPlugin>('http') as HttpPlugin;
   const productsList: Ref<Product[]> = ref([]);
 
+  function resolveUrl () {
+    const val = router.resolve({
+      name: 'admin.products.details',
+      params: { id: 'asdasd' }
+    });
+
+    return val;
+  }
+
+  resolveUrl();
+
   onMounted(async () => {
-    const result = await http?.api.products.readAll();
+    const result = await http.api.products.readAll();
 
     productsList.value = result;
   });
