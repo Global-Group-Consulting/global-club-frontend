@@ -37,6 +37,7 @@ import { httpPlugin } from '@/plugins/HttpPlugin';
 import { i18n } from '@/plugins/I18n';
 
 import { store, key } from './store';
+import { alertsPlugin } from '@/plugins/Alerts';
 
 const app = createApp(App)
   .use(IonicVue, {
@@ -46,6 +47,7 @@ const app = createApp(App)
   .use(store, key)
   .use(httpPlugin)
   .use(authPlugin)
+  .use(alertsPlugin)
   .use(router);
 
 // register all Ionic components
