@@ -1,4 +1,7 @@
+import { alerts } from '@/locales/it/alerts';
+
 export default {
+  alerts,
   hi: 'Ciao come va?',
   mainMenu: {
     home: 'Home',
@@ -24,6 +27,6 @@ export default {
     productCategoryDetails: {
       'title': "Dettagli categoria prodotto",
     }
-  
+    
   }
 };
