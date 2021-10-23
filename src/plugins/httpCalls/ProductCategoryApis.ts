@@ -14,7 +14,7 @@ export class ProductCategoryApis extends BasicApisClass {
   
   static async read (id: string): Promise<ProductCategory> {
     const result: AxiosResponse<ProductCategory> = await this.axiosInstance.get(this.getUrl('/' + id));
-    
+  
     return result.data;
   }
   
@@ -23,4 +23,11 @@ export class ProductCategoryApis extends BasicApisClass {
     
     return result.data;
   }
+  
+  static async deleteThumbnail (id: string): Promise<void> {
+    const result: AxiosResponse<void> = await this.axiosInstance.delete(this.getUrl(`/${id}/thumbnail`));
+    
+    return result.data;
+  }
+  
 }
