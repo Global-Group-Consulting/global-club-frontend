@@ -9,7 +9,8 @@ export const i18n = createI18n<MessageSchema[], 'it'>({
   locale: 'it',
   availableLocales: SUPPORT_LOCALES,
   
-  // globalInjection: true,
+ globalInjection: true,
+  
   legacy: false,
   messages: {
     'it': itMessages,
