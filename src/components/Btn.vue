@@ -1,9 +1,10 @@
 <template>
-  <ion-button :fill="iconOnly ? 'outline' : (toolbar ? 'clear' : '')"
+  <ion-button :fill="(fill ? fill : (iconOnly ? 'outline' : (toolbar ? 'clear' : '')))"
               :shape="iconOnly ? 'round' : ''"
               :size="size"
               :expand="expand"
-              :class="{'btn-icon-only':iconOnly, 'btn-toolbar': toolbar}">
+              :color="color"
+              :class="{'btn-icon-only': iconOnly, 'btn-toolbar': toolbar}">
     <!-- Mostriamo l'icona solo se è stata specificata una -->
     <icon :slot="iconSlot" :name="iconName" v-if="iconName"></icon>
 
@@ -22,6 +23,9 @@
         type: String
       },
       size: String,
+      // 'clear' | 'outline' | 'solid' | 'default'
+      fill: String,
+      color: String,
       // "end", "start"
       iconPosition: {
         default: "start",
