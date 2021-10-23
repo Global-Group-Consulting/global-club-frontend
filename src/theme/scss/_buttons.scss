@@ -6,16 +6,17 @@ ion-button {
   }
 
   &.btn-icon-only {
+    --size: 32px;
     --padding-start: 0;
     --padding-end: 0;
-    width: 32px;
-    height: 32px;
+    width: var(--size);
+    height: var(--size);
     display: flex;
     justify-content: center;
     align-content: center;
 
     ion-icon {
-      font-size: 20px !important;
+      font-size: calc(var(--size) * .61) !important;
     }
   }
 
