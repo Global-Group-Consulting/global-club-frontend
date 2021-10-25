@@ -45,9 +45,9 @@ const app = createApp(App)
   })
   .use(i18n)
   .use(store, key)
+  .use(alertsPlugin)
   .use(httpPlugin)
   .use(authPlugin)
-  .use(alertsPlugin)
   .use(router);
 
 // register all Ionic components

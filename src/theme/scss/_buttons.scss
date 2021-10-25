@@ -23,9 +23,18 @@ ion-button {
   }
 }
 
-ion-button {
-  bottom: 30vh;
-  font-family: "Poppins", sans-serif;
-  font-size: 1.5rem;
-  font-weight: 800;
+.btn-fixed-container {
+  position: fixed;
+  bottom: 5px;
+  width: 50%;
+  left: 25%;
+
+  ion-button {
+
+    font-family: "Poppins",
+    sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+  }
 }
+

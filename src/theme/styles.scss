@@ -3,12 +3,14 @@
 /* @import "scss/themes/light"; */
 @import "scss/themes/dark";
 
+@import "scss/functions";
 @import "scss/buttons";
 @import "scss/forms";
 @import "scss/typography";
 @import "scss/pages";
 @import "scss/toolbars";
 @import "scss/utilities";
+@import "scss/alerts";
 
 
 :root {

@@ -1,0 +1,22 @@
+ion-alert {
+  --background: var(--ion-color-secondary) !important;
+}
+
+
+@include mediaQueryUp(sm) {
+  ion-alert {
+    --max-width: 80% !important;
+
+    .alert-message {
+      text-align: left !important;
+    }
+  }
+}
+
+@include mediaQueryUp(xl) {
+  ion-alert {
+    --max-width: var(--ion-bp-md) !important;
+  }
+}
+
+

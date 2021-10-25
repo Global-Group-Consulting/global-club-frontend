@@ -4,6 +4,8 @@ import { settings } from '@/config/httpPlugin';
 import { merge } from 'lodash';
 import { ProductApis } from '@/plugins/httpCalls/ProductApis';
 import { ProductCategoryApis } from '@/plugins/httpCalls/ProductCategoryApis';
+import { loadingController } from '@ionic/vue';
+import { AlertsPlugin } from '@/plugins/Alerts';
 
 type RequestsQueue = {
   resolve: (value?: unknown) => void;
@@ -40,7 +42,7 @@ class HttpQueue {
    * Function that declines all items in the queue with the provided error
    * @param error Error
    */
-  decline(error: Error) {
+  decline (error: Error) {
     this.queue.forEach((p) => {
       p.reject(error)
     })
@@ -49,11 +51,32 @@ class HttpQueue {
   }
 }
 
+export class LoadingHandler {
+  private loadingInstance!: HTMLIonLoadingElement
+  
+  async show (timeout?: number) {
+    this.loadingInstance = await loadingController
+      .create({
+        cssClass: 'my-custom-class',
+        message: 'Please wait...',
+        duration: timeout,
+      });
+    
+    return await this.loadingInstance.present();
+  }
+  
+  async hide () {
+    return await this.loadingInstance.dismiss();
+  }
+}
+
 export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
-  private axiosInstance!: AxiosInstance;
+  private axiosInstance!: AxiosInstance; // & { withLoader<T> (method: string, ...args: any[]): Promise<T> };
   private queue!: HttpQueue;
   protected options!: HttpPluginOptions;
   protected test = 'asdad';
+  protected loading!: LoadingHandler;
+  protected alerts!: AlertsPlugin;
   public api!: ApiModules;
   
   protected onInit (options: HttpPluginOptions) {
@@ -62,14 +85,16 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
       products: ProductApis,
       productCategories: ProductCategoryApis
     };
-    
     this.queue = new HttpQueue();
+    this.loading = new LoadingHandler();
+    this.alerts = this.plugins["$alerts"];
     
     // init an instance of axios
     this.axiosInstance = axios.create(options.axiosInstanceDefault);
     
     // add request interceptor
     this.axiosInstance.interceptors.request.use((request: any) => this.requestInterceptor(request));
+    
     this.includeModules();
   }
   
@@ -83,8 +108,10 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
     for (const entry of Object.entries(this.api)) {
       // const name = entry[0];
       const classToInit = entry[1];
-      
+  
       classToInit.axiosInstance = this.axiosInstance;
+      classToInit.loading = this.loading;
+      classToInit.alerts = this.alerts;
     }
   }
   
@@ -117,7 +144,7 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
     }
   }
   
-  private async requestInterceptor (requestConfig: AxiosRequestConfig): Promise<AxiosRequestConfig> {
+  protected async requestInterceptor (requestConfig: AxiosRequestConfig): Promise<AxiosRequestConfig> {
     const tokens = await this.auth.getTokens();
     let accessToken = tokens?.authToken;
     
@@ -155,6 +182,7 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
     
     return requestConfig
   }
+  
 }
 
 declare module '@vue/runtime-core' {

@@ -64,14 +64,36 @@ export class AlertsPlugin extends PluginTemplate<void> {
     const buttons = [
       this.defaultOkButton
     ];
-    
+  
+    const errorMessage = error.response?.data?.message || error.message
+  
     // @ts-ignore
     const t = this.plugins.$t;
-    
+  
     const alert = await alertController.create(
       Object.assign({}, this.defaultOptions, {
         header: t('alerts.generic.error.title'),
-        message: t('alerts.generic.error.message'),
+        message: t('alerts.generic.error.message', { errorMessage }),
+        buttons
+      })
+    );
+  
+    await alert.present();
+  
+    const { role } = await alert.onDidDismiss();
+  
+    return role === 'ok';
+  }
+  
+  async info (message: string, title?: string) {
+    const buttons = [
+      this.defaultOkButton
+    ];
+    
+    const alert = await alertController.create(
+      Object.assign({}, this.defaultOptions, {
+        header: title,
+        message,
         buttons
       })
     );

@@ -1,7 +1,9 @@
 import { alerts } from '@/locales/it/alerts';
+import { forms } from '@/locales/it/forms';
 
 export default {
   alerts,
+  forms,
   hi: 'Ciao come va?',
   mainMenu: {
     home: 'Home',

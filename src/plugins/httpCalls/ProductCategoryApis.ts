@@ -25,8 +25,8 @@ export class ProductCategoryApis extends BasicApisClass {
   }
   
   static async deleteThumbnail (id: string): Promise<void> {
-    const result: AxiosResponse<void> = await this.axiosInstance.delete(this.getUrl(`/${id}/thumbnail`));
-    
+    const result: AxiosResponse<void> = await  this.withLoader("delete", this.getUrl(`/${id}/thumbnail`))
+  
     return result.data;
   }
   

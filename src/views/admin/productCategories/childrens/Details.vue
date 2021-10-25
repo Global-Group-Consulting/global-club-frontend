@@ -12,13 +12,15 @@
     <ion-row>
       <ion-col>
         <form-file-previewer v-model="formData.thumbnail"
-                             @delete="onImageDeleteClick"></form-file-previewer>
+                             @delete="onImageDeleteClick"
+                             :max-images="1"
+                             :label="t('forms.productCategories.thumbnail')"></form-file-previewer>
 
         <!--        <ion-thumbnail>
                   <img :src="formatImgUrl(formData.thumbnail.id)" alt="">
                 </ion-thumbnail>
                 -->
-        <form-upload></form-upload>
+        <!--        <form-upload></form-upload>-->
 
         <!--        <input type="file" @change="onFileChange($event, 'thumbnail')">-->
       </ion-col>
@@ -26,11 +28,11 @@
 
     <ion-row>
       <ion-col size="6">
-        <FormInput label="Titolo" v-model="formData.title"/>
+        <FormInput :label="t('forms.productCategories.title')" v-model="formData.title"/>
       </ion-col>
 
       <ion-col size="6">
-        <FormInput label="Description" v-model="formData.description"/>
+        <FormInput :label="t('forms.productCategories.description')" v-model="formData.description"/>
       </ion-col>
     </ion-row>
 
@@ -54,10 +56,14 @@
   import { ProductCategory } from '@/@types/ProductCategory';
   import { useI18n } from 'vue-i18n';
   import SimpleToolbar from '@/components/toolbars/SimpleToolbar.vue';
+  import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
   import FormFilePreviewer from '@/components/forms/FormFilePreviewer.vue';
-  import FormUpload from '@/components/forms/FormUpload.vue';
   import { Attachment } from '@/@types/Attachment';
   import { AlertsPlugin } from '@/plugins/Alerts';
+
+  interface ProductCreateDto extends Pick<Product, "title" | "description"> {
+    thumbnail: Attachment | null;
+  }
 
   const http = inject<HttpPlugin>('http') as HttpPlugin;
   const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin;
@@ -66,10 +72,10 @@
 
   const currentCategory: Ref<ProductCategory | null> = ref(null);
 
-  const formData = reactive<Product>({
+  const formData = reactive<ProductCreateDto>({
     title: '',
     description: '',
-    thumbnail: '',
+    thumbnail: null,
   });
 
   function onSubmitClick () {
@@ -83,7 +89,7 @@
   }
 
   function onFileChange (e: InputEvent, target: any) {
-    formData[target] = e.target.files[0];
+    // formData[target] = e.target.files[0];
   }
 
   async function onImageDeleteClick (image: Attachment) {
@@ -102,7 +108,8 @@
       try {
         await http.api.productCategories.deleteThumbnail(currentCategory.value._id);
       }catch (er){
-        await alerts.error(er)
+        console.log(er)
+
       }
     }
   }

@@ -15,6 +15,14 @@
                   #d7c7a6 100%,
                   #f7f7f7 100%
   );
+
+  --ion-bp-sm: 576px;
+  --ion-bp-md: 768px;
+  --ion-bp-lg: 992px;
+  --ion-bp-xl: 1200px;
+
+  --ion-grid-padding: 25px;
+  //--ion-grid-column-padding: 15px
 }
 
 body {
@@ -25,12 +33,12 @@ body {
   --ion-color-primary-shade: #967d4a;
   --ion-color-primary-tint: #b39965;
 
-  --ion-color-secondary: #50c8ff;
+  --ion-color-secondary: #1c1c1d;
   --ion-color-secondary-rgb: 80, 200, 255;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #46b0e0;
-  --ion-color-secondary-tint: #62ceff;
+  --ion-color-secondary-shade: #1c1c1d;
+  --ion-color-secondary-tint: #1c1c1d;
 
   --ion-color-tertiary: #6a64ff;
   --ion-color-tertiary-rgb: 106, 100, 255;

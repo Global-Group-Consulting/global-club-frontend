@@ -1,7 +1,7 @@
 
 <template>
   <IonPage>
-    <IonContent>
+    <IonContent class="content-with-fixed-btn">
       <div class="logo-container logo-margin"></div>
       <ion-grid fixed>
         <ion-row class="ion-justify-content-center">
@@ -13,25 +13,29 @@
                 it!
               </p>
             </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
 
-      <ion-grid fixed>
-        <ion-row class="ion-justify-content-end">
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <div class="btn-container">
+            <div class="btn-fixed-container">
               <btn
-                class="ion-text-capitalize"
-                size="large"
-                expand="block"
-                @click="$router.push('/login')"
-                >Iniziamo
+                  class="ion-text-capitalize"
+                  size="large"
+                  expand="block"
+                  @click="$router.push('/login')"
+              >Iniziamo
               </btn>
             </div>
           </ion-col>
         </ion-row>
       </ion-grid>
+<!--
+      <ion-grid fixed>
+        <ion-row class="ion-justify-content-end">
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
+            &lt;!&ndash;            &ndash;&gt;
+          </ion-col>
+        </ion-row>
+      </ion-grid>-->
+
+
     </IonContent>
   </IonPage>
 </template>
@@ -63,7 +67,7 @@ p {
 
   text-align: center;
 } */
-/**  
+/**
 * TODO capire come spostare il bottone in basso anche se in grid
 */
 
@@ -71,6 +75,7 @@ p {
   bottom: 20px;
   width: 100%;
 }
+
 </style>
 
 
