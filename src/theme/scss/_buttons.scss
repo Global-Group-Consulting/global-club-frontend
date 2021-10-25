@@ -1,5 +1,4 @@
 ion-button {
-
   &:not(.button-has-icon-only):not(.button-clear):not(.button-outline) {
     --background: var(--custom-light-gradient);
     --border-radius: 50px;
@@ -16,20 +15,17 @@ ion-button {
     align-content: center;
 
     ion-icon {
-      font-size: calc(var(--size) * .61) !important;
+      font-size: calc(var(--size) * 0.61) !important;
     }
   }
 
   &.btn-toolbar {
-
   }
 }
 
 ion-button {
-  position: relative;
   bottom: 30vh;
-   font-family: "Poppins",
-   sans-serif;
-   font-size: 1.5rem;
-   font-weight: 800;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
 }
