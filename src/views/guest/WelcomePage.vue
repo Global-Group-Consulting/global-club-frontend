@@ -2,8 +2,8 @@
 <template>
   <IonPage>
     <IonContent>
-      <div class="logo-container logoMargin"></div>
-      <ion-grid>
+      <div class="logo-container logo-margin"></div>
+      <ion-grid fixed>
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <div class="testo">
@@ -16,13 +16,179 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-      <btn
-        class="ion-text-capitalize"
-        size="large"
-        expand="block"
-        @click="$router.push('/login')"
-        >Iniziamo
-      </btn>
+
+      <ion-grid fixed>
+        <ion-row class="ion-justify-content-end">
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
+            <div class="btn-container">
+              <btn
+                class="ion-text-capitalize"
+                size="large"
+                expand="block"
+                @click="$router.push('/login')"
+                >Iniziamo
+              </btn>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row class="ion-justify-content-start">
+          <ion-col size="3">
+            <div>1 of 2</div>
+          </ion-col>
+          <ion-col size="3">
+            <div>2 of 2</div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-justify-content-center">
+          <ion-col size="3">
+            <div>1 of 2</div>
+          </ion-col>
+          <ion-col size="3">
+            <div>2 of 2</div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-justify-content-end">
+          <ion-col size="3">
+            <div>1 of 2</div>
+          </ion-col>
+          <ion-col size="3">
+            <div>2 of 2</div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-justify-content-around">
+          <ion-col size="3">
+            <div>1 of 2</div>
+          </ion-col>
+          <ion-col size="3">
+            <div>2 of 2</div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-justify-content-between">
+          <ion-col size="3">
+            <div>1 of 2</div>
+          </ion-col>
+          <ion-col size="3">
+            <div>2 of 2</div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-justify-content-evenly">
+          <ion-col size="3">
+            <div>1 of 2</div>
+          </ion-col>
+          <ion-col size="3">
+            <div>2 of 2</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid>
+        <ion-row class="ion-align-items-start">
+          <ion-col>
+            <div>1 of 4</div>
+          </ion-col>
+          <ion-col>
+            <div>2 of 4</div>
+          </ion-col>
+          <ion-col>
+            <div>3 of 4</div>
+          </ion-col>
+          <ion-col>
+            <div>
+              4 of 4 <br />
+              # <br />
+              # <br />
+              #
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-align-items-end">
+          <ion-col>
+            <div>1 of 4</div>
+          </ion-col>
+          <ion-col>
+            <div>2 of 4</div>
+          </ion-col>
+          <ion-col>
+            <div>3 of 4</div>
+          </ion-col>
+          <ion-col>
+            <div>
+              4 of 4 <br />
+              # <br />
+              # <br />
+              #
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-align-items-center">
+          <ion-col>
+            <div>1 of 4</div>
+          </ion-col>
+          <ion-col>
+            <div>2 of 4</div>
+          </ion-col>
+          <ion-col>
+            <div>3 of 4</div>
+          </ion-col>
+          <ion-col>
+            <div>
+              4 of 4 <br />
+              # <br />
+              # <br />
+              #
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-align-items-baseline">
+          <ion-col>
+            <div>1 of 4</div>
+          </ion-col>
+          <ion-col>
+            <div>2 of 4</div>
+          </ion-col>
+          <ion-col>
+            <div>3 of 4</div>
+          </ion-col>
+          <ion-col>
+            <div>
+              4 of 4 <br />
+              # <br />
+              # <br />
+              #
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-align-items-stretch">
+          <ion-col>
+            <div>1 of 4</div>
+          </ion-col>
+          <ion-col>
+            <div>2 of 4</div>
+          </ion-col>
+          <ion-col>
+            <div>3 of 4</div>
+          </ion-col>
+          <ion-col>
+            <div>
+              4 of 4 <br />
+              # <br />
+              # <br />
+              #
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </IonContent>
   </IonPage>
 </template>
@@ -31,8 +197,6 @@
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;800&display=swap");
-
 .text {
   width: 50vmin;
   margin-left: auto;
@@ -47,8 +211,23 @@ p {
   margin: 30px 0px 36px 0px;
 }
 
-.logoMargin {
+.logo-margin {
   margin-top: 27vh;
+}
+
+/* .btn-container {
+  position: relative;
+
+  text-align: center;
+} */
+/**  
+* TODO capire come spostare il bottone in basso anche se in grid
+*/
+
+.btn-centered {
+  position: relative;
+  bottom: 20px;
+  width: 100%;
 }
 </style>
 
