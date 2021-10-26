@@ -54,11 +54,14 @@ class HttpQueue {
 export class LoadingHandler {
   private loadingInstance!: HTMLIonLoadingElement
   
+  constructor (private t: any) {
+  }
+  
   async show (timeout?: number) {
     this.loadingInstance = await loadingController
       .create({
         cssClass: 'my-custom-class',
-        message: 'Please wait...',
+        message: this.t("alerts.generic.loading"),
         duration: timeout,
       });
     
@@ -86,7 +89,7 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
       productCategories: ProductCategoryApis
     };
     this.queue = new HttpQueue();
-    this.loading = new LoadingHandler();
+    this.loading = new LoadingHandler(this.plugins["$t"]);
     this.alerts = this.plugins["$alerts"];
     
     // init an instance of axios
