@@ -21,7 +21,7 @@
               label="Password"
               type="password"
               clear-input
-              v-model="formData.email"
+              v-model="formData.password"
             />
 
             <!--
