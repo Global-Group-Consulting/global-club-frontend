@@ -6,7 +6,7 @@ export interface Product {
   description: string;
   price: number;
   tags: string[];
-  categories: ProductCategory[] | string[];
+  categories: ProductCategory[];
   thumbnail: Attachment;
   images: Attachment[];
   _id: string;

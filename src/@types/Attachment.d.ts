@@ -4,3 +4,8 @@ export interface Attachment {
   size: number;
   mimetype: string;
 }
+
+export interface NewAttachmentFile {
+  url: string;
+  file: File;
+}
