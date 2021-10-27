@@ -8,25 +8,44 @@
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <div class="testo">
               <p>
-                We are so glad to welcome you to Global Club App! Please login
-                to your account to start tracking all your movement and enjoy
-                it!
+                We are so glad to welcome you <br />
+                to Global Club App!<br />
+                Please login to your account to <br />
+                start tracking all your <br />
+                movement and enjoy it!
               </p>
             </div>
 
+            <ion-grid>
+              <ion-row>
+                <ion-col size="12" size-sm>
+                  <div>1 of 4</div>
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <div>2 of 4</div>
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <div>3 of 4</div>
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <div>4 of 4</div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
             <div class="btn-fixed-container">
               <btn
-                  class="ion-text-capitalize"
-                  size="large"
-                  expand="block"
-                  @click="$router.push('/login')"
-              >Iniziamo
+                class="ion-text-capitalize"
+                size="large"
+                expand="block"
+                @click="$router.push('/login')"
+                >Iniziamo
               </btn>
             </div>
           </ion-col>
         </ion-row>
       </ion-grid>
-<!--
+      <!--
       <ion-grid fixed>
         <ion-row class="ion-justify-content-end">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
@@ -34,8 +53,6 @@
           </ion-col>
         </ion-row>
       </ion-grid>-->
-
-
     </IonContent>
   </IonPage>
 </template>
@@ -51,31 +68,18 @@
 }
 
 p {
-  font-family: "Poppins", sans-serif;
-  font-weight: 300;
-  font-size: 1rem;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
   color: #969696;
-  margin: 30px 0px 36px 0px;
+  margin: 100px 0px 36px 0px;
 }
-
-.logo-margin {
-  margin-top: 27vh;
-}
-
-/* .btn-container {
-  position: relative;
-
-  text-align: center;
-} */
-/**
-* TODO capire come spostare il bottone in basso anche se in grid
-*/
 
 .btn-centered {
   bottom: 20px;
   width: 100%;
 }
-
 </style>
 
 
