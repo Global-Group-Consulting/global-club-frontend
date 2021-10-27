@@ -4,25 +4,17 @@
   <ion-grid fixed>
     <SimpleToolbar>
       <template v-slot:center>
-        <SimpleToolbarButton :text="'Elimina'"
-                             @click="onCategoryDeleteClick"/>
+        <SimpleToolbarButton :text="'Elimina'"/>
       </template>
     </SimpleToolbar>
 
     <ion-row>
       <ion-col>
         <form-file-previewer v-model="formData.thumbnail"
-                             @delete="onImageDeleteClick"
+                             :remote-images="currentCategory ? currentCategory['thumbnail'] : null"
                              :max-images="1"
-                             :label="t('forms.productCategories.thumbnail')"></form-file-previewer>
-
-        <!--        <ion-thumbnail>
-                  <img :src="formatImgUrl(formData.thumbnail.id)" alt="">
-                </ion-thumbnail>
-                -->
-        <!--        <form-upload></form-upload>-->
-
-        <!--        <input type="file" @change="onFileChange($event, 'thumbnail')">-->
+                             :label="t('forms.productCategories.thumbnail')"
+                             @delete="onImageDeleteClick"/>
       </ion-col>
     </ion-row>
 
@@ -37,8 +29,10 @@
     </ion-row>
 
     <ion-row>
-      <ion-col size="4">
-        <ion-button @click="onSubmitClick">Invia</ion-button>
+      <ion-col size="4" offset="4">
+        <ion-button @click="onSubmitClick">
+          {{ t('forms.productCategories.' + (currentCategory ? "btnUpdate" : "btnCreate")) }}
+        </ion-button>
       </ion-col>
     </ion-row>
 
@@ -48,48 +42,48 @@
 </template>
 
 <script lang="ts" setup>
-  import FormInput from '@/components/forms/FormInput.vue';
-  import { inject, onMounted, reactive, Ref, ref } from 'vue';
-  import { Product } from '@/@types/Product';
-  import { HttpPlugin } from '@/plugins/HttpPlugin';
+  import { inject, onMounted, reactive, Ref, ref, watch } from 'vue';
   import { useRoute } from 'vue-router';
-  import { ProductCategory } from '@/@types/ProductCategory';
   import { useI18n } from 'vue-i18n';
+  import { HttpPlugin } from '@/plugins/HttpPlugin';
+  import { AlertsPlugin } from '@/plugins/Alerts';
+  import { Attachment } from '@/@types/Attachment';
+  import { ProductCategory } from '@/@types/ProductCategory';
+  import FormInput from '@/components/forms/FormInput.vue';
   import SimpleToolbar from '@/components/toolbars/SimpleToolbar.vue';
   import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
   import FormFilePreviewer from '@/components/forms/FormFilePreviewer.vue';
-  import { Attachment } from '@/@types/Attachment';
-  import { AlertsPlugin } from '@/plugins/Alerts';
+  import { CreateProductCategoryDto } from '@/views/admin/productCategories/dto/create.product.category.dto';
+  import { UpdateProductCategoryDto } from '@/views/admin/productCategories/dto/update.product.category.dto';
 
-  interface ProductCreateDto extends Pick<Product, "title" | "description"> {
-    thumbnail: Attachment | null;
-  }
-
+  const { t } = useI18n();
+  const route = useRoute();
   const http = inject<HttpPlugin>('http') as HttpPlugin;
   const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin;
-  const route = useRoute();
-  const { t } = useI18n();
 
-  const currentCategory: Ref<ProductCategory | null> = ref(null);
+  const currentCategory: Ref<ProductCategory | undefined> = ref();
 
-  const formData = reactive<ProductCreateDto>({
+  const formData = reactive<CreateProductCategoryDto | UpdateProductCategoryDto>({
     title: '',
     description: '',
-    thumbnail: null,
+    thumbnail: undefined,
   });
 
-  function onSubmitClick () {
-    const formDataToSend = new FormData();
+  /**
+   * On submit click, i must check if i need to update or to create a new category
+   */
+  async function onSubmitClick () {
+    let result: ProductCategory | undefined;
 
-    for (const key in formData) {
-      formDataToSend.append(key, formData[key]);
+    if (currentCategory.value) {
+      result = await http?.api.productCategories.update(formData, currentCategory.value._id);
+    } else {
+      result = await http?.api.productCategories.create(formData as CreateProductCategoryDto);
     }
 
-    http?.api.productCategories.create(formDataToSend);
-  }
-
-  function onFileChange (e: InputEvent, target: any) {
-    // formData[target] = e.target.files[0];
+    if (result) {
+      currentCategory.value = result;
+    }
   }
 
   async function onImageDeleteClick (image: Attachment) {
@@ -105,34 +99,31 @@
     });
 
     if (alertResult) {
-      try {
-        await http.api.productCategories.deleteThumbnail(currentCategory.value._id);
-      }catch (er){
-        console.log(er)
+      const result = await http.api.productCategories.deleteThumbnail(currentCategory.value._id);
 
+      if (result) {
+        currentCategory.value = result;
       }
     }
   }
 
-  async function onCategoryDeleteClick () {
-    /* const alertResult = await alerts.ask({
-       header: 'Cancellare l\'immagine?',
-       message: `Continuando, l'immagine <strong>${image.fileName}</strong> verrà cancellata in modo irreversibile.`,
-       buttonCancelText: 'Annulla',
-       buttonOkText: 'Si, cancella',
-     });
-
-     if (alertResult) {
-       await http.api.productCategories.deleteThumbnail(currentCategory.value._id);
-     }*/
+  function mergeInFormData (data: ProductCategory) {
+    formData.title = data.title;
+    formData.description = data.description;
+    formData.thumbnail = undefined
   }
+
+  watch(() => currentCategory.value, (value) => {
+    mergeInFormData(value as ProductCategory)
+  })
 
   onMounted(async () => {
     if (route.params.id) {
-      const data: ProductCategory = await http.api.productCategories.read(route.params.id as string);
+      const data: ProductCategory | undefined = await http.api.productCategories.read(route.params.id as string);
 
-      currentCategory.value = data;
-      Object.assign(formData, data);
+      if (data) {
+        currentCategory.value = data;
+      }
     }
   });
 </script>
