@@ -25,16 +25,23 @@ ion-button {
 
 .btn-fixed-container {
   position: fixed;
-  bottom: 5px;
-  width: 50%;
-  left: 25%;
-
-  ion-button {
-
-    font-family: "Poppins",
-    sans-serif;
-    font-size: 1.5rem;
-    font-weight: 800;
-  }
+  bottom: 10px;
+  width: 70%;
+  left: 15%;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
 }
 
+.reset {
+  margin-top: -20px;
+  padding: 0;
+  text-transform: none;
+  text-decoration-line: underline;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+}

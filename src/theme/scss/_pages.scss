@@ -15,7 +15,6 @@
   }
 }
 
-
 .logo-container {
   /* Global Club Logo Gold */
 
@@ -24,20 +23,22 @@
   height: 80px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 8vh;
+  margin-top: 7vh;
 
   background: url(/assets/GlobalClubGold.svg) no-repeat center;
   background-size: contain;
 }
 
-
 .content-with-fixed-btn {
   --padding-bottom: 80px !important;
 }
-
 
 @include mediaQueryDown(md) {
   .logo-container {
     height: 50px;
   }
+}
+
+html {
+  --ion-font-family: "Poppins", sans-serif;
 }
