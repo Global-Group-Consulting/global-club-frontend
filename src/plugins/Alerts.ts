@@ -65,7 +65,7 @@ export class AlertsPlugin extends PluginTemplate<void> {
       this.defaultOkButton
     ];
   
-    const errorMessage = error.response?.data?.message || error.message
+    const errorMessage = error.response?.data?.message || error.response?.data?.error?.message || error.message
   
     // @ts-ignore
     const t = this.plugins.$t;
