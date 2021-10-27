@@ -4,7 +4,8 @@
               :size="size"
               :expand="expand"
               :color="color"
-              :class="{'btn-icon-only': iconOnly, 'btn-toolbar': toolbar}">
+              :class="{'btn-icon-only': iconOnly, 'btn-toolbar': toolbar}"
+              :title="tooltip">
     <!-- Mostriamo l'icona solo se è stata specificata una -->
     <icon :slot="iconSlot" :name="iconName" v-if="iconName"></icon>
 
@@ -33,7 +34,8 @@
       },
       iconName: String,
       // block, full
-      expand: String
+      expand: String,
+      tooltip: String
     },
     computed: {
       iconOnly () {
