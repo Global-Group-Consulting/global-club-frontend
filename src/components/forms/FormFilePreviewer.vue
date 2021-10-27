@@ -1,7 +1,7 @@
 <template>
   <ion-row>
-    <ion-col>
-      <h6 class="ion-text-left">{{ label }}</h6>
+    <ion-col class="ion-text-left">
+      <span>{{ label }}</span>
     </ion-col>
   </ion-row>
 
@@ -12,7 +12,9 @@
           <img :src="formatImgUrl(image.id)" :alt="image.fileName">
 
           <btn color="danger" type="icon-only" icon-name="close"
-               class="close-btn" @click="$emit('delete', image)"></btn>
+               class="close-btn" @click="onRemoteFileDeleteClick(image)"
+               :tooltip="t('forms.filePreviewer.removeRemoteFileTooltip')"
+          ></btn>
         </ion-thumbnail>
 
         <div class="img-title-container" :title="image.fileName">
@@ -21,13 +23,14 @@
       </ion-col>
     </template>
 
-    <template v-if="images && newImages.length > 0">
+    <template v-if="newImages.length > 0">
       <ion-col v-for="image of newImages" :key="image.file.name">
         <ion-thumbnail class="temp-file">
           <img :src="image.url" :alt="image.file.name">
 
           <btn color="danger" type="icon-only" icon-name="close"
-               class="close-btn" @click="onLocalFileDeleteClick(image)"></btn>
+               class="close-btn" @click="onLocalFileDeleteClick(image)"
+               :tooltip="t('forms.filePreviewer.removeLocalFileTooltip')"></btn>
         </ion-thumbnail>
 
         <div class="img-title-container" :title="image.file.name">
@@ -36,14 +39,13 @@
       </ion-col>
     </template>
 
-
     <ion-col>
-      <label @click="onAddClick" class="btn-file-add">
+      <label @click="onAddClick" class="btn-file-add" :class="{disabled: !canAddImages}">
         <ion-thumbnail>
           <icon name="plus"></icon>
         </ion-thumbnail>
         <span class="img-title-container">
-          <small class="img-title">{{ $t("forms.generic.filePreviewer") }}</small>
+          <small class="img-title">{{ $t("forms.filePreviewer.addLabel") }}</small>
         </span>
         <input type="file" @change="onFileChange" style="display: none" :accept="accept" :multiple="multiple">
       </label>
@@ -52,52 +54,59 @@
 </template>
 
 <script lang="ts" setup>
-  import { Attachment } from '@/@types/Attachment';
+  import { Attachment, NewAttachmentFile } from '@/@types/Attachment';
   import { formatImgUrl } from '@/@utilities/images';
-  import { computed, inject, Ref, ref } from 'vue';
+  import { computed, ComputedRef, inject, Ref, ref, watch } from 'vue';
   import { AlertsPlugin } from '@/plugins/Alerts';
   import { useI18n } from 'vue-i18n';
+  import { Computed } from 'vuex';
 
-  interface NewAttachmentFile {
-    url: string;
-    file: File;
-  }
 
   const props = withDefaults(defineProps<{
-    modelValue: {} | Attachment | Attachment[];
+    modelValue?: any;
+    remoteImages?: any;
     label: string;
     maxImages?: number;
     accept?: string;
     multiple?: boolean;
   }>(), {
     accept: "image/*",
-    multiple: false
+    multiple: false,
+    modelValue: []
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const emit = defineEmits(['update:modelValue', 'delete']);
+  // const emit = defineEmits(['update:modelValue', 'delete']);
+  const emit = defineEmits<{
+    (e: 'update:modelValue', value: NewAttachmentFile[]): void;
+    (e: 'delete', value: Attachment): void;
+  }>();
   const { t } = useI18n()
   const alerts = inject<AlertsPlugin>("alerts") as AlertsPlugin
   const newImages: Ref<NewAttachmentFile[]> = ref([])
 
-  const images = computed(() => {
-    if (!props.modelValue) {
+  const images: ComputedRef<Attachment[] | any[]> = computed(() => {
+    if (!props.remoteImages) {
       return []
     }
 
-    if (props.modelValue instanceof Array) {
-      return props.modelValue;
+    if (props.remoteImages instanceof Array) {
+      return props.remoteImages as Attachment[];
     }
 
-    return [props.modelValue];
+    return [props.remoteImages];
   });
 
-  function onAddClick (e) {
+  const canAddImages: ComputedRef<boolean> = computed(() => {
     const imagesLength = images.value.length || 0
     const newImagesLength = newImages.value.length || 0
     const maxImages = parseInt((props.maxImages || 0).toString())
 
-    if (maxImages > 0 && (imagesLength + newImagesLength) >= maxImages) {
+    return !(maxImages > 0 && (imagesLength + newImagesLength) >= maxImages)
+  })
+
+  function onAddClick (e) {
+    if (!canAddImages.value) {
       e.preventDefault();
       alerts.info(t("alerts.filesUploader.maxFiles.message", { maxFiles: props.maxImages }), t("alerts.filesUploader.maxFiles.title"))
     }
@@ -118,6 +127,12 @@
         file: selectedFiles[i]
       })
     }
+
+    fileInput.value = ""
+  }
+
+  function onRemoteFileDeleteClick (image: Attachment) {
+    emit('delete', image)
   }
 
   function onLocalFileDeleteClick (file: NewAttachmentFile) {
@@ -131,6 +146,24 @@
 
     newImages.value.splice(index, 1)
   }
+
+  watch(() => newImages.value, (value) => {
+    const files = value.reduce((acc, { file }) => {
+      acc.push(file)
+
+      return acc
+    }, [] as any[])
+
+    if (props.maxImages === 1) {
+      emit("update:modelValue", files[0])
+    } else {
+      emit("update:modelValue", files)
+    }
+  }, { deep: true })
+
+  watch(() => props.remoteImages, (value) => {
+    newImages.value = []
+  }, { deep: true })
 </script>
 
 <style lang="scss" scoped>
@@ -146,16 +179,42 @@
         --border-radius: 20px;
         position: relative;
 
-        &:after {
+        &:after, &:before {
           content: "";
           width: 100%;
           padding-bottom: 100%;
           position: absolute;
           top: 0;
           right: 0;
-          background-image: linear-gradient(228deg, black -20%, rgba(0, 0, 0, 0) 45%);
+          //background: linear-gradient(228deg, black -20%, rgba(0, 0, 0, 0) 45%);
+          transition: opacity .3s;
+          opacity: 0;
         }
 
+        &:after {
+          opacity: 1;
+          background: linear-gradient(228deg, black -20%, rgba(0, 0, 0, 0) 45%);
+        }
+
+        &:before {
+          background: linear-gradient(190deg, black -20%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        &:hover {
+          &:after {
+            opacity: 0;
+          }
+
+          &:before {
+            opacity: 1;
+          }
+
+          .close-btn {
+            &::part(native) {
+              background-color: var(--ion-color-secondary) !important;
+            }
+          }
+        }
 
         &.temp-file {
           border: 2px solid var(--ion-color-primary);
@@ -203,7 +262,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          background-color: var(--ion-color-secondary);
+          background-color: transparent;
           border-radius: var(--border-radius);
 
           &:after {
@@ -212,7 +271,7 @@
 
           ion-icon {
             font-size: calc(var(--size) * .60);
-            color: rgba(var(--ion-color-primary-rgb), .3);
+            color: rgba(var(--ion-color-primary-rgb), .5);
             transition: color .3s;
           }
         }
