@@ -2,27 +2,34 @@
   <IonPage>
     <IonContent class="ion-padding">
       <div class="logo-container"></div>
-      <ion-grid>
+      <ion-grid fixed class="grid-login">
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <div class="testo">
-              <h3>Gentile utente,</h3>
-              <h1>Benvenuto</h1>
+              <p class="login-first-text">Gentile utente,</p>
+              <p class="login-second-text">Benvenuto</p>
             </div>
 
             <form-input
-              label="Username"
+              class="form"
+              label="✉ Username"
               type="mail"
               clear-input
               v-model="formData.email"
             />
 
             <form-input
-              label="Password"
+              class="form"
+              label="🗝 Password"
               type="password"
               clear-input
               v-model="formData.email"
             />
+            <div class="ion-text-center" href="http://localhost:8100/reset">
+              <IonButton class="reset" fill="clear"
+                >Hai dimenticato la password?</IonButton
+              >
+            </div>
 
             <!--
                         <IonItem position="floating" class="checkbox">
@@ -32,19 +39,13 @@
             -->
 
             <btn
-              class="ion-text-capitalize"
+              class="btn-fixed-container ion-text-capitalize"
               size="large"
               icon-name="login-btn"
               expand="block"
               @click="login"
               >Login
             </btn>
-
-            <div class="ion-text-center" href="http://localhost:8100/reset">
-              <IonButton fill="clear" id="underline"
-                >Hai dimenticato la password?</IonButton
-              >
-            </div>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -78,17 +79,10 @@ async function logout() {
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;800&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
-
 .testo {
-  margin-bottom: 4rem;
-  margin-top: -3rem;
+  margin-bottom: 2rem;
+  margin-top: 3rem;
 
-  font-family: Open Sans;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
   color: white;
   text-shadow: 0px 4px 4px #000000;
 }
@@ -101,7 +95,7 @@ async function logout() {
   text-indent: 42px;
 }
 
-#underline {
-  text-decoration: underline;
+grid-login {
+  margin-top: -20px;
 }
 </style>
