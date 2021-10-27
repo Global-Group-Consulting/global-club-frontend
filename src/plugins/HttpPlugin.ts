@@ -147,9 +147,44 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
     }
   }
   
+  protected createFormDataElement (data: object) {
+    const formDataToSend = new FormData();
+    
+    for (const key in data) {
+      const elValue = data[key]
+      
+      if (elValue instanceof Array) {
+        elValue.forEach(el => {
+          formDataToSend.append(key + "[]", el);
+        })
+      } else {
+        formDataToSend.append(key, data[key]);
+      }
+    }
+    
+    return formDataToSend
+  }
+  
   protected async requestInterceptor (requestConfig: AxiosRequestConfig): Promise<AxiosRequestConfig> {
     const tokens = await this.auth.getTokens();
     let accessToken = tokens?.authToken;
+    
+    // If the user is sending a data to the server, check if there area files.
+    // If so, convert data to FormData()
+    if (requestConfig.data) {
+      let containFiles = false;
+      
+      for (const entry of Object.values(requestConfig.data)) {
+        if ((entry instanceof Array && entry[0] instanceof File)
+          || entry instanceof File) {
+          containFiles = true
+        }
+      }
+      
+      if (containFiles) {
+        requestConfig.data = this.createFormDataElement(requestConfig.data)
+      }
+    }
     
     // check if exists a refresh token and a token
     if (!tokens) {
