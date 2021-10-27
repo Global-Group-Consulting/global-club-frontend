@@ -1,8 +1,9 @@
 export const alerts = {
   generic: {
+    loading: "Operazione in corso...",
     error: {
-      title:  "Errore",
-      message: "Siamo spiacenti, ma a causa di un errore, l'operazione richiesta non è andata a buon fine.<br><br>{errorMessage}"
+      title:  "Oops!",
+      message: "Sembra ci sia stato un errore, quindi l'operazione richiesta non è andata a buon fine.<br><br>{errorMessage}"
     }
   },
   productCategories: {

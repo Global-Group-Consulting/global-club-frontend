@@ -23,7 +23,7 @@
               label="🗝 Password"
               type="password"
               clear-input
-              v-model="formData.email"
+              v-model="formData.password"
             />
             <div class="ion-text-center" href="http://localhost:8100/reset">
               <IonButton class="reset" fill="clear"
