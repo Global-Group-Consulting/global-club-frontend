@@ -2,6 +2,8 @@ import { BasicApisClass } from '@/plugins/httpCalls/basicApisClass';
 import { Product } from '@/@types/Product';
 import { AxiosResponse } from 'axios';
 import { ProductCategory } from '@/@types/ProductCategory';
+import { UpdateProductCategoryDto } from '@/views/admin/productCategories/dto/update.product.category.dto';
+import { CreateProductCategoryDto } from '@/views/admin/productCategories/dto/create.product.category.dto';
 
 export class ProductCategoryApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'club/product-categories';
@@ -12,22 +14,28 @@ export class ProductCategoryApis extends BasicApisClass {
     return result.data;
   }
   
-  static async read (id: string): Promise<ProductCategory> {
-    const result: AxiosResponse<ProductCategory> = await this.axiosInstance.get(this.getUrl('/' + id));
-  
-    return result.data;
-  }
-  
-  static async create (data): Promise<ProductCategory> {
-    const result: AxiosResponse<ProductCategory> = await this.axiosInstance.post(this.getUrl(), data);
+  static async read (id: string): Promise<ProductCategory | undefined> {
+    const result = await this.withLoader<ProductCategory>("get", this.getUrl('/' + id));
     
-    return result.data;
+    return result?.data;
   }
   
-  static async deleteThumbnail (id: string): Promise<void> {
-    const result: AxiosResponse<void> = await  this.withLoader("delete", this.getUrl(`/${id}/thumbnail`))
+  static async create (data: CreateProductCategoryDto): Promise<ProductCategory | undefined> {
+    const result = await this.withLoader<ProductCategory>("post", this.getUrl(), data);
+    
+    return result?.data;
+  }
   
-    return result.data;
+  static async update (data: UpdateProductCategoryDto, id: string): Promise<ProductCategory | undefined> {
+    const result = await this.withLoader<ProductCategory>("patch", this.getUrl('/' + id), data);
+    
+    return result?.data;
+  }
+  
+  static async deleteThumbnail (id: string): Promise<ProductCategory | undefined> {
+    const result = await this.withLoader<ProductCategory>("delete", this.getUrl(`/${id}/thumbnail`))
+    
+    return result?.data;
   }
   
 }

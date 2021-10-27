@@ -1,4 +1,4 @@
-import { AxiosInstance } from 'axios';
+import { AxiosInstance, AxiosResponse } from 'axios';
 import { LoadingHandler } from '@/plugins/HttpPlugin';
 import { AlertsPlugin } from '@/plugins/Alerts';
 
@@ -12,11 +12,17 @@ export class BasicApisClass {
       return this.baseUrl + endpoint;
    }
    
-   static async withLoader (method, ...args) {
+   static async withLoader<T> (method, ...args): Promise<AxiosResponse<T> | undefined> {
       let result;
       let error;
       
       await this.loading.show()
+      
+      if (method === "delete" && args.length > 1 && !args[1].data) {
+         console.error("[HTTP_PLUGIN] - Seems that you're trying to send extra data in a 'DELETE' request.\n"
+           + "To accomplish this, you must use AxiosRequestConfig object as the second argument instead on the provided object.\n"
+           + "Ex:", { data: { filesToDelete: ["as6sad86a87d6"] } })
+      }
       
       try {
          result = await this.axiosInstance[method](...args);
