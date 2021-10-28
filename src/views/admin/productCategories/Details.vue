@@ -6,7 +6,9 @@
       <ion-grid fixed>
         <SimpleToolbar>
           <template v-slot:center>
-            <SimpleToolbarButton :text="'Elimina'"/>
+            <SimpleToolbarButton v-if="currentCategory"
+                                 :text="$t('pages.productCategoryDetails.btn_delete')"
+                                 @click="onDeleteClick"/>
           </template>
         </SimpleToolbar>
 
@@ -46,7 +48,7 @@
 
 <script lang="ts">
   import { defineComponent, inject, onMounted, reactive, Ref, ref, watch } from 'vue';
-  import { useRoute } from 'vue-router';
+  import { useRoute, useRouter } from 'vue-router';
   import { useI18n } from 'vue-i18n';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { AlertsPlugin } from '@/plugins/Alerts';
@@ -65,6 +67,7 @@
     setup () {
       const { t } = useI18n();
       const route = useRoute();
+      const router = useRouter();
       const http = inject<HttpPlugin>('http') as HttpPlugin;
       const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin;
 
@@ -93,6 +96,9 @@
         }
       }
 
+      /**
+       * Delete the clicked image
+       */
       async function onImageDeleteClick (image: Attachment) {
         if (!currentCategory.value) {
           return;
@@ -111,6 +117,28 @@
           if (result) {
             currentCategory.value = result;
           }
+        }
+      }
+
+      /**
+       * Delete the current ProductCategory
+       */
+      async function onDeleteClick () {
+        if (!currentCategory.value) {
+          return
+        }
+
+        const alertResult = await alerts.ask({
+          header: t('alerts.productCategories.deleteCategory.title'),
+          message: t('alerts.productCategories.deleteCategory.message', { categoryName: currentCategory.value?.title }),
+          buttonCancelText: t('alerts.productCategories.deleteCategory.buttonCancel'),
+          buttonOkText: t('alerts.productCategories.deleteCategory.buttonOk'),
+        });
+
+        if (alertResult) {
+          await http.api.productCategories.deleteCategory(currentCategory.value._id);
+
+          await router.replace({ name: "admin.productCategories" })
         }
       }
 
@@ -138,7 +166,7 @@
 
       return {
         currentCategory, formData,
-        onSubmitClick, onImageDeleteClick
+        onSubmitClick, onImageDeleteClick, onDeleteClick
       }
     }
   })

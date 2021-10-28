@@ -66,9 +66,8 @@
            resolveUrl();*/
 
       onIonViewWillEnter(async () => {
-        const result = await http.api.products.readAll();
+        productsList.value = await http.api.products.readAll() ?? [];
 
-        productsList.value = result;
       });
 
       return { productsList, formatImgUrl }
