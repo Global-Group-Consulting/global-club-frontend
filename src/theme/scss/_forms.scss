@@ -8,3 +8,15 @@
 ion-select {
   min-height: 43px;
 }
+
+//.label-floating.sc-ion-label-md-h,
+//  .item-textarea .label-floating.sc-ion-label-md-h
+.item-textarea {
+
+  &:not(.item-has-focus):not(.item-has-value) {
+    .label-floating {
+
+      transform: translateY(96%);
+    }
+  }
+}
