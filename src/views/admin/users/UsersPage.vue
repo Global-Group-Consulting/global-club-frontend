@@ -13,7 +13,11 @@
 import TopToolbar from '@/components/toolbars/TopToolbar';
 export default {
   name: "UsersPage",
-  components: { TopToolbar }
+  components: { TopToolbar },
+  setup() {
+    console.log("running user")
+
+  }
 };
 </script>
 
