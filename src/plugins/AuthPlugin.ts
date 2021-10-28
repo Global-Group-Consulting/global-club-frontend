@@ -1,8 +1,9 @@
 import { installPlugin, PluginTemplate } from '@/plugins/PluginTemplate';
-import { HttpPlugin } from '@/plugins/HttpPlugin';
+import { HttpPlugin, LoadingHandler } from '@/plugins/HttpPlugin';
 import { Storage } from '@ionic/storage';
 import { settings } from '@/config/authPlugin';
 import * as jwt from 'jsonwebtoken';
+import { AlertsPlugin } from '@/plugins/Alerts';
 
 interface LoginDto {
   email: string;
@@ -17,6 +18,8 @@ export interface Tokens {
 export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
   private isRefreshing = false;
   private storage!: Storage;
+  private alerts!: AlertsPlugin;
+  private loading!: LoadingHandler;
   protected options!: AuthPluginOptions;
   
   static pendingInitiation;
@@ -24,6 +27,8 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
   
   protected onInit () {
     this.storage = new Storage();
+    this.alerts = this.plugins["$alerts"];
+    this.loading = this.http.loading
     
     this.storage.create()
       .then(async () => {
@@ -51,34 +56,44 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
   public async login(data: LoginDto) {
     // controllare se non esiste già un token
     // per evitare di fare troppi login
-    
+  
+    await this.loading.show()
+  
     try {
       const result = await this.http.rawRequest({
         method: 'POST',
         url: this.options.loginUrl,
         data
       });
-  
+    
       await this.storeToken({
         authToken: result.data[this.options.tokenKey],
         refreshToken: result.data[this.options.refreshTokenKey],
       });
-  
+    
       await this.fetchUser();
-  
+    
+      await this.loading.hide()
+    
       await this.plugins.$router.replace('/dashboard');
-    } catch (e) {
-      console.error(e);
+    } catch (er) {
+      await this.loading.hide()
+    
+      throw er;
     }
+  
   }
   
-  public async logout () {
+  public async logout (forceRedirect = false) {
     const logged = await this.store.getters['auth/isLoggedIn'];
     
     await this.cleanToken();
     await this.store.dispatch('auth/setUser', null);
     
-    if (logged) {
+    if (forceRedirect) {
+      const url = await this.plugins.$router.resolve({ name: "public.login" })
+      window.location.assign(url.path);
+    } else if (logged) {
       await this.plugins.$router.replace({ name: "public.login" })
       //window.location.assign('/');
     }

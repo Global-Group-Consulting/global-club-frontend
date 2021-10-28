@@ -2,54 +2,60 @@
   <IonPage>
     <IonContent class="ion-padding">
       <div class="logo-container"></div>
+
+      <form @submit.prevent="login" @keydown.enter="login">
+        <ion-grid fixed class="grid-login">
+          <ion-row class="ion-justify-content-center">
+            <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
+              <div class="testo">
+                <p class="login-first-text">Gentile utente,</p>
+                <p class="login-second-text">Benvenuto</p>
+              </div>
+
+              <form-input
+                  class="form"
+                  label="✉ Username"
+                  type="mail"
+                  clear-input
+                  v-model="formData.email"
+              />
+
+              <form-input
+                  class="form"
+                  label="🗝 Password"
+                  type="password"
+                  clear-input
+                  v-model="formData.password"
+              />
+              <div class="ion-text-center" href="http://localhost:8100/reset">
+                <IonButton class="reset" fill="clear"
+                >Hai dimenticato la password?
+                </IonButton
+                >
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+    </IonContent>
+
+    <ion-footer>
       <ion-grid fixed class="grid-login">
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <div class="testo">
-              <p class="login-first-text">Gentile utente,</p>
-              <p class="login-second-text">Benvenuto</p>
-            </div>
-
-            <form-input
-              class="form"
-              label="✉ Username"
-              type="mail"
-              clear-input
-              v-model="formData.email"
-            />
-
-            <form-input
-              class="form"
-              label="🗝 Password"
-              type="password"
-              clear-input
-              v-model="formData.password"
-            />
-            <div class="ion-text-center" href="http://localhost:8100/reset">
-              <IonButton class="reset" fill="clear"
-                >Hai dimenticato la password?</IonButton
-              >
-            </div>
-
-            <!--
-                        <IonItem position="floating" class="checkbox">
-                          <IonCheckbox checked></IonCheckbox>
-                          <IonLabel class="ion-text-center">Remember me</IonLabel>
-                        </IonItem>
-            -->
-
             <btn
-              class="btn-fixed-container ion-text-capitalize"
-              size="large"
-              icon-name="login-btn"
-              expand="block"
-              @click="login"
-              >Login
+                class="ion-text-capitalize"
+                size="large"
+                icon-name="login-btn"
+                expand="block"
+                @click="login"
+            >
+              Login
             </btn>
           </ion-col>
         </ion-row>
       </ion-grid>
-    </IonContent>
+    </ion-footer>
   </IonPage>
 </template>
 
@@ -57,8 +63,10 @@
 import { defineComponent, inject, reactive } from "vue";
 import { AuthPlugin } from "@/plugins/AuthPlugin";
 import Icon from "@/components/Icon.vue";
+import { AlertsPlugin } from '@/plugins/Alerts';
 
 const auth: AuthPlugin | undefined = inject<AuthPlugin>("auth");
+const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
 
 const formData = reactive({
   email: "florian.leica@gmail.com",
@@ -69,7 +77,7 @@ async function login() {
   try {
     await auth?.login({ ...formData });
   } catch (e) {
-    console.log(e);
+    await alerts.error(e);
   }
 }
 
