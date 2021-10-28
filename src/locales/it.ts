@@ -20,6 +20,7 @@ export default {
     },
     productDetails: {
       'title': "Dettagli prodotto",
+      'btn_delete': "Elimina",
     },
     productCategories: {
       'title': "Elenco categorie prodotti",
@@ -28,6 +29,7 @@ export default {
     },
     productCategoryDetails: {
       'title': "Dettagli categoria prodotto",
+      'btn_delete': "Elimina",
     }
     
   }

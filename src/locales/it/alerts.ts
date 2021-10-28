@@ -12,6 +12,26 @@ export const alerts = {
       message: 'Continuando, l\'immagine <strong>{imageName}</strong> verrà cancellata in modo irreversibile.',
       buttonOk: 'Si, cancella',
       buttonCancel: 'Annulla'
+    },
+    deleteCategory: {
+      title: 'Cancellare questa categoria?',
+      message: 'Continuando, la categoria <strong>{categoryName}</strong> verrà cancellata in modo irreversibile.',
+      buttonOk: 'Si, cancella',
+      buttonCancel: 'Annulla'
+    }
+  },
+  products: {
+    deleteThumbnail: {
+      title: 'Cancellare l\'immagine?',
+      message: 'Continuando, l\'immagine <strong>"{imageName}"</strong> verrà cancellata in modo irreversibile.',
+      buttonOk: 'Si, cancella',
+      buttonCancel: 'Annulla'
+    },
+    deleteProduct: {
+      title: 'Cancellare questo prodotto?',
+      message: 'Continuando, il prodotto <strong>"{productName}"</strong> verrà cancellato in modo irreversibile.',
+      buttonOk: 'Si, cancella',
+      buttonCancel: 'Annulla'
     }
   },
   filesUploader: {
