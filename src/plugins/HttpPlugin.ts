@@ -105,7 +105,7 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
   private queue!: HttpQueue;
   protected options!: HttpPluginOptions;
   protected test = 'asdad';
-  protected loading!: LoadingHandler;
+  public loading!: LoadingHandler;
   protected alerts!: AlertsPlugin;
   public api!: ApiModules;
   
@@ -251,13 +251,13 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
   }
   
   protected async responseErrorInterceptor (error: AxiosError): Promise<AxiosError> {
-    const errorName = error.response?.data?.name
+    const errorName = error.response?.data?.name || error.response?.data?.error.name
     // const errorStatus = error.response?.status
-    
+  
     if (errorName === "TokenExpiredException") {
       await this.auth.logout(true)
     }
-    
+  
     return Promise.reject(error);
   }
 }
