@@ -8,10 +8,10 @@ import { CreateProductCategoryDto } from '@/views/admin/productCategories/dto/cr
 export class ProductCategoryApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'club/product-categories';
   
-  static async readAll (): Promise<ProductCategory[]> {
-    const result: AxiosResponse<ProductCategory[]> = await this.axiosInstance.get(this.getUrl());
+  static async readAll (): Promise<ProductCategory[] | undefined> {
+    const result = await this.withLoader<ProductCategory[]>("get", this.getUrl());
     
-    return result.data;
+    return result?.data;
   }
   
   static async read (id: string): Promise<ProductCategory | undefined> {
@@ -28,6 +28,12 @@ export class ProductCategoryApis extends BasicApisClass {
   
   static async update (data: UpdateProductCategoryDto, id: string): Promise<ProductCategory | undefined> {
     const result = await this.withLoader<ProductCategory>("patch", this.getUrl('/' + id), data);
+    
+    return result?.data;
+  }
+  
+  static async deleteCategory (id: string) {
+    const result = await this.withLoader<ProductCategory>("delete", this.getUrl(`/${id}`))
     
     return result?.data;
   }

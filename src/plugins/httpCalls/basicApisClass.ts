@@ -15,9 +15,9 @@ export class BasicApisClass {
    static async withLoader<T> (method, ...args): Promise<AxiosResponse<T> | undefined> {
       let result;
       let error;
-      
+   
       await this.loading.show()
-      
+   
       if (method === "delete" && args.length > 1 && !args[1].data) {
          console.error("[HTTP_PLUGIN] - Seems that you're trying to send extra data in a 'DELETE' request.\n"
            + "To accomplish this, you must use AxiosRequestConfig object as the second argument instead on the provided object.\n"
