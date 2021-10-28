@@ -1,5 +1,5 @@
 import { installPlugin, PluginTemplate } from '@/plugins/PluginTemplate';
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { settings } from '@/config/httpPlugin';
 import { merge } from 'lodash';
 import { ProductApis } from '@/plugins/httpCalls/ProductApis';
@@ -52,24 +52,51 @@ class HttpQueue {
 }
 
 export class LoadingHandler {
-  private loadingInstance!: HTMLIonLoadingElement
+  private instances: Record<number, HTMLIonLoadingElement> = {}
   
   constructor (private t: any) {
   }
   
-  async show (timeout?: number) {
-    this.loadingInstance = await loadingController
+  private async createInstance (timeout) {
+    const loadingInstance = await loadingController
       .create({
-        cssClass: 'my-custom-class',
+        // cssClass: 'my-custom-class',
         message: this.t("alerts.generic.loading"),
         duration: timeout,
       });
     
-    return await this.loadingInstance.present();
+    const index = Object.keys(this.instances).length
+    
+    loadingInstance.onDidDismiss().then(() => this.onDidDismiss())
+    
+    this.instances[index] = loadingInstance
+    
+    return loadingInstance
+  }
+  
+  async show (timeout?: number) {
+    const loadingInstance = await this.createInstance(timeout)
+    
+    return await loadingInstance.present();
   }
   
   async hide () {
-    return await this.loadingInstance.dismiss();
+    const index = Object.keys(this.instances)[0];
+    const loadingInstance = this.instances[index]
+    
+    if (!loadingInstance) {
+      return
+    }
+    
+    // Immediatly delete the instance from the array
+    // so if there are other pending instances, will detect the right index
+    delete this.instances[index]
+    
+    await loadingInstance.dismiss();
+  }
+  
+  private onDidDismiss () {
+    console.log("onDidDismiss")
   }
 }
 
@@ -91,13 +118,15 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
     this.queue = new HttpQueue();
     this.loading = new LoadingHandler(this.plugins["$t"]);
     this.alerts = this.plugins["$alerts"];
-    
+  
     // init an instance of axios
     this.axiosInstance = axios.create(options.axiosInstanceDefault);
-    
+  
     // add request interceptor
     this.axiosInstance.interceptors.request.use((request: any) => this.requestInterceptor(request));
-    
+    this.axiosInstance.interceptors.response.use((resp) => resp,
+      (response: any) => this.responseErrorInterceptor(response));
+  
     this.includeModules();
   }
   
@@ -212,15 +241,25 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
       //this.queue.decline(error)
       throw new Error(`Unable to refresh access token for request due to token refresh error: ${error.message}`)
     }
-    
+  
     // add token to headers
     if (accessToken) {
       requestConfig.headers[this.options.authHeader] = `${this.options.authHeaderPrefix}${accessToken}`
     }
-    
+  
     return requestConfig
   }
   
+  protected async responseErrorInterceptor (error: AxiosError): Promise<AxiosError> {
+    const errorName = error.response?.data?.name
+    // const errorStatus = error.response?.status
+    
+    if (errorName === "TokenExpiredException") {
+      await this.auth.logout(true)
+    }
+    
+    return Promise.reject(error);
+  }
 }
 
 declare module '@vue/runtime-core' {
