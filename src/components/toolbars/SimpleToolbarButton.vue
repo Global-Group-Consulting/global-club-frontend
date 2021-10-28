@@ -1,6 +1,5 @@
 <template>
-  <ion-button @click="$emit('click', $event)"
-              fill="outline" shape="round">
+  <ion-button fill="outline" shape="round">
     {{ text }}
   </ion-button>
 </template>
