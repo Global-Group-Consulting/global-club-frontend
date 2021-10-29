@@ -57,23 +57,6 @@
         </ion-row>
       </ion-grid>
     </ion-footer>
-    <ion-footer>
-      <ion-grid fixed class="grid-login">
-        <ion-row class="ion-justify-content-center">
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <btn
-              class="ion-text-capitalize"
-              size="large"
-              icon-name="chevron-left"
-              expand="block"
-              @click="$router.push('/login')"
-            >
-              Torna al login
-            </btn>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-footer>
   </IonPage>
 </template>
 
