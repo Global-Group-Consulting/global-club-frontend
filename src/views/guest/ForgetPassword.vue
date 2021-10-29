@@ -1,46 +1,63 @@
 <template>
   <IonPage>
-    <IonHeader :translucent="false">
-      <div class="logo-container"></div>
-      <IonToolbar>
-        <IonButtons slot="start">
-          <IonMenuButton color="primary"></IonMenuButton>
-        </IonButtons>
-        <IonTitle>{{ $route.params.id }}</IonTitle>
-      </IonToolbar>
-    </IonHeader>
-
     <IonContent class="ion-padding" v-if="!emailSent">
-      <h1>Forgot your password?</h1>
-      <p>
-        Don’t worry! Write here your email address and we’ll send a link for
-        reset your password
-      </p>
+      <div class="logo-container"></div>
+      <form>
+        <ion-grid fixed class="grid-login">
+          <ion-row class="ion-justify-content-center">
+            <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
+              <div class="testo">
+                <p class="login-first-text">
+                  Ti invitiamo ad inserire la tua email.<br />
+                  Riceverai in seguito un messaggio<br />
+                  con le istruzioni su come reimpostare<br />
+                  la tua passoword
+                </p>
+              </div>
+              <form-input
+                class="form"
+                label="✉ Email"
+                type="mail"
+                clear-input
+              />
+              <!-- <IonContent class="ion-padding" v-if="!emailSent"> -->
+              <IonButton
+                class="reset"
+                fill="clear"
+                @click="$router.push('/login')"
+                >Torna alla pagina di login?
+              </IonButton>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
 
-      <IonInput
-        required="true"
-        type="mail"
-        placeholder="Username"
-        clear-input="true"
-      ></IonInput>
-      <br />
-      <IonInput
-        required="true"
-        type="password"
-        placeholder="Password"
-        clear-input="true"
-      ></IonInput>
-
-      <IonButton class="reset-bt ion-text-capitalize">Reset password</IonButton>
+      <ion-content class="ion-padding" v-else>
+        mostro blocco secondario
+      </ion-content>
+      -->
     </IonContent>
-
-    <ion-content class="ion-padding" v-else>
-      mostro blocco secondario
-    </ion-content>
+    <ion-footer>
+      <ion-grid fixed class="grid-login">
+        <ion-row class="ion-justify-content-center">
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
+            <btn
+              class="ion-text-capitalize"
+              size="large"
+              icon-name="lock-btn"
+              expand="block"
+              @click="login"
+            >
+              Recupera password
+            </btn>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-footer>
   </IonPage>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import {
   IonInput,
   IonButton,
@@ -48,7 +65,17 @@ import {
   IonPage,
   IonHeader,
 } from "@ionic/vue";
-import { defineComponent } from "vue";
+import { defineComponent, inject, reactive } from "vue";
+import { AuthPlugin } from "@/plugins/AuthPlugin";
+import Icon from "@/components/Icon.vue";
+import { AlertsPlugin } from "@/plugins/Alerts";
+
+const auth: AuthPlugin | undefined = inject<AuthPlugin>("auth");
+const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
+
+async function logout() {
+  await auth?.logout();
+}
 
 export default defineComponent({
   name: "Login",
@@ -60,76 +87,37 @@ export default defineComponent({
     IonButton,
   },
   data() {
-    return  {
-      emailSent: true
-    }
-  }
+    return {
+      emailSent: true,
+    };
+  },
 });
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;800&display=swap");
-
-ion-menubutton {
-  --background: red;
-}
-
-.logo-container {
-  /* logo-club 1 */
-
-  position: absolute;
-  width: 415px;
-  height: 226px;
-  left: 0px;
-  top: -60px;
-
-  background: url(/public/assets/logo-club1.png);
-}
-
-h1 {
-  font-family: Open Sans;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  color: #ab8e54;
+.testo {
+  margin-bottom: 2rem;
+  margin-top: 3rem;
+  color: white;
   text-shadow: 0px 4px 4px #000000;
 }
 
-p {
-  font-family: Open Sans;
-  color: #969696;
-  text-shadow: 0px -4px 4px #000000;
-}
-
-ion-input {
-  margin-left: auto;
-  margin-right: auto;
-  background: #212121;
-
-  --padding-start: 15px;
-  border-radius: 20px;
-  height: 4rem;
-  --placeholder-color: #888;
-  max-width: 60vh;
-
-  color: #969696;
-  font-family: Open Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 20px;
-  line-height: 27px;
+#icon {
+  background: url(/assets/LoginBtn.svg);
+  background-repeat: no-repeat;
+  background-position: 5px 2px;
   text-align: left;
+  text-indent: 42px;
 }
 
-.reset-bt {
-  font-family: "Open Sans", sans-serif;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--ion-color-primary-contrast);
-
-  --border-radius: 20px;
-  width: 20rem;
-  height: 4rem;
-  margin-top: 3rem;
+grid-login {
+  margin-top: -20px;
 }
 </style>
+
+
+
+
+
+
+
