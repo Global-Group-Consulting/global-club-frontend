@@ -1,42 +1,44 @@
 <template>
   <IonPage>
-    <IonContent class="ion-padding" v-if="!emailSent">
-      <div class="logo-container"></div>
-      <form>
-        <ion-grid fixed class="grid-login">
-          <ion-row class="ion-justify-content-center">
-            <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-              <div class="testo">
-                <p class="login-first-text">
-                  Ti invitiamo ad inserire la tua email.<br />
-                  Riceverai in seguito un messaggio<br />
-                  con le istruzioni su come reimpostare<br />
-                  la tua passoword
-                </p>
-              </div>
-              <form-input
-                class="form"
-                label="✉ Email"
-                type="mail"
-                clear-input
-              />
-              <!-- <IonContent class="ion-padding" v-if="!emailSent"> -->
-              <IonButton
-                class="reset"
-                fill="clear"
-                @click="$router.push('/login')"
+    <IonContent class="ion-padding">
+      <div v-if="!emailSent">
+        <div class="logo-container"></div>
+        <form>
+          <ion-grid fixed class="grid-login">
+            <ion-row class="ion-justify-content-center">
+              <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
+                <div class="testo">
+                  <p class="login-first-text">
+                    Ti invitiamo ad inserire la tua email.<br/>
+                    Riceverai in seguito un messaggio<br/>
+                    con le istruzioni su come reimpostare<br/>
+                    la tua passoword
+                  </p>
+                </div>
+                <form-input
+                    class="form"
+                    label="✉ Email"
+                    type="mail"
+                    clear-input
+                />
+                <!-- <IonContent class="ion-padding" v-if="!emailSent"> -->
+                <IonButton
+                    class="reset"
+                    fill="clear"
+                    @click="$router.push('/login')"
                 >Torna alla pagina di login?
-              </IonButton>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </form>
+                </IonButton>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </form>
+      </div>
 
-      <ion-content class="ion-padding" v-else>
+      <div v-else>
         mostro blocco secondario
-      </ion-content>
-      -->
+      </div>
     </IonContent>
+
     <ion-footer>
       <ion-grid fixed class="grid-login">
         <ion-row class="ion-justify-content-center">
@@ -57,41 +59,17 @@
   </IonPage>
 </template>
 
-<script lang="ts" setup>
-import {
-  IonInput,
-  IonButton,
-  IonContent,
-  IonPage,
-  IonHeader,
-} from "@ionic/vue";
-import { defineComponent, inject, reactive } from "vue";
-import { AuthPlugin } from "@/plugins/AuthPlugin";
-import Icon from "@/components/Icon.vue";
-import { AlertsPlugin } from "@/plugins/Alerts";
+<script lang="ts">
+  import { defineComponent } from "vue";
 
-const auth: AuthPlugin | undefined = inject<AuthPlugin>("auth");
-const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
-
-async function logout() {
-  await auth?.logout();
-}
-
-export default defineComponent({
-  name: "Login",
-  components: {
-    IonPage,
-    IonHeader,
-    IonContent,
-    IonInput,
-    IonButton,
-  },
-  data() {
-    return {
-      emailSent: true,
-    };
-  },
-});
+  export default defineComponent({
+    name: "Login",
+    data () {
+      return {
+        emailSent: true,
+      };
+    },
+  });
 </script>
 
 <style scoped>

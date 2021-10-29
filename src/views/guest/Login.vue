@@ -29,6 +29,7 @@
               />
               <div class="ion-text-center" href="http://localhost:8100/reset">
                 <IonButton class="reset" fill="clear"
+                           @click="$router.push('/reset')"
                 >Hai dimenticato la password?
                 </IonButton
                 >

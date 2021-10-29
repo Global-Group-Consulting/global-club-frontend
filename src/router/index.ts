@@ -195,7 +195,7 @@ const adminRoutes: RouteRecordRaw[] = [
   },
   {
     path: '/admin/users',
-    component: () => import('../views/admin/users/UsersPage.vue'),
+    component: () => import('../views/admin/users/Home.vue'),
     name: 'admin.users',
     meta: {
       isAdmin: true

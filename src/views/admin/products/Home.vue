@@ -54,17 +54,6 @@
       const http: HttpPlugin = inject<HttpPlugin>('http') as HttpPlugin;
       const productsList: Ref<Product[]> = ref([]);
 
-      /*     function resolveUrl () {
-             const val = router.resolve({
-               name: 'admin.products.details',
-               params: { id: 'asdasd' }
-             });
-
-             return val;
-           }
-
-           resolveUrl();*/
-
       onIonViewWillEnter(async () => {
         productsList.value = await http.api.products.readAll() ?? [];
 
