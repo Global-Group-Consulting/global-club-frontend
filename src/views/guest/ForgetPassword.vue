@@ -31,12 +31,12 @@
           </ion-row>
         </ion-grid>
       </form>
-
-      <ion-content class="ion-padding" v-else>
-        mostro blocco secondario
-      </ion-content>
-      -->
     </IonContent>
+    <ion-content class="ion-padding" v-else>
+      mostro blocco secondario
+    </ion-content>
+    -->
+
     <ion-footer>
       <ion-grid fixed class="grid-login">
         <ion-row class="ion-justify-content-center">
@@ -65,7 +65,8 @@ import {
   IonPage,
   IonHeader,
 } from "@ionic/vue";
-import { defineComponent, inject, reactive } from "vue";
+
+import { defineComponent, inject } from "vue";
 import { AuthPlugin } from "@/plugins/AuthPlugin";
 import Icon from "@/components/Icon.vue";
 import { AlertsPlugin } from "@/plugins/Alerts";
@@ -88,7 +89,7 @@ export default defineComponent({
   },
   data() {
     return {
-      emailSent: true,
+      emailSent: false,
     };
   },
 });

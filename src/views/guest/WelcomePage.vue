@@ -16,23 +16,6 @@
               </p>
             </div>
 
-            <ion-grid>
-              <ion-row>
-                <ion-col size="12" size-sm>
-                  <div>1 of 4</div>
-                </ion-col>
-                <ion-col size="12" size-sm>
-                  <div>2 of 4</div>
-                </ion-col>
-                <ion-col size="12" size-sm>
-                  <div>3 of 4</div>
-                </ion-col>
-                <ion-col size="12" size-sm>
-                  <div>4 of 4</div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-
             <div class="btn-fixed-container">
               <btn
                 class="ion-text-capitalize"
@@ -61,18 +44,12 @@
 </script>
 
 <style scoped>
-.text {
-  width: 50vmin;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 p {
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
   line-height: 24px;
-  color: #969696;
+  color: white;
   margin: 100px 0px 36px 0px;
 }
 

@@ -13,26 +13,27 @@
               </div>
 
               <form-input
-                  class="form"
-                  label="✉ Username"
-                  type="mail"
-                  clear-input
-                  v-model="formData.email"
+                class="form"
+                label="✉ Username"
+                type="mail"
+                clear-input
+                v-model="formData.email"
               />
 
               <form-input
-                  class="form"
-                  label="🗝 Password"
-                  type="password"
-                  clear-input
-                  v-model="formData.password"
+                class="form"
+                label="🗝 Password"
+                type="password"
+                clear-input
+                v-model="formData.password"
               />
-              <div class="ion-text-center" href="http://localhost:8100/reset">
-                <IonButton class="reset" fill="clear"
+
+              <IonButton
+                class="reset"
+                fill="clear"
+                @click="$router.push('/reset')"
                 >Hai dimenticato la password?
-                </IonButton
-                >
-              </div>
+              </IonButton>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -44,13 +45,30 @@
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <btn
-                class="ion-text-capitalize"
-                size="large"
-                icon-name="login-btn"
-                expand="block"
-                @click="login"
+              class="ion-text-capitalize"
+              size="large"
+              icon-name="login-btn"
+              expand="block"
+              @click="login"
             >
               Login
+            </btn>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-footer>
+    <ion-footer>
+      <ion-grid fixed class="grid-login">
+        <ion-row class="ion-justify-content-center">
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
+            <btn
+              class="ion-text-capitalize"
+              size="large"
+              icon-name="chevron-left"
+              expand="block"
+              @click="$router.push('/login')"
+            >
+              Torna al login
             </btn>
           </ion-col>
         </ion-row>
@@ -63,7 +81,7 @@
 import { defineComponent, inject, reactive } from "vue";
 import { AuthPlugin } from "@/plugins/AuthPlugin";
 import Icon from "@/components/Icon.vue";
-import { AlertsPlugin } from '@/plugins/Alerts';
+import { AlertsPlugin } from "@/plugins/Alerts";
 
 const auth: AuthPlugin | undefined = inject<AuthPlugin>("auth");
 const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
@@ -90,7 +108,6 @@ async function logout() {
 .testo {
   margin-bottom: 2rem;
   margin-top: 3rem;
-
   color: white;
   text-shadow: 0px 4px 4px #000000;
 }
