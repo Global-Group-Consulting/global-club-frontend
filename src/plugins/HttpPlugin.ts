@@ -6,6 +6,7 @@ import { ProductApis } from '@/plugins/httpCalls/ProductApis';
 import { ProductCategoryApis } from '@/plugins/httpCalls/ProductCategoryApis';
 import { loadingController } from '@ionic/vue';
 import { AlertsPlugin } from '@/plugins/Alerts';
+import { UserApis } from '@/plugins/httpCalls/UserApis';
 
 type RequestsQueue = {
   resolve: (value?: unknown) => void;
@@ -17,6 +18,7 @@ type Token = string
 interface ApiModules {
   products: typeof ProductApis;
   productCategories: typeof ProductCategoryApis;
+  user: typeof UserApis;
 }
 
 class HttpQueue {
@@ -113,7 +115,8 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
     this.setAxiosDefaults();
     this.api = {
       products: ProductApis,
-      productCategories: ProductCategoryApis
+      productCategories: ProductCategoryApis,
+      user: UserApis
     };
     this.queue = new HttpQueue();
     this.loading = new LoadingHandler(this.plugins["$t"]);
@@ -251,8 +254,14 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
   }
   
   protected async responseErrorInterceptor (error: AxiosError): Promise<AxiosError> {
-    const errorName = error.response?.data?.name || error.response?.data?.error.name
+    let errorName
     // const errorStatus = error.response?.status
+  
+    if (typeof error.response?.data === "string") {
+      errorName = "Error"
+    } else {
+      errorName = error.response?.data?.name || error.response?.data?.error.name
+    }
   
     if (errorName === "TokenExpiredException") {
       await this.auth.logout(true)
