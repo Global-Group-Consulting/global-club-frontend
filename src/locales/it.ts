@@ -1,9 +1,11 @@
 import { alerts } from '@/locales/it/alerts';
 import { forms } from '@/locales/it/forms';
+import { enums } from '@/locales/it/enums';
 
 export default {
   alerts,
   forms,
+  enums,
   hi: 'Ciao come va?',
   mainMenu: {
     home: 'Home',
