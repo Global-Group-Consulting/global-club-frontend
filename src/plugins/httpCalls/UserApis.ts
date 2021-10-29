@@ -1,19 +1,28 @@
 import { BasicApisClass } from '@/plugins/httpCalls/basicApisClass';
-import { Product } from '@/@types/Product';
-import { AxiosResponse } from 'axios';
-import { CreateProductDto } from '@/views/admin/products/dto/create.product.dto';
-import { UpdateProductDto } from '@/views/admin/products/dto/update.product.dto';
-import { ProductCategory } from '@/@types/ProductCategory';
-import { User } from '@/@types/User';
+import { ReadUserGroupsDto, User } from '@/@types/User';
 import { UserRoleEnum } from '@/@enums/user.role.enum';
+import { PaginatedResult } from '@/@types/Pagination';
 
 export type UserGroup = { id: UserRoleEnum; data: User[] }
 
 export class UserApis extends BasicApisClass {
-  static baseUrl = 'api/users';
+  static baseUrl = super.baseUrl + 'club/users';
   
-  static async readAll (): Promise<UserGroup[] | undefined> {
-    const result = await this.withLoader<UserGroup[]>("get", this.getUrl());
+  static async readAll (group: UserRoleEnum, page: number): Promise<PaginatedResult<User[]> | undefined> {
+    const result = await this.withLoader<PaginatedResult<User[]>>("get", this.getUrl(), {
+      params: {
+        filter: [
+          "role:+" + group,
+        ],
+        page
+      }
+    });
+    
+    return result?.data;
+  }
+  
+  static async readGroups (): Promise<ReadUserGroupsDto[] | undefined> {
+    const result = await this.withLoader<ReadUserGroupsDto[]>("get", this.getUrl("/groups"));
     
     return result?.data;
   }

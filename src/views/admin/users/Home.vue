@@ -15,9 +15,12 @@
 
 
         <ion-segment v-model="activeTab">
-          <ion-segment-button :value="group.enum"
-                              v-for="group in groupsList" :key="group.enum">
-            <ion-label>{{ group.text }}</ion-label>
+          <ion-segment-button :value="group._id"
+                              v-for="group in groupsList" :key="group._id">
+            <ion-label>
+              {{ $t("enums.UserRoleEnum." + UserRoleEnum[group._id]) }}
+              ({{ group.count }})
+            </ion-label>
           </ion-segment-button>
         </ion-segment>
 
@@ -39,6 +42,8 @@
                         </page-link>-->
           </ion-item>
         </ion-list>
+
+        <pagination-bar :fetch-fn="fetchUsers"></pagination-bar>
       </ion-grid>
     </ion-content>
   </IonPage>
@@ -46,52 +51,46 @@
 </template>
 
 <script lang="ts">
-  import { computed, ComputedRef, defineComponent, inject, Ref, ref } from 'vue';
+  import { computed, ComputedRef, defineComponent, inject, Ref, ref, watch } from 'vue';
   import { onIonViewWillEnter } from '@ionic/vue';
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
-  import { User } from '@/@types/User';
+  import { ReadUserGroupsDto, User } from '@/@types/User';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { UserRoleEnum } from '@/@enums/user.role.enum';
-  import { UserGroup } from '@/plugins/httpCalls/UserApis';
   import { useI18n } from 'vue-i18n';
-  import { Computed } from 'vuex';
+  import { PaginatedResult } from '@/@types/Pagination';
+  import PaginationBar from '@/components/PaginationBar.vue';
 
   export default defineComponent({
     name: "UsersPage",
-    components: { TopToolbar },
+    components: { PaginationBar, TopToolbar },
     setup () {
       const http = inject<HttpPlugin>("http") as HttpPlugin
       const { t } = useI18n()
 
-      const usersList: Ref<User[]> = ref([]);
-      const usersData: Ref<UserGroup[]> = ref([]);
+      const paginatedUsersData: Ref<PaginatedResult<User[]>> = ref({} as any);
       const activeTab: Ref<UserRoleEnum> = ref(UserRoleEnum.CLIENTE)
+      const groupsList: Ref<ReadUserGroupsDto[]> = ref([])
 
-      const groupsList: ComputedRef<{ enum: number; code: string; text: string }[]> = computed(() => {
-        return usersData.value.map(el => {
-          return {
-            enum: el.id,
-            code: UserRoleEnum[+el.id],
-            text: t("enums.UserRoleEnum." + UserRoleEnum[+el.id])
-          }
-        })
+      const usersList: ComputedRef<User[]> = computed(() => {
+        return paginatedUsersData.value.data
       })
 
-      /*
+      async function fetchUsers (page = 1) {
+        paginatedUsersData.value = await http.api.user.readAll(activeTab.value, page) ?? {} as any
+      }
 
-      Occorre cambiare approccio e creare degli api specifici che ritornano:
-      - solo la lista dei gruppi
-      - solo un gruppo di utentei e solo i primi 30, paginati.
-        - La paginazione deve essere fatta lato server.
-      - al cambio tab, scarica gli utentei di quella tab.
-       */
+      watch(activeTab, async () => fetchUsers())
 
       onIonViewWillEnter(async () => {
-        usersData.value = await http.api.user.readAll() ?? []
+        groupsList.value = await http.api.user.readGroups() ?? []
+        await fetchUsers()
       });
 
       return {
-        usersList, groupsList, activeTab
+        usersList, groupsList, activeTab,
+        UserRoleEnum,
+        fetchUsers
       }
     }
   });
