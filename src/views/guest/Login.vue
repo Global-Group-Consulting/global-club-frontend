@@ -4,17 +4,17 @@
       <div class="logo-container"></div>
 
       <form @submit.prevent="login" @keydown.enter="login">
-        <ion-grid fixed class="grid-login">
+        <ion-grid fixed>
           <ion-row class="ion-justify-content-center">
             <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-              <div class="testo">
+              <div class="benvenuto">
                 <p class="login-first-text">Gentile utente,</p>
                 <p class="login-second-text">Benvenuto</p>
               </div>
 
               <form-input
                 class="form"
-                label="✉ Username"
+                label="Username"
                 type="mail"
                 clear-input
                 v-model="formData.email"
@@ -22,7 +22,7 @@
 
               <form-input
                 class="form"
-                label="🗝 Password"
+                label="Password"
                 type="password"
                 clear-input
                 v-model="formData.password"
@@ -45,7 +45,7 @@
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <btn
-              class="ion-text-capitalize"
+              class="ion-text-capitalize btn-margin"
               size="large"
               icon-name="login-btn"
               expand="block"
@@ -88,22 +88,4 @@ async function logout() {
 </script>
 
 <style scoped>
-.testo {
-  margin-bottom: 2rem;
-  margin-top: 3rem;
-  color: white;
-  text-shadow: 0px 4px 4px #000000;
-}
-
-#icon {
-  background: url(/assets/LoginBtn.svg);
-  background-repeat: no-repeat;
-  background-position: 5px 2px;
-  text-align: left;
-  text-indent: 42px;
-}
-
-grid-login {
-  margin-top: -20px;
-}
 </style>

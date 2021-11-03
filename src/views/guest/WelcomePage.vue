@@ -6,7 +6,7 @@
       <ion-grid fixed>
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <div class="testo">
+            <div class="welcome">
               <p>
                 We are so glad to welcome you <br />
                 to Global Club App!<br />
@@ -44,19 +44,6 @@
 </script>
 
 <style scoped>
-p {
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  color: white;
-  margin: 100px 0px 36px 0px;
-}
-
-.btn-centered {
-  bottom: 20px;
-  width: 100%;
-}
 </style>
 
 
