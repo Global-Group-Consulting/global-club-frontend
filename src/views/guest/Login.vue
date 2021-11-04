@@ -43,13 +43,13 @@
     <ion-footer>
       <ion-grid fixed class="grid-login">
         <ion-row class="ion-justify-content-center">
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8" class="py-0">
             <btn
-              class="ion-text-capitalize btn-margin"
-              size="large"
-              icon-name="login-btn"
-              expand="block"
-              @click="login"
+                class="ion-text-capitalize m-0"
+                size="large"
+                icon-name="login-btn"
+                expand="block"
+                @click="login"
             >
               Login
             </btn>
