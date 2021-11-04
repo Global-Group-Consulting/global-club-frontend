@@ -15,16 +15,6 @@
                 movement and enjoy it!
               </p>
             </div>
-
-            <div class="btn-fixed-container">
-              <btn
-                class="ion-text-capitalize"
-                size="large"
-                expand="block"
-                @click="$router.push('/login')"
-                >Iniziamo
-              </btn>
-            </div>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -37,6 +27,22 @@
         </ion-row>
       </ion-grid>-->
     </IonContent>
+    <ion-footer>
+      <ion-grid fixed class="grid-login">
+        <ion-row class="ion-justify-content-center">
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
+            <btn
+              class="ion-text-capitalize btn-margin"
+              size="large"
+              expand="block"
+              @click="$router.push('/login')"
+            >
+              Iniziamo
+            </btn>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-footer>
   </IonPage>
 </template>
 
