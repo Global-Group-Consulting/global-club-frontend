@@ -1,5 +1,10 @@
 ion-alert {
   --background: var(--ion-color-secondary) !important;
+
+
+  &[class*="sc-ion-alert"] {
+    user-select: auto;
+  }
 }
 
 

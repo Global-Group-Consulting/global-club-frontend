@@ -43,7 +43,7 @@
           </ion-item>
         </ion-list>
 
-        <pagination-bar :fetch-fn="fetchUsers"></pagination-bar>
+        <pagination-bar :paginationData="paginationData" @pageChanged="onPageChanged"></pagination-bar>
       </ion-grid>
     </ion-content>
   </IonPage>
@@ -76,8 +76,20 @@
         return paginatedUsersData.value.data
       })
 
+      const paginationData: ComputedRef<any> = computed(() => {
+        const { data, ...rest } = paginatedUsersData.value
+
+        return {
+          ...rest
+        }
+      })
+
       async function fetchUsers (page = 1) {
         paginatedUsersData.value = await http.api.user.readAll(activeTab.value, page) ?? {} as any
+      }
+
+      async function onPageChanged (newPage: number) {
+        await fetchUsers(newPage)
       }
 
       watch(activeTab, async () => fetchUsers())
@@ -88,9 +100,9 @@
       });
 
       return {
-        usersList, groupsList, activeTab,
+        usersList, groupsList, activeTab, paginationData,
         UserRoleEnum,
-        fetchUsers
+        fetchUsers, onPageChanged
       }
     }
   });

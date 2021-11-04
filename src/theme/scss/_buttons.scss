@@ -1,4 +1,8 @@
 ion-button {
+  &.button-has-icon-only {
+    //--border-radius: 30px;
+  }
+
   &:not(.button-has-icon-only):not(.button-clear):not(.button-outline) {
     --background: var(--custom-light-gradient);
     --border-radius: 50px;
