@@ -6,7 +6,7 @@
       <ion-grid fixed>
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <div class="welcome">
+            <div class="mt-10vh">
               <p>
                 We are so glad to welcome you <br />
                 to Global Club App!<br />
@@ -30,9 +30,9 @@
     <ion-footer>
       <ion-grid fixed class="grid-login">
         <ion-row class="ion-justify-content-center">
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8" class="p-0">
             <btn
-              class="ion-text-capitalize btn-margin"
+              class="ion-text-capitalize m-0"
               size="large"
               expand="block"
               @click="$router.push('/login')"

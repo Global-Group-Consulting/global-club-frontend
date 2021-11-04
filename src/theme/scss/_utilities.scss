@@ -58,7 +58,7 @@ ion-input {
 
   // Paddings
   .p-#{$i} {
-    margin: $value !important;
+    padding: $value !important;
   }
 
   .px-#{$i} {
@@ -75,4 +75,18 @@ ion-input {
       margin-#{$dirValue}: $value !important;
     }
   }
+}
+
+
+.mt-10vh {
+  margin-top: 10vh;
+}
+
+.mt-5vh {
+  margin-top: 5vh;
+}
+
+
+.font-bold {
+  font-weight: bold !important;
 }

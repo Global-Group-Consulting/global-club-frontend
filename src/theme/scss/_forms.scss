@@ -1,7 +1,14 @@
-.form {
-  justify-content: start;
-  background-color: black;
+.form-input {
+  //justify-content: start;
+  //background-color: black;
   --border-radius: 15px;
+
+  &.item-has-focus {
+    &::part(native) {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
 }
 
 

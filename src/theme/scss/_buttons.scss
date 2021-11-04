@@ -1,8 +1,4 @@
 ion-button {
-  &.button-has-icon-only {
-    //--border-radius: 30px;
-  }
-
   &:not(.button-has-icon-only):not(.button-clear):not(.button-outline) {
     --background: var(--custom-light-gradient);
     --border-radius: 50px;
@@ -25,33 +21,10 @@ ion-button {
 
   &.btn-toolbar {
   }
+
+  &.btn-link {
+    text-transform: none;
+    text-decoration: underline;
+  }
 }
 
-/* .btn-fixed-container {
-  position: fixed;
-  bottom: 10px;
-  width: 70%;
-  left: 15%;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 16px;
-} */
-
-.btn-margin {
-  margin-bottom: -20px;
-}
-
-/* Login Page */
-
-.reset {
-  margin-top: -20px;
-  padding: 0;
-  text-transform: none;
-  text-decoration-line: underline;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 18px;
-}

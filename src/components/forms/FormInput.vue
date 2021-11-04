@@ -1,5 +1,5 @@
 <template>
-  <ion-item class="ion-margin-bottom">
+  <ion-item :class="{'ion-margin-bottom': addSpaceAfter}" class="form-input">
     <ion-label position="floating">{{ label }}</ion-label>
     <component :is="component"
                ref="inputComponent"
@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, inject, Ref, ref, watch } from 'vue';
+  import { computed, Ref, ref, watch } from 'vue';
 
   const props = withDefaults(defineProps<{
     label: string;
@@ -43,11 +43,13 @@
     multiple?: boolean;
     selectBtnOk?: string;
     selectBtnCancel?: string;
+    addSpaceAfter?: boolean;
   }>(), {
     type: 'text',
     component: 'ion-input',
     clearInput: false,
-    disabled: false
+    disabled: false,
+    addSpaceAfter: true
   });
 
   // defining emit

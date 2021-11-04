@@ -1,33 +1,35 @@
 <template>
   <IonPage>
     <IonContent class="ion-padding">
+      <div class="logo-container"></div>
+
       <!-- Sezione visibile appena si atterra sulla pagina -->
       <div v-if="!emailSent">
-        <div class="logo-container"></div>
         <form>
           <ion-grid fixed>
             <ion-row class="ion-justify-content-center">
               <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-                <div class="what-to-do">
+                <div class="mt-10vh">
                   <p class="login-first-text">
-                    Ti invitiamo ad inserire la tua email.<br />
-                    Riceverai in seguito un messaggio<br />
-                    con le istruzioni su come reimpostare<br />
+                    Ti invitiamo ad inserire la tua email.<br/>
+                    Riceverai in seguito un messaggio<br/>
+                    con le istruzioni su come reimpostare<br/>
                     la tua passoword
                   </p>
                 </div>
-                <form-input
-                  class="form"
-                  label="✉ Email"
-                  type="mail"
-                  clear-input
+                <FormInput
+                    label="Email"
+                    type="mail"
+                    clear-input
+                    :add-space-after="false"
                 />
                 <!-- <IonContent class="ion-padding" v-if="!emailSent"> -->
                 <IonButton
-                  class="reset"
-                  fill="clear"
-                  @click="$router.push('/login')"
-                  >Torna alla pagina di login?
+                    fill="clear"
+                    size="small"
+                    class="btn-link"
+                    @click="$router.push('/login')"
+                >Torna alla pagina di login?
                 </IonButton>
               </ion-col>
             </ion-row>
@@ -38,16 +40,16 @@
       <!-- Sezione visibile SOLO dopo l'invio della mail -->
       <div v-else>
         <!-- html con la v gigante che dice che tutto è andato bene -->
-        <div class="logo-container"></div>
         <ion-grid fixed>
           <ion-row class="ion-justify-content-center">
             <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-              <div class="v-container"></div>
-              <div class="what-to-do">
-                <p class="login-first-text">
+              <div class="mt-5vh">
+                <Icon name="check-large" style="font-size: 120px"></Icon>
+
+                <h4 class="font-bold">
                   Abbiamo preso in carico la tua richiesta. A breve riceveri una
                   email con le istruzioni necessarie.
-                </p>
+                </h4>
               </div>
             </ion-col>
           </ion-row>
@@ -61,12 +63,12 @@
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <!-- Visibile se l'email non è ancora stata inviata -->
             <btn
-              v-if="!emailSent"
-              class="ion-text-capitalize btn-margin"
-              size="large"
-              icon-name="lock-btn"
-              expand="block"
-              @click="onSendEmailClick"
+                v-if="!emailSent"
+                class="ion-text-capitalize"
+                size="large"
+                icon-name="lock-btn"
+                expand="block"
+                @click="onSendEmailClick"
             >
               Recupera password
             </btn>
@@ -74,7 +76,7 @@
             <!-- Visibile SOLO DOPO che l'email è stata inviata -->
             <btn
               v-else
-              class="ion-text-capitalize btn-margin"
+              class="ion-text-capitalize"
               size="large"
               icon-name="chevron-left"
               expand="block"
@@ -92,13 +94,16 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { onIonViewDidLeave } from "@ionic/vue";
+import FormInput from '@/components/forms/FormInput.vue';
+import Icon from '@/components/Icon.vue';
 
 export default defineComponent({
   name: "ForgetPassword",
-  setup() {
+  components: { Icon, FormInput },
+  setup () {
     const emailSent = ref(false);
 
-    function onSendEmailClick() {
+    function onSendEmailClick () {
       emailSent.value = true;
     }
 

@@ -7,29 +7,28 @@
         <ion-grid fixed>
           <ion-row class="ion-justify-content-center">
             <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-              <div class="benvenuto">
+              <div class="mt-5vh mb-4">
                 <p class="login-first-text">Gentile utente,</p>
                 <p class="login-second-text">Benvenuto</p>
               </div>
 
-              <form-input
-                class="form"
-                label="Username"
-                type="mail"
-                clear-input
-                v-model="formData.email"
+              <FormInput
+                  label="Username"
+                  type="mail"
+                  clear-input
+                  v-model="formData.email"
               />
 
-              <form-input
-                class="form"
-                label="Password"
-                type="password"
-                clear-input
-                v-model="formData.password"
+              <FormInput
+                  label="Password"
+                  type="password"
+                  clear-input
+                  :add-space-after="false"
+                  v-model="formData.password"
               />
 
               <IonButton
-                class="reset"
+                class="btn-link"
                 fill="clear"
                 @click="$router.push('/reset')"
                 >Hai dimenticato la password?
@@ -45,7 +44,7 @@
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8" class="py-0">
             <btn
-                class="ion-text-capitalize m-0"
+                class="ion-text-capitalize"
                 size="large"
                 icon-name="login-btn"
                 expand="block"
@@ -65,6 +64,7 @@ import { defineComponent, inject, reactive } from "vue";
 import { AuthPlugin } from "@/plugins/AuthPlugin";
 import Icon from "@/components/Icon.vue";
 import { AlertsPlugin } from "@/plugins/Alerts";
+import FormInput from '@/components/forms/FormInput.vue';
 
 const auth: AuthPlugin | undefined = inject<AuthPlugin>("auth");
 const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
