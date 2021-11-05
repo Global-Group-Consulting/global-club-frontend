@@ -15,7 +15,7 @@
         <ion-list>
           <ion-item v-for="product of productsList" :key="product._id">
             <ion-thumbnail slot="start">
-              <img :src="formatImgUrl(product.thumbnail.id)">
+              <img :src="formatImgUrl(product.thumbnail?.id)">
             </ion-thumbnail>
 
             <ion-label>

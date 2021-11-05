@@ -4,7 +4,7 @@
     <ul>
       <li v-for="product of productsList" :key="product._id">
         <ion-thumbnail slot="start">
-          <ion-img :src="formatImgUrl(product.thumbnail.id)"></ion-img>
+          <ion-img :src="formatImgUrl(product.thumbnail?.id)"></ion-img>
         </ion-thumbnail>
 
         titolo:
