@@ -71,27 +71,115 @@
           </ion-col>
         </ion-row>
         <ion-row>
+          <ion-col> </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid class="banner">
+        <ion-row>
+          <div class="money">
+            <img src="/assets/brite-gold.png" />
+            <p class="somma">76.654</p>
+            <p class="descrizione">Totale utilizzabile</p>
+          </div>
+        </ion-row>
+        <ion-row>
           <ion-col>
-            <div class="banner">
-              <div class="money">
-                <img src="/assets/brite-gold.png" />
-                <p class="somma">27.830</p>
-                <p class="descrizione">Totale disponibile</p>
-              </div>
-              <div class="money">
-                <img src="/assets/brite-gold.png" />
-                <p class="somma">5.000</p>
-                <p class="descrizione">Brite utilizzati</p>
-              </div>
-              <div class="money">
-                <img src="/assets/brite-gold.png" />
-                <p class="somma">32.830</p>
-                <p class="descrizione">Brite accumulati</p>
-              </div>
+            <div class="money">
+              <img src="/assets/brite-gold.png" />
+              <p class="somma">30.876</p>
+              <p class="descrizione">Sacadono a Gennaio '22</p>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <div class="money">
+              <img src="/assets/brite-gold.png" />
+              <p class="somma">45.778</p>
+              <p class="descrizione">Scadono a Luglio '22</p>
+            </div>
+          </ion-col>
+          <ion-col class="dettagli">
+            <div>
+              <btn
+                class="ion-text-capitalize m-0"
+                size="large"
+                expand="block"
+                @click="$router.push('#')"
+              >
+                Detagli
+              </btn>
             </div>
           </ion-col>
         </ion-row>
       </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <p class="stato-ordini">Stato ordini in corso</p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <img src="/assets/workout-pic.png" alt="" />
+          </ion-col>
+          <ion-col>
+            <p class="order">Ordine del 20/o9/'21</p>
+            <p class="order-status">Stato:<span>In lavorazione</span></p>
+            <ion-progress-bar color="primary" value="0.5"></ion-progress-bar>
+          </ion-col>
+          <ion-col>
+            <btn
+              size="small"
+              shape="round"
+              slot="icon-only"
+              icon-name="circle-right"
+              @click="$router.push('/order')"
+            ></btn>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <!-- <ion-grid class="banner">
+        <ion-row>
+          <div class="money">
+            <img src="/assets/brite-gold.png" />
+            <p class="somma">27.830</p>
+            <p class="descrizione">Totale disponibile</p>
+          </div>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <div class="money">
+              <img src="/assets/brite-gold.png" />
+              <p class="somma">5.000</p>
+              <p class="descrizione">Brite utilizzati</p>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <div class="money">
+              <img src="/assets/brite-gold.png" />
+              <p class="somma">32.830</p>
+              <p class="descrizione">Brite accumulati</p>
+            </div>
+          </ion-col>
+          <ion-col class="dettagli">
+            <div>
+              <btn
+                class="ion-text-capitalize m-0"
+                size="large"
+                expand="block"
+                @click="$router.push('/')"
+              >
+                Detagli
+              </btn>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid> -->
     </IonContent>
   </IonPage>
 </template>
@@ -168,6 +256,7 @@ export default defineComponent({
 
 ion-grid {
   margin-top: 1rem;
+  max-width: 500px;
 }
 
 .user {
@@ -223,19 +312,19 @@ ion-grid {
 .banner {
   background-color: #272727;
   background-image: url(/assets/banner.svg);
-  width: 315px;
-  height: 208px;
-
+  width: 80vw;
+  max-width: 500px;
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 30px;
   margin-right: auto;
   margin-left: auto;
+  padding: 30px;
 }
 
 .money {
   text-align: left;
-  margin-left: 10px;
+
   margin-bottom: 24px;
 }
 
@@ -265,5 +354,9 @@ ion-grid {
   letter-spacing: 0em;
   color: #ada9a4;
   margin-top: 0;
+}
+
+.dettagli {
+  text-align: left;
 }
 </style>

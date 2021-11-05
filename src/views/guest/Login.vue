@@ -13,18 +13,18 @@
               </div>
 
               <FormInput
-                  label="Username"
-                  type="mail"
-                  clear-input
-                  v-model="formData.email"
+                label="Username"
+                type="mail"
+                clear-input
+                v-model="formData.email"
               />
 
               <FormInput
-                  label="Password"
-                  type="password"
-                  clear-input
-                  :add-space-after="false"
-                  v-model="formData.password"
+                label="Password"
+                type="password"
+                clear-input
+                :add-space-after="false"
+                v-model="formData.password"
               />
 
               <IonButton
@@ -44,11 +44,11 @@
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8" class="py-0">
             <btn
-                class="ion-text-capitalize"
-                size="large"
-                icon-name="login-btn"
-                expand="block"
-                @click="login"
+              class="ion-text-capitalize"
+              size="large"
+              icon-name="login-btn"
+              expand="block"
+              @click="login"
             >
               Login
             </btn>
@@ -64,7 +64,7 @@ import { defineComponent, inject, reactive } from "vue";
 import { AuthPlugin } from "@/plugins/AuthPlugin";
 import Icon from "@/components/Icon.vue";
 import { AlertsPlugin } from "@/plugins/Alerts";
-import FormInput from '@/components/forms/FormInput.vue';
+import FormInput from "@/components/forms/FormInput.vue";
 
 const auth: AuthPlugin | undefined = inject<AuthPlugin>("auth");
 const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
