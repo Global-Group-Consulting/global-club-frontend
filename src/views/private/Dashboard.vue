@@ -53,7 +53,7 @@
         <ion-row class="ion-align-items-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <div>
-              <p class="title ion-text-left">Mario Rossi</p>
+              <p class="title ion-text-left ion-no-margin">Mario Rossi</p>
             </div>
           </ion-col>
 
@@ -65,19 +65,19 @@
           >
             <div class="ion-text-end">
               <img class="ion-margin-end" src="/assets/brite.png" alt="" />
-              <p class="brite-h1">76.654</p>
+              <p class="brite-h1 title-big ion-no-margin">76.654</p>
             </div>
           </ion-col>
         </ion-row>
-        <ion-row class="chips">
+        <ion-row class="ion-margin-top ion-margin-bottom">
           <ion-col>
-            <ion-chip class="resoconto">
+            <ion-chip class="resoconto text-xsmall font-bold">
               <ion-label>Resoconto</ion-label>
             </ion-chip>
-            <ion-chip class="trimestre text-xsmall text-gray1">
+            <ion-chip class="text-xsmall text-gray1">
               <ion-label>1/1/21 - 30/06/21</ion-label>
             </ion-chip>
-            <ion-chip class="trimestre text-xsmall text-gray1">
+            <ion-chip class="text-xsmall text-gray1">
               <ion-label>1/7/21 - 31/12/21</ion-label>
             </ion-chip>
           </ion-col>
@@ -87,29 +87,35 @@
         </ion-row>
       </ion-grid>
 
-      <ion-grid class="banner ion-no-padding" fixed>
+      <ion-grid class="banner" fixed>
         <ion-row>
-          <div class="money">
-            <img src="/assets/brite-gold.png" />
+          <div class="ion-text-start">
+            <img class="ion-margin-end" src="/assets/brite-gold.png" />
             <p class="somma">76.654</p>
-            <p class="text-small text-gray2">Totale utilizzabile</p>
+            <p class="text-small text-gray2 ion-no-margin">
+              Totale utilizzabile
+            </p>
           </div>
         </ion-row>
         <ion-row>
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <div class="money">
-              <img src="/assets/brite-gold.png" />
+            <div class="ion-text-start">
+              <img class="ion-margin-end" src="/assets/brite-gold.png" />
               <p class="somma">30.876</p>
-              <p class="text-small text-gray2">Sacadono a Gennaio '22</p>
+              <p class="text-small text-gray2 ion-no-margin">
+                Sacadono a Gennaio '22
+              </p>
             </div>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <div class="money">
-              <img src="/assets/brite-gold.png" />
+            <div class="ion-text-start">
+              <img class="ion-margin-end" src="/assets/brite-gold.png" />
               <p class="somma">45.778</p>
-              <p class="text-small text-gray2">Scadono a Luglio '22</p>
+              <p class="text-small text-gray2 ion-no-margin">
+                Scadono a Luglio '22
+              </p>
             </div>
           </ion-col>
           <ion-col class="dettagli" sizeLg="6" sizeMd="7" sizeSm="8">
@@ -194,48 +200,23 @@ export default defineComponent({
 }
 
 .search-container {
-  /*  display: flex;
-  align-items: center; */
+  display: flex;
+  align-items: center;
   background-color: white;
   border-radius: 15px;
 }
 
 .brite-h1 {
   display: inline-block;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 36px;
-  letter-spacing: 0em;
-  margin: 0;
 }
 
 .resoconto {
-  border-radius: 50px;
-  padding: 10px, 30px, 10px, 30px;
   background: linear-gradient(
     274.3deg,
     #ab8e54 0%,
     #6f592f 99.99%,
     #ad9c7b 100%
   );
-
-  font-size: 10px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 15px;
-  letter-spacing: 0em;
-}
-
-.trimestre {
-  border-radius: 50px;
-  padding: 10px, 30px, 10px, 30px;
-}
-
-.chips {
-  justify-content: space-around;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
 }
 
 .banner {
@@ -247,20 +228,12 @@ export default defineComponent({
   border-radius: 30px;
   margin-right: auto;
   margin-left: auto;
-  padding: 30px;
-}
-
-.money {
-  text-align: left;
-
-  margin-bottom: 24px;
 }
 
 .money img {
   display: inline-block;
   height: 20px;
-  width: 18.612716674804688px;
-  margin-right: 5px;
+  width: 18px;
 }
 
 .somma {
