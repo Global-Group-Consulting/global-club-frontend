@@ -2,55 +2,62 @@
   <IonPage>
     <IonContent class="ion-padding">
       <div class="logo-container"></div>
-      <div class="search-container">
-        <ion-searchbar
-          placeholder="Cosa desideri cercare?"
-          animated="true"
-          autocomplete="on"
-          inputmode="search"
-        >
-        </ion-searchbar>
-        <btn
-          class="filter"
-          @click="setOpen(true, $event)"
-          fill="clear"
-          size="small"
-          shape="round"
-          slot="icon-only"
-          icon-name="filter"
-        ></btn>
 
-        <ion-popover
-          :is-open="isOpenRef"
-          css-class="my-custom-class"
-          :event="event"
-          :translucent="true"
-          @didDismiss="setOpen(false)"
-        >
-          <Popover></Popover>
-        </ion-popover>
-      </div>
-
-      <ion-grid class="ion-no-padding" fixed="true">
+      <ion-grid fixed class="ion-margin-top">
         <ion-row>
           <ion-col>
+            <div class="search-container">
+              <ion-searchbar
+                placeholder="Cosa desideri cercare?"
+                animated="true"
+                autocomplete="on"
+                inputmode="search"
+              >
+              </ion-searchbar>
+              <btn
+                class="filter"
+                @click="setOpen(true, $event)"
+                fill="clear"
+                size="small"
+                shape="round"
+                slot="icon-only"
+                icon-name="filter"
+              ></btn>
+
+              <ion-popover
+                :is-open="isOpenRef"
+                css-class="my-custom-class"
+                :event="event"
+                :translucent="true"
+                @didDismiss="setOpen(false)"
+              >
+                <Popover></Popover>
+              </ion-popover>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid class="ion-no-padding ion-margin-top" fixed>
+        <ion-row>
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <div class="bentornato">
               <p>Bentornato,</p>
             </div>
           </ion-col>
 
-          <ion-col>
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <div></div>
           </ion-col>
         </ion-row>
         <ion-row class="ion-align-items-center">
-          <ion-col>
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <div>
-              <p class="user">Mario Rossi</p>
+              <p class="title ion-text-left">Mario Rossi</p>
             </div>
           </ion-col>
 
-          <ion-col>
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <div class="brite">
               <img class="brite-img" src="/assets/brite.png" alt="" />
               <p class="brite-h1">76.654</p>
@@ -71,11 +78,11 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col> </ion-col>
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8"> </ion-col>
         </ion-row>
       </ion-grid>
 
-      <ion-grid class="banner">
+      <ion-grid class="banner ion-margin-top" fixed>
         <ion-row>
           <div class="money">
             <img src="/assets/brite-gold.png" />
@@ -84,7 +91,7 @@
           </div>
         </ion-row>
         <ion-row>
-          <ion-col>
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <div class="money">
               <img src="/assets/brite-gold.png" />
               <p class="somma">30.876</p>
@@ -93,14 +100,14 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <div class="money">
               <img src="/assets/brite-gold.png" />
               <p class="somma">45.778</p>
               <p class="descrizione">Scadono a Luglio '22</p>
             </div>
           </ion-col>
-          <ion-col class="dettagli">
+          <ion-col class="dettagli" sizeLg="6" sizeMd="7" sizeSm="8">
             <div>
               <btn
                 class="ion-text-capitalize m-0"
@@ -114,22 +121,23 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-grid>
+
+      <ion-grid fixed class="ion-margin-top">
         <ion-row>
-          <ion-col>
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <p class="stato-ordini">Stato ordini in corso</p>
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <img src="/assets/workout-pic.png" alt="" />
           </ion-col>
-          <ion-col>
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <p class="order">Ordine del 20/o9/'21</p>
             <p class="order-status">Stato:<span>In lavorazione</span></p>
             <ion-progress-bar color="primary" value="0.5"></ion-progress-bar>
           </ion-col>
-          <ion-col>
+          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <btn
               size="small"
               shape="round"
@@ -211,25 +219,19 @@ export default defineComponent({
 
 <style>
 .searchbar-input {
-  max-width: 30rem;
   --background: white;
   --border-radius: 15px;
+  --color: #ada9a4;
 }
 
-.searchbar-input.sc-ion-searchbar-md {
-  color: #ada9a4;
+ion-grid {
+  max-width: 500px;
 }
-
 .search-container {
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin-top: 30px;
-  margin-left: auto;
-  margin-right: auto;
   background-color: white;
   border-radius: 15px;
-  max-width: 31rem;
 }
 
 .bentornato {
@@ -259,7 +261,7 @@ ion-grid {
   max-width: 500px;
 }
 
-.user {
+/* .user {
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
@@ -267,7 +269,7 @@ ion-grid {
   letter-spacing: 0em;
   text-align: left;
   margin: 0;
-}
+} */
 
 .brite-img {
   margin-right: 10px;
