@@ -34,7 +34,6 @@ ion-input {
   margin-right: auto;
 }
 
-
 @each $i, $value in $spacers {
   // Margins
   .m-#{$i} {
@@ -77,7 +76,6 @@ ion-input {
   }
 }
 
-
 .mt-10vh {
   margin-top: 10vh;
 }
@@ -85,7 +83,6 @@ ion-input {
 .mt-5vh {
   margin-top: 5vh;
 }
-
 
 .font-bold {
   font-weight: bold !important;

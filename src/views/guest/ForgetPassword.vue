@@ -12,9 +12,8 @@
                 <div class="mt-10vh">
                   <p class="login-first-text">
                     Ti invitiamo ad inserire la tua email.<br />
-                    Riceverai in seguito un messaggio<br />
-                    con le istruzioni su come reimpostare<br />
-                    la tua passoword
+                    Riceverai in seguito un messaggio con le istruzioni su come
+                    reimpostare la tua passoword
                   </p>
                 </div>
                 <FormInput
@@ -47,8 +46,8 @@
                 <Icon name="check-large" style="font-size: 120px"></Icon>
 
                 <p class="title ion-text-center">
-                  Abbiamo preso in carico la tua richiesta. A breve riceveri una
-                  email con le istruzioni necessarie.
+                  Abbiamo preso in carico la tua richiesta. <br />
+                  A breve riceveri una email con le istruzioni necessarie.
                 </p>
               </div>
             </ion-col>

@@ -3,9 +3,9 @@
     <IonContent class="ion-padding">
       <div class="logo-container"></div>
 
-      <ion-grid fixed class="ion-margin-top">
+      <ion-grid fixed class="ion-no-padding ion-margin-top">
         <ion-row>
-          <ion-col>
+          <ion-col class="ion-align-self-end">
             <div class="search-container">
               <ion-searchbar
                 placeholder="Cosa desideri cercare?"
@@ -38,10 +38,10 @@
         </ion-row>
       </ion-grid>
 
-      <ion-grid class="ion-no-padding ion-margin-top" fixed>
+      <ion-grid fixed class="ion-no-padding ion-margin-top">
         <ion-row>
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <div class="bentornato">
+            <div class="ion-text-start text-small text-gray2">
               <p>Bentornato,</p>
             </div>
           </ion-col>
@@ -57,9 +57,14 @@
             </div>
           </ion-col>
 
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <div class="brite">
-              <img class="brite-img" src="/assets/brite.png" alt="" />
+          <ion-col
+            class="ion-align-self-center"
+            sizeLg="6"
+            sizeMd="7"
+            sizeSm="8"
+          >
+            <div class="ion-text-end">
+              <img class="ion-margin-end" src="/assets/brite.png" alt="" />
               <p class="brite-h1">76.654</p>
             </div>
           </ion-col>
@@ -69,10 +74,10 @@
             <ion-chip class="resoconto">
               <ion-label>Resoconto</ion-label>
             </ion-chip>
-            <ion-chip class="trimestre">
+            <ion-chip class="trimestre text-xsmall text-gray1">
               <ion-label>1/1/21 - 30/06/21</ion-label>
             </ion-chip>
-            <ion-chip class="trimestre">
+            <ion-chip class="trimestre text-xsmall text-gray1">
               <ion-label>1/7/21 - 31/12/21</ion-label>
             </ion-chip>
           </ion-col>
@@ -82,12 +87,12 @@
         </ion-row>
       </ion-grid>
 
-      <ion-grid class="banner ion-margin-top" fixed>
+      <ion-grid class="banner ion-no-padding" fixed>
         <ion-row>
           <div class="money">
             <img src="/assets/brite-gold.png" />
             <p class="somma">76.654</p>
-            <p class="descrizione">Totale utilizzabile</p>
+            <p class="text-small text-gray2">Totale utilizzabile</p>
           </div>
         </ion-row>
         <ion-row>
@@ -95,7 +100,7 @@
             <div class="money">
               <img src="/assets/brite-gold.png" />
               <p class="somma">30.876</p>
-              <p class="descrizione">Sacadono a Gennaio '22</p>
+              <p class="text-small text-gray2">Sacadono a Gennaio '22</p>
             </div>
           </ion-col>
         </ion-row>
@@ -104,7 +109,7 @@
             <div class="money">
               <img src="/assets/brite-gold.png" />
               <p class="somma">45.778</p>
-              <p class="descrizione">Scadono a Luglio '22</p>
+              <p class="text-small text-gray2">Scadono a Luglio '22</p>
             </div>
           </ion-col>
           <ion-col class="dettagli" sizeLg="6" sizeMd="7" sizeSm="8">
@@ -122,7 +127,7 @@
         </ion-row>
       </ion-grid>
 
-      <ion-grid fixed class="ion-margin-top">
+      <ion-grid fixed class="ion-no-padding ion-margin-top">
         <ion-row>
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <p class="stato-ordini">Stato ordini in corso</p>
@@ -133,8 +138,10 @@
             <img src="/assets/workout-pic.png" alt="" />
           </ion-col>
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <p class="order">Ordine del 20/o9/'21</p>
-            <p class="order-status">Stato:<span>In lavorazione</span></p>
+            <p class="text-small text-gray3">Ordine del 20/o9/'21</p>
+            <p class="text-gray2 text-xsmall">
+              Stato: <span>In lavorazione</span>
+            </p>
             <ion-progress-bar color="primary" value="0.5"></ion-progress-bar>
           </ion-col>
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
@@ -148,46 +155,6 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-
-      <!-- <ion-grid class="banner">
-        <ion-row>
-          <div class="money">
-            <img src="/assets/brite-gold.png" />
-            <p class="somma">27.830</p>
-            <p class="descrizione">Totale disponibile</p>
-          </div>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <div class="money">
-              <img src="/assets/brite-gold.png" />
-              <p class="somma">5.000</p>
-              <p class="descrizione">Brite utilizzati</p>
-            </div>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <div class="money">
-              <img src="/assets/brite-gold.png" />
-              <p class="somma">32.830</p>
-              <p class="descrizione">Brite accumulati</p>
-            </div>
-          </ion-col>
-          <ion-col class="dettagli">
-            <div>
-              <btn
-                class="ion-text-capitalize m-0"
-                size="large"
-                expand="block"
-                @click="$router.push('/')"
-              >
-                Detagli
-              </btn>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid> -->
     </IonContent>
   </IonPage>
 </template>
@@ -218,34 +185,21 @@ export default defineComponent({
 </script>
 
 <style>
+/* Search Bar */
+
 .searchbar-input {
   --background: white;
   --border-radius: 15px;
   --color: #ada9a4;
 }
 
-ion-grid {
-  max-width: 500px;
-}
 .search-container {
-  display: flex;
-  align-items: center;
+  /*  display: flex;
+  align-items: center; */
   background-color: white;
   border-radius: 15px;
 }
 
-.bentornato {
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 18px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: #ada9a4;
-}
-.brite {
-  text-align: end;
-}
 .brite-h1 {
   display: inline-block;
   font-size: 24px;
@@ -254,26 +208,6 @@ ion-grid {
   line-height: 36px;
   letter-spacing: 0em;
   margin: 0;
-}
-
-ion-grid {
-  margin-top: 1rem;
-  max-width: 500px;
-}
-
-/* .user {
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 30px;
-  letter-spacing: 0em;
-  text-align: left;
-  margin: 0;
-} */
-
-.brite-img {
-  margin-right: 10px;
-  margin-bottom: -5px;
 }
 
 .resoconto {
@@ -296,13 +230,6 @@ ion-grid {
 .trimestre {
   border-radius: 50px;
   padding: 10px, 30px, 10px, 30px;
-
-  font-size: 10px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 15px;
-  letter-spacing: 0em;
-  color: #7b786f;
 }
 
 .chips {
@@ -314,8 +241,7 @@ ion-grid {
 .banner {
   background-color: #272727;
   background-image: url(/assets/banner.svg);
-  width: 80vw;
-  max-width: 500px;
+  max-width: 600px;
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 30px;
@@ -345,16 +271,6 @@ ion-grid {
   line-height: 36px;
   letter-spacing: 0em;
   margin-bottom: 0;
-  margin-top: 0;
-}
-
-.descrizione {
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 18px;
-  letter-spacing: 0em;
-  color: #ada9a4;
   margin-top: 0;
 }
 

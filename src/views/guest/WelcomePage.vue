@@ -8,11 +8,9 @@
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <div class="mt-10vh ion-text-center">
               <p class="text-large">
-                We are so glad to welcome you <br />
-                to Global Club App!<br />
-                Please login to your account to <br />
-                start tracking all your <br />
-                movement and enjoy it!
+                We are so glad to welcome you to Global Club App!<br />
+                Please login to your account to start tracking all your movement
+                and enjoy it!
               </p>
             </div>
           </ion-col>

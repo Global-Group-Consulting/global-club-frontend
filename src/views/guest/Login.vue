@@ -40,7 +40,7 @@
     </IonContent>
 
     <ion-footer>
-      <ion-grid fixed class="">
+      <ion-grid fixed>
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8" class="py-0">
             <btn
