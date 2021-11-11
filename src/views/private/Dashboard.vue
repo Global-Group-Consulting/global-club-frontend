@@ -65,19 +65,25 @@
           >
             <div class="ion-text-end">
               <img class="ion-margin-end" src="/assets/brite.png" alt="" />
-              <p class="brite-h1 title-big ion-no-margin">76.654</p>
+              <p class="display-ib title-big ion-no-margin">76.654</p>
             </div>
           </ion-col>
         </ion-row>
         <ion-row class="ion-margin-top ion-margin-bottom">
           <ion-col>
-            <ion-chip class="resoconto text-xsmall font-bold">
+            <ion-chip class="resoconto text-xsmall font-bold ion-text-left">
               <ion-label>Resoconto</ion-label>
             </ion-chip>
+          </ion-col>
+
+          <ion-col>
             <ion-chip class="text-xsmall text-gray1">
               <ion-label>1/1/21 - 30/06/21</ion-label>
             </ion-chip>
-            <ion-chip class="text-xsmall text-gray1">
+          </ion-col>
+
+          <ion-col>
+            <ion-chip class="text-xsmall text-gray1 ion-text-end">
               <ion-label>1/7/21 - 31/12/21</ion-label>
             </ion-chip>
           </ion-col>
@@ -91,7 +97,7 @@
         <ion-row>
           <div class="ion-text-start">
             <img class="ion-margin-end" src="/assets/brite-gold.png" />
-            <p class="somma">76.654</p>
+            <p class="title-big ion-no-margin display-ib">76.654</p>
             <p class="text-small text-gray2 ion-no-margin">
               Totale utilizzabile
             </p>
@@ -101,7 +107,7 @@
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <div class="ion-text-start">
               <img class="ion-margin-end" src="/assets/brite-gold.png" />
-              <p class="somma">30.876</p>
+              <p class="title-big ion-no-margin display-ib">30.876</p>
               <p class="text-small text-gray2 ion-no-margin">
                 Sacadono a Gennaio '22
               </p>
@@ -112,7 +118,7 @@
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <div class="ion-text-start">
               <img class="ion-margin-end" src="/assets/brite-gold.png" />
-              <p class="somma">45.778</p>
+              <p class="title-big ion-no-margin display-ib">45.778</p>
               <p class="text-small text-gray2 ion-no-margin">
                 Scadono a Luglio '22
               </p>
@@ -133,31 +139,31 @@
         </ion-row>
       </ion-grid>
 
-      <ion-grid fixed class="ion-no-padding ion-margin-top">
+      <ion-grid fixed class="ion-margin-top">
         <ion-row>
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <p class="stato-ordini">Stato ordini in corso</p>
+            <p class="ion-text-start">Stato ordini in corso</p>
           </ion-col>
         </ion-row>
+      </ion-grid>
+
+      <ion-grid class="banner" fixed>
         <ion-row>
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <img src="/assets/workout-pic.png" alt="" />
-          </ion-col>
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <p class="text-small text-gray3">Ordine del 20/o9/'21</p>
-            <p class="text-gray2 text-xsmall">
-              Stato: <span>In lavorazione</span>
+          <ion-col>
+            <div class="ion-text-start">
+              <img
+                class="ion-margin-end"
+                src="/assets/workout-pic.png"
+                alt=""
+              />
+            </div>
+            <p class="text-small text-gray3 ion-no-margin display-ib">
+              Ordine del 20/o9/'21
+            </p>
+            <p class="text-gray2 text-xsmall ion-no-margin display-ib">
+              Stato: <bold>In lavorazione</bold>
             </p>
             <ion-progress-bar color="primary" value="0.5"></ion-progress-bar>
-          </ion-col>
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <btn
-              size="small"
-              shape="round"
-              slot="icon-only"
-              icon-name="circle-right"
-              @click="$router.push('/order')"
-            ></btn>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -196,7 +202,6 @@ export default defineComponent({
 .searchbar-input {
   --background: white;
   --border-radius: 15px;
-  --color: #ada9a4;
 }
 
 .search-container {
@@ -204,10 +209,6 @@ export default defineComponent({
   align-items: center;
   background-color: white;
   border-radius: 15px;
-}
-
-.brite-h1 {
-  display: inline-block;
 }
 
 .resoconto {
@@ -230,24 +231,7 @@ export default defineComponent({
   margin-left: auto;
 }
 
-.money img {
-  display: inline-block;
-  height: 20px;
-  width: 18px;
-}
-
-.somma {
-  display: inline-block;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 36px;
-  letter-spacing: 0em;
-  margin-bottom: 0;
-  margin-top: 0;
-}
-
-.dettagli {
+.prob {
   text-align: left;
 }
 </style>
