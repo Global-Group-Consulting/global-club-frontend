@@ -77,6 +77,7 @@
       })
 
       const paginationData: ComputedRef<any> = computed(() => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { data, ...rest } = paginatedUsersData.value
 
         return {

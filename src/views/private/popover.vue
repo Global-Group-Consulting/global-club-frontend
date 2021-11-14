@@ -1,5 +1,7 @@
 <template>
-  <ion-content class="ion-padding"> Popover Content </ion-content>
+  <ion-content class="ion-padding"> test </ion-content>
+
+  
 </template>
 
 <script>

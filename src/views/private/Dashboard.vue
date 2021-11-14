@@ -1,16 +1,13 @@
+ 
 <template>
   <IonPage>
     <IonContent class="ion-padding">
       <div class="logo-container"></div>
       <div class="search-container">
-        <ion-searchbar
-          placeholder="Cosa desideri cercare?"
-          animated="true"
-          autocomplete="on"
-          inputmode="search"
-        >
-        </ion-searchbar>
-        <btn
+        <div v-if="options.length">
+            <AutoComplete :options="options" :optionsKey="optionsKey" @save-option="saveResult"/>
+        </div>
+       <btn
           class="filter"
           @click="setOpen(true, $event)"
           fill="clear"
@@ -18,38 +15,34 @@
           shape="round"
           slot="icon-only"
           icon-name="filter"
-        ></btn>
-
-        <ion-popover
+        ></btn>  
+       <ion-popover
           :is-open="isOpenRef"
           css-class="my-custom-class"
           :event="event"
           :translucent="true"
-          @didDismiss="setOpen(false)"
-        >
+          @didDismiss="setOpen(false)">
           <Popover></Popover>
-        </ion-popover>
+        </ion-popover> 
       </div>
-
-      <ion-grid class="ion-no-padding" fixed="true">
+      <ion-grid class="ion-no-padding content1" fixed="true">
         <ion-row>
           <ion-col>
             <div class="bentornato">
               <p>Bentornato,</p>
             </div>
           </ion-col>
-
           <ion-col>
             <div></div>
           </ion-col>
         </ion-row>
+        
         <ion-row class="ion-align-items-center">
           <ion-col>
             <div>
               <p class="user">Mario Rossi</p>
             </div>
           </ion-col>
-
           <ion-col>
             <div class="brite">
               <img class="brite-img" src="/assets/brite.png" alt="" />
@@ -57,6 +50,7 @@
             </div>
           </ion-col>
         </ion-row>
+      </ion-grid>
         <ion-row class="chips">
           <ion-col>
             <ion-chip class="resoconto">
@@ -73,8 +67,6 @@
         <ion-row>
           <ion-col> </ion-col>
         </ion-row>
-      </ion-grid>
-
       <ion-grid class="banner">
         <ion-row>
           <div class="money">
@@ -93,105 +85,73 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>
+          <ion-col size="8">
             <div class="money">
               <img src="/assets/brite-gold.png" />
               <p class="somma">45.778</p>
               <p class="descrizione">Scadono a Luglio '22</p>
             </div>
           </ion-col>
-          <ion-col class="dettagli">
+          <ion-col size="4" class="dettagli">
             <div>
               <btn
-                class="ion-text-capitalize m-0"
-                size="large"
+                class="ion-text-capitalize m-0 button1"
+                size="small"
                 expand="block"
                 @click="$router.push('#')"
               >
-                Detagli
+                Dettagli
               </btn>
             </div>
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-grid>
-        <ion-row>
+      <ion-grid class="ion-no-padding content1">
+       <ion-row>
           <ion-col>
             <p class="stato-ordini">Stato ordini in corso</p>
           </ion-col>
         </ion-row>
+      </ion-grid>
+     <ion-grid class="statobanner">
         <ion-row>
-          <ion-col>
-            <img src="/assets/workout-pic.png" alt="" />
-          </ion-col>
-          <ion-col>
-            <p class="order">Ordine del 20/o9/'21</p>
-            <p class="order-status">Stato:<span>In lavorazione</span></p>
-            <ion-progress-bar color="primary" value="0.5"></ion-progress-bar>
-          </ion-col>
-          <ion-col>
-            <btn
+      <ion-col size="2">
+        <ion-img src="/assets/workout-pic.png"></ion-img>
+      </ion-col>
+      <ion-col size="8">
+        <span class="order"> Ordine del 20/09/21</span><br>
+         <span class="order-status">Stato: In lavorazione</span>
+           <ion-progress-bar class="progress1" color="primary" value="0.8"></ion-progress-bar>
+      </ion-col>
+      <ion-col size="2">
+        <ion-icon src="./assets/icons/plus.svg"></ion-icon>
+        <btn
               size="small"
               shape="round"
               slot="icon-only"
               icon-name="circle-right"
               @click="$router.push('/order')"
             ></btn>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-
-      <!-- <ion-grid class="banner">
-        <ion-row>
-          <div class="money">
-            <img src="/assets/brite-gold.png" />
-            <p class="somma">27.830</p>
-            <p class="descrizione">Totale disponibile</p>
-          </div>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <div class="money">
-              <img src="/assets/brite-gold.png" />
-              <p class="somma">5.000</p>
-              <p class="descrizione">Brite utilizzati</p>
-            </div>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <div class="money">
-              <img src="/assets/brite-gold.png" />
-              <p class="somma">32.830</p>
-              <p class="descrizione">Brite accumulati</p>
-            </div>
-          </ion-col>
-          <ion-col class="dettagli">
-            <div>
-              <btn
-                class="ion-text-capitalize m-0"
-                size="large"
-                expand="block"
-                @click="$router.push('/')"
-              >
-                Detagli
-              </btn>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid> -->
+      </ion-col>
+      
+    </ion-row>
+  </ion-grid>
     </IonContent>
   </IonPage>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { ProductCategoryApis } from '@/plugins/httpCalls/ProductCategoryApis';
 import Popover from "./popover.vue";
-/* import TopToolbar from "@/components/toolbars/TopToolbar.vue"; */
+import { defineComponent,inject,ref } from 'vue';
+import AutoComplete from "../../components/AutoComplete.vue"
+import { ProductCategory } from '@/@types/ProductCategory';
+import { AlertsPlugin } from '@/plugins/Alerts';
+const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
 
 export default defineComponent({
   name: "Dashboard",
-  components: { Popover },
+  components: { Popover,AutoComplete},
   setup() {
     const isOpenRef = ref(false);
     const event = ref();
@@ -201,13 +161,35 @@ export default defineComponent({
     };
     return { isOpenRef, setOpen, event };
   },
-});
-
-/* export default defineComponent({
-  name: "Dashboard",
-  /*  components: { TopToolbar }, */
-/* }); */
-</script>
+  data() {
+    return {
+      selected: {},
+      options: [] as ProductCategory[] | undefined,
+      optionsKey: "description"
+    };
+  },
+  methods: {
+    getData: async function() {
+      try {
+         await ProductCategoryApis?.readAll().then(resp=>{
+            this.options = resp
+           });
+      } catch (error) {
+        await alerts.error(error);
+      }
+         
+    },
+    saveResult: function(_value) {
+      this.selected = _value;
+      console.log(this.selected);
+    },
+    
+  },
+  async created() {
+    await this.getData();
+  }
+}); 
+ </script>
 
 <style>
 .searchbar-input {
@@ -218,12 +200,14 @@ export default defineComponent({
 
 .searchbar-input.sc-ion-searchbar-md {
   color: #ada9a4;
-}
+  font-size: 14px;
+  text-align: left;
+} 
 
 .search-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: left;
   margin-top: 30px;
   margin-left: auto;
   margin-right: auto;
@@ -255,9 +239,10 @@ export default defineComponent({
 }
 
 ion-grid {
-  margin-top: 1rem;
+  margin-top: 0rem;
   max-width: 500px;
 }
+
 
 .user {
   font-size: 20px;
@@ -319,13 +304,12 @@ ion-grid {
   border-radius: 30px;
   margin-right: auto;
   margin-left: auto;
-  padding: 30px;
+  padding-bottom: 6px;
+  
 }
 
 .money {
   text-align: left;
-
-  margin-bottom: 24px;
 }
 
 .money img {
@@ -359,4 +343,43 @@ ion-grid {
 .dettagli {
   text-align: left;
 }
+
+.statobanner {
+background-color: rgb(30, 30, 30);
+border-radius: 30px;
+text-align: left;
+width: 80vw;
+max-width: 500px;
+font-size: 13px;
+}
+
+.stato-ordini {
+  font-size:18px;
+  text-align:left;
+}
+
+.button1{
+position: absolute;
+    bottom: 20px;
+}
+
+.progress1{
+height: 8px;
+border-radius: 10px;
+margin-top: 6px;
+}
+
+.content1{
+width: 80vw;
+}
+
+
+.sc-ion-searchbar-md-h {
+border-radius: 20px;
+
+}
+
+
+
+
 </style>

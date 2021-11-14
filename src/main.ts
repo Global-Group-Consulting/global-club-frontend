@@ -1,7 +1,6 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-
 import * as IonComponents from '@ionic/vue';
 import { IonicVue } from '@ionic/vue';
 import TopToolbar from '@/components/toolbars/TopToolbar.vue';
@@ -35,10 +34,12 @@ import './theme/styles.scss';
 import { authPlugin } from '@/plugins/AuthPlugin';
 import { httpPlugin } from '@/plugins/HttpPlugin';
 import { i18n } from '@/plugins/I18n';
-
 import { store, key } from './store';
 import { alertsPlugin } from '@/plugins/Alerts';
+ 
 
+ 
+ 
 const app = createApp(App)
   .use(IonicVue, {
     mode: 'md', // "md" | "ios",

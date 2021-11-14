@@ -1,58 +1,90 @@
 <template>
   <IonPage>
-    <ionContent>
-      <ion-card>
-        <ion-card-header>
-          <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-          <ion-card-title>Your Cart</ion-card-title>
-        </ion-card-header>
+    <IonContent class="ion-padding">
 
-        <ion-card-content>
-          Keep close to Nature's heart... and break clear away, once in awhile,
-          and climb a mountain or spend a week in the woods. Wash your spirit
-          clean.
-        </ion-card-content>
-      </ion-card>
 
-      <ion-card>
-        <ion-item>
-          <ion-icon :icon="pin" slot="start"></ion-icon>
-          <ion-label>ion-item in a card, icon left, button right</ion-label>
-          <ion-button fill="outline" slot="end">View</ion-button>
-        </ion-item>
+        <ion-grid>
+        
+        <ion-row>
+          <ion-col>
+            
+              <h6>Totale provvisorio</h6>
+              
+          </ion-col>
 
-        <ion-card-content>
-          This is content, without any paragraph or header tags, within an
-          ion-card-content element.
-        </ion-card-content>
-      </ion-card>
 
-      <ion-card>
-        <ion-item href="#" class="ion-activated">
-          <ion-icon :icon="wifi" slot="start"></ion-icon>
-          <ion-label>Card Link Item 1 activated</ion-label>
-        </ion-item>
+          <ion-col>
+            <div class="brite">
+              <img class="brite-img" src="/assets/brite.png" alt="" />
+              5000
+            </div>
+          </ion-col>
+        </ion-row>
+        </ion-grid>
 
-        <ion-item href="#">
-          <ion-icon :icon="wine" slot="start"></ion-icon>
-          <ion-label>Card Link Item 2</ion-label>
-        </ion-item>
+      <ion-grid class="prodotticarrello">
+     
 
-        <ion-item class="ion-activated">
-          <ion-icon :icon="warning" slot="start"></ion-icon>
-          <ion-label>Card Button Item 1 activated</ion-label>
-        </ion-item>
+        <ion-row>
+      <ion-col size="3">
+        <ion-img src="/assets/icons/prodotto.jpg"></ion-img>
+      </ion-col>
+      <ion-col size="6">
+        <div> Viaggio all inclusive ...</div>
+        <div class="brite1">
+              <img class="brite-img" src="/assets/brite.png" alt="" />
+              2500
+            </div>
+         <ion-button size="small">-</ion-button> 0 <ion-button size="small">+</ion-button>
+      </ion-col>
+      <ion-col size="3" class="gh">
+       
+        <ion-icon src="./assets/icons/chevron-right.svg"></ion-icon>
+        
+      </ion-col>
+      
+    </ion-row>
+     <hr />
 
-        <ion-item>
-          <ion-icon :icon="walk" slot="start"></ion-icon>
-          <ion-label>Card Button Item 2</ion-label>
-        </ion-item>
-      </ion-card>
+ 
+        <ion-row>
+      <ion-col size="3">
+        <ion-img src="/assets/icons/prodotto.jpg"></ion-img>
+      </ion-col>
+      <ion-col size="6">
+        <div> Viaggio all inclusive ...</div>
+        <div class="brite1">
+              <img class="brite-img" src="/assets/brite.png" alt="" />
+              2500
+            </div>
+            <ion-button size="small">-</ion-button> 0 <ion-button size="small">+</ion-button>
+      </ion-col>
+      <ion-col size="3">
+       
+        <ion-icon src="./assets/icons/chevron-right.svg"></ion-icon>
+        
+      </ion-col>
+      
+    </ion-row>
+    <hr />
+
+     <ion-row>
+         <ion-col class="ion-text-center">
+          <ion-button size="large"><div class="btncart">Procedi all'ordine</div></ion-button>
+         </ion-col>
+       </ion-row>
+
+  </ion-grid>
+
+
+
     </ionContent>
   </IonPage>
 </template>
 
 <script>
+
+
 import {
   IonContent,
   IonPage,
@@ -90,4 +122,39 @@ export default defineComponent({
 </script>
 
 <style>
+
+.brite {
+  text-align:center;
+  margin-top: 10px;
+}
+
+.brite1 {
+  text-align:left;
+  margin-top: 10px;
+}
+
+
+.prodotticarrello {
+background-color: rgb(30, 30, 30);
+text-align: left;
+font-size: 13px;
+}
+
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(243, 243, 243, 0.342);
+}
+
+.btncart{
+text-transform: none;
+color:#fff; 
+font-size: 15px;
+padding: 50px;
+}
+
+ 
+
 </style>
