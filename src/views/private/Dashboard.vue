@@ -15,7 +15,6 @@
               >
               </ion-searchbar>
               <btn
-                class="filter"
                 @click="setOpen(true, $event)"
                 fill="clear"
                 size="small"
@@ -139,9 +138,14 @@
         </ion-row>
       </ion-grid>
 
-      <ion-grid fixed class="ion-margin-top">
+      <ion-grid fixed class="ion-no-padding">
         <ion-row>
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
+          <ion-col
+            sizeLg="6"
+            sizeMd="7"
+            sizeSm="8"
+            class="ion-padding-horizontal"
+          >
             <p class="ion-text-start">Stato ordini in corso</p>
           </ion-col>
         </ion-row>
@@ -149,36 +153,97 @@
 
       <ion-grid class="banner" fixed>
         <ion-row>
-          <ion-col>
-            <div class="ion-text-start">
-              <img
-                class="ion-margin-end"
-                src="/assets/workout-pic.png"
-                alt=""
-              />
+          <ion-col class="flex ion-no-padding">
+            <div>
+              <img src="/assets/workout-pic.png" alt="" />
             </div>
-            <p class="text-small text-gray3 ion-no-margin display-ib">
-              Ordine del 20/o9/'21
-            </p>
-            <p class="text-gray2 text-xsmall ion-no-margin display-ib">
-              Stato: <bold>In lavorazione</bold>
-            </p>
-            <ion-progress-bar color="primary" value="0.5"></ion-progress-bar>
+            <div class="banner-div">
+              <p class="text-small text-gray3 ion-no-margin">
+                Ordine del 20/o9/'21
+              </p>
+              <p class="text-gray2 text-xsmall ion-no-margin">
+                Stato: <bold>In lavorazione</bold>
+              </p>
+              <ion-progress-bar color="primary" value="0.5"></ion-progress-bar>
+            </div>
+            <div class="ion-align-self-center ion-justify-content-center">
+              <btn
+                @click="$router.push({ name: '.order' })"
+                fill="clear"
+                size="small"
+                shape="round"
+                slot="icon-only"
+                icon-name="circle-right"
+              ></btn>
+            </div>
           </ion-col>
         </ion-row>
       </ion-grid>
+      <ion-toolbar>
+        <btn
+          @click="$router.push({ name: '.order' })"
+          fill="clear"
+          size="small"
+          shape="round"
+          slot="icon-only"
+          icon-name="circle-right"
+        ></btn>
+        <btn
+          @click="$router.push({ name: '.order' })"
+          fill="clear"
+          size="small"
+          shape="round"
+          slot="icon-only"
+          icon-name="circle-right"
+        ></btn>
+      </ion-toolbar>
     </IonContent>
+    <ion-footer>
+      <ion-toolbar>
+        <btn
+          @click="$router.push({ name: '.order' })"
+          fill="clear"
+          size="small"
+          shape="round"
+          slot="icon-only"
+          icon-name="circle-right"
+        ></btn>
+        <btn
+          @click="$router.push({ name: '.order' })"
+          fill="clear"
+          size="small"
+          shape="round"
+          slot="icon-only"
+          icon-name="circle-right"
+        ></btn>
+      </ion-toolbar>
+    </ion-footer>
   </IonPage>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import Popover from "./popover.vue";
+import {
+  IonButton,
+  IonButtons,
+  IonIcon,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/vue";
+import {
+  ellipsisHorizontal,
+  ellipsisVertical,
+  helpCircle,
+  personCircle,
+  search,
+  star,
+} from "ionicons/icons";
 /* import TopToolbar from "@/components/toolbars/TopToolbar.vue"; */
 
 export default defineComponent({
   name: "Dashboard",
-  components: { Popover },
+  components: { Popover, IonButton, IonButtons, IonIcon, IonTitle, IonToolbar },
   setup() {
     const isOpenRef = ref(false);
     const event = ref();
@@ -186,7 +251,17 @@ export default defineComponent({
       event.value = ev;
       isOpenRef.value = state;
     };
-    return { isOpenRef, setOpen, event };
+    return {
+      isOpenRef,
+      setOpen,
+      event,
+      ellipsisHorizontal,
+      ellipsisVertical,
+      helpCircle,
+      personCircle,
+      search,
+      star,
+    };
   },
 });
 
@@ -231,7 +306,24 @@ export default defineComponent({
   margin-left: auto;
 }
 
-.prob {
+.banner-div {
   text-align: left;
+  width: 70%;
+
+  padding-left: 10px;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+ion-progress-bar {
+  border-radius: 50px;
+}
+
+bottomtoolbar {
+  height: 90px;
+  width: 100%;
 }
 </style>
