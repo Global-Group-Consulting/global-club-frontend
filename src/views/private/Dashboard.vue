@@ -179,43 +179,55 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-toolbar>
-        <btn
-          @click="$router.push({ name: '.order' })"
-          fill="clear"
-          size="small"
-          shape="round"
-          slot="icon-only"
-          icon-name="circle-right"
-        ></btn>
-        <btn
-          @click="$router.push({ name: '.order' })"
-          fill="clear"
-          size="small"
-          shape="round"
-          slot="icon-only"
-          icon-name="circle-right"
-        ></btn>
-      </ion-toolbar>
     </IonContent>
     <ion-footer>
       <ion-toolbar>
-        <btn
-          @click="$router.push({ name: '.order' })"
-          fill="clear"
-          size="small"
-          shape="round"
-          slot="icon-only"
-          icon-name="circle-right"
-        ></btn>
-        <btn
-          @click="$router.push({ name: '.order' })"
-          fill="clear"
-          size="small"
-          shape="round"
-          slot="icon-only"
-          icon-name="circle-right"
-        ></btn>
+        <ion-buttons slot="start">
+          <btn
+            fill="clear"
+            size="small"
+            shape="round"
+            slot="icon-only"
+            icon-name="home-btn"
+          ></btn>
+        </ion-buttons>
+        <ion-buttons slot="start">
+          <btn
+            fill="clear"
+            size="small"
+            shape="round"
+            slot="icon-only"
+            icon-name="wishlist-btn"
+          ></btn>
+        </ion-buttons>
+        <ion-buttons>
+          <btn
+            class="g-btn"
+            fill="clear"
+            size="default"
+            shape="round"
+            slot="icon-only"
+            icon-name="g-btn"
+          ></btn>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <btn
+            fill="clear"
+            size="small"
+            shape="round"
+            slot="icon-only"
+            icon-name="cart-btn"
+          ></btn>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <btn
+            fill="clear"
+            size="small"
+            shape="round"
+            slot="icon-only"
+            icon-name="user-btn"
+          ></btn>
+        </ion-buttons>
       </ion-toolbar>
     </ion-footer>
   </IonPage>
@@ -284,6 +296,7 @@ export default defineComponent({
   align-items: center;
   background-color: white;
   border-radius: 15px;
+  overflow: hidden;
 }
 
 .resoconto {
@@ -326,4 +339,14 @@ bottomtoolbar {
   height: 90px;
   width: 100%;
 }
+
+ion-footer {
+  display: flex;
+  justify-content: space-around;
+}
+
+.g-btn ion-icon {
+  width: 60px;
+}
 </style>
+
