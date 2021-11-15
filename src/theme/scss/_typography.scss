@@ -1,5 +1,61 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600;700;800;900&display=swap");
 
-ion-content {
-  font-family: "Poppins", sans-serif;
+html {
+  --ion-font-family: "Poppins", sans-serif;
+}
+
+.title-big {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 36px;
+  letter-spacing: 0em;
+}
+
+.title {
+  //styleName: Title/H4 (Bold);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 30px;
+  letter-spacing: 0em;
+  /* text-align: left; */
+  color: #f7f7f7;
+}
+
+.text-normal {
+  //styleName: Text/Large Text (Regular);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0em;
+}
+
+.text-small {
+  //styleName: Text / Small Text (Regular);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0em;
+}
+
+.text-xsmall {
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 15px;
+  letter-spacing: 0em;
+}
+
+.text-gray1 {
+  color: #7b786f;
+}
+
+.text-gray2 {
+  color: #a4a9ad;
+}
+
+.text-gray3 {
+  color: #dddcda;
 }

@@ -11,25 +11,24 @@
               <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
                 <div class="mt-10vh">
                   <p class="login-first-text">
-                    Ti invitiamo ad inserire la tua email.<br/>
-                    Riceverai in seguito un messaggio<br/>
-                    con le istruzioni su come reimpostare<br/>
-                    la tua passoword
+                    Ti invitiamo ad inserire la tua email.<br />
+                    Riceverai in seguito un messaggio con le istruzioni su come
+                    reimpostare la tua passoword
                   </p>
                 </div>
                 <FormInput
-                    label="Email"
-                    type="mail"
-                    clear-input
-                    :add-space-after="false"
+                  label="Email"
+                  type="mail"
+                  clear-input
+                  :add-space-after="false"
                 />
                 <!-- <IonContent class="ion-padding" v-if="!emailSent"> -->
                 <IonButton
-                    fill="clear"
-                    size="small"
-                    class="btn-link"
-                    @click="$router.push('/login')"
-                >Torna alla pagina di login?
+                  fill="clear"
+                  size="small"
+                  class="btn-link"
+                  @click="$router.push('/login')"
+                  >Torna alla pagina di login?
                 </IonButton>
               </ion-col>
             </ion-row>
@@ -46,10 +45,10 @@
               <div class="mt-5vh">
                 <Icon name="check-large" style="font-size: 120px"></Icon>
 
-                <h4 class="font-bold">
-                  Abbiamo preso in carico la tua richiesta. A breve riceveri una
-                  email con le istruzioni necessarie.
-                </h4>
+                <p class="title ion-text-center">
+                  Abbiamo preso in carico la tua richiesta. <br />
+                  A breve riceveri una email con le istruzioni necessarie.
+                </p>
               </div>
             </ion-col>
           </ion-row>
@@ -63,12 +62,12 @@
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <!-- Visibile se l'email non è ancora stata inviata -->
             <btn
-                v-if="!emailSent"
-                class="ion-text-capitalize"
-                size="large"
-                icon-name="lock-btn"
-                expand="block"
-                @click="onSendEmailClick"
+              v-if="!emailSent"
+              class="ion-text-capitalize"
+              size="large"
+              icon-name="lock-btn"
+              expand="block"
+              @click="onSendEmailClick"
             >
               Recupera password
             </btn>
@@ -94,16 +93,16 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { onIonViewDidLeave } from "@ionic/vue";
-import FormInput from '@/components/forms/FormInput.vue';
-import Icon from '@/components/Icon.vue';
+import FormInput from "@/components/forms/FormInput.vue";
+import Icon from "@/components/Icon.vue";
 
 export default defineComponent({
   name: "ForgetPassword",
   components: { Icon, FormInput },
-  setup () {
+  setup() {
     const emailSent = ref(false);
 
-    function onSendEmailClick () {
+    function onSendEmailClick() {
       emailSent.value = true;
     }
 

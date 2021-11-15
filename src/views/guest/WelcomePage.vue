@@ -1,18 +1,16 @@
 
 <template>
   <IonPage>
-    <IonContent class="content-with-fixed-btn">
-      <div class="logo-container logo-margin"></div>
+    <IonContent class="content-with-fixed-btn ion-padding">
+      <div class="logo-container"></div>
       <ion-grid fixed>
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <div class="mt-10vh">
-              <p>
-                We are so glad to welcome you <br />
-                to Global Club App!<br />
-                Please login to your account to <br />
-                start tracking all your <br />
-                movement and enjoy it!
+            <div class="mt-10vh ion-text-center">
+              <p class="text-large">
+                We are so glad to welcome you to Global Club App!<br />
+                Please login to your account to start tracking all your movement
+                and enjoy it!
               </p>
             </div>
           </ion-col>

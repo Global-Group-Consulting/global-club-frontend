@@ -32,14 +32,23 @@ export class BasicApisClass {
       } finally {
          await this.loading.hide()
       }
-      
+   
       if (result) {
          return result
       } else if (error) {
          await this.alerts.error(error);
-   
+      
          throw error
       }
    }
    
+   static prepareFilterParams (filters: Record<string, string>) {
+      const toReturn = {}
+      
+      Object.entries(filters).forEach(entry => {
+         toReturn[`filter[${entry[0]}]`] = entry[1]
+      })
+      
+      return toReturn
+   }
 }

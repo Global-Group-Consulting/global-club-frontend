@@ -11,9 +11,9 @@ export class UserApis extends BasicApisClass {
   static async readAll (group: UserRoleEnum, page: number): Promise<PaginatedResult<User[]> | undefined> {
     const result = await this.withLoader<PaginatedResult<User[]>>("get", this.getUrl(), {
       params: {
-        filter: [
-          "role:+" + group,
-        ],
+        ...this.prepareFilterParams({
+          role: "+" + group
+        }),
         page
       }
     });

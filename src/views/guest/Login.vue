@@ -8,8 +8,8 @@
           <ion-row class="ion-justify-content-center">
             <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
               <div class="mt-5vh mb-4">
-                <p class="login-first-text">Gentile utente,</p>
-                <p class="login-second-text">Benvenuto</p>
+                <p class="text-large">Gentile utente,</p>
+                <p class="title">Benvenuto</p>
               </div>
 
               <FormInput
@@ -40,7 +40,7 @@
     </IonContent>
 
     <ion-footer>
-      <ion-grid fixed class="grid-login">
+      <ion-grid fixed>
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8" class="py-0">
             <btn
