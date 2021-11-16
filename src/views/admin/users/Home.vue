@@ -86,7 +86,7 @@
       })
 
       async function fetchUsers (page = 1) {
-        paginatedUsersData.value = await http.api.user.readAll(activeTab.value, page) ?? {} as any
+        paginatedUsersData.value = await http.api.users.readAll(activeTab.value, page) ?? {} as any
       }
 
       async function onPageChanged (newPage: number) {
@@ -96,8 +96,12 @@
       watch(activeTab, async () => fetchUsers())
 
       onIonViewWillEnter(async () => {
-        groupsList.value = await http.api.user.readGroups() ?? []
-        await fetchUsers()
+        const result = await Promise.all([
+          http.api.users.readGroups(),
+          fetchUsers()
+        ])
+        groupsList.value = result[0] ?? []
+        // await fetchUsers()
       });
 
       return {
