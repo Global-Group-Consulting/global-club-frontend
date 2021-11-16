@@ -32,6 +32,22 @@ export interface User {
   'permissions': string[];
 }
 
+export class UserBasic {
+  id: string;
+  clubPack: PackEnum;
+  gold: boolean;
+  email: string;
+  firstName: string;
+  lastName: string;
+  referenceAgent: string;
+  
+  role: UserRoleEnum;
+  roles: string[];
+  
+  superAdmin: boolean
+}
+
+
 export interface ReadUserGroupsDto {
   _id: UserRoleEnum;
   count: number;

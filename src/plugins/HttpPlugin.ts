@@ -7,6 +7,7 @@ import { ProductCategoryApis } from '@/plugins/httpCalls/ProductCategoryApis';
 import { loadingController } from '@ionic/vue';
 import { AlertsPlugin } from '@/plugins/Alerts';
 import { UserApis } from '@/plugins/httpCalls/UserApis';
+import { OrderApis } from '@/plugins/httpCalls/OrderApis';
 
 type RequestsQueue = {
   resolve: (value?: unknown) => void;
@@ -18,7 +19,8 @@ type Token = string
 interface ApiModules {
   products: typeof ProductApis;
   productCategories: typeof ProductCategoryApis;
-  user: typeof UserApis;
+  users: typeof UserApis;
+  orders: typeof OrderApis;
 }
 
 class HttpQueue {
@@ -116,7 +118,8 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
     this.api = {
       products: ProductApis,
       productCategories: ProductCategoryApis,
-      user: UserApis
+      users: UserApis,
+      orders: OrderApis
     };
     this.queue = new HttpQueue();
     this.loading = new LoadingHandler(this.plugins["$t"]);
