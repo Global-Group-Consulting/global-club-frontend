@@ -35,7 +35,11 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
         const tokens = await this.readTokens();
         
         if (tokens) {
-          await this.fetchUser();
+          try {
+            await this.fetchUser();
+          } catch (er) {
+            await this.logout(true)
+          }
         }
         
         AuthPlugin.pendingInitiation();

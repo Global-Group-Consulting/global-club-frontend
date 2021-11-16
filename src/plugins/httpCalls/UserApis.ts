@@ -12,7 +12,7 @@ export class UserApis extends BasicApisClass {
     const result = await this.withLoader<PaginatedResult<User[]>>("get", this.getUrl(), {
       params: {
         ...this.prepareFilterParams({
-          role: "+" + group
+          role: group.toString()
         }),
         page
       }
