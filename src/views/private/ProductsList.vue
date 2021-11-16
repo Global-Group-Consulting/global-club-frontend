@@ -28,9 +28,9 @@
       const productsList: Ref<Product[]> = ref([]);
 
       onMounted(async () => {
-        const result = await http?.api.products.readAll() as Product[];
+        const result = await http?.api.products.readAll();
 
-        productsList.value = result;
+        productsList.value = result?.data ?? [];
       });
 
       return {

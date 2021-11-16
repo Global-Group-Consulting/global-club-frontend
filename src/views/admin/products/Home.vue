@@ -53,8 +53,9 @@
       const productsList: Ref<Product[]> = ref([]);
 
       onIonViewWillEnter(async () => {
-        productsList.value = await http.api.products.readAll() ?? [];
+        const paginatedData = await http.api.products.readAll();
 
+        productsList.value = paginatedData?.data ?? [];
       });
 
       return { productsList, formatImgUrl }

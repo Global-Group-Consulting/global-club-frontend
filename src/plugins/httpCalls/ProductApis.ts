@@ -1,15 +1,14 @@
 import { BasicApisClass } from '@/plugins/httpCalls/basicApisClass';
 import { Product } from '@/@types/Product';
-import { AxiosResponse } from 'axios';
 import { CreateProductDto } from '@/views/admin/products/dto/create.product.dto';
 import { UpdateProductDto } from '@/views/admin/products/dto/update.product.dto';
-import { ProductCategory } from '@/@types/ProductCategory';
+import { PaginatedResult } from '@/@types/Pagination';
 
 export class ProductApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'club/products';
   
-  static async readAll (): Promise<Product[] | undefined> {
-    const result = await this.withLoader<Product[]>("get", this.getUrl());
+  static async readAll (): Promise<PaginatedResult<Product[]> | undefined> {
+    const result = await this.withLoader<PaginatedResult<Product[]>>("get", this.getUrl());
     
     return result?.data;
   }
