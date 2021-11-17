@@ -126,6 +126,8 @@
           </ion-col>
         </ion-row>
       </ion-grid>
+
+      
       <ion-grid class="statobanner">
         <ion-row>
           <ion-col size="2">
@@ -172,6 +174,7 @@
     </ion-footer>
   </IonPage>
 </template>
+
 
 <script lang="ts">
   import { ProductCategoryApis } from '@/plugins/httpCalls/ProductCategoryApis';
