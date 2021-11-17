@@ -27,6 +27,20 @@
         </ion-popover>
       </div>
 
+      <br>
+      <ion-row>
+          <ion-col>
+        <ion-button size="small"> Categoria 
+           <ion-icon src="./assets/icons/plus.svg"></ion-icon>
+              </ion-button>
+        </ion-col>
+        <ion-col>
+        <ion-button size="small"> Prezzo da ...
+           <ion-icon src="./assets/icons/plus.svg"></ion-icon>
+              </ion-button>
+        </ion-col>
+          </ion-row>
+   
     <ion-grid>
         <ion-row>
           <ion-col>
@@ -47,8 +61,51 @@
           </div>
           Titolo
           </ion-col>
-
         </ion-row>
+
+        <ion-row>
+          <ion-col>
+          <div class="container">
+          <img class="img-prodotto" src="/assets/icons/prodotto.jpg">
+         <ion-router-link href="http://localhost:8100/product"><ion-icon class="top-left" src="./assets/icons/circle-right.svg"></ion-icon></ion-router-link>
+           <ion-icon class="bottom-right" src="./assets/icons/plus.svg"></ion-icon>
+           
+          </div>
+          <ion-router-link style="color:#fff;" href="http://localhost:8100/product">Titolo</ion-router-link>
+          </ion-col>
+
+           <ion-col>
+          <div class="container">
+          <img class="img-prodotto" src="/assets/icons/prodotto.jpg">
+           <ion-icon class="top-left" src="./assets/icons/plus.svg"></ion-icon>
+          <ion-icon class="bottom-right" src="./assets/icons/plus.svg"></ion-icon>
+          </div>
+          Titolo
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+          <div class="container">
+          <img class="img-prodotto" src="/assets/icons/prodotto.jpg">
+         <ion-router-link href="http://localhost:8100/product"><ion-icon class="top-left" src="./assets/icons/circle-right.svg"></ion-icon></ion-router-link>
+           <ion-icon class="bottom-right" src="./assets/icons/plus.svg"></ion-icon>
+           
+          </div>
+          <ion-router-link style="color:#fff;" href="http://localhost:8100/product">Titolo</ion-router-link>
+          </ion-col>
+
+           <ion-col>
+          <div class="container">
+          <img class="img-prodotto" src="/assets/icons/prodotto.jpg">
+         <ion-icon class="top-left" src="./assets/icons/plus.svg"></ion-icon>
+          <ion-icon class="bottom-right" src="./assets/icons/plus.svg"></ion-icon>
+          </div>
+          Titolo
+          </ion-col>
+        </ion-row>
+
+
       </ion-grid>
 
      </IonContent>
@@ -164,4 +221,10 @@ import { ProductCategoryApis } from '@/plugins/httpCalls/ProductCategoryApis';
   font-size: 18px;
 }
 
+
+.sc-ion-searchbar-md-h {
+border-radius: 20px;
+--box-shadow: none !important;
+
+}
 </style>>
