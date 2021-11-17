@@ -10,6 +10,7 @@ export default {
   mainMenu: {
     home: 'Home',
     users: 'Utenti',
+    orders: 'Ordini',
     products: 'Prodotti',
     productCategories: 'Categorie Prodotti',
     logout: 'Logout',

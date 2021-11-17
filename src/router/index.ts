@@ -1,9 +1,7 @@
 import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
 import { AuthPlugin } from "@/plugins/AuthPlugin";
-// import { store } from '@/store';
-import products from "@/router/admin/products";
-import productCategories from "@/router/admin/productCategories";
+import AdminRoutes from "./admin";
 
 const publicRoutes: RouteRecordRaw[] = [
   {
@@ -141,34 +139,7 @@ const privateRoutes: RouteRecordRaw[] = [
   },
 ];
 
-const adminRoutes: RouteRecordRaw[] = [
-  {
-    path: "/admin",
-    component: () => import("../views/admin/DashboardPage.vue"),
-    name: "admin.home",
-    meta: {
-      isAdmin: true,
-    },
-  },
-  ...products,
-  ...productCategories,
-  {
-    path: "/admin/orders",
-    component: () => import("../views/admin/orders/OrdersPage.vue"),
-    name: "admin.orders",
-    meta: {
-      isAdmin: true,
-    },
-  },
-  {
-    path: "/admin/users",
-    component: () => import("../views/admin/users/Home.vue"),
-    name: "admin.users",
-    meta: {
-      isAdmin: true,
-    },
-  },
-];
+const adminRoutes: RouteRecordRaw[] = AdminRoutes;
 
 const routes: Array<RouteRecordRaw> = [
   ...publicRoutes,
