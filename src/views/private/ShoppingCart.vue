@@ -4,12 +4,12 @@
 
 
         <ion-grid>
-
+        
         <ion-row>
           <ion-col>
-
+            
               <h6>Totale provvisorio</h6>
-
+              
           </ion-col>
 
 
@@ -23,7 +23,7 @@
         </ion-grid>
 
       <ion-grid class="prodotticarrello">
-
+     
 
         <ion-row>
       <ion-col size="3">
@@ -38,15 +38,15 @@
          <ion-button size="small">-</ion-button> 0 <ion-button size="small">+</ion-button>
       </ion-col>
       <ion-col size="3" class="gh">
-
+       
         <ion-icon src="./assets/icons/chevron-right.svg"></ion-icon>
-
+        
       </ion-col>
-
+      
     </ion-row>
      <hr />
 
-
+ 
         <ion-row>
       <ion-col size="3">
         <ion-img src="/assets/icons/prodotto.jpg"></ion-img>
@@ -60,11 +60,11 @@
             <ion-button size="small">-</ion-button> 0 <ion-button size="small">+</ion-button>
       </ion-col>
       <ion-col size="3">
-
+       
         <ion-icon src="./assets/icons/chevron-right.svg"></ion-icon>
-
+        
       </ion-col>
-
+      
     </ion-row>
     <hr />
 
@@ -97,14 +97,21 @@ import {
   IonItem,
   IonLabel,
 } from "@ionic/vue";
-import { pin, walk, warning, wifi, wine } from "ionicons/icons";
-import { defineComponent, inject } from "vue";
+import { warning } from "ionicons/icons";
+import { defineComponent} from "vue";
 
 export default defineComponent({
   components: {
     IonPage,
     IonContent,
+    // IonCard,
+    // IonCardContent,
+    // IonCardHeader,
+    // IonCardSubtitle,
+    // IonCardTitle,
     IonIcon,
+    // IonItem,
+    // IonLabel,
   },
   name: "ShoppingCart",
 
@@ -143,11 +150,11 @@ hr {
 
 .btncart{
 text-transform: none;
-color:#fff;
+color:#fff; 
 font-size: 15px;
 padding: 50px;
 }
 
-
+ 
 
 </style>

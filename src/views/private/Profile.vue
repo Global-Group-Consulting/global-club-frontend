@@ -163,17 +163,15 @@
 
 <script lang="ts">
 //import { HttpPlugin } from '@/plugins/HttpPlugin';
-import { defineComponent,ref} from "vue";
-// import VSwitch from '@lmiller1990/v-switch';
+import { defineComponent} from "vue";
+
 
 export default defineComponent({
   name: "Product",
-   components: {
-    // VSwitch
-  },
+  
   setup() {
     return {
-      categoria: ref('descrizione')
+      
     }
   }
 })
