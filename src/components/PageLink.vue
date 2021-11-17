@@ -15,7 +15,6 @@
 <script lang="ts">
   import { RouteLocationRaw, useRouter } from 'vue-router';
   import { computed, defineComponent, PropType } from 'vue';
-  import { IonButton } from '@ionic/vue';
 
   export interface IonButtonInterface {
     disabled?: boolean;
@@ -58,6 +57,11 @@
       const ionBtnProps = computed(() => {
         return Object.assign({}, props.btnProps);
       });
+
+      return {
+        resolvedPath,
+        ionBtnProps
+      }
     }
   })
 
