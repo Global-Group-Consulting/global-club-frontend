@@ -16,6 +16,18 @@ export default {
     logout: 'Logout',
   },
   pages: {
+    orders: {
+      'title': "Elenco ordini",
+      'list': {
+        text: "Ordine di <strong>{fullName}</strong> del {date}",
+        subText: "Stato: <strong>{status}</strong> - <small>#{number}</small>",
+        lastUpdate: "Ultimo aggiornamento: <strong>{date}</strong>"
+      },
+      'btn_open': 'Apri',
+    },
+    orderDetails: {
+      title: "Dettagli ordine #{number}"
+    },
     products: {
       'title': "Elenco prodotti",
       'btn_add': 'Aggiungi',
@@ -33,7 +45,9 @@ export default {
     productCategoryDetails: {
       'title': "Dettagli categoria prodotto",
       'btn_delete': "Elimina",
+    },
+    users: {
+      'title': "Elenco utenti",
     }
-    
   }
 };
