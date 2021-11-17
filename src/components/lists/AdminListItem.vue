@@ -1,15 +1,26 @@
 <template>
   <ion-item>
     <ion-thumbnail slot="start">
-      <img :src="formatImgUrl(image)" alt="cover_image">
+      <slot name="image">
+        <img :src="formatImgUrl(image)" alt="cover_image">
+      </slot>
     </ion-thumbnail>
 
     <ion-label>
-      <h2>{{ title }}</h2>
-      <h4>{{ description }}</h4>
+      <h2>
+        <slot name="title">
+          <span v-html="title"></span>
+        </slot>
+      </h2>
+      <h4>
+        <slot name="description">
+          <span v-html="description"></span>
+        </slot>
+      </h4>
+      <slot name="extraLabels"></slot>
     </ion-label>
 
-    <page-link :to="{}"
+    <page-link :to="openLink"
                :btn-props="{ fill: 'outline', shape: 'round' }">
       {{ openLinkLabel ?? "Open" }}
     </page-link>
@@ -43,6 +54,19 @@
   });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+  ion-thumbnail {
+    background-color: var(--ion-color-secondary);
+    position: relative;
 
+    ::v-deep(ion-icon) {
+      width: var(--size);
+      height: var(--size);
+      color: var(--ion-color-primary);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
 </style>
