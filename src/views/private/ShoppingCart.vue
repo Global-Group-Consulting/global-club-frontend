@@ -97,21 +97,21 @@ import {
   IonItem,
   IonLabel,
 } from "@ionic/vue";
-import { pin, walk, warning, wifi, wine } from "ionicons/icons";
-import { defineComponent, inject } from "vue";
+import { warning } from "ionicons/icons";
+import { defineComponent} from "vue";
 
 export default defineComponent({
   components: {
     IonPage,
     IonContent,
-    IonCard,
-    IonCardContent,
-    IonCardHeader,
-    IonCardSubtitle,
-    IonCardTitle,
+    // IonCard,
+    // IonCardContent,
+    // IonCardHeader,
+    // IonCardSubtitle,
+    // IonCardTitle,
     IonIcon,
-    IonItem,
-    IonLabel,
+    // IonItem,
+    // IonLabel,
   },
   name: "ShoppingCart",
 
