@@ -1,6 +1,6 @@
 <template>
   <IonPage>
-    <top-toolbar></top-toolbar>
+    <top-toolbar>{{$t("pages.users.title")}}</top-toolbar>
 
     <ion-content>
 
@@ -57,7 +57,7 @@
   import { ReadUserGroupsDto, User } from '@/@types/User';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { UserRoleEnum } from '@/@enums/user.role.enum';
-  import { useI18n } from 'vue-i18n';
+  // import { useI18n } from 'vue-i18n';
   import { PaginatedResult } from '@/@types/Pagination';
   import PaginationBar from '@/components/PaginationBar.vue';
 
@@ -66,7 +66,7 @@
     components: { PaginationBar, TopToolbar },
     setup () {
       const http = inject<HttpPlugin>("http") as HttpPlugin
-      const { t } = useI18n()
+      // const { t } = useI18n()
 
       const paginatedUsersData: Ref<PaginatedResult<User[]>> = ref({} as any);
       const activeTab: Ref<UserRoleEnum> = ref(UserRoleEnum.CLIENTE)
