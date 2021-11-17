@@ -6,15 +6,28 @@ export class OrderApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'club/orders';
   
   static async readAll (): Promise<PaginatedResult<Order[]> | undefined> {
-    const result = await this.withLoader<PaginatedResult<Order[]>>("get", this.getUrl());
-    
+    const result = await this.withLoader<PaginatedResult<Order[]>>("get",
+      this.getUrl('', {
+        "sortBy[status]": 1,
+        "sortBy[updatedAt]": -1,
+        "sortBy[createdAt]": -1,
+      }));
+  
     return result?.data;
   }
   
   static async readPending (): Promise<PaginatedResult<Order[]> | undefined> {
     const result = await this.withLoader<PaginatedResult<Order[]>>("get",
-      this.getUrl("?filter[status]=pending&filter[status]=inProgress"));
+      this.getUrl('', {
+        "filter[status]": ["pending", "inProgress"],
+      }));
     
     return result?.data;
+  }
+  
+  static async read (id: string): Promise<Order | undefined> {
+    const result = await this.withLoader<Order>("get", this.getUrl("/" + id))
+    
+    return result?.data
   }
 }
