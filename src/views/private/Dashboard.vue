@@ -51,67 +51,55 @@
           </ion-col>
         </ion-row>
       </ion-grid>
+
+
       <ion-row class="chips">
-        <ion-col>
-          <ion-chip class="resoconto text-xsmall font-bold ion-text-left">
-            <ion-label>Resoconto</ion-label>
-          </ion-chip>
-        </ion-col>
+          <ion-col>
+            <ion-chip class="resoconto">
+              <ion-label>Resoconto</ion-label>
+            </ion-chip>
+            <ion-chip class="trimestre">
+              <ion-label>1/1/21 - 30/06/21</ion-label>
+            </ion-chip>
+            <ion-chip class="trimestre">
+              <ion-label>1/7/21 - 31/12/21</ion-label>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
 
-        <ion-col>
-          <ion-chip class="text-xsmall text-gray1">
-            <ion-label>1/1/21 - 30/06/21</ion-label>
-          </ion-chip>
-        </ion-col>
 
-        <ion-col>
-          <ion-chip class="text-xsmall text-gray1 ion-text-end">
-            <ion-label>1/7/21 - 31/12/21</ion-label>
-          </ion-chip>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col sizeLg="6" sizeMd="7" sizeSm="8"></ion-col>
-      </ion-row>
-
-      <ion-grid class="banner" fixed>
+       <ion-grid class="banner">
         <ion-row>
-          <div class="ion-text-start">
-            <img class="ion-margin-end" src="/assets/brite-gold.png"/>
-            <p class="title-big ion-no-margin display-ib">76.654</p>
-            <p class="text-small text-gray2 ion-no-margin">
-              Totale utilizzabile
-            </p>
+          <div class="money">
+            <img src="/assets/brite-gold.png" />
+            <p class="somma">76.654</p>
+            <p class="descrizione">Totale utilizzabile</p>
           </div>
         </ion-row>
         <ion-row>
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <div class="ion-text-start">
-              <img class="ion-margin-end" src="/assets/brite-gold.png"/>
-              <p class="title-big ion-no-margin display-ib">30.876</p>
-              <p class="text-small text-gray2 ion-no-margin">
-                Sacadono a Gennaio '22
-              </p>
+          <ion-col>
+            <div class="money">
+              <img src="/assets/brite-gold.png" />
+              <p class="somma">30.876</p>
+              <p class="descrizione">Sacadono a Gennaio '22</p>
             </div>
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <div class="ion-text-start">
-              <img class="ion-margin-end" src="/assets/brite-gold.png"/>
-              <p class="title-big ion-no-margin display-ib">45.778</p>
-              <p class="text-small text-gray2 ion-no-margin">
-                Scadono a Luglio '22
-              </p>
+          <ion-col size="8">
+            <div class="money">
+              <img src="/assets/brite-gold.png" />
+              <p class="somma">45.778</p>
+              <p class="descrizione">Scadono a Luglio '22</p>
             </div>
           </ion-col>
-          <ion-col class="dettagli" sizeLg="6" sizeMd="7" sizeSm="8">
+          <ion-col size="4" class="dettagli">
             <div>
               <btn
-                  class="ion-text-capitalize m-0 button1"
-                  size="small"
-                  expand="block"
-                  @click="$router.push('#')"
+                class="ion-text-capitalize m-0 button1"
+                size="small"
+                expand="block"
+                @click="$router.push('#')"
               >
                 Dettagli
               </btn>
@@ -119,15 +107,15 @@
           </ion-col>
         </ion-row>
       </ion-grid>
+
       <ion-grid class="ion-no-padding content1">
-        <ion-row>
+       <ion-row>
           <ion-col>
             <p class="stato-ordini">Stato ordini in corso</p>
           </ion-col>
         </ion-row>
-      </ion-grid>
+        </ion-grid>
 
-      
       <ion-grid class="statobanner">
         <ion-row>
           <ion-col size="2">
@@ -162,14 +150,7 @@
             slot="icon-only"
             icon-name="circle-right"
         ></btn>
-        <btn
-            @click="$router.push({ name: '.order' })"
-            fill="clear"
-            size="small"
-            shape="round"
-            slot="icon-only"
-            icon-name="circle-right"
-        ></btn>
+      
       </ion-toolbar>
     </ion-footer>
   </IonPage>
