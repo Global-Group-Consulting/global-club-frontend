@@ -53,21 +53,35 @@
         </ion-row>
       </ion-grid>
 
+      <ion-grid>
+      <div class="scrolling-wrapper">
 
-      <ion-row class="chips">
-          <ion-col>
+       <div class="modulo-cerca">
             <ion-chip class="resoconto">
               <ion-label>Resoconto</ion-label>
             </ion-chip>
+        </div>
+
+       <div class="modulo-cerca">
             <ion-chip class="trimestre">
               <ion-label>1/1/21 - 30/06/21</ion-label>
             </ion-chip>
+        </div>
+
+       <div class="modulo-cerca">
             <ion-chip class="trimestre">
               <ion-label>1/7/21 - 31/12/21</ion-label>
             </ion-chip>
-          </ion-col>
-        </ion-row>
+        </div>
 
+        <div class="modulo-cerca">
+            <ion-chip class="trimestre">
+              <ion-label>1/7/21 - 31/12/21</ion-label>
+            </ion-chip>
+        </div>
+        
+      </div>
+      </ion-grid>
 
        <ion-grid class="banner">
         <ion-row>
@@ -401,7 +415,15 @@ border-radius: 20px;
 
 }
 
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
 
+.modulo-cerca {
+    display: inline-block;
+  }
 
 
 </style>
