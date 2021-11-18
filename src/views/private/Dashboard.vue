@@ -24,28 +24,29 @@
           <Popover></Popover>
         </ion-popover>
       </div>
-      <ion-grid class="ion-no-padding content1" fixed="true">
+
+
+     <ion-grid class="ion-no-padding content1" fixed="true">
         <ion-row>
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <div class="ion-text-start text-small text-gray2">
+
+          <ion-col>
+            <div class="bentornato">
               <p>Bentornato,</p>
             </div>
           </ion-col>
-
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
+          <ion-col>
             <div></div>
           </ion-col>
         </ion-row>
-
         <ion-row class="ion-align-items-center">
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
+          <ion-col>
             <div>
-              <p class="title ion-text-left ion-no-margin">Mario Rossi</p>
+              <p class="user">Mario Rossi</p>
             </div>
           </ion-col>
           <ion-col>
             <div class="brite">
-              <img class="brite-img" src="/assets/brite.png" alt=""/>
+              <img class="brite-img" src="/assets/brite.png" alt="" />
               <p class="brite-h1">76.654</p>
             </div>
           </ion-col>
