@@ -1,11 +1,12 @@
 import { User, UserBasic } from '@/@types/User';
 import { OrderStatusEnum } from '@/@enums/order.status.enum';
+import { Communication } from '@/@types/Communication';
 
 export interface Order {
   user: UserBasic;
   products: OrderProduct[];
   amount: number;
-  communication: any; //Communication;
+  communication: Communication;
   status: OrderStatusEnum;
   
   _id: string;
@@ -23,4 +24,9 @@ export interface OrderProduct {
   the one user saw when adding the product to the cart
    */
   price: number;
+}
+
+export interface ReadOrderStatusesDto {
+  _id: OrderStatusEnum;
+  count: number;
 }
