@@ -41,7 +41,7 @@ const privateRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/wallet",
+    path: "/walletpremium",
     component: () => import("../views/private/PremiumWallet.vue"),
     name: "private.wallet",
     meta: {
@@ -84,7 +84,7 @@ const privateRoutes: RouteRecordRaw[] = [
   {
     path: "/wallet",
     component: () => import("../views/private/WalletStatement.vue"),
-    name: "private.wallet",
+    name: "private.WalletStatement",
     meta: {
       isPrivate: true,
     },
@@ -126,14 +126,13 @@ const privateRoutes: RouteRecordRaw[] = [
     component: () => import("../views/private/PersonalData.vue"),
     name: "private.user",
     meta: {
-      isPrivate: true,
-      isAdmin: true,
+      isPrivate: true
     },
   },
   {
     path: "/profile",
     component: () => import("../views/private/Profile.vue"),
-    name: "private.user",
+    name: "private.profile",
     meta: {
       isPrivate: true,
       isAdmin: true,
