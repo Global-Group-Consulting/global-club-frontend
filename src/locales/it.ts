@@ -1,6 +1,8 @@
 import { alerts } from '@/locales/it/alerts';
 import { forms } from '@/locales/it/forms';
 import { enums } from '@/locales/it/enums';
+import { orders } from '@/locales/it/pages/orders';
+import { orderDetails } from '@/locales/it/pages/orderDetails';
 
 export default {
   alerts,
@@ -16,18 +18,8 @@ export default {
     logout: 'Logout',
   },
   pages: {
-    orders: {
-      'title': "Elenco ordini",
-      'list': {
-        text: "Ordine di <strong>{fullName}</strong> del {date}",
-        subText: "Stato: <strong>{status}</strong> - <small>#{number}</small>",
-        lastUpdate: "Ultimo aggiornamento: <strong>{date}</strong>"
-      },
-      'btn_open': 'Apri',
-    },
-    orderDetails: {
-      title: "Dettagli ordine #{number}"
-    },
+    orders,
+    orderDetails,
     products: {
       'title': "Elenco prodotti",
       'btn_add': 'Aggiungi',
