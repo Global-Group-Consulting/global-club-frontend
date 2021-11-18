@@ -1,0 +1,52 @@
+.chat-component {
+  --border-color: #7B786F;
+
+  position: relative;
+
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+
+    &:before {
+      content: "";
+      height: 100%;
+      border-left: dashed 1px var(--border-color);
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+
+  .chat-message {
+    --dot-size: 23px;
+    --dot-inner-size: 10px;
+
+    position: relative;
+    padding-left: $spacer;
+
+    &:before {
+      content: "";
+      height: var(--dot-size);
+      width: var(--dot-size);
+      background-color: white;
+      border-radius: 50%;
+      border: solid 3px var(--border-color);
+      position: absolute;
+      left: calc(1px - (var(--dot-size) / 2));
+      top: 0;
+      box-sizing: border-box;
+    }
+
+    &:after {
+      content: "";
+      height: var(--dot-inner-size);
+      width: var(--dot-inner-size);
+      background-color: grey; //var(--ion-color-primary);
+      border-radius: 50%;
+      position: absolute;
+      left: calc(1px - (var(--dot-inner-size) / 2));
+      top: calc((var(--dot-size) / 2) - (var(--dot-inner-size) / 2));
+      box-sizing: border-box;
+    }
+  }
+}
