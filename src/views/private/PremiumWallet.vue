@@ -1,7 +1,46 @@
 <template>
   <IonPage>
+    <TopToolbar include-back>Il mio portfolio</TopToolbar>
+    
     <IonContent class="ion-padding">
+      
 
+        <ion-grid>
+      <div class="scrolling-wrapper">
+
+       <div class="modulo-cerca" @click="categoria='totale-resoconto'" value="totale-resoconto">
+            <ion-chip class="resoconto">
+              <ion-label>Resoconto</ion-label>
+            </ion-chip>
+        </div>
+
+       <div class="modulo-cerca" @click="categoria='totale-trimestre'" value="totale-trimestre">
+            <ion-chip class="trimestre">
+              <ion-label>1/1/21 - 30/06/21</ion-label>
+            </ion-chip>
+        </div>
+
+       <div class="modulo-cerca">
+            <ion-chip class="trimestre">
+              <ion-label>1/7/21 - 31/12/21</ion-label>
+            </ion-chip>
+        </div>
+
+        <div class="modulo-cerca">
+            <ion-chip class="trimestre">
+              <ion-label>1/7/21 - 31/12/21</ion-label>
+            </ion-chip>
+        </div>
+        
+      </div>
+      </ion-grid>
+
+        <br>
+
+        <v-switch :case="categoria">
+
+    <template #totale-resoconto>
+      
 
         <ion-grid class="banner">
         <ion-row>
@@ -16,7 +55,7 @@
             <div class="money">
               <img src="/assets/brite-gold.png" />
               <p class="somma">30.876</p>
-              <p class="descrizione">Sacadono a Gennaio '22</p>
+              <p class="descrizione">Scadono a Gennaio '22</p>
             </div>
           </ion-col>
         </ion-row>
@@ -44,27 +83,55 @@
       </ion-grid>
 
 
-       <ion-row>
-        <ion-segment value="descrizione">
-          <ion-segment-button @click="categoria='descrizione'" value="descrizione">
-            <ion-label>Descrizione</ion-label>
-          </ion-segment-button>
-          <ion-segment-button @click="categoria='condizioni'" value="condizioni">
-            <ion-label>Condizioni</ion-label>
-          </ion-segment-button>
-        </ion-segment>
+    </template>
 
+    <template #totale-trimestre>
       
+
+      <ion-grid class="banner">
+        <ion-row>
+          <div class="money">
+            <img src="/assets/brite-gold.png" />
+            <p class="somma">27.820</p>
+            <p class="descrizione">Totale disponibile</p>
+          </div>
         </ion-row>
-        <br>
-        <v-switch :case="categoria">
-    <template #descrizione>
-      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        <ion-row>
+          <ion-col>
+            <div class="money">
+              <img src="/assets/brite-gold.png" />
+              <p class="somma">5000</p>
+              <p class="descrizione">Brite utilizzati</p>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="8">
+            <div class="money">
+              <img src="/assets/brite-gold.png" />
+              <p class="somma">32.830</p>
+              <p class="descrizione">Brite accumulati</p>
+            </div>
+          </ion-col>
+          <ion-col size="4" class="dettagli">
+            <div>
+              <btn
+                class="ion-text-capitalize m-0 button1"
+                size="small"
+                expand="block"
+                @click="$router.push('#')"
+              >
+                Dettagli
+              </btn>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+
     </template>
 
-    <template #condizioni>
-      Default
-    </template>
+
   </v-switch>
 
 </IonContent>
@@ -83,7 +150,7 @@ export default defineComponent({
   },
   setup() {
     return {
-      categoria: ref('descrizione')
+      categoria: ref('totale-resoconto')
     }
     //const http: HttpPlugin = inject('http');
   },
@@ -147,4 +214,19 @@ position: absolute;
 .dettagli {
   text-align: left;
 }
+
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.modulo-cerca {
+    display: inline-block;
+  }
+
+  .modulo-cerca :hover{
+ background-color:#967d4a;
+}
+
 </style>
