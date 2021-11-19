@@ -229,4 +229,8 @@ position: absolute;
  background-color:#967d4a;
 }
 
+.scrolling-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
 </style>
