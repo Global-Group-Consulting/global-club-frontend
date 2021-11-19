@@ -53,16 +53,16 @@
         </ion-row>
       </ion-grid>
 
-      <ion-grid>
+       <ion-grid>
       <div class="scrolling-wrapper">
 
-       <div class="modulo-cerca">
+       <div class="modulo-cerca" @click="categoria='totale-resoconto'" value="totale-resoconto">
             <ion-chip class="resoconto">
               <ion-label>Resoconto</ion-label>
             </ion-chip>
         </div>
 
-       <div class="modulo-cerca">
+       <div class="modulo-cerca" @click="categoria='totale-trimestre'" value="totale-trimestre">
             <ion-chip class="trimestre">
               <ion-label>1/1/21 - 30/06/21</ion-label>
             </ion-chip>
@@ -83,7 +83,14 @@
       </div>
       </ion-grid>
 
-       <ion-grid class="banner">
+        <br>
+
+        <v-switch :case="categoria">
+
+    <template #totale-resoconto>
+      
+
+        <ion-grid class="banner">
         <ion-row>
           <div class="money">
             <img src="/assets/brite-gold.png" />
@@ -96,7 +103,7 @@
             <div class="money">
               <img src="/assets/brite-gold.png" />
               <p class="somma">30.876</p>
-              <p class="descrizione">Sacadono a Gennaio '22</p>
+              <p class="descrizione">Scadono a Gennaio '22</p>
             </div>
           </ion-col>
         </ion-row>
@@ -123,14 +130,52 @@
         </ion-row>
       </ion-grid>
 
-      <ion-grid class="ion-no-padding content1">
-       <ion-row>
+
+    </template>
+
+    <template #totale-trimestre>
+      <ion-grid class="banner">
+        <ion-row>
+          <div class="money">
+            <img src="/assets/brite-gold.png" />
+            <p class="somma">27.820</p>
+            <p class="descrizione">Totale disponibile</p>
+          </div>
+        </ion-row>
+        <ion-row>
           <ion-col>
-            <p class="stato-ordini">Stato ordini in corso</p>
+            <div class="money">
+              <img src="/assets/brite-gold.png" />
+              <p class="somma">5000</p>
+              <p class="descrizione">Brite utilizzati</p>
+            </div>
           </ion-col>
         </ion-row>
-        </ion-grid>
-
+        <ion-row>
+          <ion-col size="8">
+            <div class="money">
+              <img src="/assets/brite-gold.png" />
+              <p class="somma">32.830</p>
+              <p class="descrizione">Brite accumulati</p>
+            </div>
+          </ion-col>
+          <ion-col size="4" class="dettagli">
+            <div>
+              <btn
+                class="ion-text-capitalize m-0 button1"
+                size="small"
+                expand="block"
+                @click="$router.push('#')"
+              >
+                Dettagli
+              </btn>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </template>
+  </v-switch>
+      <br>
       <ion-grid class="statobanner">
         <ion-row>
           <ion-col size="2">
@@ -179,12 +224,13 @@
   import AutoComplete from "../../components/AutoComplete.vue"
   import { ProductCategory } from '@/@types/ProductCategory';
   import { AlertsPlugin } from '@/plugins/Alerts';
+  import VSwitch from '@lmiller1990/v-switch';
 
   const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
 
   export default defineComponent({
     name: "Dashboard",
-    components: { Popover, AutoComplete },
+    components: { Popover, AutoComplete,VSwitch},
     setup () {
       const isOpenRef = ref(false);
       const event = ref();
@@ -196,6 +242,7 @@
         isOpenRef,
         setOpen,
         event,
+        categoria: ref('totale-resoconto'),
       };
     },
     data () {
@@ -295,22 +342,6 @@ ion-grid {
   margin-bottom: -5px;
 }
 
-.resoconto {
-  border-radius: 50px;
-  padding: 10px, 30px, 10px, 30px;
-  background: linear-gradient(
-    274.3deg,
-    #ab8e54 0%,
-    #6f592f 99.99%,
-    #ad9c7b 100%
-  );
-
-  font-size: 10px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 15px;
-  letter-spacing: 0em;
-}
 
 .trimestre {
   border-radius: 50px;
@@ -425,5 +456,13 @@ border-radius: 20px;
     display: inline-block;
   }
 
+.modulo-cerca :hover{
+ background-color:#967d4a;
+ color:white;
+}
+
+.scrolling-wrapper::-webkit-scrollbar {
+    display: none;
+}
 
 </style>
