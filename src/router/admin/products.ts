@@ -11,13 +11,13 @@ export default [
     meta
   },
   {
-    path: prefix + ':id',
+    path: prefix + '/:id',
     component: () => import('@/views/admin/products/Details.vue'),
     name: 'admin.products.details',
     meta
   },
   {
-    path: prefix + 'new',
+    path: prefix + '/new',
     component: () => import('@/views/admin/products/Details.vue'),
     name: 'admin.products.new',
     meta

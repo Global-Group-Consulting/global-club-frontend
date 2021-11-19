@@ -18,6 +18,7 @@
     "@ionic/storage": "^3.0.6",
     "@ionic/vue": "^5.4.0",
     "@ionic/vue-router": "^5.4.0",
+    "@lmiller1990/v-switch": "^1.1.0",
     "@servie/events": "^3.0.0",
     "@types/jsonwebtoken": "^8.5.5",
     "axios": "^0.21.1",

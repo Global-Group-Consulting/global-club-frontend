@@ -11,7 +11,6 @@
           </template>
         </SimpleToolbar>
 
-
         <ion-list>
           <ion-item v-for="product of productsList" :key="product._id">
             <ion-thumbnail slot="start">
