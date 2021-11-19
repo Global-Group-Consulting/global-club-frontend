@@ -1,5 +1,5 @@
 <template>
-  <IonPage> Stato Ordine </IonPage>
+  <IonPage>test</IonPage>
 </template>
 
 <script lang="ts">
