@@ -51,6 +51,10 @@ const menuEntries: MenuEntry[] = [
     label: 'home',
   },
   {
+    route: 'admin.orders',
+    label: 'orders',
+  },
+  {
     route: 'admin.users',
     label: 'users',
   },

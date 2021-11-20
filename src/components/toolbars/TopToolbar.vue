@@ -15,15 +15,17 @@
 
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 
-  const props = defineProps<{
-    includeBack?: boolean;
-  }>();
+  import { defineComponent } from 'vue';
 
+  export default defineComponent({
+    props: {
+      includeBack: Boolean
+    },
+    setup () {
 
+      return {}
+    }
+  })
 </script>
-
-<style scoped>
-
-</style>

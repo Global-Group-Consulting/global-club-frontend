@@ -1,0 +1,72 @@
+@import "../variables";
+@import "../functions";
+
+@mixin generateMargins($value, $i, $breakpoint: null) {
+  $prefix: $breakpoint;
+
+  @if ($breakpoint) {
+    $prefix: $breakpoint + "-"
+  }
+
+  // Margins
+  .m-#{$prefix}#{$i} {
+    margin: $value !important;
+  }
+
+  .mx-#{$prefix}#{$i} {
+    margin-left: $value !important;
+    margin-right: $value !important;
+  }
+  .my-#{$prefix}#{$i} {
+    margin-top: $value !important;
+    margin-bottom: $value !important;
+  }
+
+  @each $dirKey, $dirValue in $spacerDirections {
+    .m#{$dirKey}-#{$prefix}#{$i} {
+      margin-#{$dirValue}: $value !important;
+    }
+  }
+}
+
+@mixin generatePaddings($value, $i, $breakpoint: null) {
+  $prefix: $breakpoint;
+
+  @if ($breakpoint) {
+    $prefix: $breakpoint + "-"
+  }
+
+  // Paddings
+  .p-#{$prefix}#{$i} {
+    padding: $value !important;
+  }
+
+  .px-#{$prefix}#{$i} {
+    padding-left: $value !important;
+    padding-right: $value !important;
+  }
+  .py-#{$prefix}#{$i} {
+    padding-top: $value !important;
+    padding-bottom: $value !important;
+  }
+
+  @each $dirKey, $dirValue in $spacerDirections {
+    .p#{$dirKey}-#{$prefix}#{$i} {
+      padding-#{$dirValue}: $value !important;
+    }
+  }
+}
+
+@each $i, $value in $spacers {
+  @include generateMargins($value, $i);
+  @include generatePaddings($value, $i);
+}
+
+@each $key, $value in $breakpoints {
+  @include mediaQueryUp($key) {
+    @each $i, $value in $spacers {
+      @include generateMargins($value, $i, $key);
+      @include generatePaddings($value, $i, $key);
+    }
+  }
+}

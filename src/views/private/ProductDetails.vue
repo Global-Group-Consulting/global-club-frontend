@@ -25,25 +25,37 @@
             <div class="prezzoprodotto">Br 2500</div>
          </ion-col>
        </ion-row>
-        <br>
-          <ion-row class="btncontainer">
+        <ion-row class="btncontainer">
         <ion-segment value="descrizione">
-          <ion-segment-button value="descrizione">
+          <ion-segment-button @click="categoria='descrizione'" value="descrizione">
             <ion-label>Descrizione</ion-label>
           </ion-segment-button>
-          <ion-segment-button value="condizioni">
+          <ion-segment-button @click="categoria='condizioni'" value="condizioni">
             <ion-label>Condizioni</ion-label>
           </ion-segment-button>
         </ion-segment>
 
       
         </ion-row>
+        <br>
+        <v-switch :case="categoria">
+    <template #descrizione>
+      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </template>
 
-        <ion-row>
+    <template #condizioni>
+      Default
+    </template>
+  </v-switch>
+
+      
+       
+
+        <!-- <ion-row>
           <ion-col>
             <div class="descprodotto">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
           </ion-col>
-        </ion-row>
+        </ion-row> -->
 
         
       <br>
@@ -63,16 +75,20 @@
 
 <script lang="ts">
 //import { HttpPlugin } from '@/plugins/HttpPlugin';
-import { defineComponent, inject } from "vue";
-
+import { defineComponent, ref } from "vue";
+import VSwitch from '@lmiller1990/v-switch';
 export default defineComponent({
+
   name: "Product",
-  setup() {
-
-
-    //const http: HttpPlugin = inject('http');
+   components: {
+    VSwitch
   },
-});
+  setup() {
+    return {
+      categoria: ref('descrizione')
+    }
+  }
+})
 </script>
 
 <style>

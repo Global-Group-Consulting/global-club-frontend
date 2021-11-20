@@ -1,9 +1,7 @@
 import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
 import { AuthPlugin } from "@/plugins/AuthPlugin";
-// import { store } from '@/store';
-import products from "@/router/admin/products";
-import productCategories from "@/router/admin/productCategories";
+import AdminRoutes from "./admin";
 
 const publicRoutes: RouteRecordRaw[] = [
   {
@@ -41,7 +39,7 @@ const privateRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/wallet",
+    path: "/walletpremium",
     component: () => import("../views/private/PremiumWallet.vue"),
     name: "private.wallet",
     meta: {
@@ -84,7 +82,7 @@ const privateRoutes: RouteRecordRaw[] = [
   {
     path: "/wallet",
     component: () => import("../views/private/WalletStatement.vue"),
-    name: "private.wallet",
+    name: "private.WalletStatement",
     meta: {
       isPrivate: true,
     },
@@ -126,14 +124,13 @@ const privateRoutes: RouteRecordRaw[] = [
     component: () => import("../views/private/PersonalData.vue"),
     name: "private.user",
     meta: {
-      isPrivate: true,
-      isAdmin: true,
+      isPrivate: true
     },
   },
   {
     path: "/profile",
     component: () => import("../views/private/Profile.vue"),
-    name: "private.user",
+    name: "private.profile",
     meta: {
       isPrivate: true,
       isAdmin: true,
@@ -141,34 +138,7 @@ const privateRoutes: RouteRecordRaw[] = [
   },
 ];
 
-const adminRoutes: RouteRecordRaw[] = [
-  {
-    path: "/admin",
-    component: () => import("../views/admin/DashboardPage.vue"),
-    name: "admin.home",
-    meta: {
-      isAdmin: true,
-    },
-  },
-  ...products,
-  ...productCategories,
-  {
-    path: "/admin/orders",
-    component: () => import("../views/admin/orders/OrdersPage.vue"),
-    name: "admin.orders",
-    meta: {
-      isAdmin: true,
-    },
-  },
-  {
-    path: "/admin/users",
-    component: () => import("../views/admin/users/Home.vue"),
-    name: "admin.users",
-    meta: {
-      isAdmin: true,
-    },
-  },
-];
+const adminRoutes: RouteRecordRaw[] = AdminRoutes;
 
 const routes: Array<RouteRecordRaw> = [
   ...publicRoutes,
