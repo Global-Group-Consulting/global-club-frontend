@@ -1,74 +1,39 @@
-<!--<template>
-  <diuv></diuv>
-</template>
-
-<script lang="ts">
-import {defineComponent} from "vue"
-
-
-export default defineComponent({
-  name: "Tabs"
-})
-</script>
-
-<style scoped>
-
-</style>-->
 <template>
-  <IonPage>
-    <IonTabs>
-      <IonRouterOutlet></IonRouterOutlet>
-      <IonTabBar slot="bottom">
-        <IonTabButton tsb="tab1" href="/tabs/tab1">
-          <ion-icon name="home-outline"></ion-icon>
-        </IonTabButton>
-        <IonTabButton tsb="tab2" href="/tabs/tab2">
-          <ion-icon name="star-outline"></ion-icon> </IonTabButton
-        ><IonTabButton tsb="tab3" href="/tabs/tab3">
-          <ion-icon src="/assets/GCentral.svg"></ion-icon> </IonTabButton
-        ><IonTabButton tsb="tab4" href="/tabs/tab4">
-          <ion-icon name="bag-outline"></ion-icon> </IonTabButton
-        ><IonTabButton tsb="tab5" href="/tabs/tab5">
-          <ion-icon name="person-outline"></ion-icon>
-        </IonTabButton>
-      </IonTabBar>
-    </IonTabs>
-  </IonPage>
+  <ion-segment class="tabs" :value="modelValue"
+               @ionChange="onSelectionChange" scrollable="scrollable">
+    <ion-segment-button v-for="tab in tabsList" :key="tab.id"
+                        :value="tab.id">
+      <ion-label>
+        {{ tab.text }} ({{ tab.count }})
+      </ion-label>
+    </ion-segment-button>
+  </ion-segment>
 </template>
 
 <script lang="ts">
-//import { HttpPlugin } from '@/plugins/HttpPlugin';
-//import { defineComponent, inject } from "vue";
-import {
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
-  IonContent,
-  IonLabel,
-  IonIcon,
-  IonPage,
-  IonRouterOutlet
-} from '@ionic/vue';
-import { ellipse, square, triangle } from 'ionicons/icons';
+  import { defineComponent, PropType } from 'vue';
+  import { TabEntry } from '@/@types/TabEntry';
 
-export default {
-  name: 'Tabs',
-  components: {
-    IonContent,
-    IonLabel,
-    IonTabs,
-    IonTabBar,
-    IonTabButton,
-    IonIcon,
-    IonPage,
-    IonRouterOutlet,
-  setup() {
-    return {
-      ellipse, 
-      square, 
-      triangle,
+  export default defineComponent({
+    name: 'Tabs',
+    props: {
+      tabsList: {
+        required: true,
+        type: Array as PropType<TabEntry[]>
+      },
+      modelValue: [String, Number]
+    },
+    setup (props, { emit }) {
+      function onSelectionChange (ev) {
+        const value = ev.target.value
+
+        emit('update:modelValue', value)
+      }
+
+      return {
+        onSelectionChange
+      }
     }
-  }
-}
+  })
 
 </script>

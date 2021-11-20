@@ -7,9 +7,11 @@
 import { defineComponent, inject } from "vue";
 
 export default defineComponent({
-  name: "Product",
-  setup() {
-    //const http: HttpPlugin = inject('http');
-  },
+  name: "User",
+setup() {
+    return {
+      
+    }
+  }
 });
 </script>

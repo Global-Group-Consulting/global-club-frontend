@@ -24,94 +24,104 @@
           <Popover></Popover>
         </ion-popover>
       </div>
-      <ion-grid class="ion-no-padding content1" fixed="true">
+
+
+     <ion-grid class="ion-no-padding content1" fixed="true">
         <ion-row>
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <div class="ion-text-start text-small text-gray2">
+
+          <ion-col>
+            <div class="bentornato">
               <p>Bentornato,</p>
             </div>
           </ion-col>
-
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
+          <ion-col>
             <div></div>
           </ion-col>
         </ion-row>
-
         <ion-row class="ion-align-items-center">
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
+          <ion-col>
             <div>
-              <p class="title ion-text-left ion-no-margin">Mario Rossi</p>
+              <p class="user">Mario Rossi</p>
             </div>
           </ion-col>
           <ion-col>
             <div class="brite">
-              <img class="brite-img" src="/assets/brite.png" alt=""/>
+              <img class="brite-img" src="/assets/brite.png" alt="" />
               <p class="brite-h1">76.654</p>
             </div>
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-row class="chips">
-        <ion-col>
-          <ion-chip class="resoconto text-xsmall font-bold ion-text-left">
-            <ion-label>Resoconto</ion-label>
-          </ion-chip>
-        </ion-col>
 
-        <ion-col>
-          <ion-chip class="text-xsmall text-gray1">
-            <ion-label>1/1/21 - 30/06/21</ion-label>
-          </ion-chip>
-        </ion-col>
+       <ion-grid>
+      <div class="scrolling-wrapper">
 
-        <ion-col>
-          <ion-chip class="text-xsmall text-gray1 ion-text-end">
-            <ion-label>1/7/21 - 31/12/21</ion-label>
-          </ion-chip>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col sizeLg="6" sizeMd="7" sizeSm="8"></ion-col>
-      </ion-row>
+       <div class="modulo-cerca" @click="categoria='totale-resoconto'" value="totale-resoconto">
+            <ion-chip class="resoconto">
+              <ion-label>Resoconto</ion-label>
+            </ion-chip>
+        </div>
 
-      <ion-grid class="banner" fixed>
+       <div class="modulo-cerca" @click="categoria='totale-trimestre'" value="totale-trimestre">
+            <ion-chip class="trimestre">
+              <ion-label>1/1/21 - 30/06/21</ion-label>
+            </ion-chip>
+        </div>
+
+       <div class="modulo-cerca">
+            <ion-chip class="trimestre">
+              <ion-label>1/7/21 - 31/12/21</ion-label>
+            </ion-chip>
+        </div>
+
+        <div class="modulo-cerca">
+            <ion-chip class="trimestre">
+              <ion-label>1/7/21 - 31/12/21</ion-label>
+            </ion-chip>
+        </div>
+        
+      </div>
+      </ion-grid>
+
+        <br>
+
+        <v-switch :case="categoria">
+
+    <template #totale-resoconto>
+      
+
+        <ion-grid class="banner">
         <ion-row>
-          <div class="ion-text-start">
-            <img class="ion-margin-end" src="/assets/brite-gold.png"/>
-            <p class="title-big ion-no-margin display-ib">76.654</p>
-            <p class="text-small text-gray2 ion-no-margin">
-              Totale utilizzabile
-            </p>
+          <div class="money">
+            <img src="/assets/brite-gold.png" />
+            <p class="somma">76.654</p>
+            <p class="descrizione">Totale utilizzabile</p>
           </div>
         </ion-row>
         <ion-row>
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <div class="ion-text-start">
-              <img class="ion-margin-end" src="/assets/brite-gold.png"/>
-              <p class="title-big ion-no-margin display-ib">30.876</p>
-              <p class="text-small text-gray2 ion-no-margin">
-                Sacadono a Gennaio '22
-              </p>
+          <ion-col>
+            <div class="money">
+              <img src="/assets/brite-gold.png" />
+              <p class="somma">30.876</p>
+              <p class="descrizione">Scadono a Gennaio '22</p>
             </div>
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-            <div class="ion-text-start">
-              <img class="ion-margin-end" src="/assets/brite-gold.png"/>
-              <p class="title-big ion-no-margin display-ib">45.778</p>
-              <p class="text-small text-gray2 ion-no-margin">
-                Scadono a Luglio '22
-              </p>
+          <ion-col size="8">
+            <div class="money">
+              <img src="/assets/brite-gold.png" />
+              <p class="somma">45.778</p>
+              <p class="descrizione">Scadono a Luglio '22</p>
             </div>
           </ion-col>
-          <ion-col class="dettagli" sizeLg="6" sizeMd="7" sizeSm="8">
+          <ion-col size="4" class="dettagli">
             <div>
               <btn
-                  class="ion-text-capitalize m-0 button1"
-                  size="small"
-                  expand="block"
-                  @click="$router.push('#')"
+                class="ion-text-capitalize m-0 button1"
+                size="small"
+                expand="block"
+                @click="$router.push('#')"
               >
                 Dettagli
               </btn>
@@ -119,15 +129,53 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-grid class="ion-no-padding content1">
+
+
+    </template>
+
+    <template #totale-trimestre>
+      <ion-grid class="banner">
+        <ion-row>
+          <div class="money">
+            <img src="/assets/brite-gold.png" />
+            <p class="somma">27.820</p>
+            <p class="descrizione">Totale disponibile</p>
+          </div>
+        </ion-row>
         <ion-row>
           <ion-col>
-            <p class="stato-ordini">Stato ordini in corso</p>
+            <div class="money">
+              <img src="/assets/brite-gold.png" />
+              <p class="somma">5000</p>
+              <p class="descrizione">Brite utilizzati</p>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="8">
+            <div class="money">
+              <img src="/assets/brite-gold.png" />
+              <p class="somma">32.830</p>
+              <p class="descrizione">Brite accumulati</p>
+            </div>
+          </ion-col>
+          <ion-col size="4" class="dettagli">
+            <div>
+              <btn
+                class="ion-text-capitalize m-0 button1"
+                size="small"
+                expand="block"
+                @click="$router.push('#')"
+              >
+                Dettagli
+              </btn>
+            </div>
           </ion-col>
         </ion-row>
       </ion-grid>
-
-      
+    </template>
+  </v-switch>
+      <br>
       <ion-grid class="statobanner">
         <ion-row>
           <ion-col size="2">
@@ -162,14 +210,7 @@
             slot="icon-only"
             icon-name="circle-right"
         ></btn>
-        <btn
-            @click="$router.push({ name: '.order' })"
-            fill="clear"
-            size="small"
-            shape="round"
-            slot="icon-only"
-            icon-name="circle-right"
-        ></btn>
+      
       </ion-toolbar>
     </ion-footer>
   </IonPage>
@@ -183,12 +224,13 @@
   import AutoComplete from "../../components/AutoComplete.vue"
   import { ProductCategory } from '@/@types/ProductCategory';
   import { AlertsPlugin } from '@/plugins/Alerts';
+  import VSwitch from '@lmiller1990/v-switch';
 
   const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
 
   export default defineComponent({
     name: "Dashboard",
-    components: { Popover, AutoComplete },
+    components: { Popover, AutoComplete,VSwitch},
     setup () {
       const isOpenRef = ref(false);
       const event = ref();
@@ -200,6 +242,7 @@
         isOpenRef,
         setOpen,
         event,
+        categoria: ref('totale-resoconto'),
       };
     },
     data () {
@@ -299,22 +342,6 @@ ion-grid {
   margin-bottom: -5px;
 }
 
-.resoconto {
-  border-radius: 50px;
-  padding: 10px, 30px, 10px, 30px;
-  background: linear-gradient(
-    274.3deg,
-    #ab8e54 0%,
-    #6f592f 99.99%,
-    #ad9c7b 100%
-  );
-
-  font-size: 10px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 15px;
-  letter-spacing: 0em;
-}
 
 .trimestre {
   border-radius: 50px;
@@ -419,7 +446,23 @@ border-radius: 20px;
 
 }
 
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
 
+.modulo-cerca {
+    display: inline-block;
+  }
 
+.modulo-cerca :hover{
+ background-color:#967d4a;
+ color:white;
+}
+
+.scrolling-wrapper::-webkit-scrollbar {
+    display: none;
+}
 
 </style>
