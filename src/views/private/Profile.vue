@@ -165,13 +165,14 @@
 //import { HttpPlugin } from '@/plugins/HttpPlugin';
 import { defineComponent} from "vue";
 
-
 export default defineComponent({
   name: "Product",
+   components: {
   
+  },
   setup() {
     return {
-      
+      categoria: ('descrizione')
     }
   }
 })
