@@ -1,4 +1,5 @@
 <template>
+
      <ion-searchbar
           placeholder="Cosa desideri cercare?"
           showCancelButton="true"
@@ -10,8 +11,11 @@
           @ionInput="onChange"
         >
     </ion-searchbar>
+   
      <ion-card class="list-search"  v-if="filteredSuggestions.length"></ion-card>
+
       <ion-item v-for="(s,i) in filteredSuggestions" :key="i" @click="selected(s)">{{s[optionsKey]}}</ion-item>
+    
 </template>
 
 <script>
