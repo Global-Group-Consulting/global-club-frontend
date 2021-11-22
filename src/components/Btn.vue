@@ -14,18 +14,20 @@
   </ion-button>
 </template>
 
-<script>
+<script lang="ts">
+  import { computed, PropType } from 'vue';
+
   export default {
     name: "Btn",
     props: {
       // "normal", "icon-only", "toolbar"
       type: {
         default: "normal",
-        type: String
+        type: String as PropType<"normal" | "icon-only" | "toolbar">
       },
       size: String,
       // 'clear' | 'outline' | 'solid' | 'default'
-      fill: String,
+      fill: String as PropType<'clear' | 'outline' | 'solid' | 'default'>,
       color: String,
       // "end", "start"
       iconPosition: {
@@ -34,26 +36,34 @@
       },
       iconName: String,
       // block, full
-      expand: String,
+      expand: String as PropType<"block" | "full">,
       tooltip: String
     },
-    computed: {
-      iconOnly () {
-        return this.type === "icon-only";
-      },
-      toolbar () {
-        return this.type === "toolbar";
-      },
-      iconSlot () {
-        if (this.type === "icon-only") {
+    setup (props) {
+      const iconOnly = computed(() => {
+        return props.type === "icon-only";
+      });
+
+      const toolbar = computed(() => {
+        return props.type === "toolbar";
+      });
+
+      const iconSlot = computed(() => {
+        if (props.type === "icon-only") {
           return "icon-only";
-        } else if (this.type === "toolbar") {
+        } else if (props.type === "toolbar") {
           return "icon-only";
         }
 
-        return this.iconPosition;
+        return props.iconPosition;
+      });
+
+      return {
+        iconOnly,
+        toolbar,
+        iconSlot
       }
-    }
+    },
   };
 </script>
 
