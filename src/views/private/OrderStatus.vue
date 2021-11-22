@@ -2,7 +2,7 @@
    <IonPage>
      
         <div class="header-nav"> 
-      <TopToolbar include-back>Il mio portfolio</TopToolbar>
+      <TopToolbar include-back>Order number</TopToolbar>
         </div>
           
       <IonContent class="ion-padding">
@@ -37,7 +37,7 @@
                         <div class="quantity">1</div>
                      </ion-col>
                      <ion-col size="3">
-                        <ion-icon class="icon-alignment" src="./assets/icons/chevron-right.svg"></ion-icon>
+                        <ion-router-link href="http://localhost:8100/product"><ion-icon class="icon-alignment" src="./assets/icons/chevron-right.svg"></ion-icon></ion-router-link>
                      </ion-col>
                   </ion-row>
                   <hr />
