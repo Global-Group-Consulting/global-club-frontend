@@ -1,5 +1,5 @@
 <template>
-  <ion-page>
+  <IonPage>
     <TopToolbar include-back>{{ $t('pages.productCategoryDetails.title') }}</TopToolbar>
 
     <ion-content>
@@ -14,11 +14,11 @@
 
         <ion-row>
           <ion-col>
-            <form-file-previewer v-model="formData.thumbnail"
-                                 :remote-images="currentCategory ? currentCategory['thumbnail'] : null"
-                                 :max-images="1"
-                                 :label="$t('forms.productCategories.thumbnail')"
-                                 @delete="onImageDeleteClick"/>
+            <FormFiles v-model="formData.thumbnail"
+                       :remote-images="currentCategory ? currentCategory['thumbnail'] : null"
+                       :max-images="1"
+                       :label="$t('forms.productCategories.thumbnail')"
+                       @delete="onImageDeleteClick"/>
           </ion-col>
         </ion-row>
 
@@ -43,7 +43,7 @@
 
       </ion-grid>
     </ion-content>
-  </ion-page>
+  </IonPage>
 </template>
 
 <script lang="ts">
@@ -54,16 +54,16 @@
   import { AlertsPlugin } from '@/plugins/Alerts';
   import { Attachment } from '@/@types/Attachment';
   import { ProductCategory } from '@/@types/ProductCategory';
-  import FormInput from '@/components/forms/FormInput.vue';
   import SimpleToolbar from '@/components/toolbars/SimpleToolbar.vue';
   import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
-  import FormFilePreviewer from '@/components/forms/FormFilePreviewer.vue';
+  import FormFiles from '@/components/forms/FormFiles.vue';
   import { CreateProductCategoryDto } from '@/views/admin/productCategories/dto/create.product.category.dto';
   import { UpdateProductCategoryDto } from '@/views/admin/productCategories/dto/update.product.category.dto';
-  import { onIonViewDidEnter, onIonViewDidLeave, onIonViewWillEnter } from '@ionic/vue';
+  import { onIonViewDidLeave, onIonViewWillEnter } from '@ionic/vue';
+  import TopToolbar from '@/components/toolbars/TopToolbar.vue';
 
   export default defineComponent({
-    components: { SimpleToolbar, SimpleToolbarButton, FormFilePreviewer },
+    components: { TopToolbar, SimpleToolbar, SimpleToolbarButton, FormFiles },
     setup () {
       const { t } = useI18n();
       const route = useRoute();

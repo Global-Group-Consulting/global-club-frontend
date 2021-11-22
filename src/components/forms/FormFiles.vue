@@ -1,5 +1,5 @@
 <template>
-  <ion-row>
+  <ion-row v-if="label">
     <ion-col class="ion-text-left">
       <span>{{ label }}</span>
     </ion-col>
