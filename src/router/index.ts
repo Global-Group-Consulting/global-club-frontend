@@ -136,6 +136,15 @@ const privateRoutes: RouteRecordRaw[] = [
       isAdmin: true,
     },
   },
+  {
+    path: "/components/buttons",
+    component: () => import("../views/private/components/Buttons.vue"),
+    name: "private.components/buttons",
+    meta: {
+      isPrivate: true,
+      isAdmin: true,
+    },
+  },
 ];
 
 const adminRoutes: RouteRecordRaw[] = AdminRoutes;
