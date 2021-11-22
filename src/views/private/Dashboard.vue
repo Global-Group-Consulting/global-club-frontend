@@ -187,14 +187,8 @@
             <ion-progress-bar class="progress1" color="primary" value="0.8"></ion-progress-bar>
           </ion-col>
           <ion-col size="2">
-            <ion-icon src="./assets/icons/plus.svg"></ion-icon>
-            <btn
-                size="small"
-                shape="round"
-                slot="icon-only"
-                icon-name="circle-right"
-                @click="$router.push('/order')"
-            ></btn>
+            <ion-router-link href="http://localhost:8100/order"><ion-icon class="icon-align" src="./assets/icons/chevron-right.svg"></ion-icon></ion-router-link>
+
           </ion-col>
 
         </ion-row>
@@ -463,6 +457,12 @@ border-radius: 20px;
 
 .scrolling-wrapper::-webkit-scrollbar {
     display: none;
+}
+
+.icon-align{
+    position: absolute;
+    top: 25px;
+    padding-left: 20px;
 }
 
 </style>
