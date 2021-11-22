@@ -1,4 +1,8 @@
 .ion-page {
+  ion-content{
+    --background: linear-gradient(180deg, #000000 0%, rgba(39, 39, 39, 0.7) 100%);
+  }
+
   ion-content::part(background):before {
     content: "";
     position: fixed;
@@ -31,6 +35,17 @@
 
 .content-with-fixed-btn {
   --padding-bottom: 80px !important;
+}
+
+/* Forget Password Page */
+
+.v-container {
+  margin-top: 50px;
+  background: url(/assets/Iconly.png);
+  width: 120px;
+  height: 120px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @include mediaQueryDown(md) {

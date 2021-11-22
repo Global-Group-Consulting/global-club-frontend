@@ -30,7 +30,6 @@
                 name: 'admin.productCategories.details',
                 params: { id: category._id },
               }"
-              :btn-props="{ fill: 'outline', shape: 'round' }"
             >
               {{ t("pages.productCategories.btn_open") }}
             </page-link>

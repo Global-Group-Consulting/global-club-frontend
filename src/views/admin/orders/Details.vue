@@ -45,11 +45,7 @@
 
         <AccordionList :sections="accordionSections">
           <template v-slot:content_communication>
-            <ul>
-              <li v-for="message in order?.communication.messages" :key="message._id">
-                <div v-html="message.content"></div>
-              </li>
-            </ul>
+            <Chat :communication="order?.communication"></Chat>
           </template>
         </AccordionList>
 
@@ -72,10 +68,11 @@
   import { formatOrderStatus } from "@/@utilities/statuses"
   import AccordionList from '@/components/AccordionList.vue';
   import { useI18n } from 'vue-i18n';
+  import Chat from '@/components/chats/Chat.vue';
 
   export default defineComponent({
     name: "Details",
-    components: { AccordionList, SimpleToolbarButton, SimpleToolbar, TopToolbar },
+    components: { Chat, AccordionList, SimpleToolbarButton, SimpleToolbar, TopToolbar },
     setup () {
       const http: HttpPlugin = inject<HttpPlugin>('http') as HttpPlugin;
       const route = useRoute()

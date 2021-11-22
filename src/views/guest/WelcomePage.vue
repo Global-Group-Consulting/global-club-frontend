@@ -29,14 +29,13 @@
       <ion-grid fixed class="grid-login">
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8" class="p-0">
-            <btn
-              class="ion-text-capitalize m-0"
+            <ClubButton
               size="large"
-              expand="block"
+              expanded
               @click="$router.push('/login')"
             >
               Iniziamo
-            </btn>
+            </ClubButton>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -45,6 +44,7 @@
 </template>
 
 <script lang="ts" setup>
+import ClubButton from '@/components/ClubButton.vue';
 </script>
 
 <style scoped>

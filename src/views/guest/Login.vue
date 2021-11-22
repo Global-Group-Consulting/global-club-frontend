@@ -43,15 +43,14 @@
       <ion-grid fixed>
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8" class="py-0">
-            <btn
-              class="ion-text-capitalize"
-              size="large"
+            <ClubButton
               icon-name="login-btn"
-              expand="block"
+              expanded
+              size="large"
               @click="login"
             >
               Login
-            </btn>
+            </ClubButton>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -65,6 +64,7 @@ import { AuthPlugin } from "@/plugins/AuthPlugin";
 import Icon from "@/components/Icon.vue";
 import { AlertsPlugin } from "@/plugins/Alerts";
 import FormInput from "@/components/forms/FormInput.vue";
+import ClubButton from '@/components/ClubButton.vue';
 
 const auth: AuthPlugin | undefined = inject<AuthPlugin>("auth");
 const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;

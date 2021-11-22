@@ -1,16 +1,16 @@
 <template>
-  <IonPage> 
-    
+  <IonPage>
+
 
     <IonContent class="ion-padding">
 
- 
+
    <ion-row>
          <ion-col>
            <img src="/assets/product1.jpg" alt="" />
            </ion-col>
          </ion-row>
-    
+
 
 
        <ion-grid class="ion-no-padding content1">
@@ -35,7 +35,7 @@
           </ion-segment-button>
         </ion-segment>
 
-      
+
         </ion-row>
         <br>
         <v-switch :case="categoria">
@@ -48,8 +48,8 @@
     </template>
   </v-switch>
 
-      
-       
+
+
 
         <!-- <ion-row>
           <ion-col>
@@ -57,7 +57,7 @@
           </ion-col>
         </ion-row> -->
 
-        
+
       <br>
       <ion-row>
          <ion-col>
@@ -67,7 +67,7 @@
 
        </ion-grid>
 
-      
+
 
     </IonContent>
     </IonPage>
@@ -76,12 +76,12 @@
 <script lang="ts">
 //import { HttpPlugin } from '@/plugins/HttpPlugin';
 import { defineComponent, ref } from "vue";
-import VSwitch from '@lmiller1990/v-switch';
+// import VSwitch from '@lmiller1990/v-switch';
 export default defineComponent({
 
   name: "Product",
    components: {
-    VSwitch
+    // VSwitch
   },
   setup() {
     return {
@@ -112,7 +112,7 @@ export default defineComponent({
 
 .btncarrello{
 text-transform: none;
-color:#fff; 
+color:#fff;
 }
 
 
@@ -125,7 +125,7 @@ color:#fff;
   font-size: 15px;
   color: #9a9a9a;
   text-align: left;
-  
+
 }
 
 

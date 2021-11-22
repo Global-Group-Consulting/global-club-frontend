@@ -14,18 +14,18 @@
 
         <ion-row>
           <ion-col size="6">
-            <form-file-previewer v-model="formData.images"
-                                 :remote-images="currentProduct ? currentProduct['images'] : null"
-                                 :label="$t('forms.products.images')"
-                                 :multiple="true"
-                                 @delete="onImageDeleteClick"/>
+            <FormFiles v-model="formData.images"
+                       :remote-images="currentProduct ? currentProduct['images'] : null"
+                       :label="$t('forms.products.images')"
+                       :multiple="true"
+                       @delete="onImageDeleteClick"/>
           </ion-col>
           <ion-col size="6">
-            <form-file-previewer v-model="formData.thumbnail"
-                                 :remote-images="currentProduct ? currentProduct['thumbnail'] : null"
-                                 :max-images="1"
-                                 :label="$t('forms.products.thumbnail')"
-                                 @delete="onImageDeleteClick"/>
+            <FormFiles v-model="formData.thumbnail"
+                       :remote-images="currentProduct ? currentProduct['thumbnail'] : null"
+                       :max-images="1"
+                       :label="$t('forms.products.thumbnail')"
+                       @delete="onImageDeleteClick"/>
           </ion-col>
         </ion-row>
 
@@ -49,9 +49,9 @@
 
         <ion-row>
           <ion-col size="4" offset="4">
-            <ion-button @click="onSubmitClick">
+            <ClubButton @click="onSubmitClick" version="link">
               {{ $t('forms.products.' + (currentProduct ? "btnUpdate" : "btnCreate")) }}
-            </ion-button>
+            </ClubButton>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -68,16 +68,17 @@
   import { AlertsPlugin } from '@/plugins/Alerts';
   import FormInput from '@/components/forms/FormInput.vue';
   import SimpleToolbar from '@/components/toolbars/SimpleToolbar.vue';
-  import FormFilePreviewer from '@/components/forms/FormFilePreviewer.vue';
+  import FormFiles from '@/components/forms/FormFiles.vue';
   import { CreateProductDto } from '@/views/admin/products/dto/create.product.dto';
   import { UpdateProductDto } from '@/views/admin/products/dto/update.product.dto';
   import { ProductCategory } from '@/@types/ProductCategory';
   import { Attachment } from '@/@types/Attachment';
   import { onIonViewDidLeave, onIonViewWillEnter } from '@ionic/vue';
   import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
+  import ClubButton from '@/components/ClubButton.vue';
 
   export default defineComponent({
-    components: { SimpleToolbarButton, FormInput, SimpleToolbar, FormFilePreviewer },
+    components: { ClubButton, SimpleToolbarButton, FormInput, SimpleToolbar, FormFiles },
     setup () {
       const { t } = useI18n();
       const route = useRoute();

@@ -5,7 +5,6 @@
     <ion-content>
       Dashboard ADMIN component
 
-      {{ t("hi") }}
     </ion-content>
   </ion-page>
 </template>
@@ -14,6 +13,7 @@
 import { useI18n } from 'vue-i18n';
 import { MessageSchema } from '@/plugins/I18n';
 import TopToolbar from '@/components/toolbars/TopToolbar.vue';
+import ClubButton from '@/components/ClubButton.vue';
 
 const { t } = useI18n<{ message: MessageSchema }, 'it'>();
 

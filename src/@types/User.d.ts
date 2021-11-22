@@ -33,7 +33,8 @@ export interface User {
 }
 
 export class UserBasic {
-  id: string;
+  id?: string;
+  _id?: string;
   clubPack: PackEnum;
   gold: boolean;
   email: string;

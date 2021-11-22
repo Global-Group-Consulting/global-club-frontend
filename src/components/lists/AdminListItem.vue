@@ -21,7 +21,7 @@
     </ion-label>
 
     <page-link :to="openLink"
-               :btn-props="{ fill: 'clear' }">
+               :btn-props="{ version: 'link' }">
       {{ openLinkLabel ?? "Open" }}
     </page-link>
   </ion-item>
