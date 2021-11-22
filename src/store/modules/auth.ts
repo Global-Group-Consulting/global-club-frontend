@@ -37,7 +37,7 @@ const getters: GetterTree<RootState, RootState> = {
   isLoggedIn (state) {
     return state.loggedIn;
   },
-  user (state) {
+  user (state): User | null {
     return state.user;
   },
   isAdmin (state: AuthState) {
