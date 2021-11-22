@@ -1,47 +1,39 @@
 <template>
   <IonPage>
-    <TopToolbar include-back>Il mio portfolio</TopToolbar>
+    <div class="header-nav"> 
+      <TopToolbar include-back>Il mio portfolio</TopToolbar>
+        </div>
     
     <IonContent class="ion-padding">
-      
-
         <ion-grid>
       <div class="scrolling-wrapper">
-
        <div class="modulo-cerca" @click="categoria='totale-resoconto'" value="totale-resoconto">
             <ion-chip class="resoconto">
               <ion-label>Resoconto</ion-label>
             </ion-chip>
         </div>
-
        <div class="modulo-cerca" @click="categoria='totale-trimestre'" value="totale-trimestre">
             <ion-chip class="trimestre">
               <ion-label>1/1/21 - 30/06/21</ion-label>
             </ion-chip>
         </div>
-
        <div class="modulo-cerca">
             <ion-chip class="trimestre">
               <ion-label>1/7/21 - 31/12/21</ion-label>
             </ion-chip>
         </div>
-
         <div class="modulo-cerca">
             <ion-chip class="trimestre">
               <ion-label>1/7/21 - 31/12/21</ion-label>
             </ion-chip>
         </div>
-        
       </div>
       </ion-grid>
-
         <br>
-
         <v-switch :case="categoria">
 
     <template #totale-resoconto>
       
-
         <ion-grid class="banner">
         <ion-row>
           <div class="money">
@@ -82,9 +74,7 @@
         </ion-row>
       </ion-grid>
 
-
     </template>
-
     <template #totale-trimestre>
       
 
@@ -127,11 +117,7 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-
-
     </template>
-
-
   </v-switch>
 
 </IonContent>
@@ -232,5 +218,12 @@ position: absolute;
 .scrolling-wrapper::-webkit-scrollbar {
     display: none;
 }
+
+.header-nav{
+color: white;
+padding-left: 30px;
+padding-right: 75px;
+}
+
 
 </style>
