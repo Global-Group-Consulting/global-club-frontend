@@ -1,8 +1,14 @@
 <template>
    <IonPage>
+     
+        <div class="header-nav"> 
+      <TopToolbar include-back>Il mio portfolio</TopToolbar>
+        </div>
+          
       <IonContent class="ion-padding">
          <ion-app>
             <ion-content scrollY="false">
+               
                <ion-grid>
                   <ion-row>
                      <ion-col>
@@ -17,7 +23,7 @@
                   </ion-row>
                </ion-grid>
 
-               <ion-grid class="prodotticarrello">
+               <ion-grid class="prodotti-carrello">
                   <ion-row>
                      <ion-col size="3">
                         <img class="img-radius" src="/assets/icons/prodotto.jpg">
@@ -337,7 +343,7 @@
 }
 
 
-.prodotticarrello {
+.prodotti-carrello {
 background-color: rgb(30, 30, 30);
 text-align: left;
 font-size: 13px;
@@ -371,5 +377,11 @@ top: 65px;
 
 .img-radius{
    border-radius: 25px!important;
+}
+
+.header-nav{
+color: white;
+padding-left: 30px;
+padding-right: 75px;
 }
 </style>
