@@ -1,79 +1,123 @@
 <template>
-  <IonPage> 
-    
-
-    <IonContent class="ion-padding">
-   <ion-app>
-      <div class="ion-page">
-         <ion-header>
-            <ion-toolbar></ion-toolbar>
-         </ion-header>
-         <ion-content scrollY="false">
-            <div class="bottom-drawer" ref="drawerRef">
-               <div style="text-align:center">
-                  <button @click="toggleDrawer" class="toggleButton"></button>
-               </div>
-               <ion-grid style="padding-top:0;"> 
+   <IonPage>
+      <IonContent class="ion-padding">
+         <ion-app>
+            <ion-content scrollY="false">
+               <ion-grid>
                   <ion-row>
                      <ion-col>
-                        <div class="ion-text-start">
-                           <h3>Stato</h3>
-                        </div>
+                        <h6>Totale</h6>
                      </ion-col>
                      <ion-col>
-                        <div class="ion-text-end">
-                           <h6>In lavorazione</h6>
+                        <div class="brite">
+                           <img class="brite-img" src="/assets/brite.png" alt="" />
+                           5000
                         </div>
                      </ion-col>
-                  </ion-row>
-                  <ion-row>
-                     <div class="container">
-                        <ul>
-                           <li >
-                              <div class="actions">
-                                 <div class="title ion-text-start" style="margin-left:-53px; margin-top:25px;">Ordine creato</div>
-                              </div>
-                              <span class="number">
-                              <span>01</span>
-                              <span></span>
-                              </span>
-                           </li>
-                           <div class="actions">
-                              <div class="title ion-text-right">20/09/2021, 10:30</div>
-                              <div class="title ion-text-start">Francesco - Amministrazione</div>
-                              <div class="info ion-text-start">Gentile cliente, grazie per averci inviato questo ordine. Per poter procedere con l'ordine abbiamo bisogno di ricevere una fotocopia del suo documento di identita. </div>
-                              <br>
-                              <div class="type ion-text-start">Cordiali saluti, <br> Francesco</div>
-                           </div>
-                           <li style="padding-top:0px;">
-                              <div class="actions-1">
-                                 <div class="title ion-text-right" style="padding-bottom:10px;">20/09/2021, 10:30</div>
-                                 <div class="title ion-text-start" style="margin-left:-53px; margin-top:-45px;">Tu</div>
-                                 <div class="info ion-text-start" style="margin-left:-53px;">Buongiorno Francesco, certo, ecco il documento richiesto.</div>
-                                 <br>
-                                 <div class="type ion-text-start" style="margin-left:-53px;">Cordiali saluti</div>
-                                 <div class="custom-style ion-text-start ">
-                                    <ion-button expand="block" class="m-0 button-style" color="dark" size="small" @click="$router.push('#')">Documento identita.pdf </ion-button>
-                                 </div>
-                              </div>
-                              <span class="number">
-                              <span>02</span>
-                              </span>
-                           </li>
-                           <div class="actions">
-                              <div class="title ion-text-right" style="margin-top:24px;">20/09/2021, 10:30</div>
-                              <div class="title ion-text-start">Nuovo stato ordine: In Lavorazione</div>
-                           </div>
-                        </ul>
-                     </div>
                   </ion-row>
                </ion-grid>
-            </div>
-         </ion-content>
-      </div>
-   </ion-app>
-    </IonContent>
-  </IonPage>
+
+               <ion-grid class="prodotticarrello">
+                  <ion-row>
+                     <ion-col size="3">
+                        <img class="img-radius" src="/assets/icons/prodotto.jpg">
+                     </ion-col>
+                     <ion-col size="6">
+                        <div> Viaggio all inclusive ...</div>
+                        <div class="brite1">
+                           <img class="brite-img" src="/assets/brite.png" alt="" />
+                           2500
+                        </div>
+                        <div class="quantity">1</div>
+                     </ion-col>
+                     <ion-col size="3">
+                        <ion-icon class="icon-alignment" src="./assets/icons/chevron-right.svg"></ion-icon>
+                     </ion-col>
+                  </ion-row>
+                  <hr />
+                  <ion-row>
+                     <ion-col size="3">
+                        <img class="img-radius" src="/assets/icons/prodotto.jpg">
+                     </ion-col>
+                     <ion-col size="6">
+                        <div> Viaggio all inclusive ...</div>
+                        <div class="brite1">
+                           <img class="brite-img" src="/assets/brite.png" alt="" />
+                           2500
+                        </div>
+                       <div class="quantity">1</div>
+                     </ion-col>
+                     <ion-col size="3">
+                        <ion-icon class="icon-alignment" src="./assets/icons/chevron-right.svg"></ion-icon>
+                     </ion-col>
+                  </ion-row>
+                  <hr />
+                  
+               </ion-grid>
+               <div class="bottom-drawer" ref="drawerRef">
+                  <div style="text-align:center">
+                     <button @click="toggleDrawer" class="toggleButton"></button>
+                  </div>
+                  <ion-grid style="padding-top:0;">
+                     <ion-row>
+                        <ion-col>
+                           <div class="ion-text-start">
+                              <h3>Stato</h3>
+                           </div>
+                        </ion-col>
+                        <ion-col>
+                           <div class="ion-text-end">
+                              <h6>In lavorazione</h6>
+                           </div>
+                        </ion-col>
+                     </ion-row>
+                     <ion-row>
+                        <div class="container">
+                           <ul>
+                              <li >
+                                 <div class="actions">
+                                    <div class="title ion-text-start" style="margin-left:-53px; margin-top:25px;">Ordine creato</div>
+                                 </div>
+                                 <span class="number">
+                                 <span>01</span>
+                                 <span></span>
+                                 </span>
+                              </li>
+                              <div class="actions">
+                                 <div class="title ion-text-right">20/09/2021, 10:30</div>
+                                 <div class="title ion-text-start">Francesco - Amministrazione</div>
+                                 <div class="info ion-text-start">Gentile cliente, grazie per averci inviato questo ordine. Per poter procedere con l'ordine abbiamo bisogno di ricevere una fotocopia del suo documento di identita. </div>
+                                 <br>
+                                 <div class="type ion-text-start">Cordiali saluti, <br> Francesco</div>
+                              </div>
+                              <li style="padding-top:0px;">
+                                 <div class="actions-1">
+                                    <div class="title ion-text-right" style="padding-bottom:10px;">20/09/2021, 10:30</div>
+                                    <div class="title ion-text-start" style="margin-left:-53px; margin-top:-45px;">Tu</div>
+                                    <div class="info ion-text-start" style="margin-left:-53px;">Buongiorno Francesco, certo, ecco il documento richiesto.</div>
+                                    <br>
+                                    <div class="type ion-text-start" style="margin-left:-53px;">Cordiali saluti</div>
+                                    <div class="custom-style ion-text-start ">
+                                       <ion-button expand="block" class="m-0 button-style" color="light" size="small" @click="$router.push('#')">Documento identita.pdf </ion-button>
+                                    </div>
+                                 </div>
+                                 <span class="number">
+                                 <span>02</span>
+                                 </span>
+                              </li>
+                              <div class="actions">
+                                 <div class="title ion-text-right" style="margin-top:24px;">20/09/2021, 10:30</div>
+                                 <div class="title ion-text-start">Nuovo stato ordine: In Lavorazione</div>
+                              </div>
+                           </ul>
+                        </div>
+                     </ion-row>
+                  </ion-grid>
+               </div>
+            </ion-content>
+         </ion-app>
+      </IonContent>
+   </IonPage>
 </template>
 <style src='@ionic/core/css/core.css'></style>
 <style src='@ionic/core/css/ionic.bundle.css'></style>
@@ -154,7 +198,7 @@
    closed, which leaves room for button or handle to start drag
    */
    .bottom-drawer {
-   background-color: #a3aaaf;
+   background-color: #0f0f0f;
    position: absolute;
    right: 4px;
    left: 4px;
@@ -277,4 +321,55 @@
    .bottom-drawer[data-open="true"] .container ul{
    top:43%;
    }
+
+.brite {
+  text-align:center;
+  margin-top: 10px;
+}
+
+.brite1 {
+  text-align:left;
+  margin-top: 10px;
+}
+
+.brite-img{
+   width:16px;
+}
+
+
+.prodotticarrello {
+background-color: rgb(30, 30, 30);
+text-align: left;
+font-size: 13px;
+}
+
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(243, 243, 243, 0.342);
+}
+
+.quantity{
+    background-color: #323232;
+    width: 25px;
+    border-radius: 50%;
+    text-align: center;
+    height: 25px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+   margin-top: 10px;
+}
+
+.icon-alignment{
+position: absolute;
+top: 65px;
+}
+
+.img-radius{
+   border-radius: 25px!important;
+}
 </style>
