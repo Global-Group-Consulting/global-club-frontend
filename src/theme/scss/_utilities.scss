@@ -1,3 +1,5 @@
+@import "./utilities/spacers";
+
 .d-flex {
   display: flex !important;
 }
@@ -34,47 +36,7 @@ ion-input {
   margin-right: auto;
 }
 
-@each $i, $value in $spacers {
-  // Margins
-  .m-#{$i} {
-    margin: $value !important;
-  }
 
-  .mx-#{$i} {
-    margin-left: $value !important;
-    margin-right: $value !important;
-  }
-  .my-#{$i} {
-    margin-top: $value !important;
-    margin-bottom: $value !important;
-  }
-
-  @each $dirKey, $dirValue in $spacerDirections {
-    .m#{$dirKey}-#{$i} {
-      margin-#{$dirValue}: $value !important;
-    }
-  }
-
-  // Paddings
-  .p-#{$i} {
-    padding: $value !important;
-  }
-
-  .px-#{$i} {
-    padding-left: $value !important;
-    padding-right: $value !important;
-  }
-  .py-#{$i} {
-    padding-top: $value !important;
-    padding-bottom: $value !important;
-  }
-
-  @each $dirKey, $dirValue in $spacerDirections {
-    .p#{$dirKey}-#{$i} {
-      margin-#{$dirValue}: $value !important;
-    }
-  }
-}
 
 .mt-10vh {
   margin-top: 10vh;
@@ -94,4 +56,9 @@ ion-input {
 
 .display-ib {
   display: inline-block;
+}
+
+.list-simple {
+  list-style: none;
+  padding-left: 0;
 }

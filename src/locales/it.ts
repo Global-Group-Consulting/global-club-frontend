@@ -1,6 +1,8 @@
 import { alerts } from '@/locales/it/alerts';
 import { forms } from '@/locales/it/forms';
 import { enums } from '@/locales/it/enums';
+import { orders } from '@/locales/it/pages/orders';
+import { orderDetails } from '@/locales/it/pages/orderDetails';
 
 export default {
   alerts,
@@ -10,11 +12,14 @@ export default {
   mainMenu: {
     home: 'Home',
     users: 'Utenti',
+    orders: 'Ordini',
     products: 'Prodotti',
     productCategories: 'Categorie Prodotti',
     logout: 'Logout',
   },
   pages: {
+    orders,
+    orderDetails,
     products: {
       'title': "Elenco prodotti",
       'btn_add': 'Aggiungi',
@@ -32,7 +37,9 @@ export default {
     productCategoryDetails: {
       'title': "Dettagli categoria prodotto",
       'btn_delete': "Elimina",
+    },
+    users: {
+      'title': "Elenco utenti",
     }
-    
   }
 };

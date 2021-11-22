@@ -8,16 +8,30 @@ export class BasicApisClass {
    static loading: LoadingHandler
    static alerts: AlertsPlugin
    
-   static getUrl (endpoint = '') {
-      return this.baseUrl + endpoint;
+   static getUrl (endpoint = '', queryParams?: Record<string, any> | null) {
+      const urlParams: string[] = []
+      
+      if (queryParams) {
+         Object.keys(queryParams).forEach(key => {
+            if (queryParams[key] instanceof Array) {
+               queryParams[key].forEach(arrItem => {
+                  urlParams.push(key + '=' + arrItem)
+               })
+            } else {
+               urlParams.push(key + '=' + queryParams[key])
+            }
+         })
+      }
+      
+      return this.baseUrl + endpoint + (queryParams ? "?" + urlParams.join("&") : '');
    }
    
    static async withLoader<T> (method, ...args): Promise<AxiosResponse<T> | undefined> {
       let result;
       let error;
-   
+      
       await this.loading.show()
-   
+      
       if (method === "delete" && args.length > 1 && !args[1].data) {
          console.error("[HTTP_PLUGIN] - Seems that you're trying to send extra data in a 'DELETE' request.\n"
            + "To accomplish this, you must use AxiosRequestConfig object as the second argument instead on the provided object.\n"

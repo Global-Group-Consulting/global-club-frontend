@@ -1,6 +1,6 @@
 <template>
-  <IonPage> 
-    
+  <IonPage>
+
 
     <IonContent class="ion-padding">
 
@@ -23,14 +23,14 @@
       <ion-grid class="daticontent">
          <ion-row>
            <h2>Account</h2>
-           </ion-row> 
+           </ion-row>
 
         <ion-row>
       <ion-col size="2">
         <ion-icon src="./assets/icons/filter.svg"></ion-icon>
       </ion-col>
       <ion-col size="8">
-        <div class="textcontent">Dati personali</div> 
+        <div class="textcontent">Dati personali</div>
       </ion-col>
       <ion-col size="2">
         <ion-icon src="./assets/icons/chevron-right.svg"></ion-icon>
@@ -42,7 +42,7 @@
         <ion-icon src="./assets/icons/filter.svg"></ion-icon>
       </ion-col>
       <ion-col size="8">
-        <div class="textcontent">Dati contratuali</div> 
+        <div class="textcontent">Dati contratuali</div>
       </ion-col>
       <ion-col size="2">
         <ion-icon src="./assets/icons/chevron-right.svg"></ion-icon>
@@ -54,7 +54,7 @@
         <ion-icon src="./assets/icons/filter.svg"></ion-icon>
       </ion-col>
       <ion-col size="8">
-        <div class="textcontent">I miei ordini</div> 
+        <div class="textcontent">I miei ordini</div>
       </ion-col>
       <ion-col size="2">
         <ion-icon src="./assets/icons/chevron-right.svg"></ion-icon>
@@ -66,7 +66,7 @@
         <ion-icon src="./assets/icons/filter.svg"></ion-icon>
       </ion-col>
       <ion-col size="8">
-        <div class="textcontent">Il mio profilo</div> 
+        <div class="textcontent">Il mio profilo</div>
       </ion-col>
       <ion-col size="2">
         <ion-icon src="./assets/icons/chevron-right.svg"></ion-icon>
@@ -81,14 +81,14 @@
   <ion-grid class="daticontent">
          <ion-row>
            <h2>Notifiche</h2>
-           </ion-row> 
+           </ion-row>
 
         <ion-row>
       <ion-col size="2">
         <ion-icon src="./assets/icons/filter.svg"></ion-icon>
       </ion-col>
       <ion-col size="8">
-        <div class="textcontent">Notifiche Pop-up</div> 
+        <div class="textcontent">Notifiche Pop-up</div>
       </ion-col>
       <ion-col size="2">
           <ion-toggle></ion-toggle>
@@ -100,29 +100,29 @@
         <ion-icon src="./assets/icons/filter.svg"></ion-icon>
       </ion-col>
       <ion-col size="8">
-        <div class="textcontent">Le mie notifiche</div> 
+        <div class="textcontent">Le mie notifiche</div>
       </ion-col>
       <ion-col size="2">
-       
+
       </ion-col>
       </ion-row>
 
   </ion-grid>
-    
+
           <br>
 
 
      <ion-grid class="daticontent">
          <ion-row>
            <h2>Altri</h2>
-           </ion-row> 
+           </ion-row>
 
         <ion-row>
       <ion-col size="2">
         <ion-icon src="./assets/icons/filter.svg"></ion-icon>
       </ion-col>
       <ion-col size="8">
-        <div class="textcontent">Contattaci</div> 
+        <div class="textcontent">Contattaci</div>
       </ion-col>
       <ion-col size="2">
         <ion-icon src="./assets/icons/chevron-right.svg"></ion-icon>
@@ -134,7 +134,7 @@
         <ion-icon src="./assets/icons/filter.svg"></ion-icon>
       </ion-col>
       <ion-col size="8">
-        <div class="textcontent">Privacy Policy</div> 
+        <div class="textcontent">Privacy Policy</div>
       </ion-col>
       <ion-col size="2">
         <ion-icon src="./assets/icons/chevron-right.svg"></ion-icon>
@@ -146,7 +146,7 @@
         <ion-icon src="./assets/icons/filter.svg"></ion-icon>
       </ion-col>
       <ion-col size="8">
-        <div class="textcontent">Logout</div> 
+        <div class="textcontent">Logout</div>
       </ion-col>
       <ion-col size="2">
         <ion-icon src="./assets/icons/chevron-right.svg"></ion-icon>
@@ -163,17 +163,15 @@
 
 <script lang="ts">
 //import { HttpPlugin } from '@/plugins/HttpPlugin';
-import { defineComponent,ref} from "vue";
-import VSwitch from '@lmiller1990/v-switch';
+import { defineComponent} from "vue";
+
 
 export default defineComponent({
   name: "Product",
-   components: {
-    VSwitch
-  },
+  
   setup() {
     return {
-      categoria: ref('descrizione')
+      
     }
   }
 })
@@ -200,7 +198,7 @@ export default defineComponent({
 
 .btncarrello{
 text-transform: none;
-color:#fff; 
+color:#fff;
 }
 
 
@@ -213,7 +211,7 @@ color:#fff;
   font-size: 15px;
   color: #9a9a9a;
   text-align: left;
-  
+
 }
 
 

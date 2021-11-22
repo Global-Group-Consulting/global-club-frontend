@@ -1,18 +1,41 @@
 import { BasicApisClass } from '@/plugins/httpCalls/basicApisClass';
 import { PaginatedResult } from '@/@types/Pagination';
-import { Order } from '@/@types/Order';
+import { Order, ReadOrderStatusesDto } from '@/@types/Order';
+import { OrderStatusEnum } from '@/@enums/order.status.enum';
 
 export class OrderApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'club/orders';
   
-  static async readAll () {
-    return
-  }
-  
-  static async readPending () {
+  static async readAll (status?: OrderStatusEnum): Promise<PaginatedResult<Order[]> | undefined> {
     const result = await this.withLoader<PaginatedResult<Order[]>>("get",
-      this.getUrl("?filter[status]=pending&filter[status]=inProgress"));
+      this.getUrl('', {
+        "sortBy[status]": 1,
+        "sortBy[updatedAt]": -1,
+        "sortBy[createdAt]": -1,
+        "filter[status]": status
+      }));
     
     return result?.data;
+  }
+  
+  static async readPending (): Promise<PaginatedResult<Order[]> | undefined> {
+    const result = await this.withLoader<PaginatedResult<Order[]>>("get",
+      this.getUrl('', {
+        "filter[status]": ["pending", "inProgress"],
+      }));
+    
+    return result?.data;
+  }
+  
+  static async readCounters () {
+    const result = await this.withLoader<ReadOrderStatusesDto[]>("get", this.getUrl("/statuses"));
+    
+    return result?.data;
+  }
+  
+  static async read (id: string): Promise<Order | undefined> {
+    const result = await this.withLoader<Order>("get", this.getUrl("/" + id))
+    
+    return result?.data
   }
 }
