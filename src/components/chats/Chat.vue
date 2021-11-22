@@ -7,7 +7,7 @@
       </div>
 
       <div class="mt-3 mx-auto w-lg-50 w-75">
-        <Btn expand="block" @click="onAnswerClick">Rispondi</Btn>
+        <ClubButton expanded @click="onAnswerClick">Rispondi</ClubButton>
       </div>
     </div>
 
@@ -23,13 +23,13 @@
   import { Communication } from '@/@types/Communication';
   import ChatMessage from '@/components/chats/ChatMessage.vue';
   import ChatAnswerModal from '@/components/modals/ChatAnswerModal.vue';
-  import Btn from '@/components/Btn.vue';
   import { modalController } from '@ionic/vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
+  import ClubButton from '@/components/ClubButton.vue';
 
   export default defineComponent({
     name: "Chat",
-    components: { Btn, ChatMessage },
+    components: { ClubButton, ChatMessage },
     props: {
       communication: {
         type: Object as PropType<Communication>,

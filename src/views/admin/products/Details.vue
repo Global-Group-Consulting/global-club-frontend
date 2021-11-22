@@ -49,9 +49,9 @@
 
         <ion-row>
           <ion-col size="4" offset="4">
-            <ion-button @click="onSubmitClick">
+            <ClubButton @click="onSubmitClick" version="link">
               {{ $t('forms.products.' + (currentProduct ? "btnUpdate" : "btnCreate")) }}
-            </ion-button>
+            </ClubButton>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -75,9 +75,10 @@
   import { Attachment } from '@/@types/Attachment';
   import { onIonViewDidLeave, onIonViewWillEnter } from '@ionic/vue';
   import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
+  import ClubButton from '@/components/ClubButton.vue';
 
   export default defineComponent({
-    components: { SimpleToolbarButton, FormInput, SimpleToolbar, FormFiles },
+    components: { ClubButton, SimpleToolbarButton, FormInput, SimpleToolbar, FormFiles },
     setup () {
       const { t } = useI18n();
       const route = useRoute();

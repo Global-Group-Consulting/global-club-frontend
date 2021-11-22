@@ -11,10 +11,11 @@
         <ion-thumbnail>
           <img :src="formatImgUrl(image.id)" :alt="image.fileName">
 
-          <btn color="danger" type="icon-only" icon-name="close"
-               class="close-btn" @click="onRemoteFileDeleteClick(image)"
-               :tooltip="t('forms.filePreviewer.removeRemoteFileTooltip')"
-          ></btn>
+          <ClubButton color="danger" version="outline" icon-name="close"
+                      icon only-icon size="small"
+                      class="close-btn" @click="onRemoteFileDeleteClick(image)"
+                      :tooltip="t('forms.filePreviewer.removeRemoteFileTooltip')"
+          ></ClubButton>
         </ion-thumbnail>
 
         <div class="img-title-container" :title="image.fileName">
@@ -28,9 +29,10 @@
         <ion-thumbnail class="temp-file">
           <img :src="image.url" :alt="image.file.name">
 
-          <btn color="danger" type="icon-only" icon-name="close"
-               class="close-btn" @click="onLocalFileDeleteClick(image)"
-               :tooltip="t('forms.filePreviewer.removeLocalFileTooltip')"></btn>
+          <ClubButton color="danger" version="outline" icon-name="close"
+                      icon only-icon size="small"
+                      class="close-btn" @click="onLocalFileDeleteClick(image)"
+                      :tooltip="t('forms.filePreviewer.removeLocalFileTooltip')"></ClubButton>
         </ion-thumbnail>
 
         <div class="img-title-container" :title="image.file.name">
@@ -59,7 +61,7 @@
   import { computed, ComputedRef, inject, Ref, ref, watch } from 'vue';
   import { AlertsPlugin } from '@/plugins/Alerts';
   import { useI18n } from 'vue-i18n';
-  import { Computed } from 'vuex';
+  import ClubButton from '@/components/ClubButton.vue';
 
 
   const props = withDefaults(defineProps<{

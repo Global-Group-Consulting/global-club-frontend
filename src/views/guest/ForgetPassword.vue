@@ -61,28 +61,26 @@
         <ion-row class="ion-justify-content-center">
           <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
             <!-- Visibile se l'email non è ancora stata inviata -->
-            <btn
+            <ClubButton
               v-if="!emailSent"
-              class="ion-text-capitalize"
               size="large"
               icon-name="lock-btn"
-              expand="block"
+              expanded
               @click="onSendEmailClick"
             >
               Recupera password
-            </btn>
+            </ClubButton>
 
             <!-- Visibile SOLO DOPO che l'email è stata inviata -->
-            <btn
+            <ClubButton
               v-else
-              class="ion-text-capitalize"
               size="large"
               icon-name="chevron-left"
-              expand="block"
+              expanded
               @click="$router.push({ name: 'public.login' })"
             >
               Torna al login
-            </btn>
+            </ClubButton>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -95,10 +93,11 @@ import { defineComponent, ref } from "vue";
 import { onIonViewDidLeave } from "@ionic/vue";
 import FormInput from "@/components/forms/FormInput.vue";
 import Icon from "@/components/Icon.vue";
+import ClubButton from '@/components/ClubButton.vue';
 
 export default defineComponent({
   name: "ForgetPassword",
-  components: { Icon, FormInput },
+  components: { ClubButton, Icon, FormInput },
   setup() {
     const emailSent = ref(false);
 

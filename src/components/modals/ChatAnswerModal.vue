@@ -13,27 +13,35 @@
   </ion-content>
 
   <ion-footer class="modal-footer">
-    <Btn class="ion-text-capitalize" @click="onOkClick">
+    <ClubButton version="outline" @click="onOkClick">
+      {{ cancelText }}
+    </ClubButton>
+
+    <ClubButton @click="onOkClick">
       {{ okText }}
-    </Btn>
+    </ClubButton>
   </ion-footer>
 </template>
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
   import FormFiles from '@/components/forms/FormFiles.vue';
-  import Btn from '@/components/Btn.vue';
   import FormRTE from '@/components/forms/FormRTE.vue';
   import { modalController } from '@ionic/vue';
+  import ClubButton from '@/components/ClubButton.vue';
 
   export default defineComponent({
     name: "ChatAnswerModal",
-    components: { FormRTE, Btn, FormFiles },
+    components: { ClubButton, FormRTE, FormFiles },
     props: {
       title: String,
       okText: {
         type: String,
         default: "Invia"
+      },
+      cancelText: {
+        type: String,
+        default: "Annulla"
       }
     },
     setup (props, { emit }) {

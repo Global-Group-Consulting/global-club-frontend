@@ -34,9 +34,9 @@
 
         <ion-row>
           <ion-col size="4" offset="4">
-            <ion-button @click="onSubmitClick">
+            <ClubButton @click="onSubmitClick" version="link">
               {{ $t('forms.productCategories.' + (currentCategory ? "btnUpdate" : "btnCreate")) }}
-            </ion-button>
+            </ClubButton>
           </ion-col>
         </ion-row>
 
@@ -61,9 +61,10 @@
   import { UpdateProductCategoryDto } from '@/views/admin/productCategories/dto/update.product.category.dto';
   import { onIonViewDidLeave, onIonViewWillEnter } from '@ionic/vue';
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
+  import ClubButton from '@/components/ClubButton.vue';
 
   export default defineComponent({
-    components: { TopToolbar, SimpleToolbar, SimpleToolbarButton, FormFiles },
+    components: { ClubButton, TopToolbar, SimpleToolbar, SimpleToolbarButton, FormFiles },
     setup () {
       const { t } = useI18n();
       const route = useRoute();

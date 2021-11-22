@@ -23,7 +23,7 @@
             </ion-label>
 
             <page-link :to="{ name: 'admin.products.details', params: { id: product._id } }"
-                       :btn-props="{ fill: 'outline', shape: 'round' }">
+                       >
               {{ $t("pages.products.btn_open") }}
             </page-link>
           </ion-item>
