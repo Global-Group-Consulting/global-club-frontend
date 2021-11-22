@@ -68,5 +68,23 @@
       @include generateMargins($value, $i, $key);
       @include generatePaddings($value, $i, $key);
     }
+
+    .mx-#{$key}auto {
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
   }
+}
+
+.mx-auto {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.mt-10vh {
+  margin-top: 10vh;
+}
+
+.mt-5vh {
+  margin-top: 5vh;
 }

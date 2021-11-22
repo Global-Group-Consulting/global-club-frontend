@@ -1,0 +1,26 @@
+$sizes: [0, 25,50, 75,100];
+
+@mixin generateSizes($breakpoint: null) {
+  $prefix: $breakpoint;
+
+  @if ($breakpoint) {
+    $prefix: $breakpoint + "-"
+  }
+
+  @each $value in $sizes {
+    .w-#{$prefix}#{$value} {
+      width: $value + 0% !important;
+    }
+    .h-#{$prefix}#{$value} {
+      height: $value + 0% !important;
+    }
+  }
+}
+
+@include generateSizes();
+
+@each $key, $value in $breakpoints {
+  @include mediaQueryUp($key) {
+    @include generateSizes($key);
+  }
+}
