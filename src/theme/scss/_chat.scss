@@ -1,18 +1,18 @@
 .chat-component {
-  --border-color: #7B786F;
-
+  --border-color: var(--ion-color-secondary-border);
   position: relative;
 
   .chat-container {
     display: flex;
     flex-direction: column;
+    position: relative;
 
     &:before {
       content: "";
       height: 100%;
       border-left: dashed 1px var(--border-color);
       position: absolute;
-      left: 0;
+      left: 4px;
       top: 0;
     }
   }
@@ -20,33 +20,54 @@
   .chat-message {
     --dot-size: 23px;
     --dot-inner-size: 10px;
+    --dot-primary-color: var(--ion-color-secondary);
+    --dot-bg-color: var(--border-color);
+    --title-color: white;
 
     position: relative;
-    padding-left: $spacer;
+    padding-left: $spacer * 2;
+    padding-bottom: $spacer;
 
     &:before {
       content: "";
       height: var(--dot-size);
       width: var(--dot-size);
-      background-color: white;
+      background-color: var(--dot-bg-color);
       border-radius: 50%;
-      border: solid 3px var(--border-color);
+      border: solid 3px var(--dot-primary-color);
       position: absolute;
-      left: calc(1px - (var(--dot-size) / 2));
-      top: 0;
+      left: calc(5px - (var(--dot-size) / 2));
+      top: 4px;
       box-sizing: border-box;
+      box-shadow: 0 0 10px rgba(var(--ion-color-primary-rgb), .4);
     }
 
     &:after {
       content: "";
       height: var(--dot-inner-size);
       width: var(--dot-inner-size);
-      background-color: grey; //var(--ion-color-primary);
+      background-color: var(--dot-primary-color);
       border-radius: 50%;
       position: absolute;
-      left: calc(1px - (var(--dot-inner-size) / 2));
-      top: calc((var(--dot-size) / 2) - (var(--dot-inner-size) / 2));
+      left: calc(5px - (var(--dot-inner-size) / 2));
+      top: calc(4px + (var(--dot-size) / 2) - (var(--dot-inner-size) / 2));
       box-sizing: border-box;
     }
+
+    &.incoming {
+      --dot-primary-color: var(--ion-color-primary);
+      --dot-bg-color: white;
+      --title-color: var(--ion-color-primary)
+    }
+
+    ul {
+      margin: 0;
+    }
+
+    .chat-message-title {
+      color: var(--title-color);
+      //font-size: 1.2rem;
+    }
+
   }
 }
