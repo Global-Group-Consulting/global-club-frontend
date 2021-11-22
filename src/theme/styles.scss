@@ -21,6 +21,11 @@
   font-family: "Poppins", sans-serif;
 }
 
+* {
+  box-sizing: border-box;
+
+}
+
 ion-app {
   --ion-toolbar-background: var(--ion-color-primary-contrast);
   text-align: center;

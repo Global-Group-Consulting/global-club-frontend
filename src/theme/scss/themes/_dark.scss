@@ -10,11 +10,13 @@
 
 :root {
   --custom-light-gradient: linear-gradient(
-    274.3deg,
-    #ab8e54 0%,
-    #d7c7a6 100%,
-    #f7f7f7 100%
+                  274.3deg,
+                  #ab8e54 0%,
+                  #d7c7a6 100%,
+                  #f7f7f7 100%
   );
+  --primary-bg-gradient: linear-gradient(274.3deg, #ab8e54 0%, #d7c7a6 100%, #f7f7f7 100%);
+  --secondary-bg-gradient: linear-gradient(200deg, #0e0e0e 0%, #272727 100%);
 
   --ion-bp-sm: 576px;
   --ion-bp-md: 768px;
@@ -24,6 +26,10 @@
   --ion-grid-padding: 25px;
   //--ion-margin: $spacer;
   //--ion-grid-column-padding: 15px
+
+  --font-size-base: 14px;
+  --font-size-large: calc(var(--font-size-base) * 1.45);
+  --font-size-small: calc(var(--font-size-base) * .9);
 }
 
 body {

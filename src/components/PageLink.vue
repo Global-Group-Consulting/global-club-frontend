@@ -3,11 +3,11 @@
       :to="resolvedPath"
       custom
       v-slot="{ href,navigate}">
-    <ion-button v-bind="ionBtnProps"
+    <ClubButton v-bind="ionBtnProps"
                 @click="navigate"
                 :href="href">
       <slot></slot>
-    </ion-button>
+    </ClubButton>
 
   </router-link>
 </template>
@@ -15,6 +15,7 @@
 <script lang="ts">
   import { RouteLocationRaw, useRouter } from 'vue-router';
   import { computed, defineComponent, PropType } from 'vue';
+  import ClubButton from '@/components/ClubButton.vue';
 
   export interface IonButtonInterface {
     disabled?: boolean;
@@ -37,6 +38,7 @@
   }
 
   export default defineComponent({
+    components: { ClubButton },
     props: {
       to: {
         type: Object as PropType<RouteLocationRaw>
@@ -55,7 +57,9 @@
       });
 
       const ionBtnProps = computed(() => {
-        return Object.assign({}, props.btnProps);
+        return Object.assign({
+          version: "link"
+        }, props.btnProps);
       });
 
       return {
