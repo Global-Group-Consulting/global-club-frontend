@@ -9,6 +9,7 @@ export interface User {
   'created_at': string;
   'updated_at': string;
   'id': string;
+  '_id': string;
   'contractNumber': string;
   'role': number;
   'personType': number;

@@ -14,24 +14,19 @@
                 </SimpleToolbar>-->
 
 
-        <Tabs :tabs-list="groupsList" v-model="activeTab"></Tabs>
+        <Tabs :tabs-list="groupsList" v-model.number="activeTab"></Tabs>
 
         <ion-list>
-          <ion-item v-for="user of usersList" :key="user._id">
-            <!--            <ion-thumbnail slot="start">
-                          <img :src="formatImgUrl(user.thumbnail.id)">
-                        </ion-thumbnail>-->
-
-            <ion-label>
-              <h2>{{ user.firstName }} {{ user.lastName }}</h2>
-              <h4>{{ user.email }}</h4>
-            </ion-label>
-
-            <!--            <page-link :to="{ name: 'admin.users.details', params: { id: user._id } }"
-                                   :btn-props="{ fill: 'outline', shape: 'round' }">
-                          {{ $t("pages.users.btn_open") }}
-                        </page-link>-->
-          </ion-item>
+          <AdminListItem v-for="user of usersList" :key="user._id"
+                         :title="formatUserName(user)"
+                         :description="user.email"
+                         :open-link="{ name:'admin.users.profile', params: { id: user._id } }"
+                         :open-link-label="$t('pages.users.btn_open')"
+          >
+            <template v-slot:image>
+              <Icon :name="activeTab === UserRoleEnum.CLIENTE ? 'user' : 'user-2'"></Icon>
+            </template>
+          </AdminListItem>
         </ion-list>
 
         <pagination-bar :paginationData="paginationData" @pageChanged="onPageChanged"></pagination-bar>
@@ -52,16 +47,19 @@
   import { TabEntry } from '@/@types/TabEntry';
   import { useI18n } from 'vue-i18n';
   import Tabs from '@/components/Tabs.vue';
-  import { User } from '@/@types/User';
+  import { User, UserBasic } from '@/@types/User';
+  import AdminListItem from '@/components/lists/AdminListItem.vue';
+  import { formatUserName } from '@/@utilities/fields';
+  import Icon from '@/components/Icon.vue';
 
   export default defineComponent({
     name: "UsersPage",
-    components: { Tabs, PaginationBar, TopToolbar },
+    components: { Icon, AdminListItem, Tabs, PaginationBar, TopToolbar },
     setup () {
       const http = inject<HttpPlugin>("http") as HttpPlugin
       const { t } = useI18n()
 
-      const paginatedUsersData: Ref<PaginatedResult<User[]>> = ref({} as any);
+      const paginatedUsersData: Ref<PaginatedResult<UserBasic[]>> = ref({} as any);
       const activeTab: Ref<UserRoleEnum> = ref(UserRoleEnum.CLIENTE)
       const groupsList: Ref<TabEntry[]> = ref([
         {
@@ -75,7 +73,7 @@
         }
       ])
 
-      const usersList: ComputedRef<User[]> = computed(() => {
+      const usersList: ComputedRef<UserBasic[]> = computed(() => {
         return paginatedUsersData.value.data
       })
 
@@ -117,7 +115,8 @@
       return {
         usersList, groupsList, activeTab, paginationData,
         UserRoleEnum,
-        fetchUsers, onPageChanged
+        fetchUsers, onPageChanged,
+        formatUserName
       }
     }
   });

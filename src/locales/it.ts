@@ -40,6 +40,10 @@ export default {
     },
     users: {
       'title': "Elenco utenti",
+      'btn_open': 'Vedi Profilo',
+    },
+    userProfile: {
+      'title': `Profilo di {fullName}`
     }
   }
 };

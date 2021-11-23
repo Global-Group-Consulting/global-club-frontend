@@ -1,5 +1,5 @@
 import { BasicApisClass } from '@/plugins/httpCalls/basicApisClass';
-import { ReadUserGroupsDto, User } from '@/@types/User';
+import { ReadUserGroupsDto, User, UserBasic } from '@/@types/User';
 import { UserRoleEnum } from '@/@enums/user.role.enum';
 import { PaginatedResult } from '@/@types/Pagination';
 
@@ -8,8 +8,8 @@ export type UserGroup = { id: UserRoleEnum; data: User[] }
 export class UserApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'club/users';
   
-  static async readAll (group: UserRoleEnum, page: number): Promise<PaginatedResult<User[]> | undefined> {
-    const result = await this.withLoader<PaginatedResult<User[]>>("get", this.getUrl(), {
+  static async readAll (group: UserRoleEnum, page: number): Promise<PaginatedResult<UserBasic[]> | undefined> {
+    const result = await this.withLoader<PaginatedResult<UserBasic[]>>("get", this.getUrl(), {
       params: {
         ...this.prepareFilterParams({
           role: group.toString()
@@ -27,13 +27,13 @@ export class UserApis extends BasicApisClass {
     return result?.data;
   }
   
-  /*
-  static async read (id: string): Promise<Product | undefined> {
-    const result = await this.withLoader<Product>("get", this.getUrl('/' + id))
+  static async readProfile (id: string): Promise<UserBasic | undefined> {
+    const result = await this.withLoader<UserBasic>("get", this.getUrl('/' + id))
     
     return result?.data
   }
   
+  /*
   static async create (data: CreateProductDto): Promise<Product | undefined> {
     const result = await this.withLoader<Product>("post", this.getUrl(), data);
   
