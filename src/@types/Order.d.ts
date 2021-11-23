@@ -1,6 +1,7 @@
 import { User, UserBasic } from '@/@types/User';
 import { OrderStatusEnum } from '@/@enums/order.status.enum';
 import { Communication } from '@/@types/Communication';
+import { Product } from '@/@types/Product';
 
 export interface Order {
   user: UserBasic;
@@ -15,7 +16,7 @@ export interface Order {
 }
 
 export interface OrderProduct {
-  product: string;
+  product: Product;
   
   qta: number;
   

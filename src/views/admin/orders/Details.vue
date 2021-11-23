@@ -47,6 +47,13 @@
           <template v-slot:content_communication>
             <Chat :communication="order?.communication"></Chat>
           </template>
+          <template v-slot:content_products>
+            <AccordionList :sections="productSections">
+              <template v-slot:content_product="{item}">
+                {{ item.data }}
+              </template>
+            </AccordionList>
+          </template>
         </AccordionList>
 
       </ion-grid>
@@ -55,8 +62,8 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, Ref, ref } from 'vue';
-  import { Order } from '@/@types/Order';
+  import { computed, defineComponent, inject, Ref, ref } from 'vue';
+  import { Order, OrderProduct } from '@/@types/Order';
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import { onIonViewWillEnter } from '@ionic/vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
@@ -66,7 +73,7 @@
   import { formatLocaleDate } from "@/@utilities/dates"
   import { formatCurrency } from "@/@utilities/currency"
   import { formatOrderStatus } from "@/@utilities/statuses"
-  import AccordionList from '@/components/AccordionList.vue';
+  import AccordionList, { AccordionSection } from '@/components/AccordionList.vue';
   import { useI18n } from 'vue-i18n';
   import Chat from '@/components/chats/Chat.vue';
 
@@ -78,7 +85,10 @@
       const route = useRoute()
       const { t } = useI18n()
       const order: Ref<Order | null> = ref(null)
-      const accordionSections = ref([
+
+      const productsCount = computed(() => order.value?.products.reduce((acc, curr) => acc + curr.qta, 0))
+
+      const accordionSections: Ref<AccordionSection[]> = ref([
         {
           id: "communication",
           text: t("pages.orderDetails.tab_communication"),
@@ -86,15 +96,32 @@
         },
         {
           id: "products",
-          text: t("pages.orderDetails.tab_products"),
-          open: false
+          text: t("pages.orderDetails.tab_products", {
+            qta: productsCount.value,
+            total: formatCurrency(order.value?.amount ?? 0)
+          }),
+          open: true
         },
         {
           id: "user",
           text: t("pages.orderDetails.tab_user"),
-          open: false
+          open: false,
         }
       ])
+      const productSections: Ref<(AccordionSection & { data: OrderProduct })[]> = computed(() => {
+        if (order.value) {
+          return order.value.products.map((el) => {
+            return {
+              id: "product",//el.product._id,
+              text: el.product.title + ` (x${el.qta}) = ` + formatCurrency(el.product.price * el.qta),
+              open: ref(false) as any,
+              data: el
+            }
+          })
+        }
+
+        return []
+      })
 
       onIonViewWillEnter(async () => {
         const result = await http.api.orders.read(route.params.id as string);
@@ -104,7 +131,7 @@
 
       return {
         order,
-        accordionSections,
+        accordionSections, productSections,
         formatLocaleDate, formatCurrency, formatOrderStatus
       }
     }

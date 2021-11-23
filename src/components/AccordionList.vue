@@ -12,7 +12,7 @@
       <div class="accordion-collapse-container">
         <div class="accordion-collapse-content">
           <!-- Creates dynamic slots -->
-          <slot :name="'content_' + section.id">
+          <slot :name="'content_' + section.id" :item="section">
             Content of slot <strong>"content_{{ section.id }}"</strong>
           </slot>
         </div>
@@ -30,6 +30,7 @@
     id: string;
     text: string;
     open: boolean;
+    data?: any;
   }
 
   export default defineComponent({
