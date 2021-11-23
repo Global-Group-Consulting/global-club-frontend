@@ -1,9 +1,13 @@
-import { UserBasic } from '@/@types/User';
+import { User, UserBasic } from '@/@types/User';
 
 /**
  * Returns the user name formatted as "firstName lastName"
  */
-export function formatUserName (user: UserBasic) {
+export function formatUserName (user: UserBasic | User) {
+  if (!user || !user.firstName || !user.lastName) {
+    return "..."
+  }
+  
   return user.firstName + " " + user.lastName;
 }
 
