@@ -7,8 +7,7 @@
           
       <IonContent class="ion-padding">
          <ion-app>
-            <ion-content scrollY="false">
-               
+            <ion-content>
                <ion-grid>
                   <ion-row>
                      <ion-col>
@@ -60,7 +59,7 @@
                   <hr />
                   
                </ion-grid>
-               <div class="bottom-drawer" ref="drawerRef">
+               <div class="bottom-drawer" ref="drawerRef" style="position:fixed">
                   <div style="text-align:center">
                      <button @click="toggleDrawer" class="toggleButton"></button>
                   </div>
@@ -95,11 +94,12 @@
                                  <div class="info ion-text-start">Gentile cliente, grazie per averci inviato questo ordine. Per poter procedere con l'ordine abbiamo bisogno di ricevere una fotocopia del suo documento di identita. </div>
                                  <br>
                                  <div class="type ion-text-start">Cordiali saluti, <br> Francesco</div>
+                                 <div class="title ion-text-right" >20/09/2021, 10:30</div>
                               </div>
                               <li style="padding-top:0px;">
                                  <div class="actions-1">
-                                    <div class="title ion-text-right" style="padding-bottom:10px;">20/09/2021, 10:30</div>
-                                    <div class="title ion-text-start" style="margin-left:-53px; margin-top:-45px;">Tu</div>
+                              
+                                    <div class="title ion-text-start" style="margin-left:-53px; margin-top:-45px; line-height:1; padding-top:3px;">Tu</div>
                                     <div class="info ion-text-start" style="margin-left:-53px;">Buongiorno Francesco, certo, ecco il documento richiesto.</div>
                                     <br>
                                     <div class="type ion-text-start" style="margin-left:-53px;">Cordiali saluti</div>
@@ -113,7 +113,7 @@
                               </li>
                               <div class="actions">
                                  <div class="title ion-text-right" style="margin-top:24px;">20/09/2021, 10:30</div>
-                                 <div class="title ion-text-start">Nuovo stato ordine: In Lavorazione</div>
+                                 <div class="title ion-text-start" style="margin-top:-14px;">Nuovo stato ordine: In Lavorazione</div>
                               </div>
                            </ul>
                         </div>
@@ -208,7 +208,7 @@
    position: absolute;
    right: 4px;
    left: 4px;
-   bottom: -480px;
+   bottom: -512px;
    height: 600px;
    border-radius: 50px;
    }
@@ -384,4 +384,6 @@ color: white;
 padding-left: 30px;
 padding-right: 75px;
 }
+
+
 </style>
