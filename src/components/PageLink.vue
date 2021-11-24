@@ -63,7 +63,15 @@
       });
 
       function onClick (navigate, e) {
-        if (props.btnProps?.target !== "_blank") {
+        const keys = ["metaKey", "ctrlKey"].reduce((acc, key) => {
+          if (e[key]) {
+            acc[key] = e[key]
+          }
+
+          return acc;
+        }, {})
+
+        if (props.btnProps?.target !== "_blank" && Object.keys(keys).length === 0) {
           e.preventDefault()
 
           navigate()
