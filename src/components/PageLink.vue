@@ -45,7 +45,7 @@
       },
       btnProps: Object as PropType<IonButtonInterface>
     },
-    setup (props) {
+    setup (props, { attrs }) {
       const router = useRouter();
 
       const resolvedPath = computed(() => {
@@ -59,7 +59,7 @@
       const ionBtnProps = computed(() => {
         return Object.assign({
           version: "link"
-        }, props.btnProps);
+        }, props.btnProps, attrs);
       });
 
       function onClick (navigate, e) {
