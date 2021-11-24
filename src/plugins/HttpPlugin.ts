@@ -8,6 +8,7 @@ import { loadingController } from '@ionic/vue';
 import { AlertsPlugin } from '@/plugins/Alerts';
 import { UserApis } from '@/plugins/httpCalls/UserApis';
 import { OrderApis } from '@/plugins/httpCalls/OrderApis';
+import { MovementApis } from '@/plugins/httpCalls/MovementApis';
 
 type RequestsQueue = {
   resolve: (value?: unknown) => void;
@@ -21,6 +22,7 @@ interface ApiModules {
   productCategories: typeof ProductCategoryApis;
   users: typeof UserApis;
   orders: typeof OrderApis;
+  movements: typeof MovementApis;
 }
 
 class HttpQueue {
@@ -119,7 +121,8 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
       products: ProductApis,
       productCategories: ProductCategoryApis,
       users: UserApis,
-      orders: OrderApis
+      orders: OrderApis,
+      movements: MovementApis
     };
     this.queue = new HttpQueue();
     this.loading = new LoadingHandler(this.plugins["$t"]);

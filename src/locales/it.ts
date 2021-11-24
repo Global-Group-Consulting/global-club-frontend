@@ -3,6 +3,7 @@ import { forms } from '@/locales/it/forms';
 import { enums } from '@/locales/it/enums';
 import { orders } from '@/locales/it/pages/orders';
 import { orderDetails } from '@/locales/it/pages/orderDetails';
+import { ordersSection } from '@/locales/it/sections/orders';
 
 export default {
   alerts,
@@ -45,5 +46,8 @@ export default {
     userProfile: {
       'title': `Profilo di {fullName}`
     }
+  },
+  sections: {
+    orders: ordersSection
   }
 };
