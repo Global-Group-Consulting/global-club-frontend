@@ -2,9 +2,9 @@
   <router-link
       :to="resolvedPath"
       custom
-      v-slot="{ href,navigate}">
+      v-slot="{ href, navigate}">
     <ClubButton v-bind="ionBtnProps"
-                @click="navigate"
+                @click="onClick(navigate, $event)"
                 :href="href">
       <slot></slot>
     </ClubButton>
@@ -62,9 +62,19 @@
         }, props.btnProps);
       });
 
+      function onClick (navigate, e) {
+        if (props.btnProps?.target !== "_blank") {
+          e.preventDefault()
+
+          navigate()
+        }
+
+      }
+
       return {
         resolvedPath,
-        ionBtnProps
+        ionBtnProps,
+        onClick
       }
     }
   })
