@@ -4,45 +4,8 @@
 
     <ion-content>
       <ion-grid fixed>
-        <SimpleToolbar>
-          <template v-slot:center>
-            <SimpleToolbarButton :disabled="!order"
-                                 :text="$t('pages.orderDetails.btn_cancel')"
-            />
-            <SimpleToolbarButton :disabled="!order"
-                                 :text="$t('pages.orderDetails.btn_approve')"
-            />
-          </template>
-        </SimpleToolbar>
-
-        <ion-row>
-          <ion-col size="12" sizeLg="6" class="pb-0 py-lg-5">
-            <ul class="ion-text-left my-0 list-simple">
-              <li>
-                {{ $t("pages.orderDetails.order_status") }}: <strong>{{ formatOrderStatus(order?.status) }}</strong>
-              </li>
-              <li>
-                {{ $t("pages.orderDetails.order_amount") }}: <strong>{{ formatCurrency(order?.amount) }}</strong>
-              </li>
-            </ul>
-          </ion-col>
-          <ion-col size="12" sizeLg="6" class="pt-0 py-lg-5 mb-5 mb-lg-0">
-            <ul class="ion-text-left my-0 list-simple">
-              <li>
-                {{ $t("pages.orderDetails.order_created_at") }}: <strong>{{
-                  formatLocaleDate(order?.createdAt)
-                }}</strong>
-              </li>
-              <li>
-                {{ $t("pages.orderDetails.order_updated_at") }}: <strong>{{
-                  formatLocaleDate(order?.updatedAt)
-                }}</strong>
-              </li>
-            </ul>
-          </ion-col>
-        </ion-row>
-
-
+        
+        
         <AccordionList :sections="accordionSections">
           <template v-slot:content_communication>
             <Chat :communication="order?.communication"></Chat>
@@ -69,6 +32,7 @@
   import AccordionList from '@/components/AccordionList.vue';
   import { useI18n } from 'vue-i18n';
   import Chat from '@/components/chats/Chat.vue';
+import DashboardVue from '@/views/private/Dashboard.vue';
 
   export default defineComponent({
     name: "Details",
@@ -80,19 +44,30 @@
       const order: Ref<Order | null> = ref(null)
       const accordionSections = ref([
         {
-          id: "communication",
-          text: t("pages.orderDetails.tab_communication"),
-          open: false
+          id: "anagrafici",
+          text: t("pages.orderDetails.tab_anagrafici"),
+          open: true,
+          desc:"gerta habibi",
+          html: '<ion-button color="success">Success</ion-button>'
+          
         },
         {
-          id: "products",
-          text: t("pages.orderDetails.tab_products"),
-          open: false
+          id: "nascita",
+          text: t("pages.orderDetails.tab_nascita"),
+          open: false,
+          desc:"gerta"
         },
         {
-          id: "user",
-          text: t("pages.orderDetails.tab_user"),
-          open: false
+          id: "residenza",
+          text: t("pages.orderDetails.tab_residenza"),
+          open: false,
+          desc:"habibi"
+        },
+        {
+          id: "contatti",
+          text: t("pages.orderDetails.tab_contatti"),
+          open: false,
+          desc:"testoooo"
         }
       ])
 

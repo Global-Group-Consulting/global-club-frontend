@@ -7,19 +7,21 @@
     <ion-grid>
     <ion-row class="btn-tabs">
         <ion-col value="descrizione">
-            <ClubButton color="secondary" version="link" @click="categoria='personali'" value="personali" class="btn-hover">Personali</ClubButton>
+            <ClubButton color="secondary" version="link" @click="categoria='personali'" value="personali" class="btn-hover">Dati 1</ClubButton>
             
           </ion-col>
 
           <ion-col>
-        <ClubButton color="secondary" version="link" @click="categoria='contrattuali'" value="contrattuali" class="btn-hover">Contrattuali</ClubButton>
+        <ClubButton color="secondary" version="link" @click="categoria='contrattuali'" value="contrattuali" class="btn-hover">Dati 2</ClubButton>
             </ion-col>
          
         </ion-row>
         <br>
         <v-switch :case="categoria">
     <template #personali>
-      testo 1 
+        <AccordionList :sections="accordionSections">
+          
+        </AccordionList>
     </template>
 
     <template #contrattuali>
@@ -28,24 +30,25 @@
   </v-switch>
 
        </ion-grid>
-
-
+   
     </IonContent>
   </IonPage>
 </template>
 
 <script lang="ts">
 //import { HttpPlugin } from '@/plugins/HttpPlugin';
-import { defineComponent, ref } from "vue";
+import { defineComponent,ref } from "vue";
 import VSwitch from '@lmiller1990/v-switch';
 import ClubButton from '@/components/ClubButton.vue';
-
+import AccordionList from '../admin/orders/Details.vue'
+import { useI18n } from "vue-i18n";
 export default defineComponent({
   name: "User",
   components: {
-    VSwitch, ClubButton
+    VSwitch, ClubButton, AccordionList
   },
 setup() {
+  const { t } = useI18n()
     return {
       categoria: ref('descrizione')
     }

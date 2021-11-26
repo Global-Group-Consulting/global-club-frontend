@@ -8,5 +8,9 @@ export const orderDetails = {
   "order_updated_at": "Data ultima modifica",
   "tab_communication": "Comunicazioni",
   "tab_products": "Prodotti",
-  "tab_user": "Utente"
+  "tab_user": "Utente",
+  "tab_anagrafici": "Dati anagrafici",
+  "tab_nascita": "Dati di nascita",
+  "tab_residenza": "Residenza",
+  "tab_contatti": "Contatti",
 }
