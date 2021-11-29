@@ -1,3 +1,4 @@
+@import "../variables";
 /**
 *!We are defaulting to dark so no Light theme is available.
 *TODO In the future will let the user to switch the theme.
@@ -23,6 +24,7 @@
   --ion-bp-lg: 992px;
   --ion-bp-xl: 1200px;
 
+  --spacer: #{$spacer};
   --ion-grid-padding: 25px;
   //--ion-margin: $spacer;
   //--ion-grid-column-padding: 15px

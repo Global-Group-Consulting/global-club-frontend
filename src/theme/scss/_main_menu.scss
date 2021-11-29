@@ -1,0 +1,69 @@
+.main-menu {
+  background-color: var(--ion-color-secondary);
+  --background: var(--ion-color-secondary);
+
+  ion-header ion-toolbar {
+    padding-top: 32px;
+    padding-bottom: 32px;
+
+    ion-img {
+      height: 40px;
+    }
+  }
+
+  ion-content, ion-header ion-toolbar {
+    --background: transparent;
+  }
+
+  ion-content {
+    &::part(background) {
+      display: none;
+    }
+
+    ion-list {
+      border-top: solid 1px #7B786F;
+    }
+  }
+
+  ion-footer {
+    background: #000;
+    padding-top: var(--spacer);
+    padding-bottom: var(--spacer);
+
+    ion-list {
+      padding: 0;
+    }
+
+    ion-item {
+      --background: transparent;
+
+      &:hover {
+        --background: #{lighten(#000, 3)}
+      }
+    }
+  }
+
+  ion-list {
+    background: transparent;
+
+    ion-item {
+      --border-color: transparent;
+      --border-width: 0;
+
+      ion-icon {
+        color: inherit;
+      }
+    }
+
+    ion-item-divider {
+      --padding-end: 16px;
+
+      hr {
+        background-color: #7B786F;
+        width: 100%;
+      }
+    }
+  }
+
+
+}
