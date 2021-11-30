@@ -48,29 +48,34 @@ const privateEntries: MenuEntry[] = [
     icon: "home",
   },
   {
-    route: 'private.favourites',
-    label: 'favourites',
-    // icon: "",
+    route: 'private.wish',
+    label: 'userFavourites',
+    icon: "star",
   },
   {
     route: 'private.cart',
-    label: 'cart',
+    label: 'userCart',
     icon: "cart",
   },
   {
-    route: 'private.profile',
-    label: 'profile',
-    icon: "profile",
+    route: '',
+    label: '',
+    divider: true
+  },
+  {
+    route: 'private.user',
+    label: 'userProfile',
+    icon: "user",
   },
   {
     route: 'private.orders',
-    label: 'orders',
+    label: 'userOrders',
     icon: "ticket",
   },
   {
-    route: 'private.portfolio',
-    label: 'portfolio',
-    icon: "ticket",
+    route: 'private.wallet',
+    label: 'userPortfolio',
+    icon: "wallet",
   },
 ]
 
@@ -82,7 +87,7 @@ export function getUserMenuEntries (user: User): MenuEntry[] {
   const userIsAdmin: boolean = store.getters["auth/isAdmin"];
   const userPermissions: AclPermissionsEnum[] = store.getters["auth/permissions"];
   
-  let toReturn: MenuEntry[] = []
+  let toReturn: MenuEntry[]
   
   if (userIsAdmin) {
     toReturn = adminEntries;
