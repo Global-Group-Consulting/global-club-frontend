@@ -34,18 +34,18 @@ import './theme/styles.scss';
 import { authPlugin } from '@/plugins/AuthPlugin';
 import { httpPlugin } from '@/plugins/HttpPlugin';
 import { i18n } from '@/plugins/I18n';
-import { store, key } from './store';
+import { store, storeKey } from './store';
 import { alertsPlugin } from '@/plugins/Alerts';
- 
 
- 
- 
+
+
+
 const app = createApp(App)
   .use(IonicVue, {
     mode: 'md', // "md" | "ios",
   })
   .use(i18n)
-  .use(store, key)
+  .use(store, storeKey)
   .use(alertsPlugin)
   .use(httpPlugin)
   .use(authPlugin)

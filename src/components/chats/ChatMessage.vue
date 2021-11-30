@@ -17,7 +17,7 @@
   import { formatUserName, getUserId } from "@/@utilities/fields"
   import { formatLocaleDate } from '@/@utilities/dates';
   import { useStore } from 'vuex';
-  import { key } from '@/store';
+  import { storeKey } from '@/store';
   import { User } from '@/@types/User';
 
   export default defineComponent({
@@ -29,7 +29,7 @@
       }
     },
     setup (props) {
-      const store = useStore(key);
+      const store = useStore(storeKey);
 
       const senderIsUser = computed(() => {
         const authUser: User = store.getters['auth/user']

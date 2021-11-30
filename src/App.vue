@@ -15,13 +15,13 @@ import { computed, defineComponent, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import MainMenu from './components/MainMenu.vue';
-import { key } from '@/store';
+import { storeKey } from '@/store';
 
 export default defineComponent({
   name: 'App',
   components: { MainMenu },
   setup () {
-    const store = useStore(key);
+    const store = useStore(storeKey);
     const route = useRoute();
 
     const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
