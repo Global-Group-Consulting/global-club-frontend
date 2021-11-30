@@ -129,18 +129,8 @@
                   translucent: true
                 })
             await popover.present();
-
-            const { role } = await popover.onDidDismiss();
-
-
-            console.log('onDidDismiss resolved with role', role);
           }
-        },
-        /*{
-          click: () => auth?.logout(),
-          label: 'logout',
-          icon: "logout"
-        }*/
+        }
       ])
   )
 
