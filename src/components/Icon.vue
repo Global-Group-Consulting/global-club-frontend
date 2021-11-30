@@ -15,6 +15,10 @@
     },
     computed: {
       fileUrl () {
+        if (!this.name) {
+          return "";
+        }
+
         const url = `/assets/icons/${this.name}.svg`;
 
         return url;
