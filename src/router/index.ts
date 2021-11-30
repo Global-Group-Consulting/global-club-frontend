@@ -2,6 +2,9 @@ import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
 import { AuthPlugin } from "@/plugins/AuthPlugin";
 import AdminRoutes from "./admin";
+import PrivateRoutes from "./private";
+import { useStore } from 'vuex';
+import { storeKey } from '@/store';
 
 const publicRoutes: RouteRecordRaw[] = [
   {
@@ -151,8 +154,8 @@ const adminRoutes: RouteRecordRaw[] = AdminRoutes;
 
 const routes: Array<RouteRecordRaw> = [
   ...publicRoutes,
-  ...privateRoutes,
-  ...adminRoutes,
+  ...PrivateRoutes,
+  ...AdminRoutes,
 ];
 
 const router = createRouter({
