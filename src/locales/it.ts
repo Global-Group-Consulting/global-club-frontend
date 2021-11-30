@@ -17,6 +17,12 @@ export default {
     products: 'Prodotti',
     productCategories: 'Categorie Prodotti',
     logout: 'Logout',
+    userCart: 'Carrello',
+    userFavourites: 'Prodotti preferiti',
+    userOrders: 'I miei ordini',
+    userPortfolio: "Il mio portfolio",
+    userProfile: "Il mio profilo"
+  
   },
   pages: {
     orders,
