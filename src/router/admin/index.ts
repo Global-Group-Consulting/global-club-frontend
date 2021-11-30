@@ -2,6 +2,7 @@ import products from '@/router/admin/products';
 import productCategories from '@/router/admin/productCategories';
 import users from '@/router/admin/users';
 import orders from '@/router/admin/orders';
+import { RouteRecordRaw } from 'vue-router';
 
 export default [{
   path: "/admin",
@@ -15,4 +16,4 @@ export default [{
   ...productCategories,
   ...users,
   ...orders
-]
+] as RouteRecordRaw[]

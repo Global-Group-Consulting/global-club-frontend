@@ -1,5 +1,3 @@
-import { ProductCategory } from '@/@types/ProductCategory';
-
 export function formatImgUrl (imgId: string) {
   const baseUrl = process.env.VUE_APP_BASE_URL;
   

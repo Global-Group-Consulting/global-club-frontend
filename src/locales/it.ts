@@ -3,6 +3,7 @@ import { forms } from '@/locales/it/forms';
 import { enums } from '@/locales/it/enums';
 import { orders } from '@/locales/it/pages/orders';
 import { orderDetails } from '@/locales/it/pages/orderDetails';
+import { ordersSection } from '@/locales/it/sections/orders';
 
 export default {
   alerts,
@@ -16,6 +17,12 @@ export default {
     products: 'Prodotti',
     productCategories: 'Categorie Prodotti',
     logout: 'Logout',
+    userCart: 'Carrello',
+    userFavourites: 'Prodotti preferiti',
+    userOrders: 'I miei ordini',
+    userPortfolio: "Il mio portfolio",
+    userProfile: "Il mio profilo"
+  
   },
   pages: {
     orders,
@@ -40,6 +47,13 @@ export default {
     },
     users: {
       'title': "Elenco utenti",
+      'btn_open': 'Vedi Profilo',
+    },
+    userProfile: {
+      'title': `Profilo di {fullName}`
     }
+  },
+  sections: {
+    orders: ordersSection
   }
 };

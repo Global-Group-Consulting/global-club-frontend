@@ -1,0 +1,14 @@
+ion-thumbnail.center-inner-icon {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+ion-item-divider {
+  --padding-end: 16px;
+
+  hr {
+    background-color: #7B786F;
+    width: 100%;
+  }
+}

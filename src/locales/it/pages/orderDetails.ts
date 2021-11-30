@@ -7,6 +7,6 @@ export const orderDetails = {
   "order_created_at": "Data creazione",
   "order_updated_at": "Data ultima modifica",
   "tab_communication": "Comunicazioni",
-  "tab_products": "Prodotti",
+  "tab_products": "Prodotti (x{qta} = {total})",
   "tab_user": "Utente"
 }
