@@ -37,92 +37,120 @@
         <ion-item v-for="(entry, i) of footerEntries" :key="'footer_' + i"
                   button
                   :color="$route.name === entry.route ? 'primary' : ''"
-                  @click="onItemClick(entry)">
+                  @click="onItemClick(entry, $event)">
           <ion-icon :src="require(`/public/assets/icons/${entry.icon}.svg`)"
                     class="me-2"></ion-icon>
 
           <ion-label>
-            {{ t("mainMenu." + entry.label) }}
+            <template v-if="entry.label.startsWith('$')">{{ entry.label.replace("$", '') }}</template>
+
+            <template v-else>{{ t("mainMenu." + entry.label) }}</template>
           </ion-label>
         </ion-item>
+
       </ion-list>
+
+
     </ion-footer>
   </ion-menu>
 </template>
 
 
 <script lang="ts" setup>
-import { computed, inject } from 'vue';
-import { useStore } from 'vuex';
-import { key } from '@/store';
-import { AuthPlugin } from '@/plugins/AuthPlugin';
-import { useI18n } from 'vue-i18n';
-import { MessageSchema } from '@/plugins/I18n';
-import { useRouter } from 'vue-router';
-import Icon from '@/components/Icon.vue';
+  import { computed, ComputedRef } from 'vue';
+  import { useStore } from 'vuex';
+  import { key } from '@/store';
+  // import { AuthPlugin } from '@/plugins/AuthPlugin';
+  import { useI18n } from 'vue-i18n';
+  import { MessageSchema } from '@/plugins/I18n';
+  import { useRouter } from 'vue-router';
+  import { formatUserName } from '@/@utilities/fields';
+  import { popoverController } from '@ionic/vue';
+  import AccountPopover from '@/components/popovers/AccountPopover.vue';
 
-interface MenuEntry {
-  route?: string;
-  click?: () => void;
-  label: string;
-  divider?: boolean;
-  icon?: string;
-}
-
-const store = useStore(key);
-const router = useRouter();
-const { t } = useI18n<{ message: MessageSchema }, 'it'>();
-const auth = inject<AuthPlugin>('auth');
-const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
-
-const menuEntries: MenuEntry[] = [
-  {
-    route: 'admin.home',
-    label: 'home',
-    icon: "home"
-  },
-  {
-    route: 'admin.orders',
-    label: 'document',
-    icon: "ticket"
-  },
-  {
-    route: 'admin.users',
-    label: 'users',
-    icon: "user-3"
-  },
-  {
-    route: '',
-    label: '',
-    divider: true
-  },
-  {
-    route: 'admin.products',
-    label: 'products',
-    icon: "ticket"
-  },
-  {
-    route: 'admin.productCategories',
-    label: 'productCategories',
-    icon: "folder"
+  interface MenuEntry {
+    route?: string;
+    click?: (event?: Event) => void;
+    label: string;
+    divider?: boolean;
+    icon?: string;
   }
-];
 
-const footerEntries: MenuEntry[] = [
-  {
-    click: () => auth?.logout(),
-    label: 'logout',
-    icon: "logout"
-  }
-]
+  const store = useStore(key);
+  const router = useRouter();
+  const { t } = useI18n<{ message: MessageSchema }, 'it'>();
+  // const auth = inject<AuthPlugin>('auth');
+  const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
+  const authUser = computed(() => store.getters['auth/user']);
 
-function onItemClick (entry: MenuEntry) {
-  if (entry.click) {
-    entry.click();
-  } else {
-    router.push({ name: entry.route });
+  const menuEntries: MenuEntry[] = [
+    {
+      route: 'admin.home',
+      label: 'home',
+      icon: "home"
+    },
+    {
+      route: 'admin.orders',
+      label: 'orders',
+      icon: "ticket"
+    },
+    {
+      route: 'admin.users',
+      label: 'users',
+      icon: "user-3"
+    },
+    {
+      route: '',
+      label: '',
+      divider: true
+    },
+    {
+      route: 'admin.products',
+      label: 'products',
+      icon: "ticket"
+    },
+    {
+      route: 'admin.productCategories',
+      label: 'productCategories',
+      icon: "folder"
+    }
+  ];
+
+  const footerEntries: ComputedRef<MenuEntry[]> = computed(() => ([
+        {
+          label: "$" + formatUserName(authUser.value),
+          icon: "user",
+          click: async (event) => {
+            const popover = await popoverController
+                .create({
+                  component: AccountPopover,
+                  cssClass: 'dropdown-popover',
+                  event: event,
+                  translucent: true
+                })
+            await popover.present();
+
+            const { role } = await popover.onDidDismiss();
+
+
+            console.log('onDidDismiss resolved with role', role);
+          }
+        },
+        /*{
+          click: () => auth?.logout(),
+          label: 'logout',
+          icon: "logout"
+        }*/
+      ])
+  )
+
+  function onItemClick (entry: MenuEntry, event?: Event) {
+    if (entry.click) {
+      entry.click(event);
+    } else {
+      router.push({ name: entry.route });
+    }
   }
-}
 </script>
 
 <style scoped>
