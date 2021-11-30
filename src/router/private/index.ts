@@ -1,3 +1,5 @@
+import { RouteRecordRaw } from 'vue-router';
+
 export default [
   {
     path: "/dashboard",
@@ -115,4 +117,4 @@ export default [
     },
   },
 
-]
+] as RouteRecordRaw[]
