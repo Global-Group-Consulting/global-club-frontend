@@ -93,7 +93,7 @@
   const footerEntries: ComputedRef<MenuEntry[]> = computed(() => ([
     {
       label: "$" + formatUserName(authUser.value),
-      icon: "user",
+      icon: "settings",
       click: async (event) => {
         const popover = await popoverController
             .create({
@@ -116,7 +116,3 @@
     }
   }
 </script>
-
-<style scoped>
-
-</style>
