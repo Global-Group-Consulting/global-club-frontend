@@ -1,5 +1,6 @@
 import { UserAclRolesEnum } from '@/@enums/user.acl.roles.enum';
 import { UserRoleEnum } from '@/@enums/user.role.enum';
+import { AclPermissionsEnum } from '@/@enums/acl.permissions.enum';
 
 export interface User {
   'firstName': string;
@@ -30,7 +31,7 @@ export interface User {
   'roles': UserAclRolesEnum[];
   'referenceAgentData': null;
   'hasSubAgents': false;
-  'permissions': string[];
+  'permissions': AclPermissionsEnum[];
 }
 
 export class UserBasic {

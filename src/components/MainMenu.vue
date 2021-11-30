@@ -20,8 +20,7 @@
                     :color="$route.name === entry.route ? 'primary' : ''"
                     @click="onItemClick(entry)">
 
-            <ion-icon :src="require(`/public/assets/icons/${entry.icon}.svg`)"
-                      class="me-2"></ion-icon>
+            <Icon :name="entry.icon" class="me-2"></Icon>
 
             <ion-label>
               {{ t("mainMenu." + entry.label) }}
@@ -38,8 +37,7 @@
                   button
                   :color="$route.name === entry.route ? 'primary' : ''"
                   @click="onItemClick(entry, $event)">
-          <ion-icon :src="require(`/public/assets/icons/${entry.icon}.svg`)"
-                    class="me-2"></ion-icon>
+          <Icon :name="entry.icon" class="me-2"></Icon>
 
           <ion-label>
             <template v-if="entry.label.startsWith('$')">{{ entry.label.replace("$", '') }}</template>
@@ -59,7 +57,7 @@
 <script lang="ts" setup>
   import { computed, ComputedRef } from 'vue';
   import { useStore } from 'vuex';
-  import { key } from '@/store';
+  import { storeKey } from '@/store';
   // import { AuthPlugin } from '@/plugins/AuthPlugin';
   import { useI18n } from 'vue-i18n';
   import { MessageSchema } from '@/plugins/I18n';
@@ -67,64 +65,40 @@
   import { formatUserName } from '@/@utilities/fields';
   import { popoverController } from '@ionic/vue';
   import AccountPopover from '@/components/popovers/AccountPopover.vue';
+  import { AclPermissionsEnum } from '@/@enums/acl.permissions.enum';
+  import { getUserMenuEntries } from '@/config/menuEntries';
+  import { User } from '@/@types/User';
+  import Icon from '@/components/Icon.vue';
 
-  interface MenuEntry {
+  export interface MenuEntry {
     route?: string;
     click?: (event?: Event) => void;
     label: string;
     divider?: boolean;
     icon?: string;
+    permissions?: AclPermissionsEnum[];
   }
 
-  const store = useStore(key);
+  const store = useStore(storeKey);
   const router = useRouter();
   const { t } = useI18n<{ message: MessageSchema }, 'it'>();
   // const auth = inject<AuthPlugin>('auth');
   const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
-  const authUser = computed(() => store.getters['auth/user']);
+  const authUser: ComputedRef<User> = computed(() => store.getters['auth/user']);
 
-  const menuEntries: MenuEntry[] = [
-    {
-      route: 'admin.home',
-      label: 'home',
-      icon: "home"
-    },
-    {
-      route: 'admin.orders',
-      label: 'orders',
-      icon: "ticket"
-    },
-    {
-      route: 'admin.users',
-      label: 'users',
-      icon: "user-3"
-    },
-    {
-      route: '',
-      label: '',
-      divider: true
-    },
-    {
-      route: 'admin.products',
-      label: 'products',
-      icon: "ticket"
-    },
-    {
-      route: 'admin.productCategories',
-      label: 'productCategories',
-      icon: "folder"
-    }
-  ];
+  const menuEntries: ComputedRef<MenuEntry[]> = computed(() => {
+    return getUserMenuEntries(authUser.value);
+  })
 
   const footerEntries: ComputedRef<MenuEntry[]> = computed(() => ([
-        {
-          label: "$" + formatUserName(authUser.value),
-          icon: "user",
-          click: async (event) => {
-            const popover = await popoverController
-                .create({
-                  component: AccountPopover,
-                  cssClass: 'dropdown-popover',
+    {
+      label: "$" + formatUserName(authUser.value),
+      icon: "user",
+      click: async (event) => {
+        const popover = await popoverController
+            .create({
+              component: AccountPopover,
+              cssClass: 'dropdown-popover',
                   event: event,
                   translucent: true
                 })
