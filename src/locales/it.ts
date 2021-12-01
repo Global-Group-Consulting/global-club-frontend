@@ -4,6 +4,8 @@ import { enums } from '@/locales/it/enums';
 import { orders } from '@/locales/it/pages/orders';
 import { orderDetails } from '@/locales/it/pages/orderDetails';
 import { ordersSection } from '@/locales/it/sections/orders';
+import { users } from '@/locales/it/pages/users';
+import { userProfile } from '@/locales/it/pages/userProfile';
 
 export default {
   alerts,
@@ -25,6 +27,8 @@ export default {
   
   },
   pages: {
+    users,
+    userProfile,
     orders,
     orderDetails,
     products: {
@@ -45,13 +49,6 @@ export default {
       'title': "Dettagli categoria prodotto",
       'btn_delete': "Elimina",
     },
-    users: {
-      'title': "Elenco utenti",
-      'btn_open': 'Vedi Profilo',
-    },
-    userProfile: {
-      'title': `Profilo di {fullName}`
-    }
   },
   sections: {
     orders: ordersSection
