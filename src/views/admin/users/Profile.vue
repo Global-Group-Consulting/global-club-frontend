@@ -104,7 +104,7 @@
 
       onIonViewWillEnter(async () => {
         const apiCalls: any[] = [
-          http.api.users.readProfile(route.params.id as string)
+          http.api.users.readProfile(route.params.id as string, true)
         ]
 
         const results = await Promise.all<UserBasic>(apiCalls as any);
