@@ -19,7 +19,7 @@ export class UserApis extends BasicApisClass {
         page
       }
     });
-    
+  
     return result?.data;
   }
   
@@ -29,8 +29,14 @@ export class UserApis extends BasicApisClass {
     return result?.data;
   }
   
-  static async readProfile (id: string): Promise<UserBasic | undefined> {
-    const result = await this.withLoader<UserBasic>("get", this.getUrl('/' + id))
+  static async readProfile (id: string, full?: boolean): Promise<UserBasic | undefined> {
+    const queryParams = {}
+    
+    if (full !== undefined) {
+      queryParams["full"] = full
+    }
+    
+    const result = await this.withLoader<UserBasic>("get", this.getUrl('/' + id, queryParams))
     
     return result?.data
   }
