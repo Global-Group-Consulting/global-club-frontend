@@ -19,12 +19,12 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, PropType } from 'vue';
+  import { defineComponent, PropType } from 'vue';
   import { Communication } from '@/@types/Communication';
   import ChatMessage from '@/components/chats/ChatMessage.vue';
   import ChatAnswerModal from '@/components/modals/ChatAnswerModal.vue';
   import { modalController } from '@ionic/vue';
-  import { HttpPlugin } from '@/plugins/HttpPlugin';
+  // import { HttpPlugin } from '@/plugins/HttpPlugin';
   import ClubButton from '@/components/ClubButton.vue';
 
   export default defineComponent({
@@ -37,7 +37,7 @@
       }
     },
     setup () {
-      const http = inject<HttpPlugin>('http') as HttpPlugin;
+      // const http = inject<HttpPlugin>('http') as HttpPlugin;
 
       async function onAnswerClick () {
         const modal = await modalController

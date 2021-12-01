@@ -1,6 +1,5 @@
 import { UserRoleEnum } from '@/@enums/user.role.enum';
 import { OrderStatusEnum } from '@/@enums/order.status.enum';
-import { formatOrderStatus } from '@/@utilities/statuses';
 import { MovementTypeEnum } from '@/@enums/movement.type.enum';
 
 export const enums = {

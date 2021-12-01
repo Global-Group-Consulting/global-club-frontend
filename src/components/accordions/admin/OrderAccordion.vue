@@ -17,11 +17,9 @@
   import { computed, defineComponent, inject, PropType, ref, Ref, watch } from 'vue';
   import AccordionList, { AccordionSection } from '@/components/AccordionList.vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
-  import { useRoute } from 'vue-router';
   import { useI18n } from 'vue-i18n';
   import { Order, OrderProduct } from '@/@types/Order';
   import { formatCurrency } from '@/@utilities/currency';
-  import { onIonViewWillEnter } from '@ionic/vue';
   import { formatLocaleDate } from '@/@utilities/dates';
   import { formatOrderStatus } from '@/@utilities/statuses';
   import Chat from '@/components/chats/Chat.vue';

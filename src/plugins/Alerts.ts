@@ -1,7 +1,5 @@
 import { installPlugin, PluginTemplate } from '@/plugins/PluginTemplate';
 import { alertController } from '@ionic/vue';
-import { useI18n } from 'vue-i18n';
-import { inject } from 'vue';
 
 interface AlertAskOptions {
   header: string;
@@ -31,7 +29,7 @@ export class AlertsPlugin extends PluginTemplate<void> {
     role: 'cancel',
   };
   
-  protected onInit (options: void | undefined): void {
+  protected onInit (): void {
     console.log('alerts init');
   }
   

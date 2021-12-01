@@ -1,7 +1,7 @@
 <template>
   <IonPage>
     <IonContent class="ion-padding">
-      <div class="header-nav"> 
+      <div class="header-nav">
       <TopToolbar include-back>Carrello</TopToolbar>
         </div>
 
@@ -55,7 +55,7 @@
       </ion-col>
       <ion-col size="3">
        <ion-icon class="icon-alignment" src="./assets/icons/chevron-right.svg"></ion-icon>
-      </ion-col>   
+      </ion-col>
     </ion-row>
     <hr />
      <ion-row>
@@ -74,14 +74,7 @@
 import {
   IonContent,
   IonPage,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
   IonIcon,
-  IonItem,
-  IonLabel,
 } from "@ionic/vue";
 import { warning } from "ionicons/icons";
 import { defineComponent} from "vue";
@@ -90,14 +83,7 @@ export default defineComponent({
   components: {
     IonPage,
     IonContent,
-    // IonCard,
-    // IonCardContent,
-    // IonCardHeader,
-    // IonCardSubtitle,
-    // IonCardTitle,
     IonIcon,
-    // IonItem,
-    // IonLabel,
   },
   name: "ShoppingCart",
 
@@ -136,7 +122,7 @@ hr {
 
 .btncart{
 text-transform: none;
-color:#fff; 
+color:#fff;
 font-size: 15px;
 padding: 50px;
 }

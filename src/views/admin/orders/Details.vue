@@ -49,8 +49,8 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, inject, Ref, ref } from 'vue';
-  import { Order, OrderProduct } from '@/@types/Order';
+  import { defineComponent, inject, Ref, ref } from 'vue';
+  import { Order } from '@/@types/Order';
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import { onIonViewWillEnter } from '@ionic/vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
@@ -60,9 +60,6 @@
   import { formatLocaleDate } from "@/@utilities/dates"
   import { formatCurrency } from "@/@utilities/currency"
   import { formatOrderStatus } from "@/@utilities/statuses"
-  import AccordionList, { AccordionSection } from '@/components/AccordionList.vue';
-  import { useI18n } from 'vue-i18n';
-  import Chat from '@/components/chats/Chat.vue';
   import OrdersList from '@/components/accordions/admin/OrderAccordion.vue';
 
   export default defineComponent({
@@ -71,7 +68,7 @@
     setup () {
       const http: HttpPlugin = inject<HttpPlugin>('http') as HttpPlugin;
       const route = useRoute()
-      const { t } = useI18n()
+      // const { t } = useI18n()
       const order: Ref<Order | null> = ref(null)
 
       onIonViewWillEnter(async () => {
