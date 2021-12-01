@@ -34,3 +34,33 @@ ion-app {
   text-align: center;
   background-color: var(--ion-color-primary-contrast);
 }
+
+  @include mediaQueryUp('sm'){
+    .bottom-drawer{
+    bottom:-532px!important;
+  }}
+
+  @include mediaQueryUp('sm'){
+    div.ion-text-start h3, div.ion-text-end h6{
+    margin-top:0px!important;
+    margin-bottom:0px!important;
+  }}
+
+  @include mediaQueryUp('sm'){
+div.ion-text-start h3{
+font-size:18px;
+}
+  }
+
+  @include mediaQueryUp('sm'){
+    div.ion-text-end h6{
+    font-size:12px;
+    }
+      }
+
+      @include mediaQueryUp('sm'){
+        .bottom-drawer[data-open="true"]{
+          height:720px!important;
+        }
+          }
+
