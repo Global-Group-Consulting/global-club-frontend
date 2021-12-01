@@ -1,7 +1,8 @@
 <template>
-  <IonPage>
-
-
+  <IonPage> 
+    <div class="header-nav"> 
+      <TopToolbar include-back>Il mio profilo</TopToolbar>
+        </div>
     <IonContent class="ion-padding">
 
          <ion-grid>
@@ -10,8 +11,8 @@
             <ion-img src="/assets/workout-pic.png"></ion-img>
           </ion-col>
           <ion-col size="6">
-           Mario Rossi
-           Pacchetto Fast
+           <div class="dati-user">Mario Rossi</div>
+           <div class="dati-pacchetto">Pacchetto Fast</div>
           </ion-col>
           <ion-col size="4">
              <ion-button size="small">Modifica</ion-button>
@@ -33,7 +34,7 @@
         <div class="textcontent">Dati personali</div>
       </ion-col>
       <ion-col size="2">
-        <ion-icon src="./assets/icons/chevron-right.svg"></ion-icon>
+        <ion-router-link class="link-color" href="#"><ion-icon src="./assets/icons/chevron-right.svg"></ion-icon></ion-router-link>
       </ion-col>
       </ion-row>
 
@@ -165,13 +166,14 @@
 //import { HttpPlugin } from '@/plugins/HttpPlugin';
 import { defineComponent} from "vue";
 
-
 export default defineComponent({
   name: "Product",
+   components: {
   
+  },
   setup() {
     return {
-      
+      categoria: ('descrizione')
     }
   }
 })
@@ -237,5 +239,28 @@ background-color: rgb(30, 30, 30);
 border-radius: 30px;
 text-align: left;
 }
+
+.link-color{
+ color:#fff;
+}
+
+.dati-user{
+ text-align: left;
+ font-size: 20px;
+}
+
+.dati-pacchetto{
+ text-align: left;
+ font-size: 15px;
+ color:#909090;
+}
+
+
+.header-nav{
+color: white;
+padding-left: 30px;
+padding-right: 75px;
+}
+
 
 </style>
