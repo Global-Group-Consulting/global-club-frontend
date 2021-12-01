@@ -6,11 +6,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { getCurrentInstance, onMounted, ref, watch } from 'vue';
+  import {  onMounted, ref } from 'vue';
   // @ts-ignore
   import Cleave from 'cleave.js';
-  import { values } from 'lodash';
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const props = withDefaults(defineProps<{
     modelValue?: number;
     clearInput?: boolean;
@@ -18,14 +18,14 @@
     placeholder?: string;
   }>(), {});
 
-  const emit = defineEmits(['ionInput']);
+  // const emit = defineEmits(['ionInput']);
 
   const currencyElement = ref(null);
   const numValue = ref(null);
   const formattedValue = ref('');
-  let cleaveInstance;
+  // let cleaveInstance;
 
-  const instance = getCurrentInstance();
+  // const instance = getCurrentInstance();
 
   /* watch(() => props.modelValue, (value) => {
      numValue.value = value;
@@ -62,11 +62,11 @@
     });
   }
 
-  function onKeydown (e) {
+  function onKeydown () {
 //
   }
 
-  function onInput (el) {
+  function onInput () {
     /* const value = el.target.value;
      const formatter = new Cleave.NumeralFormatter({
        numeral: true,
@@ -81,7 +81,7 @@
   }
 
   onMounted(async () => {
-    const elInput: HTMLInputElement = await currencyElement.value.$el.getInputElement();
+    // const elInput: HTMLInputElement = await currencyElement.value.$el.getInputElement();
 
     /*cleaveInstance = new Cleave(elInput, {
       numeral: true

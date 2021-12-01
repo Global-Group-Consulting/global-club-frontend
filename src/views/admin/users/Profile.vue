@@ -38,7 +38,7 @@
 
         <AccordionList :sections="profileSections">
           <template v-slot:content_contract>
-            <UserContractForm :user="user"></UserContractForm>
+            <UserContractForm :user="user" readonly></UserContractForm>
           </template>
 
           <template v-slot:content_movements>
@@ -61,7 +61,7 @@
   import { useI18n } from 'vue-i18n';
   import { useRoute } from 'vue-router';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
-  import { AlertsPlugin } from '@/plugins/Alerts';
+  // import { AlertsPlugin } from '@/plugins/Alerts';
   import { onIonViewDidLeave, onIonViewWillEnter } from '@ionic/vue';
   import { UserBasic } from '@/@types/User';
   import AccordionList, { AccordionSection } from '@/components/AccordionList.vue';
@@ -77,7 +77,7 @@
       const { t } = useI18n();
       const route = useRoute();
       const http = inject<HttpPlugin>('http') as HttpPlugin;
-      const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin;
+      // const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin;
       const user: Ref<UserBasic | null> = ref(null)
       const profileSections: Ref<AccordionSection[]> = ref([
         {
