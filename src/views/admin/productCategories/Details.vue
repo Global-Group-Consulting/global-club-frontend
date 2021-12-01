@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, onMounted, reactive, Ref, ref, watch } from 'vue';
+  import { defineComponent, inject, reactive, Ref, ref, watch } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import { useI18n } from 'vue-i18n';
   import { HttpPlugin } from '@/plugins/HttpPlugin';

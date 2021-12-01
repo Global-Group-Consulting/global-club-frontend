@@ -1,6 +1,6 @@
 <template>
   <IonPage>
-    <div class="header-nav"> 
+    <div class="header-nav">
       <TopToolbar include-back>I miei ordini</TopToolbar>
         </div>
     <IonContent class="ion-padding">
@@ -96,7 +96,7 @@
 
 <script lang="ts">
 //import { HttpPlugin } from '@/plugins/HttpPlugin';
-import { defineComponent, inject } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "History",

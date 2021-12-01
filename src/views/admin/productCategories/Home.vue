@@ -43,12 +43,12 @@
 <script lang="ts">
 import SimpleToolbar from "@/components/toolbars/SimpleToolbar.vue";
 import { useI18n } from "vue-i18n";
-import { defineComponent, inject, onMounted, Ref, ref } from "vue";
+import { defineComponent, inject, Ref, ref } from "vue";
 import { HttpPlugin } from "@/plugins/HttpPlugin";
 import { ProductCategory } from "@/@types/ProductCategory";
 import { formatImgUrl } from "@/@utilities/images";
 import SimpleToolbarButton from "@/components/toolbars/SimpleToolbarButton.vue";
-import { onIonViewDidEnter, onIonViewWillEnter } from "@ionic/vue";
+import { onIonViewWillEnter } from "@ionic/vue";
 
 export default defineComponent({
   components: { SimpleToolbar, SimpleToolbarButton },

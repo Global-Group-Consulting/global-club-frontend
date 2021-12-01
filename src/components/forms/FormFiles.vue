@@ -163,7 +163,7 @@
     }
   }, { deep: true })
 
-  watch(() => props.remoteImages, (value) => {
+  watch(() => props.remoteImages, () => {
     newImages.value = []
   }, { deep: true })
 </script>
