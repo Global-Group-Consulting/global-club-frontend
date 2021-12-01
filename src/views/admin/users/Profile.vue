@@ -14,29 +14,33 @@
           <ion-col size="12" sizeLg="6" class="pb-0 py-lg-5">
             <ul class="ion-text-left my-0 list-simple">
               <li>
-                Utente: <strong>{{ formatUserName(user) }}</strong>
+                {{ $t("pages.userProfile.lbl_user") }}: <strong>{{ formatUserName(user) }}</strong>
               </li>
               <li>
-                Email: <strong>{{ user?.email }}</strong>
+                {{ $t("pages.userProfile.lbl_email") }}: <strong>{{ user?.email }}</strong>
               </li>
               <li>
-                Pacchetto: <strong>{{ user?.clubPack }}</strong>
+                {{ $t("pages.userProfile.lbl_club_pack") }}: <strong>{{ user?.clubPack }}</strong>
               </li>
             </ul>
           </ion-col>
           <ion-col size="12" sizeLg="6" class="pt-0 py-lg-5 mb-5 mb-lg-0">
             <ul class="ion-text-left my-0 list-simple">
               <li>
-                Ruolo: <strong>{{ UserRoleEnum[user?.role] }}</strong>
+                {{ $t("pages.userProfile.lbl_role") }}: <strong>{{ UserRoleEnum[user?.role] }}</strong>
               </li>
               <li>
-                Agente di riferimento: <strong>{{ user?.referenceAgent }}</strong>
+                {{ $t("pages.userProfile.lbl_ref_agent") }}: <strong>{{ user?.referenceAgent }}</strong>
               </li>
             </ul>
           </ion-col>
         </ion-row>
 
         <AccordionList :sections="profileSections">
+          <template v-slot:content_contract>
+            <UserContractForm :user="user"></UserContractForm>
+          </template>
+
           <template v-slot:content_movements>
             <MovementsList :user-id="user?._id"></MovementsList>
           </template>
@@ -64,10 +68,11 @@
   import { UserRoleEnum } from "@/@enums/user.role.enum"
   import MovementsList from '@/components/lists/MovementsList.vue';
   import OrdersList from '@/components/lists/OrdersList.vue';
+  import UserContractForm from '@/components/forms/UserContractForm.vue';
 
   export default defineComponent({
     name: "Profile",
-    components: { OrdersList, MovementsList, AccordionList, TopToolbar },
+    components: { UserContractForm, OrdersList, MovementsList, AccordionList, TopToolbar },
     setup () {
       const { t } = useI18n();
       const route = useRoute();
@@ -77,22 +82,22 @@
       const profileSections: Ref<AccordionSection[]> = ref([
         {
           id: "contract",
-          text: "Contratto",
+          text: t("pages.userProfile.tab_contract"),
           open: false,
         },
         {
           id: "anagraphic",
-          text: "Anagrafica",
+          text: t("pages.userProfile.tab_anagraphic"),
           open: false,
         },
         {
           id: "movements",
-          text: "Movimenti",
+          text: t("pages.userProfile.tab_movements"),
           open: false,
         },
         {
           id: "orders",
-          text: "Ordini",
+          text: t("pages.userProfile.tab_orders"),
           open: false,
         }
       ])
