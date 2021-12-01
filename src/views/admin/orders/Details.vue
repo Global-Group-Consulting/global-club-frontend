@@ -42,21 +42,15 @@
           </ion-col>
         </ion-row>
 
-
-        <AccordionList :sections="accordionSections">
-          <template v-slot:content_communication>
-            <Chat :communication="order?.communication"></Chat>
-          </template>
-        </AccordionList>
-
+        <OrdersList :order-data="order"></OrdersList>
       </ion-grid>
     </ion-content>
   </IonPage>
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, Ref, ref } from 'vue';
-  import { Order } from '@/@types/Order';
+  import { computed, defineComponent, inject, Ref, ref } from 'vue';
+  import { Order, OrderProduct } from '@/@types/Order';
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import { onIonViewWillEnter } from '@ionic/vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
@@ -66,35 +60,19 @@
   import { formatLocaleDate } from "@/@utilities/dates"
   import { formatCurrency } from "@/@utilities/currency"
   import { formatOrderStatus } from "@/@utilities/statuses"
-  import AccordionList from '@/components/AccordionList.vue';
+  import AccordionList, { AccordionSection } from '@/components/AccordionList.vue';
   import { useI18n } from 'vue-i18n';
   import Chat from '@/components/chats/Chat.vue';
+  import OrdersList from '@/components/accordions/admin/OrderAccordion.vue';
 
   export default defineComponent({
     name: "Details",
-    components: { Chat, AccordionList, SimpleToolbarButton, SimpleToolbar, TopToolbar },
+    components: { OrdersList, SimpleToolbarButton, SimpleToolbar, TopToolbar },
     setup () {
       const http: HttpPlugin = inject<HttpPlugin>('http') as HttpPlugin;
       const route = useRoute()
       const { t } = useI18n()
       const order: Ref<Order | null> = ref(null)
-      const accordionSections = ref([
-        {
-          id: "communication",
-          text: t("pages.orderDetails.tab_communication"),
-          open: false
-        },
-        {
-          id: "products",
-          text: t("pages.orderDetails.tab_products"),
-          open: false
-        },
-        {
-          id: "user",
-          text: t("pages.orderDetails.tab_user"),
-          open: false
-        }
-      ])
 
       onIonViewWillEnter(async () => {
         const result = await http.api.orders.read(route.params.id as string);
@@ -104,7 +82,6 @@
 
       return {
         order,
-        accordionSections,
         formatLocaleDate, formatCurrency, formatOrderStatus
       }
     }

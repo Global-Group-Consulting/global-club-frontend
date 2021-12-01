@@ -1,5 +1,6 @@
 import { UserAclRolesEnum } from '@/@enums/user.acl.roles.enum';
 import { UserRoleEnum } from '@/@enums/user.role.enum';
+import { AclPermissionsEnum } from '@/@enums/acl.permissions.enum';
 
 export interface User {
   'firstName': string;
@@ -9,6 +10,7 @@ export interface User {
   'created_at': string;
   'updated_at': string;
   'id': string;
+  '_id': string;
   'contractNumber': string;
   'role': number;
   'personType': number;
@@ -29,12 +31,11 @@ export interface User {
   'roles': UserAclRolesEnum[];
   'referenceAgentData': null;
   'hasSubAgents': false;
-  'permissions': string[];
+  'permissions': AclPermissionsEnum[];
 }
 
 export class UserBasic {
-  id?: string;
-  _id?: string;
+  _id: string;
   clubPack: PackEnum;
   gold: boolean;
   email: string;

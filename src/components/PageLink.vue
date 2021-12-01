@@ -2,9 +2,9 @@
   <router-link
       :to="resolvedPath"
       custom
-      v-slot="{ href,navigate}">
+      v-slot="{ href, navigate}">
     <ClubButton v-bind="ionBtnProps"
-                @click="navigate"
+                @click="onClick(navigate, $event)"
                 :href="href">
       <slot></slot>
     </ClubButton>
@@ -45,7 +45,7 @@
       },
       btnProps: Object as PropType<IonButtonInterface>
     },
-    setup (props) {
+    setup (props, { attrs }) {
       const router = useRouter();
 
       const resolvedPath = computed(() => {
@@ -59,12 +59,30 @@
       const ionBtnProps = computed(() => {
         return Object.assign({
           version: "link"
-        }, props.btnProps);
+        }, props.btnProps, attrs);
       });
+
+      function onClick (navigate, e) {
+        const keys = ["metaKey", "ctrlKey"].reduce((acc, key) => {
+          if (e[key]) {
+            acc[key] = e[key]
+          }
+
+          return acc;
+        }, {})
+
+        if (props.btnProps?.target !== "_blank" && Object.keys(keys).length === 0) {
+          e.preventDefault()
+
+          navigate()
+        }
+
+      }
 
       return {
         resolvedPath,
-        ionBtnProps
+        ionBtnProps,
+        onClick
       }
     }
   })
