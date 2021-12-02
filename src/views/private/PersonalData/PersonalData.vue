@@ -19,9 +19,7 @@
         <br>
         <v-switch :case="categoria">
     <template #personali>
-        <AccordionList :sections="accordionSections">
-          
-        </AccordionList>
+     <PersonalDataDatiAnagrafici></PersonalDataDatiAnagrafici>
     </template>
 
     <template #contrattuali>
@@ -40,12 +38,13 @@
 import { defineComponent,ref } from "vue";
 import VSwitch from '@lmiller1990/v-switch';
 import ClubButton from '@/components/ClubButton.vue';
-import AccordionList from '../admin/orders/Details.vue'
+import AccordionList from '../../admin/orders/Details.vue'
 import { useI18n } from "vue-i18n";
+import PersonalDataDatiAnagrafici from'./PersonalDataDatiAnagrafici.vue'
 export default defineComponent({
   name: "User",
   components: {
-    VSwitch, ClubButton, AccordionList
+    VSwitch, ClubButton, AccordionList,PersonalDataDatiAnagrafici
   },
 setup() {
   const { t } = useI18n()

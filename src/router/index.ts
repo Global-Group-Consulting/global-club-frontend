@@ -119,14 +119,16 @@ const privateRoutes: RouteRecordRaw[] = [
       isPrivate: true,
     },
   },
+
   {
     path: "/user",
-    component: () => import("../views/private/PersonalData.vue"),
+    component: () => import("../views/private/PersonalData/PersonalData.vue"),
     name: "private.user",
     meta: {
       isPrivate: true
     },
   },
+
   {
     path: "/profile",
     component: () => import("../views/private/Profile.vue"),
@@ -136,6 +138,7 @@ const privateRoutes: RouteRecordRaw[] = [
       isAdmin: true,
     },
   },
+
   {
     path: "/components/buttons",
     component: () => import("../views/private/components/Buttons.vue"),
@@ -145,6 +148,18 @@ const privateRoutes: RouteRecordRaw[] = [
       isAdmin: true,
     },
   },
+
+
+  {
+    path: "/components/datianagrafici",
+    component: () => import("../views/private/PersonalData/PersonalDataDatiAnagrafici.vue"),
+    name: "private.datianagrafici",
+    meta: {
+      isPrivate: true,
+      isAdmin: true,
+    },
+  },
+
 ];
 
 const adminRoutes: RouteRecordRaw[] = AdminRoutes;

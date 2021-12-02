@@ -1,5 +1,5 @@
 <template>
-  <div class="accordion-list" v-text="accordiongh">
+  <div class="accordion-list">
 
     <div class="accordion-item"
          :class="{expanded: section.open}"
