@@ -14,20 +14,22 @@
           <ion-col size="12" sizeLg="6" class="pb-0 py-lg-5">
             <ul class="ion-text-left my-0 list-simple">
               <li>
-                {{ $t("pages.userProfile.lbl_user") }}: <strong>{{ formatUserName(user) }}</strong>
+                {{ $t("pages.userProfile.lbl_user") }}:
+                  <strong>{{ formatUserName(user) }}
+                  ({{ user?.clubCardNumber }})</strong>
               </li>
               <li>
                 {{ $t("pages.userProfile.lbl_email") }}: <strong>{{ user?.email }}</strong>
               </li>
               <li>
-                {{ $t("pages.userProfile.lbl_club_pack") }}: <strong>{{ user?.clubPack }}</strong>
+                {{ $t("pages.userProfile.lbl_club_pack") }}: <strong>{{ formatClubPack(user?.clubPack) }}</strong>
               </li>
             </ul>
           </ion-col>
           <ion-col size="12" sizeLg="6" class="pt-0 py-lg-5 mb-5 mb-lg-0">
             <ul class="ion-text-left my-0 list-simple">
               <li>
-                {{ $t("pages.userProfile.lbl_role") }}: <strong>{{ UserRoleEnum[user?.role] }}</strong>
+                {{ $t("pages.userProfile.lbl_role") }}: <strong>{{ formatUserRole(user?.role) }}</strong>
               </li>
               <li>
                 {{ $t("pages.userProfile.lbl_ref_agent") }}: <strong>{{ user?.referenceAgent }}</strong>
@@ -38,7 +40,11 @@
 
         <AccordionList :sections="profileSections">
           <template v-slot:content_contract>
-            <UserContractForm :user="user" readonly></UserContractForm>
+            <UserContractForm v-model="user"></UserContractForm>
+          </template>
+
+          <template v-slot:content_anagraphic>
+            <UserAnagraphicForm v-model="user"></UserAnagraphicForm>
           </template>
 
           <template v-slot:content_movements>
@@ -63,22 +69,23 @@
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   // import { AlertsPlugin } from '@/plugins/Alerts';
   import { onIonViewDidLeave, onIonViewWillEnter } from '@ionic/vue';
-  import { UserBasic } from '@/@types/User';
+  import { User, UserBasic } from '@/@types/User';
   import AccordionList, { AccordionSection } from '@/components/AccordionList.vue';
   import { UserRoleEnum } from "@/@enums/user.role.enum"
   import MovementsList from '@/components/lists/MovementsList.vue';
   import OrdersList from '@/components/lists/OrdersList.vue';
-  import UserContractForm from '@/components/forms/UserContractForm.vue';
-
+  import UserContractForm from '@/components/forms/sections/UserContractForm.vue';
+  import { formatClubPack, formatUserRole } from '@/@utilities/statuses';
+  import UserAnagraphicForm from '@/components/forms/sections/UserAnagraphicForm.vue';
   export default defineComponent({
     name: "Profile",
-    components: { UserContractForm, OrdersList, MovementsList, AccordionList, TopToolbar },
+    components: { UserAnagraphicForm, UserContractForm, OrdersList, MovementsList, AccordionList, TopToolbar },
     setup () {
       const { t } = useI18n();
       const route = useRoute();
       const http = inject<HttpPlugin>('http') as HttpPlugin;
       // const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin;
-      const user: Ref<UserBasic | null> = ref(null)
+      const user: Ref<User | null> = ref(null)
       const profileSections: Ref<AccordionSection[]> = ref([
         {
           id: "contract",
@@ -108,7 +115,7 @@
         ]
 
         const results = await Promise.all<UserBasic>(apiCalls as any);
-        user.value = results[0]
+        user.value = results[0] as any
       });
 
       onIonViewDidLeave(async () => {
@@ -117,9 +124,9 @@
 
       return {
         user,
-        formatUserName,
+        formatUserName, formatClubPack, formatUserRole,
         profileSections,
-        UserRoleEnum
+        UserRoleEnum,
       }
     }
   });
