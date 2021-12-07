@@ -48,6 +48,7 @@
 
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
+  import { Form, } from 'vee-validate';
   import { User } from '@/@types/User';
   import ClubButton from '@/components/ClubButton.vue';
   import { UserAnagraphicForm } from '@/composables/forms/UserAnagraphicForm';
@@ -55,7 +56,7 @@
 
   export default defineComponent({
     name: "UserAnagraphicForm",
-    components: { FormInputV, ClubButton },
+    components: { FormInputV, ClubButton, Form },
     props: {
       modelValue: {
         required: true,
