@@ -1,5 +1,5 @@
 <template>
-  <ion-page>
+  <IonPage>
     <TopToolbar>{{ $t('pages.products.title') }}</TopToolbar>
 
     <ion-content>
@@ -12,20 +12,12 @@
         </SimpleToolbar>
 
         <ion-list>
-          <ion-list>
-            <AdminListItem v-for="product of productsList" :key="product._id"
-                           :title="product.title"
-                           :description="product.description"
-                           :open-link="{ name: 'admin.products.details', params: { id: product._id || '' } }"
-                           :open-link-label="$t('pages.products.btn_open')"
-                           :image="product.thumbnail?.id"
-            >
-            </AdminListItem>
-          </ion-list>
+          <ProductListItem v-for="product of productsList" :key="product._id"
+                           :product="product"/>
         </ion-list>
       </ion-grid>
     </ion-content>
-  </ion-page>
+  </IonPage>
 </template>
 
 <script lang="ts">
@@ -37,10 +29,11 @@
   import { formatImgUrl } from '@/@utilities/images';
   import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
   import { onIonViewWillEnter } from '@ionic/vue';
-  import AdminListItem from '@/components/lists/AdminListItem.vue';
+  import ProductListItem from '@/components/lists/products/ProductListItem.vue';
+  import TopToolbar from '@/components/toolbars/TopToolbar.vue';
 
   export default defineComponent({
-    components: { AdminListItem, SimpleToolbar, SimpleToolbarButton },
+    components: { TopToolbar, ProductListItem, SimpleToolbar, SimpleToolbarButton },
     setup () {
       // const { t } = useI18n();
       // const router = useRouter();
