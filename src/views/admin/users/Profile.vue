@@ -15,8 +15,8 @@
             <ul class="ion-text-left my-0 list-simple">
               <li>
                 {{ $t("pages.userProfile.lbl_user") }}:
-                  <strong>{{ formatUserName(user) }}
-                  ({{ user?.clubCardNumber }})</strong>
+                <strong>{{ formatUserName(user) }}</strong>
+                <span class="ms-2" v-if="user?.clubCardNumber">({{ user?.clubCardNumber }})</span>
               </li>
               <li>
                 {{ $t("pages.userProfile.lbl_email") }}: <strong>{{ user?.email }}</strong>
