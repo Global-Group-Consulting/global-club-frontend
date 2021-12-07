@@ -1,6 +1,7 @@
 import { UserRoleEnum } from '@/@enums/user.role.enum';
 import { OrderStatusEnum } from '@/@enums/order.status.enum';
 import { MovementTypeEnum } from '@/@enums/movement.type.enum';
+import { PackEnum } from '@/@enums/pack.enum';
 
 export const enums = {
   UserRoleEnum: {
@@ -21,5 +22,11 @@ export const enums = {
     [MovementTypeEnum.DEPOSIT_REMOVED]: "Storno",
     [MovementTypeEnum.DEPOSIT_TRANSFERRED]: "Trasferimento",
     [MovementTypeEnum.INTEREST_RECAPITALIZED]: "Ricapitalizzazione",
+  },
+  PackEnum: {
+    [PackEnum.BASIC]: "Basic",
+    [PackEnum.FAST]: "Fast",
+    [PackEnum.PREMIUM]: "Premium",
+    [PackEnum.UNSUBSCRIBED]: "Non iscritto",
   }
 }

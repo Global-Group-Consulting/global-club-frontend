@@ -52,5 +52,5 @@ export default {
   },
   sections: {
     orders: ordersSection
-  }
+  },
 };

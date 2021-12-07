@@ -1,3 +1,6 @@
+import { userContract } from '@/locales/it/forms/userContract';
+import { userAnagraphic } from '@/locales/it/forms/userAnagraphic';
+
 export const forms = {
   filePreviewer: {
     addLabel: "Aggiungi...",
@@ -27,5 +30,9 @@ export const forms = {
     categories: "Categorie",
     btnCreate: "Salva e aggiungi",
     btnUpdate: "Salva"
-  }
+  },
+  userContract,
+  userAnagraphic
+  
+  
 }
