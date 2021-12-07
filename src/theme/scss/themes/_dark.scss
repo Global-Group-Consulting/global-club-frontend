@@ -26,7 +26,7 @@
 
   --spacer: #{$spacer};
   --ion-grid-padding: 25px;
-  //--ion-margin: $spacer;
+  --ion-margin-negative: -#{$spacer};
   //--ion-grid-column-padding: 15px
 
   --font-size-base: 14px;

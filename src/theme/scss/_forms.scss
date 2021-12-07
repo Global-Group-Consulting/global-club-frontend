@@ -1,3 +1,14 @@
+.form-input-wrapper {
+  position: relative;
+
+  .form-input-error {
+    color: var(--ion-color-danger);
+    margin-left: var(--spacer);
+    position: absolute;
+    bottom: var(--ion-margin-megative);
+  }
+}
+
 .form-input {
   --border-radius: 15px;
   --background: var(--ion-color-secondary);
@@ -12,7 +23,23 @@
 
   &.is-readonly {
     --background: transparent;
+
+    &.item-select {
+      /*opacity: 1;*/
+      &.item-interactive-disabled {
+        ion-label, .select-disabled {
+          opacity: 1 !important;
+        }
+      }
+    }
+
   }
+
+  &.is-disabled {
+    --background: transparent;
+  }
+
+
 }
 
 ion-input {
