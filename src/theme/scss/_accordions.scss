@@ -2,14 +2,13 @@
 
 .accordion-list {
 
-
-  .accordion-item {
+  > .accordion-item {
     --padding-top: #{$spacer};
     --padding-bottom: #{$spacer};
 
     border-bottom: solid 1px var(--ion-border-color);
 
-    .accordion-header {
+    > .accordion-header {
       --padding-top: #{$spacer};
       --padding-bottom: #{$spacer};
 
@@ -39,12 +38,14 @@
     }
 
     &.expanded {
-      .accordion-collapse-container {
+      > .accordion-collapse-container {
         height: auto;
       }
 
-      .accordion-header-icon {
-        transform: rotateZ(180deg);
+      > .accordion-header {
+        > .accordion-header-icon {
+          transform: rotateZ(180deg);
+        }
       }
     }
   }
