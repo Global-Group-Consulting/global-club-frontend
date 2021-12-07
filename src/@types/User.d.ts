@@ -4,7 +4,6 @@ import { AclPermissionsEnum } from '@/@enums/acl.permissions.enum';
 import { PackEnum } from '@/@enums/pack.enum';
 
 export interface User {
-  
   activated_at: string;
   birthCity: string;
   birthCountry: string;
@@ -61,6 +60,7 @@ export interface User {
   verified_at: string;
   
   _id: string;
+  id: string;
   created_at: Date;
   updated_at: Date;
 }
@@ -80,8 +80,11 @@ export class UserBasic {
   superAdmin: boolean
 }
 
-
 export interface ReadUserGroupsDto {
   _id: UserRoleEnum;
   count: number;
 }
+
+export type UpdateUserContractDto = Pick<User, "clubCardNumber" | "clubPack">
+
+export type UpdateUserAnagraphicDto = Pick<User, "firstName" | "lastName" | "email">
