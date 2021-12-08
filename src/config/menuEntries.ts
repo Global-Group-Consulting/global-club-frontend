@@ -9,6 +9,7 @@ const adminEntries: MenuEntry[] = [
     route: 'admin.home',
     label: 'home',
     icon: "home",
+    showInMobile: true
   },
   {
     route: 'admin.orders',
@@ -20,7 +21,8 @@ const adminEntries: MenuEntry[] = [
     route: 'admin.users',
     label: 'users',
     icon: "user-3",
-    permissions: [AclPermissionsEnum.CLUB_USERS_ALL_READ]
+    permissions: [AclPermissionsEnum.CLUB_USERS_ALL_READ],
+    showInMobile: true
   },
   {
     route: '',
@@ -31,7 +33,8 @@ const adminEntries: MenuEntry[] = [
     route: 'admin.products',
     label: 'products',
     icon: "ticket",
-    permissions: [AclPermissionsEnum.CLUB_PRODUCTS_ALL_READ]
+    permissions: [AclPermissionsEnum.CLUB_PRODUCTS_ALL_READ],
+    showInMobile: true
   },
   {
     route: 'admin.productCategories',
@@ -46,16 +49,19 @@ const privateEntries: MenuEntry[] = [
     route: 'private.home',
     label: 'home',
     icon: "home",
+    showInMobile: true
   },
   {
     route: 'private.wish',
     label: 'userFavourites',
     icon: "star",
+    showInMobile: true
   },
   {
     route: 'private.cart',
     label: 'userCart',
     icon: "cart",
+    showInMobile: true
   },
   {
     route: '',
@@ -66,6 +72,7 @@ const privateEntries: MenuEntry[] = [
     route: 'private.user',
     label: 'userProfile',
     icon: "user",
+    showInMobile: true
   },
   {
     route: 'private.orders',
