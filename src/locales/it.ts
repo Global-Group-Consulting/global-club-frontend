@@ -23,7 +23,8 @@ export default {
     userFavourites: 'Prodotti preferiti',
     userOrders: 'I miei ordini',
     userPortfolio: "Il mio portfolio",
-    userProfile: "Il mio profilo"
+    userProfile: "Il mio profilo",
+    more: "Altro"
   
   },
   pages: {
