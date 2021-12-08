@@ -1,12 +1,16 @@
 <template>
   <IonApp>
-    <IonSplitPane content-id="main-content" when="md">
+
+    <component :is="$store.getters['smAndDown'] ? 'IonTabs' : 'IonSplitPane'" content-id="main-content" when="md">
       <!--  the side menu  -->
       <MainMenu v-show="isLoggedIn"></MainMenu>
 
+      <BottomToolbar v-if="$store.getters['smAndDown']"/>
+
       <!-- the main content -->
       <IonRouterOutlet id="main-content"></IonRouterOutlet>
-    </IonSplitPane>
+    </component>
+
   </IonApp>
 </template>
 
@@ -16,10 +20,11 @@ import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import MainMenu from './components/MainMenu.vue';
 import { storeKey } from '@/store';
+import BottomToolbar from '@/components/toolbars/BottomToolbar.vue';
 
 export default defineComponent({
   name: 'App',
-  components: { MainMenu },
+  components: { BottomToolbar, MainMenu },
   setup () {
     const store = useStore(storeKey);
     const route = useRoute();
@@ -29,6 +34,8 @@ export default defineComponent({
     window.addEventListener('resize', (e: Event) => {
       const target = e.target as Window;
       store.dispatch('updateGridSize', target.outerWidth);
+
+      console.log(store.getters["gridSize"], store.getters["smAndDown"])
     });
 
     onMounted(() => {
