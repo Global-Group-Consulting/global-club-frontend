@@ -42,7 +42,7 @@
           <ion-label>
             <template v-if="entry.label.startsWith('$')">{{ entry.label.replace("$", '') }}</template>
 
-            <template v-else>{{ t("mainMenu." + entry.label) }}</template>
+            <template v-else>{{ $t("mainMenu." + entry.label) }}</template>
           </ion-label>
         </ion-item>
 
@@ -77,6 +77,7 @@
     divider?: boolean;
     icon?: string;
     permissions?: AclPermissionsEnum[];
+    showInMobile?: boolean;
   }
 
   const store = useStore(storeKey);
