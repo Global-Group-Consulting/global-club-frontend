@@ -1,7 +1,7 @@
 <template>
   <IonPage>
       <div class="header-nav"> 
-            <TopToolbar include-back>Dettagli prodotto</TopToolbar>
+            <TopToolbar include-back>Account personale</TopToolbar>
             </div>
     <IonContent class="ion-padding">
     <ion-grid>
@@ -19,7 +19,7 @@
         <br>
         <v-switch :case="categoria">
     <template #personali>
-     <PersonalDataDatiAnagrafici></PersonalDataDatiAnagrafici>
+     <PersonalDataDatiAnagrafici/>
     </template>
 
     <template #contrattuali>
@@ -28,6 +28,7 @@
   </v-switch>
 
        </ion-grid>
+
    
     </IonContent>
   </IonPage>

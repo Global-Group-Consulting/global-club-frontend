@@ -19,8 +19,7 @@
            <slot :name="'content_' + section.id">
             
            <strong>{{section.desc}}</strong>
-           <div v-html="section.html"></div>
-
+           <strong>{{section.component}}</strong>
         
           </slot>
 

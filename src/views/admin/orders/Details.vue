@@ -7,9 +7,9 @@
         
         
         <AccordionList :sections="accordionSections">
-          <template v-slot:content_communication>
-            <Chat :communication="order?.communication"></Chat>
-          </template>
+     
+            <PersonalDataDatiAnagrafici></PersonalDataDatiAnagrafici>
+       
         </AccordionList>
 
       </ion-grid>
@@ -30,13 +30,13 @@
   import { formatCurrency } from "@/@utilities/currency"
   import { formatOrderStatus } from "@/@utilities/statuses"
   import AccordionList from '@/components/AccordionList.vue';
+  import PersonalDataDatiAnagrafici from '@/views/private/PersonalData/PersonalDataDatiAnagrafici.vue';
   import { useI18n } from 'vue-i18n';
-  import Chat from '@/components/chats/Chat.vue';
-import DashboardVue from '@/views/private/Dashboard.vue';
+
 
   export default defineComponent({
     name: "Details",
-    components: { Chat, AccordionList, SimpleToolbarButton, SimpleToolbar, TopToolbar },
+    components: {AccordionList, SimpleToolbarButton, SimpleToolbar, TopToolbar, PersonalDataDatiAnagrafici, },
     setup () {
       const http: HttpPlugin = inject<HttpPlugin>('http') as HttpPlugin;
       const route = useRoute()
@@ -48,7 +48,8 @@ import DashboardVue from '@/views/private/Dashboard.vue';
           text: t("pages.orderDetails.tab_anagrafici"),
           open: true,
           desc:"gerta habibi",
-          html: '<ion-button color="success">Success</ion-button>'
+        
+
           
         },
         {

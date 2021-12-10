@@ -1,7 +1,5 @@
 <template>
- <IonPage>
-
-  
+  <div class="PersonalDataDatiAnagrafici">
   <ion-item>
   <ion-label position="stacked">Tipologia soggetto</ion-label>
   <ion-input class="user-label" disabled readonly><span class="data-position">Persona fisica</span></ion-input>
@@ -14,9 +12,7 @@
   <ion-label position="stacked">Codice fiscale</ion-label>
   <ion-input class="user-label" disabled readonly><span class="data-position">MRNRSS98B64I760R</span></ion-input>
   </ion-item>
-
-  
- </IonPage>
+  </div>
 </template>
 
 <script lang="ts">
