@@ -24,9 +24,8 @@
 </template>
 
 <script lang="ts">
-  import { computed, ComputedRef, defineComponent, onMounted, PropType, ref, watch } from 'vue';
+  import { computed, ComputedRef, defineComponent, PropType, ref, watch } from 'vue';
   import Icon from '@/components/Icon.vue';
-  import { Computed } from 'vuex';
 
   export interface AccordionSection {
     id: string;

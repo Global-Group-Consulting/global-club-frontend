@@ -70,9 +70,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { defineComponent, inject, reactive, ref, watch } from "vue";
+  import { inject, reactive, ref, watch } from "vue";
   import { AuthPlugin } from "@/plugins/AuthPlugin";
-  import Icon from "@/components/Icon.vue";
+  // import Icon from "@/components/Icon.vue";
   import { AlertsPlugin } from "@/plugins/Alerts";
   import FormInput from "@/components/forms/FormInput.vue";
   import ClubButton from '@/components/ClubButton.vue';
@@ -118,9 +118,9 @@
     }
   }
 
-  async function logout () {
+  /*async function logout () {
     await auth?.logout();
-  }
+  }*/
 </script>
 
 <style scoped>

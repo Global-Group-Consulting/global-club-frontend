@@ -3,19 +3,23 @@
     --background: linear-gradient(180deg, #000000 0%, rgba(39, 39, 39, 0.7) 100%);
   }
 
-  ion-content::part(background):before {
-    content: "";
-    position: fixed;
-    width: 90vw;
+  ion-content::part(background) {
+    z-index: -1;
 
-    height: 40vh;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    background-image: url("/assets/patternlandscape.png");
-    background-position: top center;
-    background-repeat: no-repeat;
-    background-size: contain;
+    &:before {
+      content: "";
+      position: fixed;
+      width: 90vw;
+
+      height: 40vh;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      background-image: url("/assets/patternlandscape.png");
+      background-position: top center;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
   }
 }
 

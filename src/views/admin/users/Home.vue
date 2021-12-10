@@ -47,7 +47,7 @@
   import { TabEntry } from '@/@types/TabEntry';
   import { useI18n } from 'vue-i18n';
   import Tabs from '@/components/Tabs.vue';
-  import { User, UserBasic } from '@/@types/User';
+  import { UserBasic } from '@/@types/User';
   import AdminListItem from '@/components/lists/AdminListItem.vue';
   import { formatUserName } from '@/@utilities/fields';
   import Icon from '@/components/Icon.vue';

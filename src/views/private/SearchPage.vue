@@ -1,9 +1,10 @@
 <template>
   <IonPage> 
-     <IonContent class="ion-padding">
-    Risultati ricerca 
+    <div class="header-nav"> 
+      <TopToolbar include-back>Risultato ricerca</TopToolbar>
+        </div>
 
-
+     <IonContent class="ion-padding">    
      <div class="search-container">
         <div v-if="options.length">
           <AutoComplete :options="options" :optionsKey="optionsKey" @save-option="saveResult"/>
@@ -27,21 +28,16 @@
         </ion-popover>
       </div>
 
-      <br>
-      <ion-row>
+    
+    <ion-grid>
+
+      <ion-row class="ion-text-start">
           <ion-col>
-        <ion-button size="small"> Categoria 
-           <ion-icon src="./assets/icons/plus.svg"></ion-icon>
-              </ion-button>
-        </ion-col>
-        <ion-col>
-        <ion-button size="small"> Prezzo da ...
-           <ion-icon src="./assets/icons/plus.svg"></ion-icon>
-              </ion-button>
+            <ClubButton size="small" icon icon-position="end">Categoria</ClubButton>
+            <ClubButton size="small" icon icon-position="end" style="padding-left:15px;">Prezzo da</ClubButton>
         </ion-col>
           </ion-row>
-   
-    <ion-grid>
+          <br>
         <ion-row>
           <ion-col>
           <div class="container">
@@ -120,12 +116,13 @@ import { ProductCategoryApis } from '@/plugins/httpCalls/ProductCategoryApis';
   import AutoComplete from "../../components/AutoComplete.vue"
   import { ProductCategory } from '@/@types/ProductCategory';
   import { AlertsPlugin } from '@/plugins/Alerts';
+  import ClubButton from '@/components/ClubButton.vue';
 
   const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
 
   export default defineComponent({
     name: "Search",
-    components: { Popover, AutoComplete },
+    components: { Popover, AutoComplete, ClubButton },
     setup () {
       const isOpenRef = ref(false);
       const event = ref();
@@ -227,4 +224,11 @@ border-radius: 20px;
 --box-shadow: none !important;
 
 }
+
+
+.header-nav{
+color: white;
+padding: 15px 75px 0 30px;
+}
+
 </style>>

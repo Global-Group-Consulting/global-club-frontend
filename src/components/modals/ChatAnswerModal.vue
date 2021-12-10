@@ -44,7 +44,7 @@
         default: "Annulla"
       }
     },
-    setup (props, { emit }) {
+    setup () {
       const newMessage = ref("");
       const attachments = ref(null)
 
