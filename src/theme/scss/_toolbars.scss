@@ -61,12 +61,19 @@
   }
 
   .bottom-toolbar-center-g {
+    --padding-top: 0;
+    --padding-end: 12px;
+    --padding-bottom: 0;
+    --padding-start: 12px;
+    --border-radius: 50%;
+
     width: 90px;
     height: 90px;
     flex: 0;
     background-color: transparent;
     position: relative;
     bottom: 16px;
+    margin: 0;
 
     &::part(native) {
       /*height: 150%;
