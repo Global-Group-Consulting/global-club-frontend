@@ -6,27 +6,13 @@ import { orderDetails } from '@/locales/it/pages/orderDetails';
 import { ordersSection } from '@/locales/it/sections/orders';
 import { users } from '@/locales/it/pages/users';
 import { userProfile } from '@/locales/it/pages/userProfile';
+import { mainMenu } from '@/locales/it/mainMenu';
 
 export default {
   alerts,
   forms,
   enums,
-  hi: 'Ciao come va?',
-  mainMenu: {
-    home: 'Home',
-    users: 'Utenti',
-    orders: 'Ordini',
-    products: 'Prodotti',
-    productCategories: 'Categorie Prodotti',
-    logout: 'Logout',
-    userCart: 'Carrello',
-    userFavourites: 'Prodotti preferiti',
-    userOrders: 'I miei ordini',
-    userPortfolio: "Il mio portfolio",
-    userProfile: "Il mio profilo",
-    more: "Altro"
-  
-  },
+  mainMenu,
   pages: {
     users,
     userProfile,
