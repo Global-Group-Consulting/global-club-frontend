@@ -1,14 +1,25 @@
 export const mainMenu = {
+  logout: 'Logout',
+  more: "Altro",
+  
   home: 'Home',
   users: 'Utenti',
   orders: 'Ordini',
   products: 'Prodotti',
   productCategories: 'Categorie Prodotti',
-  logout: 'Logout',
   userCart: 'Carrello',
   userFavourites: 'Prodotti preferiti',
   userOrders: 'I miei ordini',
   userPortfolio: "Il mio portfolio",
   userProfile: "Il mio profilo",
-  more: "Altro"
+  
+  homeMobile: 'Home',
+  usersMobile: 'Utenti',
+  ordersMobile: 'Ordini',
+  productsMobile: 'Prodotti',
+  userCartMobile: 'Carrello',
+  userFavouritesMobile: 'Preferiti',
+  userOrdersMobile: 'Ordini',
+  userPortfolioMobile: "Portfolio",
+  userProfileMobile: "Profilo",
 }
