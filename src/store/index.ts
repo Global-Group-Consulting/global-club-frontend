@@ -57,7 +57,7 @@ const mutations: MutationTree<RootState> = {
 
 const actions: ActionTree<RootState, RootState> = {
   updateGridSize ({ commit, state }, newSize: number) {
-    const size = state.sizes.find(el => el.value <= newSize) ?? null;
+    const size = state.sizes.find(el => el.value <= newSize) ?? state.sizes[state.sizes.length - 1];
   
     if (!size || state.gridSize.label === size.label) {
       return;
@@ -76,6 +76,11 @@ const getters: GetterTree<RootState, RootState> = {
     const minSize = state.sizes.find(el => el.label === "lg") ?? { value: 0 };
     
     return state.screenSize <= minSize.value;
+  },
+  mdAndUp (state): boolean {
+    const minSize = state.sizes.find(el => el.label === "md") ?? { value: 0 };
+    
+    return state.screenSize >= minSize.value;
   },
   smAndDown (state): boolean {
     const minSize = state.sizes.find(el => el.label === "md") ?? { value: 0 };
