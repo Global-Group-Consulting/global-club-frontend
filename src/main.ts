@@ -4,7 +4,7 @@ import router from './router';
 import * as IonComponents from '@ionic/vue';
 import { IonicVue } from '@ionic/vue';
 import TopToolbar from '@/components/toolbars/TopToolbar.vue';
-import BottomToolbar from '@/components/toolbars/BottomToolbar.vue';
+import BottomToolbar from '@/components/TheMobileToolbar.vue';
 import FormCurrency from '@/components/forms/FormCurrency.vue';
 import FormInput from '@/components/forms/FormInput.vue';
 import Icon from '@/components/Icon.vue';

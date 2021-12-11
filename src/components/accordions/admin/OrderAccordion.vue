@@ -4,11 +4,12 @@
       <Chat :communication="order?.communication"></Chat>
     </template>
     <template v-slot:content_products>
-      <AccordionList :sections="productSections">
-        <template v-slot:content_product="{item}">
-          {{ item.data }}
-        </template>
-      </AccordionList>
+      <ion-list>
+        <ProductListItem v-for="(prod, i) in order?.products" :key="'prod_' + i"
+                         :product="prod.product"
+                         :qta="prod.qta"
+                         :price="prod.price"></ProductListItem>
+      </ion-list>
     </template>
   </AccordionList>
 </template>
@@ -18,15 +19,16 @@
   import AccordionList, { AccordionSection } from '@/components/AccordionList.vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { useI18n } from 'vue-i18n';
-  import { Order, OrderProduct } from '@/@types/Order';
+  import { Order } from '@/@types/Order';
   import { formatCurrency } from '@/@utilities/currency';
   import { formatLocaleDate } from '@/@utilities/dates';
   import { formatOrderStatus } from '@/@utilities/statuses';
   import Chat from '@/components/chats/Chat.vue';
+  import ProductListItem from '@/components/lists/products/ProductListItem.vue';
 
   export default defineComponent({
     name: "OrderAccordion",
-    components: { Chat, AccordionList },
+    components: { ProductListItem, Chat, AccordionList },
     props: {
       orderData: {
         type: Object as PropType<Order>
@@ -54,7 +56,7 @@
             qta: productsCount.value,
             total: formatCurrency(order.value?.amount ?? 0)
           }),
-          open: true
+          open: false
         },
         {
           id: "user",
@@ -62,20 +64,6 @@
           open: false,
         }
       ])
-      const productSections: Ref<(AccordionSection & { data: OrderProduct })[]> = computed(() => {
-        if (order.value) {
-          return order.value.products.map((el) => {
-            return {
-              id: "product",//el.product._id,
-              text: el.product.title + ` (x${el.qta}) = ` + formatCurrency(el.product.price * el.qta),
-              open: ref(false) as any,
-              data: el
-            }
-          })
-        }
-
-        return []
-      })
 
       watch(() => props.orderId, async (orderId) => {
         if (!orderId) {
@@ -95,7 +83,7 @@
 
       return {
         order,
-        accordionSections, productSections,
+        accordionSections,
         formatLocaleDate, formatCurrency, formatOrderStatus
       }
     }

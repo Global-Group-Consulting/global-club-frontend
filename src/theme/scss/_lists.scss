@@ -6,9 +6,16 @@ ion-thumbnail.center-inner-icon {
 
 ion-item-divider {
   --padding-end: 16px;
+  border: none;
 
   hr {
     background-color: #7B786F;
     width: 100%;
+  }
+}
+
+.main-menu-list-item {
+  ion-icon {
+    fill: none
   }
 }

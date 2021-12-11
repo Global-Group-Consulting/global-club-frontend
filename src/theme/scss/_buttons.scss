@@ -9,7 +9,7 @@ ion-button {
   }
 
   &.button-large {
-    font-size: var(--font-size-large);
+    font-size: calc(var(--font-size-base) * 1.3) ;
   }
 
   &.button-has-icon-only {

@@ -1,5 +1,5 @@
 import { installPlugin, PluginTemplate } from '@/plugins/PluginTemplate';
-import { alertController } from '@ionic/vue';
+import { alertController, toastController } from '@ionic/vue';
 
 interface AlertAskOptions {
   header: string;
@@ -95,12 +95,38 @@ export class AlertsPlugin extends PluginTemplate<void> {
         buttons
       })
     );
-    
+  
     await alert.present();
-    
+  
     const { role } = await alert.onDidDismiss();
-    
+  
     return role === 'ok';
+  }
+  
+  async toast (message: string, color?: string) {
+    const toast = await toastController
+      .create({
+        message,
+        animated: true,
+        duration: 3000,
+        color,
+        buttons: [
+          {
+            icon: "close",
+            role: 'cancel',
+          }
+        ]
+      })
+    
+    await toast.present();
+  }
+  
+  async toastSuccess (message: string) {
+    return this.toast(message, "success")
+  }
+  
+  async toastError (message: string) {
+    return this.toast(message, "danger")
   }
 }
 

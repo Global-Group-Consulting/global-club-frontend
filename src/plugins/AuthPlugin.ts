@@ -93,13 +93,27 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
     
     await this.cleanToken();
     await this.store.dispatch('auth/setUser', null);
-    
+  
     if (forceRedirect) {
       const url = await this.plugins.$router.resolve({ name: "public.login" })
       window.location.assign(url.path);
     } else if (logged) {
       await this.plugins.$router.replace({ name: "public.login" })
       //window.location.assign('/');
+    }
+  }
+  
+  public async forgotPassword (email: string) {
+    await this.loading.show()
+    
+    try {
+      await this.http.rawRequest({
+        method: 'POST',
+        url: this.options.forgotUrl,
+        data: { email }
+      })
+    } finally {
+      await this.loading.hide()
     }
   }
   
@@ -293,6 +307,7 @@ declare module '@vue/runtime-core' {
 export interface AuthPluginOptions {
   loginUrl: string;
   logoutUrl: string;
+  forgotUrl: string;
   userUrl: string;
   refreshTokenUrl: string;
   tokenKey: string;

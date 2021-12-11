@@ -1,5 +1,5 @@
 import { BasicApisClass } from '@/plugins/httpCalls/basicApisClass';
-import { ReadUserGroupsDto, User, UserBasic } from '@/@types/User';
+import { ReadUserGroupsDto, UpdateUserAnagraphicDto, UpdateUserContractDto, User, UserBasic } from '@/@types/User';
 import { UserRoleEnum } from '@/@enums/user.role.enum';
 import { PaginatedResult } from '@/@types/Pagination';
 
@@ -19,7 +19,7 @@ export class UserApis extends BasicApisClass {
         page
       }
     });
-    
+  
     return result?.data;
   }
   
@@ -29,10 +29,22 @@ export class UserApis extends BasicApisClass {
     return result?.data;
   }
   
-  static async readProfile (id: string): Promise<UserBasic | undefined> {
-    const result = await this.withLoader<UserBasic>("get", this.getUrl('/' + id))
-    
+  static async readProfile (id: string, full?: boolean): Promise<UserBasic | undefined> {
+    const queryParams = {}
+  
+    if (full !== undefined) {
+      queryParams["full"] = full
+    }
+  
+    const result = await this.withLoader<UserBasic>("get", this.getUrl('/' + id, queryParams))
+  
     return result?.data
+  }
+  
+  static async update<T> (data: UpdateUserContractDto | UpdateUserAnagraphicDto, id): Promise<T | undefined> {
+    const result = await this.withLoader<T>("patch", this.getUrl('/' + id), data);
+    
+    return result?.data;
   }
   
   /*
