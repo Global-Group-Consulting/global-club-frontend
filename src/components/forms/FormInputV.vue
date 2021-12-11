@@ -27,7 +27,8 @@
       </component>
     </ion-item>
 
-    <small v-if="error && !readonly && !disabled" class="form-input-error">{{ error }}</small>
+    <small v-if="showError" class="form-input-error">{{ error }}</small>
+    <small v-if="message && !showError" class="form-input-message">{{ message }}</small>
   </div>
 </template>
 
@@ -62,12 +63,15 @@
         default: true
       },
       readonly: Boolean,
-      error: String
+      error: String,
+      message: String
     },
     setup (props, { emit }) {
       const componentType = computed(() => {
         return props.type ?? 'text';
       });
+
+      const showError = computed(() => props.error && !props.readonly && !props.disabled)
 
       function onInput (e) {
         const value = e.target.value;
@@ -91,6 +95,7 @@
 
       return {
         componentType,
+        showError,
         onInput, onChange
       }
     }
