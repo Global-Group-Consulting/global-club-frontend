@@ -16,7 +16,8 @@
     "types": [
       "webpack-env",
       "jest",
-      "lodash"
+      "lodash",
+      "yup"
     ],
     "paths": {
       "@/*": [

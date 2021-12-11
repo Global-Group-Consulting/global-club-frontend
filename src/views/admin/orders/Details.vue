@@ -42,7 +42,7 @@
           </ion-col>
         </ion-row>
 
-        <OrdersList :order-data="order"></OrdersList>
+        <OrderAccordion :order-data="order"></OrderAccordion>
       </ion-grid>
     </ion-content>
   </IonPage>
@@ -60,11 +60,11 @@
   import { formatLocaleDate } from "@/@utilities/dates"
   import { formatCurrency } from "@/@utilities/currency"
   import { formatOrderStatus } from "@/@utilities/statuses"
-  import OrdersList from '@/components/accordions/admin/OrderAccordion.vue';
+  import OrderAccordion from '@/components/accordions/admin/OrderAccordion.vue';
 
   export default defineComponent({
     name: "Details",
-    components: { OrdersList, SimpleToolbarButton, SimpleToolbar, TopToolbar },
+    components: { OrderAccordion, SimpleToolbarButton, SimpleToolbar, TopToolbar },
     setup () {
       const http: HttpPlugin = inject<HttpPlugin>('http') as HttpPlugin;
       const route = useRoute()

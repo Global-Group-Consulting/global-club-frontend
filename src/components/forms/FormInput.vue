@@ -1,5 +1,5 @@
 <template>
-  <ion-item :class="{'ion-margin-bottom': addSpaceAfter, 'is-readonly': readonly}" class="form-input">
+  <ion-item :class="{'ion-margin-bottom': addSpaceAfter, 'is-readonly': readonly, 'is-disabled': disabled}" class="form-input">
     <ion-label position="floating">{{ label }}</ion-label>
     <component :is="component"
                ref="inputComponent"

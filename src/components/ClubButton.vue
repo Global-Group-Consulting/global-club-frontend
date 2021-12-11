@@ -1,6 +1,6 @@
 <template>
   <ion-button :fill="fill" shape="round" :size="size" :expand="expand"
-              :color="color">
+              :color="color" :type="type">
     <icon :slot="iconSlot" :name="iconName" v-if="icon"></icon>
 
     <slot v-if="!onlyIcon"></slot>
@@ -37,11 +37,15 @@
         default: "image"
       },
       icon: Boolean,
-      onlyIcon: Boolean
+      onlyIcon: Boolean,
+      type: {
+        type: String as PropType<"button" | "submit">,
+        default: "button"
+      }
     },
     setup (props) {
       const fill = computed(() => {
-        let toReturn = "";
+        let toReturn;
 
         switch (props.version) {
           case "solid":

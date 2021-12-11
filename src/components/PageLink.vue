@@ -5,7 +5,8 @@
       v-slot="{ href, navigate}">
     <ClubButton v-bind="ionBtnProps"
                 @click="onClick(navigate, $event)"
-                :href="href">
+                :href="href"
+                type="button">
       <slot></slot>
     </ClubButton>
 
