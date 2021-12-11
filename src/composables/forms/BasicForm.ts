@@ -39,7 +39,7 @@ export abstract class BasicForm<T> {
   protected apiCalls!: HttpPlugin;
   protected alerts!: AlertsPlugin;
   protected i18n!: Composer;
-  protected cbOnSubmitSuccess: null | ((data: T) => void) = null
+  protected cbOnSubmitSuccess: null | ((data: T | undefined) => void) = null
   public onSubmit: any = null;
   public onEditClick = (newVal: any) => {
     this.isEditing.value = (newVal && typeof newVal === 'boolean') ? newVal : !this.isEditing.value;
@@ -64,6 +64,12 @@ export abstract class BasicForm<T> {
     this.i18n = useI18n();
   }
   
+  /**
+   * Method that will be invoked once the form is valid and the user has clicked
+   * on the submit button.
+   * This method should handle the necessary api call to the server and send
+   * the form data.
+   */
   abstract handleSubmitValid (values: T)
   
   public get editing () {
@@ -130,18 +136,18 @@ export abstract class BasicForm<T> {
     return this.alerts.toastError(this.formErrors.join("<br>"));
   }
   
-  protected afterValidSubmit (result: T) {
+  protected afterValidSubmit (result?: T) {
     const initialData = this.settings.dataToWatch ? this.settings.dataToWatch() : {}
-    const dataToEmit = Object.assign({}, initialData, result);
-  
+    const dataToEmit = Object.assign({}, initialData, result || {});
+    
     // merges new data with initial data. This because new data does not contain
     // all the user data, but only the necessary data.
-    this.updateInitialFormData<UpdateUserContractDto>(result);
-  
+    this.updateInitialFormData<UpdateUserContractDto>(result || {});
+    
     if (this.settings.emit) {
       this.settings.emit("update:modelValue", dataToEmit);
     }
-  
+    
     if (this.cbOnSubmitSuccess) {
       this.cbOnSubmitSuccess(result)
     }
@@ -149,7 +155,7 @@ export abstract class BasicForm<T> {
     this.onEditClick(false);
   }
   
-  public async onSubmitCompleted (cb: (data: T) => void) {
+  public async onSubmitCompleted (cb: (data: T | undefined) => void) {
     this.cbOnSubmitSuccess = cb
   }
   

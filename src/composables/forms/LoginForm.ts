@@ -30,6 +30,8 @@ export class LoginForm extends BasicForm<LoginDto> {
     
     try {
       await this.auth.login({ ...values });
+  
+      this.afterValidSubmit();
     } catch (e) {
       await this.alerts.error(e);
     }
