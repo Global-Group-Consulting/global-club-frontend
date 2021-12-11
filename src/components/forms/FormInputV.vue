@@ -82,7 +82,7 @@
       function onChange (e) {
         const value = e.target.value;
 
-        if (props.component !== "ion-select") {
+        if (props.component !== "ion-select" && props.modelValue === value) {
           return;
         }
 
