@@ -1,126 +1,132 @@
 <template>
   <IonPage>
-    <IonContent class="ion-padding">
+    <IonHeader>
       <div class="logo-container"></div>
+    </IonHeader>
 
-      <form @submit.prevent="login" @keydown.enter="login">
-        <ion-grid fixed>
+    <IonContent class="ion-padding">
+      <Form @submit="loginForm.onSubmit">
+        <ion-grid fixed class="ion-no-padding">
           <ion-row class="ion-justify-content-center">
-            <ion-col sizeLg="6" sizeMd="7" sizeSm="8">
-              <div class="mt-5vh mb-4">
-                <p class="text-large">Gentile utente,</p>
-                <p class="title">Benvenuto</p>
+            <ion-col v-bind="colSize">
+              <div class="">
+                <h3 class="mt-0">Gentile utente,</h3>
+                <h2 class="mt-2 mb-4 font-bold">Benvenuto</h2>
               </div>
+            </ion-col>
+          </ion-row>
 
-              <FormInput
-                  label="Username"
-                  type="mail"
-                  clear-input
-                  v-model="formData.email"
+          <ion-row class="ion-justify-content-center">
+            <ion-col v-bind="colSize">
+              <FormInputV class="mb-4"
+                          label="Username"
+                          type="mail"
+                          clear-input
+                          v-model="loginForm.formData.email.modelValue"
+                          :error="loginForm.formData.email.errorMessage"
               />
 
-              <FormInput
-                  label="Password"
-                  type="password"
-                  clear-input
-                  v-model="formData.password"
+              <FormInputV class="mb-4"
+                          label="Password"
+                          type="password"
+                          clear-input
+                          v-model="loginForm.formData.password.modelValue"
+                          :error="loginForm.formData.password.errorMessage"
               />
 
-              <FormInput v-model="userType"
-                         component="ion-select"
-                         label="Account to user for login"
-                         :options="userTypeOptions"
-                         :add-space-after="false"
+              <FormInputV v-model="userType"
+                          component="ion-select"
+                          label="Account to user for login"
+                          :options="userTypeOptions"
+                          :add-space-after="false"
               >
-              </FormInput>
-              <div class="ion-text-left">
+              </FormInputV>
+
+              <div class="ion-text-left mb-4">
                 <small>Only for development reasons. This field will be removed in production!!</small>
               </div>
 
+              <PageLink :to="{name:'public.reset'}"
+                        :btn-props="{version:'link'}">
+                Hai dimenticato la password?
+              </PageLink>
 
-              <IonButton
-                  class="btn-link"
-                  fill="clear"
-                  @click="$router.push('/reset')"
-              >Hai dimenticato la password?
-              </IonButton>
+              <!-- Fake submit button that allow the form submit by pressing enter key -->
+              <input type="submit" style="display: none">
             </ion-col>
           </ion-row>
         </ion-grid>
-      </form>
+      </Form>
     </IonContent>
 
-    <ion-footer>
-      <ion-grid fixed>
-        <ion-row class="ion-justify-content-center">
-          <ion-col sizeLg="6" sizeMd="7" sizeSm="8" class="py-0">
-            <ClubButton
-              icon-name="login-btn"
-              expanded
-              size="large"
-              @click="login"
-            >
-              Login
-            </ClubButton>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-footer>
+    <TheFooterButton label="Login" @click="loginForm.onSubmit"
+                     :col-size="colSize"></TheFooterButton>
   </IonPage>
 </template>
 
-<script lang="ts" setup>
-  import { inject, reactive, ref, watch } from "vue";
+<script lang="ts">
+  import { defineComponent, inject, reactive, ref, watch } from "vue";
   import { AuthPlugin } from "@/plugins/AuthPlugin";
-  // import Icon from "@/components/Icon.vue";
   import { AlertsPlugin } from "@/plugins/Alerts";
-  import FormInput from "@/components/forms/FormInput.vue";
-  import ClubButton from '@/components/ClubButton.vue';
+  import TheFooterButton from '@/components/TheFooterButton.vue';
+  import FormInputV from '@/components/forms/FormInputV.vue';
+  import PageLink from '@/components/PageLink.vue';
+  import { LoginForm } from '@/composables/forms/LoginForm';
+  import { Form } from 'vee-validate';
 
-  const auth: AuthPlugin | undefined = inject<AuthPlugin>("auth");
-  const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
+  export default defineComponent({
+    name: "Login",
+    components: {
+      TheFooterButton, FormInputV, PageLink, Form
+    },
+    setup () {
+      const colSize = {
+        sizeLg: "6",
+        sizeMd: "7",
+        sizeSm: "8"
+      }
 
-  const formData = reactive({
-    email: "",
-    password: "",
-  });
+      const loginForm = new LoginForm({
+        dataToWatch: () => ({})
+      });
 
-  /*
-    ONLY FOR DEVELOPMENT PURPOSES
-   */
-  const userType = ref("user");
-  const userTypeOptions = [{
-    text: "Admin",
-    value: "admin"
-  }, {
-    text: "User",
-    value: "user"
-  }]
+      /*
+        ONLY FOR DEVELOPMENT PURPOSES
+       */
+      const userType = ref("user");
+      const userTypeOptions = [{
+        text: "Admin",
+        value: "admin"
+      }, {
+        text: "User",
+        value: "user"
+      }]
 
-  /*
-   ONLY FOR DEVELOPMENT PURPOSES
-  */
-  watch(() => userType.value, (value) => {
-    if (value === "admin") {
-      formData.email = "florian.leica@gmail.com";
-      formData.password = "password1234";
-    } else if (value === "user") {
-      formData.email = "florian.leica@hotmail.it";
-      formData.password = "password1234";
+      /*
+       ONLY FOR DEVELOPMENT PURPOSES
+      */
+      watch(() => userType.value, (value) => {
+        if (value === "admin") {
+          loginForm.updateInitialFormData({
+            email: "florian.leica@gmail.com",
+            password: "password1234",
+          })
+        } else if (value === "user") {
+          loginForm.updateInitialFormData({
+            email: "florian.leica@hotmail.it",
+            password: "password1234",
+          })
+        }
+      }, { immediate: true })
+
+      return {
+        colSize,
+        userTypeOptions,
+        userType,
+        loginForm
+      }
     }
-  }, { immediate: true })
-
-  async function login () {
-    try {
-      await auth?.login({ ...formData });
-    } catch (e) {
-      await alerts.error(e);
-    }
-  }
-
-  /*async function logout () {
-    await auth?.logout();
-  }*/
+  })
 </script>
 
 <style scoped>
