@@ -1,22 +1,21 @@
 <template>
   <ion-menu side="start" content-id="main-content" menu-id="main-menu" autoHide="false" class="main-menu">
-    <ion-header v-if="isLoggedIn">
+    <ion-header>
       <ion-toolbar>
-        <!--        <ion-title>Menu</ion-title>-->
         <ion-img :src="require('/public/assets/logo_full_bicolor.svg')"></ion-img>
       </ion-toolbar>
     </ion-header>
 
-    <ion-content v-if="isLoggedIn">
+    <ion-content>
       <ion-list>
-        <MainMenuList :entries-list="desktopEntries" @click="onItemClick"></MainMenuList>
+        <MainMenuList :entries-list="desktopEntries" @click="onItemClick"/>
       </ion-list>
     </ion-content>
 
     <ion-footer>
       <ion-list>
         <MainMenuList :entries-list="desktopFooterEntries"
-                      @click="onItemClick"></MainMenuList>
+                      @click="onItemClick"/>
       </ion-list>
     </ion-footer>
   </ion-menu>
