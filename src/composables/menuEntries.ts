@@ -63,18 +63,18 @@ const mobileMenuEntries: Record<"admin" | "private", MenuEntry[]> = {
   admin: [
     {
       route: 'admin.home',
-      label: 'home',
+      label: 'homeMobile',
       icon: "home",
     },
     {
       route: 'admin.users',
-      label: 'users',
+      label: 'usersMobile',
       icon: "user-3",
       permissions: [AclPermissionsEnum.CLUB_USERS_ALL_READ],
     },
     {
       route: 'admin.products',
-      label: 'products',
+      label: 'productsMobile',
       icon: "ticket",
       permissions: [AclPermissionsEnum.CLUB_PRODUCTS_ALL_READ],
     },
@@ -139,22 +139,22 @@ const mobileMenuEntries: Record<"admin" | "private", MenuEntry[]> = {
   private: [
     {
       route: 'private.home',
-      label: 'home',
+      label: 'homeMobile',
       icon: "home",
     },
     {
       route: 'private.wish',
-      label: 'userFavourites',
+      label: 'userFavouritesMobile',
       icon: "star",
     },
     {
       route: 'private.cart',
-      label: 'userCart',
+      label: 'userCartMobile',
       icon: "cart",
     },
     {
       route: 'private.user',
-      label: 'userProfile',
+      label: 'userProfileMobile',
       icon: "user",
     },
   ]
