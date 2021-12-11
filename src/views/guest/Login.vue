@@ -58,14 +58,13 @@
     </IonContent>
 
     <TheFooterButton label="Login" @click="loginForm.onSubmit"
+                     icon="login"
                      :col-size="colSize"></TheFooterButton>
   </IonPage>
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, reactive, ref, watch } from "vue";
-  import { AuthPlugin } from "@/plugins/AuthPlugin";
-  import { AlertsPlugin } from "@/plugins/Alerts";
+  import { defineComponent, ref, watch } from "vue";
   import TheFooterButton from '@/components/TheFooterButton.vue';
   import FormInputV from '@/components/forms/FormInputV.vue';
   import PageLink from '@/components/PageLink.vue';
