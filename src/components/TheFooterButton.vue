@@ -4,7 +4,8 @@
       <ion-row class="ion-justify-content-center">
         <ion-col class="py-0" v-bind="colSize">
           <ClubButton class="m-0"
-                      icon-name="login-btn"
+                      :icon="!!icon"
+                      :icon-name="icon"
                       expanded
                       size="large"
                       @click="$emit('click')"
@@ -26,6 +27,7 @@
     components: { ClubButton },
     props: {
       label: String,
+      icon: String,
       colSize: {
         type: Object,
         default: () => ({
