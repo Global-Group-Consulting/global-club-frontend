@@ -1,6 +1,6 @@
 <template>
-  <IonFooter class="bg-secondary p-3">
-    <ion-grid fixed class="ion-no-padding">
+  <IonFooter class="bg-secondary">
+    <ion-grid fixed>
       <ion-row class="ion-justify-content-center">
         <ion-col class="py-0" v-bind="colSize">
           <ClubButton class="m-0"

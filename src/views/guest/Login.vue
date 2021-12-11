@@ -4,9 +4,9 @@
       <div class="logo-container"></div>
     </IonHeader>
 
-    <IonContent class="ion-padding">
+    <IonContent>
       <Form @submit="loginForm.onSubmit">
-        <ion-grid fixed class="ion-no-padding">
+        <ion-grid fixed>
           <ion-row class="ion-justify-content-center">
             <ion-col v-bind="colSize">
               <div class="">
@@ -34,17 +34,15 @@
                           :error="loginForm.formData.password.errorMessage"
               />
 
-              <FormInputV v-model="userType"
+              <FormInputV class="mb-4"
+                          v-model="userType"
                           component="ion-select"
                           label="Account to user for login"
                           :options="userTypeOptions"
                           :add-space-after="false"
+                          message="Only for development reasons. This field will be removed in production!!"
               >
               </FormInputV>
-
-              <div class="ion-text-left mb-4">
-                <small>Only for development reasons. This field will be removed in production!!</small>
-              </div>
 
               <PageLink :to="{name:'public.reset'}"
                         :btn-props="{version:'link'}">
