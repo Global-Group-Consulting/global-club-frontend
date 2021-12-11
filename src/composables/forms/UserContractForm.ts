@@ -15,14 +15,14 @@ export class UserContractForm extends BasicForm<UpdateUserContractDto> {
       i18nRoot: "forms.userContract",
       i18nKeyTransformer: snakeCase
     }, settings));
-    
+  
     this.schema = {
       clubCardNumber: yup.string().min(5),
       clubPack: yup.string().required().oneOf(Object.values(PackEnum))
     }
-    
-    this.userId = settings.dataToWatch()._id;
-    this.createFormFields(settings.dataToWatch());
+  
+    this.userId = settings.dataToWatch ? settings.dataToWatch()._id : null;
+    this.createFormFields(settings.dataToWatch);
   }
   
   async handleSubmitValid (values: UpdateUserContractDto) {

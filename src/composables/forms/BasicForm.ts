@@ -25,7 +25,7 @@ export interface FormField {
 }
 
 export interface FormSettings<T = any> {
-  dataToWatch: () => T;
+  dataToWatch?: () => T;
   emit?: any;
   i18nRoot?: string;
   i18nKeyTransformer?: (key: string) => string;
@@ -51,12 +51,14 @@ export abstract class BasicForm<T> {
   private isEditing = ref(false);
   
   protected constructor (private settings: FormSettings<T>) {
-    // when data changes, update initial data.
-    watch(settings.dataToWatch,
-      (value: T) => this.updateInitialFormData(value),
-      { deep: true }
-    )
-    
+    if (settings.dataToWatch) {
+      // when data changes, update initial data.
+      watch(settings.dataToWatch,
+        (value: T) => this.updateInitialFormData(value),
+        { deep: true }
+      )
+    }
+  
     this.apiCalls = inject("http") as HttpPlugin;
     this.alerts = inject("alerts") as AlertsPlugin;
     this.i18n = useI18n();
@@ -90,9 +92,9 @@ export abstract class BasicForm<T> {
     })
   }
   
-  protected createFormFields (initialData: T) {
+  protected createFormFields (initialData?: () => T) {
     // First set the initial data
-    this.updateInitialFormData(initialData);
+    this.updateInitialFormData(initialData ? initialData() : {});
     
     // Creates the VeeValidate form by setting the validation schema and
     // initialValues
@@ -129,16 +131,17 @@ export abstract class BasicForm<T> {
   }
   
   protected afterValidSubmit (result: T) {
-    const dataToEmit = Object.assign({}, this.settings.dataToWatch(), result);
-    
+    const initialData = this.settings.dataToWatch ? this.settings.dataToWatch() : {}
+    const dataToEmit = Object.assign({}, initialData, result);
+  
     // merges new data with initial data. This because new data does not contain
     // all the user data, but only the necessary data.
     this.updateInitialFormData<UpdateUserContractDto>(result);
-    
+  
     if (this.settings.emit) {
       this.settings.emit("update:modelValue", dataToEmit);
     }
-    
+  
     if (this.cbOnSubmitSuccess) {
       this.cbOnSubmitSuccess(result)
     }

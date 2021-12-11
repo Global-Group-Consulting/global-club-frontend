@@ -14,14 +14,14 @@ export class UserAnagraphicForm extends BasicForm<UpdateUserAnagraphicDto> {
       i18nRoot: "forms.userContract",
       i18nKeyTransformer: snakeCase
     }, settings));
-    
+  
     this.schema = {
       firstName: yup.string().required().min(3),
       lastName: yup.string().required().min(3),
     }
-    
-    this.userId = settings.dataToWatch()._id;
-    this.createFormFields(settings.dataToWatch());
+  
+    this.userId = settings.dataToWatch ? settings.dataToWatch()._id : null;
+    this.createFormFields(settings.dataToWatch);
   }
   
   async handleSubmitValid (values: UpdateUserAnagraphicDto) {

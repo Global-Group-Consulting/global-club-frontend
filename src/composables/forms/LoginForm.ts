@@ -18,12 +18,12 @@ export class LoginForm extends BasicForm<LoginDto> {
     }, settings));
     
     this.schema = {
-      email: yup.string().required().min(3),
+      email: yup.string().email().required().min(3),
       password: yup.string().required().min(3),
     }
     this.auth = inject("auth") as AuthPlugin;
     
-    this.createFormFields(settings.dataToWatch());
+    this.createFormFields(settings.dataToWatch);
   }
   
   async handleSubmitValid (values: LoginDto) {
