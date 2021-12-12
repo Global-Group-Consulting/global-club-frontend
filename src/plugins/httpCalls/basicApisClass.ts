@@ -30,7 +30,7 @@ export class BasicApisClass {
       let result;
       let error;
       
-      await this.loading.show()
+  
       
       if (method === "delete" && args.length > 1 && !args[1].data) {
          console.error("[HTTP_PLUGIN] - Seems that you're trying to send extra data in a 'DELETE' request.\n"
@@ -39,6 +39,7 @@ export class BasicApisClass {
       }
       
       try {
+         await this.loading.show()
          result = await this.axiosInstance[method](...args);
       } catch (er) {
          console.error(er)

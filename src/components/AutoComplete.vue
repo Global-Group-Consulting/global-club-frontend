@@ -11,9 +11,7 @@
           @ionInput="onChange"
         >
     </ion-searchbar>
-   
      <ion-card class="list-search"  v-if="filteredSuggestions.length"></ion-card>
-
       <ion-item v-for="(s,i) in filteredSuggestions" :key="i" @click="selected(s)">{{s[optionsKey]}}</ion-item>
     
 </template>
@@ -30,7 +28,7 @@ export default {
   // eslint-disable-next-line vue/no-setup-props-destructure
   setup({ options, optionsKey }) {
     return {
-      ...useAutoComplete(options, optionsKey)
+      ...useAutoComplete(options, optionsKey),
     };
   },
   data() {
@@ -44,7 +42,10 @@ export default {
       } else {
         this.$emit("save-option", this.selectedItem);
       }
-    }
+    },
+    onSelected: function () {
+    this.$router.push({path: '/ProductsList', query : { p: this.userInput}});
+   }
   }
 };
 </script>

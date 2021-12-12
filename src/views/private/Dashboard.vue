@@ -4,7 +4,7 @@
       <div class="logo-container"></div>
       <div class="search-container">
         <div v-if="options.length">
-          <AutoComplete :options="options" :optionsKey="optionsKey" @save-option="saveResult"/>
+          <AutoComplete :options="options" :optionsKey="optionsKey"/>
         </div>
         <btn
             class="filter"
@@ -41,7 +41,7 @@
         <ion-row class="ion-align-items-center">
           <ion-col>
             <div>
-              <p class="user">Mario Rossi</p>
+              <p class="user">{{firstName}}</p>
             </div>
           </ion-col>
           <ion-col>
@@ -56,13 +56,13 @@
        <ion-grid>
       <div class="scrolling-wrapper">
 
-       <div class="modulo-cerca" @click="categoria='totale-resoconto'" value="totale-resoconto">
+       <div class="modulo-cerca" @click="cat='totale-resoconto'" value="totale-resoconto">
             <ion-chip class="resoconto">
               <ion-label>Resoconto</ion-label>
             </ion-chip>
         </div>
 
-       <div class="modulo-cerca" @click="categoria='totale-trimestre'" value="totale-trimestre">
+       <div class="modulo-cerca" @click="cat='totale-trimestre'" value="totale-trimestre">
             <ion-chip class="trimestre">
               <ion-label>1/1/21 - 30/06/21</ion-label>
             </ion-chip>
@@ -85,7 +85,7 @@
 
         <br>
 
-        <v-switch :case="categoria">
+        <v-switch :case="cat">
 
     <template #totale-resoconto>
       
@@ -210,62 +210,67 @@
   </IonPage>
 </template>
 
-
 <script lang="ts">
+  import { useStore } from 'vuex';
+  import { storeKey } from '@/store';
   import { ProductCategoryApis } from '@/plugins/httpCalls/ProductCategoryApis';
   import Popover from "./popover.vue";
-  import { defineComponent, inject, ref } from 'vue';
+  import { defineComponent, inject, onMounted,ref,computed, ComputedRef } from 'vue';
   import AutoComplete from "../../components/AutoComplete.vue"
   import { ProductCategory } from '@/@types/ProductCategory';
   import { AlertsPlugin } from '@/plugins/Alerts';
   import VSwitch from '@lmiller1990/v-switch';
-
-  const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
+  import { User } from '@/@types/User';
+ 
+import { DashboardApis } from '../../plugins/httpCalls/DashboardApis';
+import { Statistic } from '@/@types/Statistics';
 
   export default defineComponent({
     name: "Dashboard",
     components: { Popover, AutoComplete,VSwitch},
     setup () {
+      const store = useStore(storeKey);
+      const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
+      const authUser: ComputedRef<User> = computed(() => store.getters['auth/user']);
+      const options = ref<ProductCategory[]>([]);
+      const statistic = ref<any>();
+      const optionsKey = ref("title");
+      const selected = ref({});
+      const cat = ref('totale-resoconto');
       const isOpenRef = ref(false);
       const event = ref();
+      const firstName = ref<string>(authUser?.value?.firstName);
+      const getData = async ()=> {
+        try {
+          await DashboardApis?.readAll().then(resp => {
+           statistic.value=resp;
+          });
+         await  ProductCategoryApis?.readAll().then(resp => {
+           options.value=resp as never[]??[];
+          });
+        } catch (error) {
+          alerts.error(error);
+        }
+      }
+      onMounted(async()=> {getData()})
+      
       const setOpen = (state: boolean, ev?: Event) => {
         event.value = ev;
         isOpenRef.value = state;
       };
       return {
+        options,
+        selected,
+        optionsKey,
         isOpenRef,
         setOpen,
         event,
-        categoria: ref('totale-resoconto'),
+        cat,
+        authUser,
+        firstName,
+        statistic
       };
     },
-    data () {
-      return {
-        selected: {},
-        options: [] as ProductCategory[] | undefined,
-        optionsKey: "description"
-      };
-    },
-    methods: {
-      getData: async function () {
-        try {
-          await ProductCategoryApis?.readAll().then(resp => {
-            this.options = resp
-          });
-        } catch (error) {
-          await alerts.error(error);
-        }
-
-      },
-      saveResult: function (_value) {
-        this.selected = _value;
-        console.log(this.selected);
-      },
-
-    },
-    async created () {
-      await this.getData();
-    }
   });
 </script>
  <style>
@@ -466,3 +471,7 @@ border-radius: 20px;
 }
 
 </style>
+
+function saveResult(e: any) {
+  throw new Error('Function not implemented.');
+}
