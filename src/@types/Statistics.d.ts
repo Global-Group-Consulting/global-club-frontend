@@ -1,8 +1,8 @@
 export interface Statistic{
     totalUsable: number;
     totalRemaining: number;
-    expirations: any[];
-    semesters: any[];
+    expirations: Expirations[];
+    semesters: Semestersny[];
 }
 
 export interface Expirations{
