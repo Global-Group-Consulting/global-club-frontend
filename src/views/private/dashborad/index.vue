@@ -52,147 +52,9 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-
-       <ion-grid>
-      <div class="scrolling-wrapper">
-
-       <div class="modulo-cerca" @click="cat='totale-resoconto'" value="totale-resoconto">
-            <ion-chip class="resoconto">
-              <ion-label>Resoconto</ion-label>
-            </ion-chip>
-        </div>
-
-       <div class="modulo-cerca" @click="cat='totale-trimestre'" value="totale-trimestre">
-            <ion-chip class="trimestre">
-              <ion-label>1/1/21 - 30/06/21</ion-label>
-            </ion-chip>
-        </div>
-
-       <div class="modulo-cerca">
-            <ion-chip class="trimestre">
-              <ion-label>1/7/21 - 31/12/21</ion-label>
-            </ion-chip>
-        </div>
-
-        <div class="modulo-cerca">
-            <ion-chip class="trimestre">
-              <ion-label>1/7/21 - 31/12/21</ion-label>
-            </ion-chip>
-        </div>
-        
-      </div>
-      </ion-grid>
-
+  <Movimentazione></Movimentazione>
         <br>
-
-        <v-switch :case="cat">
-
-    <template #totale-resoconto>
-      
-
-        <ion-grid class="banner">
-        <ion-row>
-          <div class="money">
-            <img src="/assets/brite-gold.png" />
-            <p class="somma">76.654</p>
-            <p class="descrizione">Totale utilizzabile</p>
-          </div>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <div class="money">
-              <img src="/assets/brite-gold.png" />
-              <p class="somma">30.876</p>
-              <p class="descrizione">Scadono a Gennaio '22</p>
-            </div>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="8">
-            <div class="money">
-              <img src="/assets/brite-gold.png" />
-              <p class="somma">45.778</p>
-              <p class="descrizione">Scadono a Luglio '22</p>
-            </div>
-          </ion-col>
-          <ion-col size="4" class="dettagli">
-            <div>
-              <btn
-                class="ion-text-capitalize m-0 button1"
-                size="small"
-                expand="block"
-                @click="$router.push('#')"
-              >
-                Dettagli
-              </btn>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-
-
-    </template>
-
-    <template #totale-trimestre>
-      <ion-grid class="banner">
-        <ion-row>
-          <div class="money">
-            <img src="/assets/brite-gold.png" />
-            <p class="somma">27.820</p>
-            <p class="descrizione">Totale disponibile</p>
-          </div>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <div class="money">
-              <img src="/assets/brite-gold.png" />
-              <p class="somma">5000</p>
-              <p class="descrizione">Brite utilizzati</p>
-            </div>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="8">
-            <div class="money">
-              <img src="/assets/brite-gold.png" />
-              <p class="somma">32.830</p>
-              <p class="descrizione">Brite accumulati</p>
-            </div>
-          </ion-col>
-          <ion-col size="4" class="dettagli">
-            <div>
-              <btn
-                class="ion-text-capitalize m-0 button1"
-                size="small"
-                expand="block"
-                @click="$router.push('#')"
-              >
-                Dettagli
-              </btn>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </template>
-  </v-switch>
-      <br>
-      <ion-grid class="statobanner">
-        <ion-row>
-          <ion-col size="2">
-            <ion-img src="/assets/workout-pic.png"></ion-img>
-          </ion-col>
-          <ion-col size="8">
-            <span class="order"> Ordine del 20/09/21</span><br>
-            <span class="order-status">Stato: In lavorazione</span>
-            <ion-progress-bar class="progress1" color="primary" value="0.8"></ion-progress-bar>
-          </ion-col>
-          <ion-col size="2">
-            <ion-router-link href="http://localhost:8100/order"><ion-icon class="icon-align" src="./assets/icons/chevron-right.svg"></ion-icon></ion-router-link>
-
-          </ion-col>
-
-        </ion-row>
-      </ion-grid>
+    <UltimoOrdine></UltimoOrdine>
     </IonContent>
     <ion-footer>
       <ion-toolbar>
@@ -204,7 +66,6 @@
             slot="icon-only"
             icon-name="circle-right"
         ></btn>
-      
       </ion-toolbar>
     </ion-footer>
   </IonPage>
@@ -214,20 +75,18 @@
   import { useStore } from 'vuex';
   import { storeKey } from '@/store';
   import { ProductCategoryApis } from '@/plugins/httpCalls/ProductCategoryApis';
-  import Popover from "./popover.vue";
+  import Popover from "../popover.vue";
   import { defineComponent, inject, onMounted,ref,computed, ComputedRef } from 'vue';
-  import AutoComplete from "../../components/AutoComplete.vue"
+  import AutoComplete from "../../../components/AutoComplete.vue"
   import { ProductCategory } from '@/@types/ProductCategory';
   import { AlertsPlugin } from '@/plugins/Alerts';
-  import VSwitch from '@lmiller1990/v-switch';
   import { User } from '@/@types/User';
- 
-import { DashboardApis } from '../../plugins/httpCalls/DashboardApis';
-import { Statistic } from '@/@types/Statistics';
+  import Movimentazione from './movimentazione.vue'
+  import UltimoOrdine from './UltimoOrdine.vue'
 
   export default defineComponent({
     name: "Dashboard",
-    components: { Popover, AutoComplete,VSwitch},
+    components: { Popover, AutoComplete,Movimentazione,UltimoOrdine},
     setup () {
       const store = useStore(storeKey);
       const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
@@ -236,15 +95,11 @@ import { Statistic } from '@/@types/Statistics';
       const statistic = ref<any>();
       const optionsKey = ref("title");
       const selected = ref({});
-      const cat = ref('totale-resoconto');
       const isOpenRef = ref(false);
       const event = ref();
       const firstName = ref<string>(authUser?.value?.firstName);
       const getData = async ()=> {
         try {
-          await DashboardApis?.readAll().then(resp => {
-           statistic.value=resp;
-          });
          await  ProductCategoryApis?.readAll().then(resp => {
            options.value=resp as never[]??[];
           });
@@ -265,8 +120,6 @@ import { Statistic } from '@/@types/Statistics';
         isOpenRef,
         setOpen,
         event,
-        cat,
-        authUser,
         firstName,
         statistic
       };
@@ -471,7 +324,4 @@ border-radius: 20px;
 }
 
 </style>
-
-function saveResult(e: any) {
-  throw new Error('Function not implemented.');
-}
+ 
