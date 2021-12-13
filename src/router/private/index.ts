@@ -3,7 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 export default [
   {
     path: "/dashboard",
-    component: () => import("@/views/private/dashborad/index.vue"),
+    component: () => import("@/views/private/dashboard/Index.vue"),
     name: "private.home",
     meta: {
       isPrivate: true,
