@@ -7,24 +7,21 @@
     <ion-grid>
     <ion-row class="btn-tabs">
         <ion-col value="descrizione">
-            <ClubButton color="secondary" version="link" @click="categoria='personali'" value="personali" class="btn-hover">Dati 1</ClubButton>
+            <ClubButton ref="btn1" color="secondary" version="link" @click="cat='personali'" value="personali" class="btn-hover">Dati 1</ClubButton>
           </ion-col>
           <ion-col>
-        <ClubButton color="secondary" version="link" @click="categoria='contrattuali'" value="contrattuali" class="btn-hover">Dati 2</ClubButton>
+        <ClubButton color="secondary" version="link" @click="cat='contrattuali'" value="contrattuali" class="btn-hover">Dati 2</ClubButton>
             </ion-col>
         </ion-row>
         <br>
-        <v-switch :case="categoria">
+        <v-switch :case="cat">
     <template #personali>
- <PersonalDataDetail></PersonalDataDetail>
+   <PersonalDataDetail></PersonalDataDetail>
     </template>
-
     <template #contrattuali>
-      testo 2 
     </template>
   </v-switch>
-
-       </ion-grid>
+ </ion-grid>
 
    
     </IonContent>
@@ -32,19 +29,23 @@
 </template>
 
 <script lang="ts">
+import VSwitch from '@lmiller1990/v-switch'
 import PersonalDataDetail from '../private/PersonalDataDetail.vue';
-import { defineComponent, ref } from "vue";
-import { useI18n } from "vue-i18n";
+import { defineComponent, ref ,} from "vue";
+ 
  import ClubButton from '@/components/ClubButton.vue';
 export default defineComponent({
   name: "PersonalData",
-  components: {PersonalDataDetail,ClubButton},
+  components: {PersonalDataDetail,ClubButton,VSwitch},
 setup() {
- const { t } = useI18n()
+
+     
     return {
-      categoria: ref('descrizione')
+      cat: ref<string>('personali'),
     }
+    
   }
+  
 });
 </script>
 <style>
