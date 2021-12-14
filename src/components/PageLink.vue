@@ -4,12 +4,14 @@
       custom
       v-slot="{ href, navigate}">
     <ClubButton v-bind="ionBtnProps"
+                v-if="!onlyContainer"
                 @click="onClick(navigate, $event)"
                 :href="href"
                 type="button">
       <slot></slot>
     </ClubButton>
 
+    <slot v-if="onlyContainer" v-bind="{href, navigate}"></slot>
   </router-link>
 </template>
 
@@ -44,7 +46,8 @@
       to: {
         type: Object as PropType<RouteLocationRaw>
       },
-      btnProps: Object as PropType<IonButtonInterface>
+      btnProps: Object as PropType<IonButtonInterface>,
+      onlyContainer: Boolean
     },
     setup (props, { attrs }) {
       const router = useRouter();
