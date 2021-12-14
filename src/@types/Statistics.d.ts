@@ -2,7 +2,7 @@ export interface Statistic{
     totalUsable: number;
     totalRemaining: number;
     expirations: Expirations[];
-    semesters: Semestersny[];
+    semesters: Semesters[];
 }
 
 export interface Expirations{
