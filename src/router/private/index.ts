@@ -60,7 +60,7 @@ export default [
   },
   {
     path: "/search",
-    component: () => import("@/views/private/SearchPage.vue"),
+    component: () => import("@/views/private/searchPage/Index.vue"),
     name: "private.search",
     meta: {
       isPrivate: true,

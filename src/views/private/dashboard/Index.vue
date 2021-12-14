@@ -1,7 +1,7 @@
 <template>
   <IonPage>
     <IonContent class="ion-padding">
-      <Search></Search>
+      <SearchBar></SearchBar>
 
       <ion-grid class="ion-no-padding content1" fixed="true">
         <ion-row>
@@ -54,11 +54,11 @@ import { defineComponent, ref, computed, ComputedRef } from "vue";
 import { User } from "@/@types/User";
 import Movimentazione from "./Movimentazione.vue";
 import UltimoOrdine from "./UltimoOrdine.vue";
-import Search from "./Search.vue";
+import SearchBar from '@/components/SearchBar.vue';
 
 export default defineComponent({
   name: "Dashboard",
-  components: { Movimentazione, UltimoOrdine, Search },
+  components: { Movimentazione, UltimoOrdine, SearchBar },
   setup() {
     const store = useStore(storeKey);
     const authUser: ComputedRef<User> = computed(

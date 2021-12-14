@@ -18,12 +18,12 @@
 <script lang="ts">
 import { ProductCategoryApis } from "@/plugins/httpCalls/ProductCategoryApis";
 import { defineComponent, inject, onMounted, ref } from "vue";
-import AutoComplete from "../../../components/AutoComplete.vue";
+import AutoComplete from "./AutoComplete.vue";
 import { ProductCategory } from "@/@types/ProductCategory";
 import { AlertsPlugin } from "@/plugins/Alerts";
 
-export default defineComponent({
-  name: "Search",
+  export default defineComponent({
+  name: "SearchBar",
   components: { AutoComplete },
   setup() {
     const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
@@ -57,6 +57,7 @@ export default defineComponent({
       optionsKey,
       isOpenRef,
       setOpen,
+      event
     };
   },
 });
