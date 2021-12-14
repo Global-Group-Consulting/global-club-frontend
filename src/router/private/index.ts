@@ -3,7 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 export default [
   {
     path: "/dashboard",
-    component: () => import("@/views/private/dashborad/index.vue"),
+    component: () => import("@/views/private/dashboard/Index.vue"),
     name: "private.home",
     meta: {
       isPrivate: true,
@@ -60,7 +60,7 @@ export default [
   },
   {
     path: "/search",
-    component: () => import("@/views/private/SearchPage.vue"),
+    component: () => import("@/views/private/searchPage/Index.vue"),
     name: "private.search",
     meta: {
       isPrivate: true,

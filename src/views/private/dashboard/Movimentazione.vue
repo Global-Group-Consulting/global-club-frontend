@@ -213,9 +213,9 @@ import { defineComponent, onMounted, ref } from "vue";
  const statistic = ref<Statistic>();
  const getData = async ()=> {
   
-        //  await DashboardApis?.readAll().then(resp => {
-        //       statistic.value=resp;
-        //   });
+       await DashboardApis?.readAll().then(resp => {
+       statistic.value=resp;
+          });
     }
     onMounted(async()=> {getData()})
   return {
