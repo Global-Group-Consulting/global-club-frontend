@@ -1,12 +1,14 @@
 import { InjectionKey } from 'vue';
 import { ActionTree, createStore, GetterTree, MutationTree, Store } from 'vuex';
 import AuthModule from './modules/auth';
+import CartModule from './modules/cart';
 
 type GridSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 // define your typings for the store state
 export interface State {
   auth: typeof AuthModule;
+  cart: typeof CartModule;
   gridSize: GridSize;
 }
 
@@ -97,6 +99,9 @@ export const store = createStore({
   getters,
   modules: {
     // @ts-ignore
-    auth: AuthModule
+    auth: AuthModule,
+    
+    // @ts-ignore
+    cart: CartModule
   }
 });
