@@ -2,7 +2,7 @@
   <AdminListItem
       :title="prodTitle"
       :description="product?.description"
-      :open-link="{ name: 'admin.products.details', params: { id: product?._id ?? '' } }"
+      :open-link="{ name: (asAdmin ? 'admin.products.details': 'private.product'), params: { id: product?._id ?? '' } }"
       :open-link-label="$t('pages.products.btn_open')"
       :image="product?.thumbnail?.id"
   >
@@ -16,11 +16,15 @@
   import { formatCurrency } from '@/@utilities/currency';
 
   export default defineComponent({
-    name: "ProductListItem",
+    name: "AdminProductListItem",
     components: { AdminListItem },
     props: {
       product: Object as PropType<Product>,
-      qta: Number
+      qta: Number,
+      asAdmin: {
+        type: Boolean,
+        default: true
+      }
     },
     setup (props) {
       const prodTitle = computed(() => {

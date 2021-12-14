@@ -24,7 +24,7 @@
   import { formatLocaleDate } from '@/@utilities/dates';
   import { formatOrderStatus } from '@/@utilities/statuses';
   import Chat from '@/components/chats/Chat.vue';
-  import ProductListItem from '@/components/lists/products/ProductListItem.vue';
+  import ProductListItem from '@/components/lists/products/AdminProductListItem.vue';
 
   export default defineComponent({
     name: "OrderAccordion",
