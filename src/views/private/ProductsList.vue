@@ -1,33 +1,36 @@
 <template>
-  <IonPage> Prodotti
+  <IonPage>
+    <TopToolbar>Prodotti</TopToolbar>
 
-    <ul>
-      <li v-for="product of productsList" :key="product._id">
-        <ion-thumbnail slot="start">
-          <ion-img :src="formatImgUrl(product.thumbnail?.id)"></ion-img>
-        </ion-thumbnail>
-
-        titolo:
-        {{ product.title }}
-      </li>
-    </ul>
+    <ion-content>
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size-lg="3" size-md="4" size="6" v-for="product of productsList" :key="product._id">
+            <PrivateProductListItem :product="product" class="m-0 h-100"/>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-content>
   </IonPage>
 </template>
 
 <script lang="ts">
-  //import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { defineComponent, inject, onMounted, ref, Ref } from 'vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { Product } from '@/@types/Product';
   import { formatImgUrl } from '@/@utilities/images';
+  import TopToolbar from '@/components/toolbars/TopToolbar.vue';
+  import { onIonViewWillEnter } from '@ionic/vue';
+  import PrivateProductListItem from '@/components/lists/products/PrivateProductListItem.vue';
 
   export default defineComponent({
     name: 'ProductsList',
+    components: { PrivateProductListItem, TopToolbar },
     setup () {
       const http = inject<HttpPlugin>('http');
       const productsList: Ref<Product[]> = ref([]);
 
-      onMounted(async () => {
+      onIonViewWillEnter(async () => {
         const result = await http?.api.products.readAll();
 
         productsList.value = result?.data ?? [];
