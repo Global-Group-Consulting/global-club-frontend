@@ -29,7 +29,7 @@
   import { formatImgUrl } from '@/@utilities/images';
   import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
   import { onIonViewWillEnter } from '@ionic/vue';
-  import ProductListItem from '@/components/lists/products/ProductListItem.vue';
+  import ProductListItem from '@/components/lists/products/AdminProductListItem.vue';
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
 
   export default defineComponent({

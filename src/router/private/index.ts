@@ -67,7 +67,7 @@ export default [
     },
   },
   {
-    path: "/product",
+    path: "/product/:id",
     component: () => import("@/views/private/ProductDetails.vue"),
     name: "private.product",
     meta: {
