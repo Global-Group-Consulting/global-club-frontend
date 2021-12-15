@@ -56,8 +56,12 @@
     </template>
   </v-switch>
 
-       </ion-grid>
-      <ClubButton class="sticky-button" size="large" version="filled">Aggiungi al carrello</ClubButton>
+        <div class="ion-text-center">
+          <ClubButton size="large" version="filled"
+                      @click="addToCart">Aggiungi al carrello
+          </ClubButton>
+        </div>
+      </ion-grid>
 
     </IonContent>
   </IonPage>
@@ -74,6 +78,10 @@
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import { formatImgUrl } from '@/@utilities/images';
   import BriteValue from '@/components/BriteValue.vue';
+  import { useStore } from 'vuex';
+  import { OrderProduct } from '@/@types/Order';
+  import { storeKey } from '@/store';
+  import { AlertsPlugin } from '@/plugins/Alerts';
 
   export default defineComponent({
 
@@ -85,7 +93,9 @@
     },
     setup () {
       const route = useRoute();
+      const store = useStore(storeKey);
       const http = inject("http") as HttpPlugin;
+      const alerts = inject("alerts") as AlertsPlugin;
       const product: Ref<Product | undefined> = ref()
       const categoria = ref('descrizione')
       const slideOpts = {
@@ -107,11 +117,22 @@
         categoria.value = "descrizione";
       })
 
+      const addToCart = async () => {
+        await store.dispatch("cart/add", {
+          qta: 1,
+          price: product.value?.price,
+          product: product.value
+        } as OrderProduct)
+
+        await alerts.toastSuccess("Prodotto aggiunto al carrello.")
+      }
+
       return {
         categoria,
         product,
         slideOpts,
-        formatImgUrl
+        formatImgUrl,
+        addToCart
       }
     }
   })
