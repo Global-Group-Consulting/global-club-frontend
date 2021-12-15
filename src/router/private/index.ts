@@ -60,14 +60,14 @@ export default [
   },
   {
     path: "/search",
-    component: () => import("@/views/private/SearchPage.vue"),
+    component: () => import("@/views/private/searchPage/Index.vue"),
     name: "private.search",
     meta: {
       isPrivate: true,
     },
   },
   {
-    path: "/product",
+    path: "/product/:id",
     component: () => import("@/views/private/ProductDetails.vue"),
     name: "private.product",
     meta: {
@@ -84,7 +84,7 @@ export default [
   },
   {
     path: "/order",
-    component: () => import("@/views/private/OrderStatus.vue"),
+    component: () => import("@/views/private/orderStatus/Index.vue"),
     name: "private.order",
     meta: {
       isPrivate: true,

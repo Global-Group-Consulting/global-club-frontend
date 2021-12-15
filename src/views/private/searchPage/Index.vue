@@ -3,9 +3,9 @@
     <div class="header-nav"> 
       <TopToolbar include-back>Risultato ricerca</TopToolbar>
         </div>
-
+      
      <IonContent class="ion-padding">    
-     <div class="search-container">
+     <!-- <div class="search-container">
         <div v-if="options.length">
           <AutoComplete :options="options" :optionsKey="optionsKey" @save-option="saveResult"/>
         </div>
@@ -26,7 +26,8 @@
             @didDismiss="setOpen(false)">
           <Popover></Popover>
         </ion-popover>
-      </div>
+      </div> -->
+      <SearchBar></SearchBar>
 
     
     <ion-grid>
@@ -110,60 +111,18 @@
 
 <script lang="ts">
  
-import { ProductCategoryApis } from '@/plugins/httpCalls/ProductCategoryApis';
-  import Popover from "./popover.vue";
-  import { defineComponent, inject, ref } from 'vue';
-  import AutoComplete from "../../components/AutoComplete.vue"
-  import { ProductCategory } from '@/@types/ProductCategory';
-  import { AlertsPlugin } from '@/plugins/Alerts';
+  import { defineComponent } from 'vue';
   import ClubButton from '@/components/ClubButton.vue';
+  import SearchBar from '@/components/SearchBar.vue';
 
-  const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
 
   export default defineComponent({
     name: "Search",
-    components: { Popover, AutoComplete, ClubButton },
-    setup () {
-      const isOpenRef = ref(false);
-      const event = ref();
-      const setOpen = (state: boolean, ev?: Event) => {
-        event.value = ev;
-        isOpenRef.value = state;
-      };
-      return {
-        isOpenRef,
-        setOpen,
-        event,
-      };
-    },
-    data () {
-      return {
-        selected: {},
-        options: [] as ProductCategory[] | undefined,
-        optionsKey: "description"
-      };
-    },
-    methods: {
-      getData: async function () {
-        try {
-          await ProductCategoryApis?.readAll().then(resp => {
-            this.options = resp
-          });
-        } catch (error) {
-          await alerts.error(error);
-        }
-
-      },
-      saveResult: function (_value) {
-        this.selected = _value;
-        console.log(this.selected);
-      },
-
-    },
-    async created () {
-      await this.getData();
-    }
-  });
+    components: {  ClubButton, SearchBar },
+  //  setup () {
+  
+  //  }
+   });
 </script>
 
 <style>
@@ -231,4 +190,4 @@ color: white;
 padding: 15px 75px 0 30px;
 }
 
-</style>>
+</style>

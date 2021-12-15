@@ -20,6 +20,7 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "PersonalDataDetail",
   setup() {
+    return {}
   },
 });
 </script>

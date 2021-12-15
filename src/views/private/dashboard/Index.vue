@@ -56,7 +56,7 @@ import { defineComponent, ref, computed, ComputedRef } from "vue";
 import { User } from "@/@types/User";
 import Movimentazione from "./Movimentazione.vue";
 import UltimoOrdine from "./UltimoOrdine.vue";
-import SearchBar from "./SearchBar.vue";
+import SearchBar from '@/components/SearchBar.vue';
 
 export default defineComponent({
   name: "Dashboard",
