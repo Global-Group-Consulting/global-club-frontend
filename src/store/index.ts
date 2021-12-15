@@ -2,6 +2,7 @@ import { InjectionKey } from 'vue';
 import { ActionTree, createStore, GetterTree, MutationTree, Store } from 'vuex';
 import AuthModule from './modules/auth';
 import CartModule from './modules/cart';
+import VuexPersistance from '@/plugins/VuexPersistance';
 
 type GridSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
@@ -81,7 +82,7 @@ const getters: GetterTree<RootState, RootState> = {
   },
   mdAndUp (state): boolean {
     const minSize = state.sizes.find(el => el.label === "md") ?? { value: 0 };
-    
+  
     return state.screenSize >= minSize.value;
   },
   smAndDown (state): boolean {
@@ -100,8 +101,8 @@ export const store = createStore({
   modules: {
     // @ts-ignore
     auth: AuthModule,
-    
     // @ts-ignore
     cart: CartModule
-  }
+  },
+  plugins: [VuexPersistance()]
 });
