@@ -39,16 +39,16 @@
         <br>
         <v-switch :case="categoria">
     <template #descrizione>
-      testo 1 Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  
+      testo 1 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  
     </template>
 
     <template #condizioni>
-      testo 2 Aenean commodo ligula eget dolor. Aenean massa.
+      testo 2 Aenean commodo ligula eget dolor. Aenean massa. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
     </template>
   </v-switch>
 
        </ion-grid>
-      <ClubButton size="large" version="filled">Aggiungi al carrello</ClubButton>
+      <ClubButton class="sticky-button" size="large" version="filled">Aggiungi al carrello</ClubButton>
 
     </IonContent>
     </IonPage>
@@ -75,13 +75,12 @@ export default defineComponent({
 
 <style>
 .prodotto-container{
- 
     background-image: url(/assets/product1.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-    height: 40%;
-
+     height: 50vh;
+   
 }
 
 .titolo-prodotto{
@@ -117,6 +116,14 @@ padding-right: 75px;
 .btn-hover:hover{
   background-color:#ab8e54;
   border-radius: 20px;
+}
+
+
+.sticky-button{
+position: sticky;
+z-index: 5;
+bottom: 5%;
+margin-top: 5%;
 }
 
 </style>

@@ -19,31 +19,31 @@
         </ion-row>
         </ion-grid>
 
-      <ion-grid class="prodotticarrello">
+      <ion-grid class="prodotti-carrello">
         <ion-row>
       <ion-col size="3">
         <img class="img-radius" src="/assets/icons/prodotto.jpg">
       </ion-col>
-      <ion-col size="6">
+      <ion-col size="6" class="carrello-dettagli">
         <div> Viaggio all inclusive ...</div>
         <div class="brite1">
               <img class="brite-img" src="/assets/brite.png" alt="" />
               2500
             </div>
-            <div class="increment-content">
+            <div id="example-1" class="increment-content">
          <ion-button size="small">-</ion-button> 0 <ion-button size="small">+</ion-button>
             </div>
       </ion-col>
-      <ion-col size="3">
-        <ion-router-link href="http://localhost:8100/product"><ion-icon class="icon-alignment" src="./assets/icons/chevron-right.svg"></ion-icon></ion-router-link>
+      <ion-col size="3" class="carrello-dettagli">
+        <ion-router-link href="http://localhost:8100/product"><ion-icon style="zoom:2.0;" src="./assets/icons/chevron-right.svg"></ion-icon></ion-router-link>
       </ion-col>
     </ion-row>
-     <hr />
+    <br/>
         <ion-row>
       <ion-col size="3">
        <img class="img-radius" src="/assets/icons/prodotto.jpg">
       </ion-col>
-      <ion-col size="6">
+      <ion-col size="6" class="carrello-dettagli">
         <div> Viaggio all inclusive ...</div>
         <div class="brite1">
               <img class="brite-img" src="/assets/brite.png" alt="" />
@@ -53,17 +53,18 @@
          <ion-button size="small">-</ion-button> 0 <ion-button size="small">+</ion-button>
             </div>
       </ion-col>
-      <ion-col size="3">
-       <ion-icon class="icon-alignment" src="./assets/icons/chevron-right.svg"></ion-icon>
+      <ion-col size="3" class="ion-text-end carrello-dettagli">
+       <ion-icon style="zoom:2.0;" src="./assets/icons/chevron-right.svg"></ion-icon>
       </ion-col>
     </ion-row>
     <hr />
      <ion-row>
          <ion-col class="ion-text-center">
-          <ion-button size="large"><div class="btncart">Procedi all'ordine</div></ion-button>
+           <ClubButton size="large" version="filled">Procedi all'ordine</ClubButton>
          </ion-col>
        </ion-row>
   </ion-grid>
+
     </ionContent>
   </IonPage>
 </template>
@@ -71,26 +72,30 @@
 <script>
 
 
-import {
-  IonContent,
-  IonPage,
-  IonIcon,
-} from "@ionic/vue";
+import {IonContent, IonPage,IonIcon,} from "@ionic/vue";
 import { warning } from "ionicons/icons";
 import { defineComponent} from "vue";
+import ClubButton from '@/components/ClubButton.vue';
 
 export default defineComponent({
   components: {
     IonPage,
     IonContent,
-    IonIcon,
+    IonIcon, 
+    ClubButton,
   },
   name: "ShoppingCart",
 
   setup() {
     return { warning };
+
+    
   },
+ 
+
 });
+
+
 </script>
 
 <style>
@@ -106,7 +111,7 @@ export default defineComponent({
 }
 
 
-.prodotticarrello {
+.prodotti-carrello {
 background-color: rgb(30, 30, 30);
 text-align: left;
 font-size: 13px;
@@ -120,17 +125,6 @@ hr {
   border-top: 1px solid rgba(243, 243, 243, 0.342);
 }
 
-.btncart{
-text-transform: none;
-color:#fff;
-font-size: 15px;
-padding: 50px;
-}
-
- .icon-alignment{
-position: absolute;
-top: 75px;
-}
 
 .img-radius{
   border-radius: 25px;
@@ -152,6 +146,14 @@ padding-right: 75px;
     border-radius: 50px;
     margin-top: 10px;
     height: 35px;
+}
+
+.carrello-dettagli{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
 }
 
 </style>

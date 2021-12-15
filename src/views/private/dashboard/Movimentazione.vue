@@ -1,5 +1,3 @@
-
-
 <template>
  <ion-grid>
       <div class="scrolling-wrapper">
@@ -57,17 +55,8 @@
               <p class="descrizione">Scadono a Luglio '22</p>
             </div>
           </ion-col>
-          <ion-col size="4" class="dettagli">
-            <div>
-              <btn
-                class="ion-text-capitalize m-0 button1"
-                size="small"
-                expand="block"
-                @click="$router.push('#')"
-              >
-                Dettagli
-              </btn>
-            </div>
+          <ion-col size="4">
+           <ClubButton size="small" version="filled">Dettagli</ClubButton>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -101,17 +90,8 @@
               <p class="descrizione">Brite accumulati</p>
             </div>
           </ion-col>
-          <ion-col size="4" class="dettagli">
-            <div>
-              <btn
-                class="ion-text-capitalize m-0 button1"
-                size="small"
-                expand="block"
-                @click="$router.push('#')"
-              >
-                Dettagli
-              </btn>
-            </div>
+          <ion-col size="4">
+          <ClubButton size="small" version="filled">Dettagli</ClubButton>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -142,17 +122,8 @@
               <p class="descrizione">Brite accumulati</p>
             </div>
           </ion-col>
-          <ion-col size="4" class="dettagli">
-            <div>
-              <btn
-                class="ion-text-capitalize m-0 button1"
-                size="small"
-                expand="block"
-                @click="$router.push('#')"
-              >
-                Dettagli
-              </btn>
-            </div>
+          <ion-col size="4">
+           <ClubButton size="small" version="filled">Dettagli</ClubButton>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -183,17 +154,8 @@
               <p class="descrizione">Brite accumulati</p>
             </div>
           </ion-col>
-          <ion-col size="4" class="dettagli">
-            <div>
-              <btn
-                class="ion-text-capitalize m-0 button1"
-                size="small"
-                expand="block"
-                @click="$router.push('#')"
-              >
-                Dettagli
-              </btn>
-            </div>
+          <ion-col size="4">
+           <ClubButton size="small" version="filled">Dettagli</ClubButton>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -203,11 +165,12 @@
 <script lang="ts">
 import { DashboardApis } from "@/plugins/httpCalls/DashboardApis";
 import { Statistic } from '@/@types/Statistics';
+import ClubButton from '@/components/ClubButton.vue';
 import { defineComponent, onMounted, ref } from "vue";
   import VSwitch from '@lmiller1990/v-switch';
   export default defineComponent({
   name: "Movimentazione",
-   components: {VSwitch},
+   components: {VSwitch,ClubButton,},
   setup () {
  const category = ref('totale-resoconto');
  const statistic = ref<Statistic>();
