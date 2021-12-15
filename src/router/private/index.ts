@@ -84,7 +84,7 @@ export default [
   },
   {
     path: "/order",
-    component: () => import("@/views/private/OrderStatus.vue"),
+    component: () => import("@/views/private/orderStatus/Index.vue"),
     name: "private.order",
     meta: {
       isPrivate: true,
