@@ -43,18 +43,25 @@
               </ClubButton>
 
             </ion-col>
-         
-        </ion-row>
-        <br>
-        <v-switch :case="categoria">
-    <template #descrizione>
-      testo 1 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  
-    </template>
 
-    <template #condizioni>
-      testo 2 Aenean commodo ligula eget dolor. Aenean massa. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-    </template>
-  </v-switch>
+            <ion-col>
+              <ClubButton color="secondary" version="link" @click="categoria='condizioni'" value="condizioni"
+                          class="btn-hover">Condizioni
+              </ClubButton>
+            </ion-col>
+
+          </ion-row>
+
+          <v-switch :case="categoria">
+            <template #descrizione>
+              <div v-html="product?.description"></div>
+            </template>
+
+            <template #condizioni>
+              testo 2 Aenean commodo ligula eget dolor. Aenean massa.
+            </template>
+          </v-switch>
+        </div>
 
         <div class="ion-text-center">
           <ClubButton size="large" version="filled"
@@ -139,15 +146,6 @@
 </script>
 
 <style lang="scss" scoped>
-.prodotto-container{
-    background-image: url(/assets/product1.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-     height: 50vh;
-   
-}
-
   $slider-height: 60vh;
 
   .product-toolbar {
@@ -221,13 +219,5 @@
     background-color:#ab8e54;
     border-radius: 20px;
   }*/
-
-
-.sticky-button{
-position: sticky;
-z-index: 5;
-bottom: 5%;
-margin-top: 5%;
-}
 
 </style>
