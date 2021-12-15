@@ -1,6 +1,3 @@
-import { Store, MutationPayload, MutationTree } from "vuex";
-import merge from "deepmerge";
-import * as shvl from "shvl";
 import { Storage } from '@ionic/storage';
 import { cloneDeep } from 'lodash';
 

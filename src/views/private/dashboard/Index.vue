@@ -3,11 +3,11 @@
     <IonContent class="ion-padding">
       <SearchBar></SearchBar>
 
-      <ion-grid class="ion-no-padding content1" fixed="true">
+      <ion-grid fixed class="ion-no-padding">
         <ion-row>
           <ion-col>
             <div class="bentornato">
-              <p>Bentornato,</p>
+              Bentornato,
             </div>
           </ion-col>
           <ion-col>
@@ -16,8 +16,8 @@
         </ion-row>
         <ion-row class="ion-align-items-center">
           <ion-col>
-            <div>
-              <p class="user">{{ firstName }}</p>
+            <div class="user">
+             {{ firstName }}
             </div>
           </ion-col>
           <ion-col>
@@ -28,9 +28,11 @@
           </ion-col>
         </ion-row>
       </ion-grid>
+      <ion-grid fixed class="ion-no-padding">
       <Movimentazione></Movimentazione>
-      <br />
+      <br/>
       <UltimoOrdine></UltimoOrdine>
+      </ion-grid>
     </IonContent>
     <ion-footer>
       <ion-toolbar>
@@ -71,6 +73,8 @@ export default defineComponent({
   },
 });
 </script>
+
+
  <style>
 .searchbar-input {
   max-width: 30rem;
@@ -93,7 +97,7 @@ export default defineComponent({
   margin-right: auto;
   background-color: white;
   border-radius: 15px;
-  max-width: 31rem;
+  
 }
 
 .bentornato {
@@ -118,10 +122,7 @@ export default defineComponent({
   margin: 0;
 }
 
-ion-grid {
-  margin-top: 0rem;
-  max-width: 500px;
-}
+
 
 .user {
   font-size: 20px;
@@ -141,8 +142,7 @@ ion-grid {
 .trimestre {
   border-radius: 50px;
   padding: 10px, 30px, 10px, 30px;
-
-  font-size: 10px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 400;
   line-height: 15px;
@@ -159,8 +159,6 @@ ion-grid {
 .banner {
   background-color: #272727;
   background-image: url(/assets/banner.svg);
-  width: 80vw;
-  max-width: 500px;
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 30px;
@@ -201,37 +199,25 @@ ion-grid {
   margin-top: 0;
 }
 
-.dettagli {
-  text-align: left;
-}
-
-.statobanner {
+.stato-banner {
   background-color: rgb(30, 30, 30);
   border-radius: 30px;
   text-align: left;
-  width: 80vw;
-  max-width: 500px;
   font-size: 13px;
+  padding: 20px 0px 17px 0px;
+  margin-bottom: 20px;
 }
 
-.stato-ordini {
-  font-size: 18px;
-  text-align: left;
-}
 
 .button1 {
   position: absolute;
   bottom: 20px;
 }
 
-.progress1 {
+.progress-lavorazione {
   height: 8px;
   border-radius: 10px;
   margin-top: 6px;
-}
-
-.content1 {
-  width: 80vw;
 }
 
 .sc-ion-searchbar-md-h {
@@ -257,10 +243,10 @@ ion-grid {
   display: none;
 }
 
-.icon-align {
-  position: absolute;
-  top: 25px;
-  padding-left: 20px;
+
+.lavorazione {
+  color:#c9a866;
 }
+
 </style>
  

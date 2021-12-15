@@ -36,7 +36,7 @@ export default [
   
   {
     path: "/help",
-    component: () => import("@/views/private/ChatHelp.vue"),
+    component: () => import("@/views/private/chatHelp/Index.vue"),
     name: "private.help",
     meta: {
       isPrivate: true,

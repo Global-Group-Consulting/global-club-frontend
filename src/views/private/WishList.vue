@@ -5,55 +5,46 @@
         </div>
     <IonContent class="ion-padding">
     
-
-        <ion-grid class="wish-content">
-          <ion-row>
+      <ion-grid>
+         <ion-row>
           <ion-col>
           Viaggi
           </ion-col>
           </ion-row>
-        <ion-row>
-          <ion-col>
-          <div class="container">
+      <ion-row>
+       <ion-col size-lg="3" size-md="4" size-sm="6" size-xs="6" size="12">
+       <div class="container">
           <img class="img-prodotto" src="/assets/icons/prodotto.jpg">
          <ion-router-link href="http://localhost:8100/product"><ion-icon class="top-left" src="./assets/icons/circle-right.svg"></ion-icon></ion-router-link>
-           <ion-icon class="bottom-right" src="./assets/icons/plus.svg"></ion-icon>
-           
+           <ion-icon class="bottom-right" src="./assets/WishListBtn.svg"></ion-icon>
           </div>
-          <ion-router-link style="color:#fff;" href="http://localhost:8100/product">Titolo</ion-router-link>
-          </ion-col>
-
-           <ion-col>
-          <div class="container">
+        </ion-col>
+    <ion-col size-lg="3" size-md="4" size-sm="6" size-xs="6" size="12">
+     <div class="container">
           <img class="img-prodotto" src="/assets/icons/prodotto.jpg">
-         <ion-icon class="top-left" src="./assets/icons/plus.svg"></ion-icon>
-          <ion-icon class="bottom-right" src="./assets/icons/plus.svg"></ion-icon>
+         <ion-router-link href="http://localhost:8100/product"><ion-icon class="top-left" src="./assets/icons/circle-right.svg"></ion-icon></ion-router-link>
+           <ion-icon class="bottom-right" src="./assets/WishListBtn.svg"></ion-icon>
           </div>
-          Titolo
-          </ion-col>
-
-        </ion-row>
-
-        <ion-row>
-          <ion-col>
-           <div class="container">
+    </ion-col>
+    <ion-col size-lg="3" size-md="4" size-sm="6" size-xs="6" size="12">
+      <div class="container">
           <img class="img-prodotto" src="/assets/icons/prodotto.jpg">
-         <ion-icon class="top-left" src="./assets/icons/plus.svg"></ion-icon>
-          <ion-icon class="bottom-right" src="./assets/icons/plus.svg"></ion-icon>
+         <ion-router-link href="http://localhost:8100/product"><ion-icon class="top-left" src="./assets/icons/circle-right.svg"></ion-icon></ion-router-link>
+           <ion-icon class="bottom-right" src="./assets/WishListBtn.svg"></ion-icon>
           </div>
-          Titolo
-          </ion-col>
-
-           <ion-col>
-          <div class="container">
+    </ion-col>
+    <ion-col size-lg="3" size-md="4" size-sm="6" size-xs="6" size="12">
+      <div class="container">
           <img class="img-prodotto" src="/assets/icons/prodotto.jpg">
-         <ion-icon class="top-left" src="./assets/icons/plus.svg"></ion-icon>
-          <ion-icon class="bottom-right" src="./assets/icons/plus.svg"></ion-icon>
+         <ion-router-link href="http://localhost:8100/product"><ion-icon class="top-left" src="./assets/icons/circle-right.svg"></ion-icon></ion-router-link>
+           <ion-icon class="bottom-right" src="./assets/WishListBtn.svg"></ion-icon>
           </div>
-          Titolo
-          </ion-col>
-        </ion-row>
-     </ion-grid>
+    </ion-col>
+    
+  </ion-row>
+</ion-grid>
+
+
 
     <ion-grid>
       <ion-row>
@@ -62,21 +53,21 @@
           </ion-col>
           </ion-row>
         <ion-row>
-          <ion-col>
+          <ion-col size-lg="3" size-md="4" size-sm="6" size-xs="6" size="12">
           <div class="container">
           <img class="img-prodotto" src="/assets/icons/elettronica.jpg">
          <ion-icon class="top-left" src="./assets/icons/circle-right.svg"></ion-icon>
-           <ion-icon class="bottom-right" src="./assets/icons/plus.svg"></ion-icon>
+           <ion-icon class="bottom-right" src="./assets/WishListBtn.svg"></ion-icon>
            
           </div>
           <ion-router-link style="color:#fff;" href="http://localhost:8100/product">Titolo</ion-router-link>
           </ion-col>
 
-           <ion-col>
+           <ion-col size-lg="3" size-md="4" size-sm="6" size-xs="6" size="12">
           <div class="container">
           <img class="img-prodotto" src="/assets/icons/elettronica.jpg">
-         <ion-icon class="top-left" src="./assets/icons/plus.svg"></ion-icon>
-          <ion-icon class="bottom-right" src="./assets/icons/plus.svg"></ion-icon>
+         <ion-icon class="top-left" src="./assets/icons/circle-right.svg"></ion-icon>
+          <ion-icon class="bottom-right" src="./assets/WishListBtn.svg"></ion-icon>
           </div>
           Titolo
           </ion-col>
@@ -139,7 +130,4 @@ padding-left: 30px;
 padding-right: 75px;
 }
 
-.wish-content{
-margin-top: 15px;
-}
 </style>
