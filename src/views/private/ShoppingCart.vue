@@ -1,19 +1,15 @@
 <template>
   <IonPage>
-    <IonContent class="ion-padding">
-      <div class="header-nav">
-        <TopToolbar include-back>Carrello</TopToolbar>
-      </div>
+    <TopToolbar include-back>Carrello</TopToolbar>
 
+    <IonContent class="ion-padding">
       <ion-grid>
         <ion-row>
           <ion-col>
             <h6>Totale provvisorio</h6>
           </ion-col>
-          <ion-col>
-            <div class="brite">
+          <ion-col> 
               <BriteValue :value="cartTotal"></BriteValue>
-            </div>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -89,6 +85,7 @@
       BriteValue,
       IonPage,
       IonContent,
+      ClubButton,
     },
     name: "ShoppingCart",
     setup () {
@@ -123,4 +120,62 @@
 </script>
 
 <style>
+
+  
+  .prodotticarrello {
+    background-color: rgb(30, 30, 30);
+    text-align: left;
+    font-size: 13px;
+  }
+
+
+  hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(243, 243, 243, 0.342);
+  }
+
+  .btncart {
+    text-transform: none;
+    color: #fff;
+    font-size: 15px;
+    padding: 50px;
+  }
+
+  .icon-alignment {
+    position: absolute;
+    top: 75px;
+  }
+
+  .img-radius {
+    border-radius: 25px;
+  }
+
+  .brite-img {
+    width: 15px;
+  }
+
+  .header-nav {
+    color: white;
+    padding-left: 30px;
+    padding-right: 75px;
+  }
+
+  .increment-content {
+    background-color: #2d2d2d;
+    width: max-content;
+    border-radius: 50px;
+    margin-top: 10px;
+    height: 35px;
+  }
+
+.carrello-dettagli{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
+
 </style>
