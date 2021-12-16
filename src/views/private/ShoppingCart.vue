@@ -14,51 +14,48 @@
               <BriteValue :value="cartTotal"></BriteValue>
           </ion-col>
         </ion-row>
-        </ion-grid>
+      </ion-grid>
 
-      <ion-grid class="prodotti-carrello">
-        <ion-row>
-      <ion-col size="3">
-        <img class="img-radius" src="/assets/icons/prodotto.jpg">
-      </ion-col>
+      <ion-list>
+        <ion-item v-for="entry of products" :key="entry.product._id">
+          <ion-thumbnail slot="start">
+            <slot name="image">
+              <img :src="formatImgUrl(entry.product.thumbnail.id)" alt="cover_image">
+            </slot>
+          </ion-thumbnail>
 
-      <ion-col size="7" class="carrello-dettagli">
-        <div class="ion-text-start"> Viaggio all inclusive ...</div>
-              <BriteValue :value="cartTotal"></BriteValue>
-            <div class="increment-content">
-         <ion-button size="small">-</ion-button> 0 <ion-button size="small">+</ion-button>
+          <ion-label>
+            <h2 v-html="entry.product.title"></h2>
+            <div class="d-flex ion-align-items-center">
+              <ClubButton size="small" only-icon icon icon-name="minus"
+                          @click="changeQta(entry, -1)"/>
+              <span class="px-2 ion-text-center" style="min-width: 40px;">
+                {{ entry.qta }}
+              </span>
+              <ClubButton size="small" only-icon icon icon-name="plus"
+                          @click="changeQta(entry,+1)"/>
             </div>
-      </ion-col>
-      <ion-col size="2" class="carrello-dettagli">
-        <ion-router-link href="http://localhost:8100/product"><ion-icon style="zoom:2.0;" src="./assets/icons/chevron-right.svg"></ion-icon></ion-router-link>
-      </ion-col>
-      
-    </ion-row>
-    <br/>
+          </ion-label>
 
-        <ion-row>
-      <ion-col size="3">
-       <img class="img-radius" src="/assets/icons/prodotto.jpg">
-      </ion-col>
-      <ion-col size="7" class="carrello-dettagli">
-        <div class="ion-text-start"> Viaggio all inclusive ...</div>
-              <BriteValue :value="cartTotal"></BriteValue>
-            <div class="increment-content">
-         <ion-button size="small">-</ion-button> 0 <ion-button size="small">+</ion-button>
-            </div>
-      </ion-col>
-      <ion-col size="2" class="ion-text-end carrello-dettagli">
-       <ion-icon style="zoom:2.0;" src="./assets/icons/chevron-right.svg"></ion-icon>
-      </ion-col>
-    </ion-row>
-    <hr />
-     <ion-row>
-         <ion-col class="ion-text-center">
-           <ClubButton size="large" version="filled">Procedi all'ordine</ClubButton>
-         </ion-col>
-       </ion-row>
-  </ion-grid>
+          <ion-buttons>
+            <PageLink :to="{name: 'private.product', params: {id: entry.product._id}}"
+                      :btn-props="{fill:'clear'}">
+              Vai al prodotto
+            </PageLink>
+            <ClubButton version="link" style="color: red" only-icon icon icon-name="trash"
+                        @click="removeProduct(entry)"/>
+          </ion-buttons>
 
+        </ion-item>
+      </ion-list>
+
+      <ion-row class="ion-justify-content-center mt-5">
+        <ion-col class="ion-text-center" size="12" size-sm="7" size-md="6">
+          <ClubButton size="large" expanded>
+            Procedi all'ordine
+          </ClubButton>
+        </ion-col>
+      </ion-row>
     </ionContent>
   </IonPage>
 </template>
@@ -79,9 +76,13 @@
   import BriteValue from '@/components/BriteValue.vue';
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import ClubButton from '@/components/ClubButton.vue';
+  import { Product } from '@/@types/Product';
+  import PageLink from '@/components/PageLink.vue';
 
   export default defineComponent({
     components: {
+      PageLink,
+      ClubButton,
       TopToolbar,
       BriteValue,
       IonPage,
@@ -94,11 +95,27 @@
       const products: ComputedRef<OrderProduct[]> = computed(() => store.getters["cart/products"]);
       const cartTotal = computed(() => store.getters["cart/tempTotal"]);
 
+      function changeQta (entry: OrderProduct, value: number) {
+        if (entry.qta <= 1 && value === -1) {
+          return
+        }
+
+        store.dispatch("cart/updateQta", {
+          productId: entry.product._id,
+          qta: value
+        })
+      }
+
+      function removeProduct (entry: OrderProduct) {
+        store.dispatch("cart/remove", entry.product._id)
+      }
+
       return {
         warning,
         cartTotal,
         products,
-        formatBrites, formatImgUrl
+        formatBrites, formatImgUrl,
+        changeQta, removeProduct
       };
     },
   });
