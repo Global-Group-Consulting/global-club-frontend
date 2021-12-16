@@ -23,6 +23,7 @@ export interface MenuEntry {
   onlyMobile?: boolean;
   onlyDesktop?: boolean;
   children?: MenuEntry[];
+  badge?: ComputedRef<string>;
 }
 
 const genericFooterEntries: MenuEntry[] = [
@@ -151,6 +152,10 @@ const mobileMenuEntries: Record<"admin" | "private", MenuEntry[]> = {
       route: 'private.cart',
       label: 'userCartMobile',
       icon: "cart",
+      badge: computed(() => {
+        const store = useStore(storeKey);
+        return store.getters["cart/totalProducts"] > 0 ? store.getters["cart/totalProducts"] : null
+      })
     },
     {
       route: 'private.user',
@@ -213,6 +218,10 @@ const desktopMenuEntries: Record<"admin" | "private", MenuEntry[]> = {
       route: 'private.cart',
       label: 'userCart',
       icon: "cart",
+      badge: computed(() => {
+        const store = useStore(storeKey);
+        return store.getters["cart/totalProducts"] > 0 ? store.getters["cart/totalProducts"] : null
+      })
     },
     {
       route: '',
