@@ -43,21 +43,32 @@
               </ClubButton>
 
             </ion-col>
-         
-        </ion-row>
-        <br>
-        <v-switch :case="categoria">
-    <template #descrizione>
-      testo 1 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  
-    </template>
 
-    <template #condizioni>
-      testo 2 Aenean commodo ligula eget dolor. Aenean massa. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-    </template>
-  </v-switch>
+            <ion-col>
+              <ClubButton color="secondary" version="link" @click="categoria='condizioni'" value="condizioni"
+                          class="btn-hover">Condizioni
+              </ClubButton>
+            </ion-col>
 
-       </ion-grid>
-      <ClubButton class="sticky-button" size="large" version="filled">Aggiungi al carrello</ClubButton>
+          </ion-row>
+
+          <v-switch :case="categoria">
+            <template #descrizione>
+              <div v-html="product?.description"></div>
+            </template>
+
+            <template #condizioni>
+              testo 2 Aenean commodo ligula eget dolor. Aenean massa.
+            </template>
+          </v-switch>
+        </div>
+
+        <div class="ion-text-center">
+          <ClubButton size="large" version="filled"
+                      @click="addToCart">Aggiungi al carrello
+          </ClubButton>
+        </div>
+      </ion-grid>
 
     </IonContent>
   </IonPage>
@@ -74,6 +85,10 @@
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import { formatImgUrl } from '@/@utilities/images';
   import BriteValue from '@/components/BriteValue.vue';
+  import { useStore } from 'vuex';
+  import { OrderProduct } from '@/@types/Order';
+  import { storeKey } from '@/store';
+  import { AlertsPlugin } from '@/plugins/Alerts';
 
   export default defineComponent({
 
@@ -85,7 +100,9 @@
     },
     setup () {
       const route = useRoute();
+      const store = useStore(storeKey);
       const http = inject("http") as HttpPlugin;
+      const alerts = inject("alerts") as AlertsPlugin;
       const product: Ref<Product | undefined> = ref()
       const categoria = ref('descrizione')
       const slideOpts = {
@@ -107,26 +124,28 @@
         categoria.value = "descrizione";
       })
 
+      const addToCart = async () => {
+        await store.dispatch("cart/add", {
+          qta: 1,
+          price: product.value?.price,
+          product: product.value
+        } as OrderProduct)
+
+        await alerts.toastSuccess("Prodotto aggiunto al carrello.")
+      }
+
       return {
         categoria,
         product,
         slideOpts,
-        formatImgUrl
+        formatImgUrl,
+        addToCart
       }
     }
   })
 </script>
 
 <style lang="scss" scoped>
-.prodotto-container{
-    background-image: url(/assets/product1.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-     height: 50vh;
-   
-}
-
   $slider-height: 60vh;
 
   .product-toolbar {
@@ -200,13 +219,5 @@
     background-color:#ab8e54;
     border-radius: 20px;
   }*/
-
-
-.sticky-button{
-position: sticky;
-z-index: 5;
-bottom: 5%;
-margin-top: 5%;
-}
 
 </style>
