@@ -38,8 +38,8 @@ import Icon from "@/components/Icon.vue";
 
 export default defineComponent({
   name: "SearchBar",
-  components: { AutoComplete, Icon },
-  setup() {
+  components: { AutoComplete: AutoComplete as any },
+  setup () {
     const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
 
     const options = ref<ProductCategory[]>([]);
