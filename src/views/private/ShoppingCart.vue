@@ -10,10 +10,8 @@
           <ion-col>
             <h6>Totale provvisorio</h6>
           </ion-col>
-          <ion-col>
-            <div class="brite">
+          <ion-col> 
               <BriteValue :value="cartTotal"></BriteValue>
-            </div>
           </ion-col>
         </ion-row>
         </ion-grid>
@@ -23,36 +21,33 @@
       <ion-col size="3">
         <img class="img-radius" src="/assets/icons/prodotto.jpg">
       </ion-col>
-      <ion-col size="6" class="carrello-dettagli">
-        <div> Viaggio all inclusive ...</div>
-        <div class="brite1">
-              <img class="brite-img" src="/assets/brite.png" alt="" />
-              2500
-            </div>
-            <div id="example-1" class="increment-content">
-         <ion-button size="small">-</ion-button> 0 <ion-button size="small">+</ion-button>
-            </div>
-      </ion-col>
-      <ion-col size="3" class="carrello-dettagli">
-        <ion-router-link href="http://localhost:8100/product"><ion-icon style="zoom:2.0;" src="./assets/icons/chevron-right.svg"></ion-icon></ion-router-link>
-      </ion-col>
-    </ion-row>
-    <br/>
-        <ion-row>
-      <ion-col size="3">
-       <img class="img-radius" src="/assets/icons/prodotto.jpg">
-      </ion-col>
-      <ion-col size="6" class="carrello-dettagli">
-        <div> Viaggio all inclusive ...</div>
-        <div class="brite1">
-              <img class="brite-img" src="/assets/brite.png" alt="" />
-              2500
-            </div>
+
+      <ion-col size="7" class="carrello-dettagli">
+        <div class="ion-text-start"> Viaggio all inclusive ...</div>
+              <BriteValue :value="cartTotal"></BriteValue>
             <div class="increment-content">
          <ion-button size="small">-</ion-button> 0 <ion-button size="small">+</ion-button>
             </div>
       </ion-col>
-      <ion-col size="3" class="ion-text-end carrello-dettagli">
+      <ion-col size="2" class="carrello-dettagli">
+        <ion-router-link href="http://localhost:8100/product"><ion-icon style="zoom:2.0;" src="./assets/icons/chevron-right.svg"></ion-icon></ion-router-link>
+      </ion-col>
+      
+    </ion-row>
+    <br/>
+
+        <ion-row>
+      <ion-col size="3">
+       <img class="img-radius" src="/assets/icons/prodotto.jpg">
+      </ion-col>
+      <ion-col size="7" class="carrello-dettagli">
+        <div class="ion-text-start"> Viaggio all inclusive ...</div>
+              <BriteValue :value="cartTotal"></BriteValue>
+            <div class="increment-content">
+         <ion-button size="small">-</ion-button> 0 <ion-button size="small">+</ion-button>
+            </div>
+      </ion-col>
+      <ion-col size="2" class="ion-text-end carrello-dettagli">
        <ion-icon style="zoom:2.0;" src="./assets/icons/chevron-right.svg"></ion-icon>
       </ion-col>
     </ion-row>
@@ -83,6 +78,7 @@
   import { OrderProduct } from "@/@types/Order";
   import BriteValue from '@/components/BriteValue.vue';
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
+  import ClubButton from '@/components/ClubButton.vue';
 
   export default defineComponent({
     components: {
@@ -90,6 +86,7 @@
       BriteValue,
       IonPage,
       IonContent,
+      ClubButton,
     },
     name: "ShoppingCart",
     setup () {
@@ -109,17 +106,7 @@
 
 <style>
 
-  .brite {
-    text-align: center;
-    margin-top: 10px;
-  }
-
-  .brite1 {
-    text-align: left;
-    margin-top: 10px;
-  }
-
-
+  
   .prodotticarrello {
     background-color: rgb(30, 30, 30);
     text-align: left;

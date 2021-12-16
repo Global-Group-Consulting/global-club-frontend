@@ -14,29 +14,23 @@
                         <h6>Totale</h6>
                      </ion-col>
                      <ion-col>
-                        <div class="brite">
-                           <img class="brite-img" src="/assets/brite.png" alt="" />
-                           5000
-                        </div>
+                          <BriteValue :value="product?.price"></BriteValue>
                      </ion-col>
                   </ion-row>
                </ion-grid>
 
-               <ion-grid class="prodotti-carrello">
+               <ion-grid fixed class="prodotti-carrello">
                   <ion-row>
                      <ion-col size="3">
                         <img class="img-radius" src="/assets/icons/prodotto.jpg">
                      </ion-col>
-                     <ion-col size="6">
+                     <ion-col size="7" class="carrello-dettagli">
                         <div> Viaggio all inclusive ...</div>
-                        <div class="brite1">
-                           <img class="brite-img" src="/assets/brite.png" alt="" />
-                           2500
-                        </div>
+                        <BriteValue :value="product?.price"></BriteValue>
                         <div class="quantity">1</div>
                      </ion-col>
-                     <ion-col size="3">
-                        <ion-router-link href="http://localhost:8100/product"><ion-icon class="icon-alignment" src="./assets/icons/chevron-right.svg"></ion-icon></ion-router-link>
+                     <ion-col size="2">
+                        <ion-icon style="zoom:2.0;" src="./assets/icons/chevron-right.svg"></ion-icon>
                      </ion-col>
                   </ion-row>
                   <hr />
@@ -44,16 +38,13 @@
                      <ion-col size="3">
                         <img class="img-radius" src="/assets/icons/prodotto.jpg">
                      </ion-col>
-                     <ion-col size="6">
+                     <ion-col size="7" class="carrello-dettagli">
                         <div> Viaggio all inclusive ...</div>
-                        <div class="brite1">
-                           <img class="brite-img" src="/assets/brite.png" alt="" />
-                           2500
-                        </div>
+                        <BriteValue :value="product?.price"></BriteValue>
                        <div class="quantity">1</div>
                      </ion-col>
-                     <ion-col size="3">
-                        <ion-icon class="icon-alignment" src="./assets/icons/chevron-right.svg"></ion-icon>
+                     <ion-col size="2">
+                       <ion-icon style="zoom:2.0;" src="./assets/icons/chevron-right.svg"></ion-icon>
                      </ion-col>
                   </ion-row>
                   <hr/>
@@ -69,34 +60,13 @@
 <style src='@ionic/core/css/ionic.bundle.css'></style>
 <script>
    import BottomDrawer from "./BottomDrawer.vue";
-   
+   import BriteValue from '@/components/BriteValue.vue';
    export default {
      name: "App",
-     components: { BottomDrawer },
+     components: { BottomDrawer,BriteValue, },
    };
 </script>
 <style>
-
-.brite {
-  text-align:center;
-  margin-top: 10px;
-}
-
-.brite1 {
-  text-align:left;
-  margin-top: 10px;
-}
-
-.brite-img{
-   width:16px;
-}
-
-
-.prodotti-carrello {
-background-color: rgb(30, 30, 30);
-text-align: left;
-font-size: 13px;
-}
 
 
 hr {
@@ -119,10 +89,7 @@ hr {
    margin-top: 10px;
 }
 
-.icon-alignment{
-position: absolute;
-top: 65px;
-}
+
 
 .img-radius{
    border-radius: 25px!important;
@@ -132,6 +99,14 @@ top: 65px;
 color: white;
 padding-left: 30px;
 padding-right: 75px;
+}
+
+.carrello-dettagli{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
 }
 
 
