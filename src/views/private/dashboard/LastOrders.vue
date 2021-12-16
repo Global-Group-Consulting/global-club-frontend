@@ -21,7 +21,7 @@
 <script lang="ts">
 import { defineComponent, onMounted } from "vue";
 export default defineComponent({
-  name: "UltimoOrdine",
+  name: "LastOrders",
    components: {},
   setup () {
 
