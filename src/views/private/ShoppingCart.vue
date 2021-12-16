@@ -1,10 +1,8 @@
 <template>
   <IonPage>
-    <IonContent class="ion-padding">
-      <div class="header-nav">
-        <TopToolbar include-back>Carrello</TopToolbar>
-      </div>
+    <TopToolbar include-back>Carrello</TopToolbar>
 
+    <IonContent class="ion-padding">
       <ion-grid>
         <ion-row>
           <ion-col>
