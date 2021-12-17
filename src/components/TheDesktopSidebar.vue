@@ -36,7 +36,6 @@
     setup () {
       const store = useStore(storeKey);
       const { onItemClick, desktopEntries, desktopFooterEntries } = menuEntries()
-
       const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
       const authUser: ComputedRef<User> = computed(() => store.getters['auth/user']);
 
