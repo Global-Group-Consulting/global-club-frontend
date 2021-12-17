@@ -10,9 +10,15 @@
         <div class="button-inner">
           <Icon :name="entry.icon" size="large"></Icon>
 
+          <ion-badge v-show="entry.badge?.value"
+                     mode="ios" color="warning">{{ entry.badge }}
+          </ion-badge>
+
           <ion-label>
             <small>{{ entry.label }}</small>
           </ion-label>
+
+
         </div>
       </ion-button>
 

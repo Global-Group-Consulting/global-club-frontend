@@ -76,7 +76,7 @@ export default [
   },
   {
     path: "/history",
-    component: () => import("@/views/private/OrdersHistory.vue"),
+    component: () => import("@/views/private/ordersHistory/Index.vue"),
     name: "private.history",
     meta: {
       isPrivate: true,
@@ -92,7 +92,7 @@ export default [
   },
   {
     path: "/user",
-    component: () => import("@/views/private/PersonalData.vue"),
+    component: () => import("@/views/private/personalData/Index.vue"),
     name: "private.user",
     meta: {
       isPrivate: true

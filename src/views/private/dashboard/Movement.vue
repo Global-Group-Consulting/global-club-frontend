@@ -169,7 +169,7 @@ import ClubButton from '@/components/ClubButton.vue';
 import { defineComponent, onMounted, ref } from "vue";
   import VSwitch from '@lmiller1990/v-switch';
   export default defineComponent({
-  name: "Movimentazione",
+  name: "Movement",
    components: {VSwitch,ClubButton,},
   setup () {
  const category = ref('totale-resoconto');

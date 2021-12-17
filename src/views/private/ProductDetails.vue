@@ -125,11 +125,7 @@
       })
 
       const addToCart = async () => {
-        await store.dispatch("cart/add", {
-          qta: 1,
-          price: product.value?.price,
-          product: product.value
-        } as OrderProduct)
+        await store.dispatch("cart/add", product.value)
 
         await alerts.toastSuccess("Prodotto aggiunto al carrello.")
       }

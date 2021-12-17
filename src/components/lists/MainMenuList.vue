@@ -25,6 +25,11 @@
       <ion-label>
         {{ entry.label }}
       </ion-label>
+
+      <ion-badge v-if="entry.badge"
+                 mode="ios" color="warning">{{ entry.badge }}
+      </ion-badge>
+
     </ion-item>
   </template>
 </template>

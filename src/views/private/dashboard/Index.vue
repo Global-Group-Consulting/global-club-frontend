@@ -29,9 +29,9 @@
         </ion-row>
       </ion-grid>
       <ion-grid fixed class="ion-no-padding">
-      <Movimentazione></Movimentazione>
+      <Movement></Movement>
       <br/>
-      <UltimoOrdine></UltimoOrdine>
+      <LastOrders></LastOrders>
       </ion-grid>
     </IonContent>
     <ion-footer>
@@ -54,13 +54,13 @@ import { useStore } from "vuex";
 import { storeKey } from "@/store";
 import { defineComponent, ref, computed, ComputedRef } from "vue";
 import { User } from "@/@types/User";
-import Movimentazione from "./Movimentazione.vue";
-import UltimoOrdine from "./UltimoOrdine.vue";
+import Movement from "./Movement.vue";
+import LastOrders from "./LastOrders.vue"
 import SearchBar from '@/components/SearchBar.vue';
 
 export default defineComponent({
   name: "Dashboard",
-  components: { Movimentazione, UltimoOrdine, SearchBar },
+  components: { Movement, LastOrders, SearchBar },
   setup() {
     const store = useStore(storeKey);
     const authUser: ComputedRef<User> = computed(

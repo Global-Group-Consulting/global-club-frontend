@@ -1,16 +1,14 @@
 <template>
   <IonPage>
-    <IonContent class="ion-padding">
-      <div class="header-nav">
-        <TopToolbar include-back>Carrello</TopToolbar>
-      </div>
+    <TopToolbar include-back>Carrello</TopToolbar>
 
+    <IonContent class="ion-padding">
       <ion-grid>
         <ion-row>
           <ion-col>
             <h6>Totale provvisorio</h6>
           </ion-col>
-          <ion-col> 
+          <ion-col>
               <BriteValue :value="cartTotal"></BriteValue>
           </ion-col>
         </ion-row>
@@ -34,6 +32,8 @@
               </span>
               <ClubButton size="small" only-icon icon icon-name="plus"
                           @click="changeQta(entry,+1)"/>
+
+              <BriteValue :value="entry.price" class="ms-3" />
             </div>
           </ion-label>
 
@@ -76,7 +76,6 @@
   import BriteValue from '@/components/BriteValue.vue';
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import ClubButton from '@/components/ClubButton.vue';
-  import { Product } from '@/@types/Product';
   import PageLink from '@/components/PageLink.vue';
 
   export default defineComponent({
@@ -87,13 +86,12 @@
       BriteValue,
       IonPage,
       IonContent,
-      ClubButton,
     },
     name: "ShoppingCart",
     setup () {
       const store = useStore(storeKey);
       const products: ComputedRef<OrderProduct[]> = computed(() => store.getters["cart/products"]);
-      const cartTotal = computed(() => store.getters["cart/tempTotal"]);
+      const cartTotal = computed(() => store.getters["cart/totalPrice"]);
 
       function changeQta (entry: OrderProduct, value: number) {
         if (entry.qta <= 1 && value === -1) {
@@ -123,7 +121,7 @@
 
 <style>
 
-  
+
   .prodotticarrello {
     background-color: rgb(30, 30, 30);
     text-align: left;
