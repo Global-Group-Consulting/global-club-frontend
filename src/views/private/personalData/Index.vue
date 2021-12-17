@@ -17,10 +17,7 @@ import { defineComponent} from "vue";
 export default defineComponent({
   name: "PersonalData",
   components: {Tabs},
-setup() {
- 
-  }
-  
+
 });
 </script>
 <style>
