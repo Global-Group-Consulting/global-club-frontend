@@ -92,7 +92,7 @@ export default [
   },
   {
     path: "/user",
-    component: () => import("@/views/private/PersonalData.vue"),
+    component: () => import("@/views/private/personalData/Index.vue"),
     name: "private.user",
     meta: {
       isPrivate: true
