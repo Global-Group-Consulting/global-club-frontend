@@ -21,10 +21,7 @@
             </div>
           </ion-col>
           <ion-col>
-            <div class="brite">
-              <img class="brite-img" src="/assets/brite.png" alt="" />
-              <p class="brite-h1">76.654</p>
-            </div>
+           <BriteValue></BriteValue>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -57,10 +54,11 @@ import { User } from "@/@types/User";
 import Movement from "./Movement.vue";
 import LastOrders from "./LastOrders.vue"
 import SearchBar from '@/components/SearchBar.vue';
+import BriteValue from '@/components/BriteValue.vue';
 
 export default defineComponent({
   name: "Dashboard",
-  components: { Movement, LastOrders, SearchBar },
+  components: { Movement, LastOrders, SearchBar, BriteValue, },
   setup() {
     const store = useStore(storeKey);
     const authUser: ComputedRef<User> = computed(
@@ -101,11 +99,7 @@ export default defineComponent({
 }
 
 .bentornato {
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 18px;
-  letter-spacing: 0em;
+  margin-top:20px;
   text-align: left;
   color: #ada9a4;
 }
@@ -249,4 +243,3 @@ export default defineComponent({
 }
 
 </style>
- 
