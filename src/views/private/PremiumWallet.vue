@@ -5,7 +5,7 @@
         </div>
     
     <IonContent class="ion-padding">
-        <ion-grid>
+        <ion-grid fixed>
       <div class="scrolling-wrapper">
        <div class="modulo-cerca" @click="categoria='totale-resoconto'" value="totale-resoconto">
             <ion-chip class="resoconto">
@@ -34,42 +34,33 @@
 
     <template #totale-resoconto>
       
-        <ion-grid class="banner">
+        <ion-grid class="banner" >
         <ion-row>
+          <ion-col size-lg="3" size-md="6" size-sm="12" size-xs="12" size="12">
           <div class="money">
-            <img src="/assets/brite-gold.png" />
+            <BriteValue></BriteValue>
             <p class="somma">76.654</p>
             <p class="descrizione">Totale utilizzabile</p>
-          </div>
-        </ion-row>
-        <ion-row>
-          <ion-col>
+            </div>
+            </ion-col>
+       
+          <ion-col size-lg="3" size-md="6" size-sm="12" size-xs="12" size="12">
             <div class="money">
-              <img src="/assets/brite-gold.png" />
+              <BriteValue></BriteValue>
               <p class="somma">30.876</p>
               <p class="descrizione">Scadono a Gennaio '22</p>
             </div>
           </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="8">
+        
+          <ion-col size-lg="3" size-md="6" size-sm="6" size-xs="6" size="6">
             <div class="money">
-              <img src="/assets/brite-gold.png" />
+              <BriteValue></BriteValue>
               <p class="somma">45.778</p>
               <p class="descrizione">Scadono a Luglio '22</p>
             </div>
           </ion-col>
-          <ion-col size="4" class="dettagli">
-            <div>
-              <btn
-                class="ion-text-capitalize m-0 button1"
-                size="small"
-                expand="block"
-                @click="$router.push('#')"
-              >
-                Dettagli
-              </btn>
-            </div>
+          <ion-col size-lg="3" size-md="6" size-sm="6" size-xs="6" size="6">
+            <ClubButton size="small" version="filled">Dettagli</ClubButton>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -80,41 +71,34 @@
 
       <ion-grid class="banner">
         <ion-row>
+          <ion-col size-lg="3" size-md="6" size-sm="12" size-xs="12" size="12">
           <div class="money">
-            <img src="/assets/brite-gold.png" />
+           <BriteValue></BriteValue>
             <p class="somma">27.820</p>
             <p class="descrizione">Totale disponibile</p>
           </div>
-        </ion-row>
-        <ion-row>
-          <ion-col>
+         </ion-col>
+          <ion-col size-lg="3" size-md="6" size-sm="12" size-xs="12" size="12">
             <div class="money">
-              <img src="/assets/brite-gold.png" />
+              <BriteValue></BriteValue>
               <p class="somma">5000</p>
               <p class="descrizione">Brite utilizzati</p>
             </div>
           </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="8">
+       
+          <ion-col size-lg="3" size-md="6" size-sm="6" size-xs="6" size="6">
             <div class="money">
-              <img src="/assets/brite-gold.png" />
+             <BriteValue></BriteValue>
               <p class="somma">32.830</p>
               <p class="descrizione">Brite accumulati</p>
             </div>
           </ion-col>
-          <ion-col size="4" class="dettagli">
-            <div>
-              <btn
-                class="ion-text-capitalize m-0 button1"
-                size="small"
-                expand="block"
-                @click="$router.push('#')"
-              >
-                Dettagli
-              </btn>
-            </div>
+
+          <ion-col size-lg="3" size-md="6" size-sm="6" size-xs="6" size="6">
+               <ClubButton size="small" version="filled">Dettagli</ClubButton>
           </ion-col>
+
+
         </ion-row>
       </ion-grid>
     </template>
@@ -128,11 +112,14 @@
 //import { HttpPlugin } from '@/plugins/HttpPlugin';
 import { defineComponent, ref } from "vue";
 import VSwitch from '@lmiller1990/v-switch';
+import BriteValue from '@/components/BriteValue.vue';
+import ClubButton from '@/components/ClubButton.vue';
+
 
 export default defineComponent({
   name: "PremiumWallet",
   components: {
-    VSwitch
+    VSwitch,ClubButton, BriteValue, 
   },
   setup() {
     return {
@@ -149,26 +136,15 @@ export default defineComponent({
 .banner {
   background-color: #272727;
   background-image: url(/assets/banner.svg);
-  width: 80vw;
-  max-width: 500px;
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 30px;
-  margin-right: auto;
-  margin-left: auto;
   padding-bottom: 6px;
   
 }
 
 .money {
   text-align: left;
-}
-
-.money img {
-  display: inline-block;
-  height: 20px;
-  width: 18.612716674804688px;
-  margin-right: 5px;
 }
 
 .somma {
@@ -192,14 +168,6 @@ export default defineComponent({
   margin-top: 0;
 }
 
-.button1{
-position: absolute;
-    bottom: 20px;
-}
-
-.dettagli {
-  text-align: left;
-}
 
 .scrolling-wrapper {
   overflow-x: scroll;
