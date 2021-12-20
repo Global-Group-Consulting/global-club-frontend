@@ -197,7 +197,7 @@ import { defineComponent, onMounted, ref } from "vue";
        statistic.value=resp;
           });
     }
-    onMounted(async()=> {getData()})
+    // onMounted(async()=> {getData()})
   return {
       statistic,
       category

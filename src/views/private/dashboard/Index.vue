@@ -51,9 +51,9 @@ import { useStore } from "vuex";
 import { storeKey } from "@/store";
 import { defineComponent, ref, computed, ComputedRef } from "vue";
 import { User } from "@/@types/User";
-import Movement from "./Movement.vue";
+import Movement from "../../shared/Movement.vue";
 import LastOrders from "./LastOrders.vue"
-import SearchBar from '@/components/SearchBar.vue';
+import SearchBar from '@/views/shared/SearchBar.vue';
 import BriteValue from '@/components/BriteValue.vue';
 
 export default defineComponent({

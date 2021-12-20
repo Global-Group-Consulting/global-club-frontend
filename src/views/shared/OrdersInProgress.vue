@@ -1,6 +1,4 @@
-     <template>
-  <div class="user">Stato ordini in corso</div>
-  <br />
+<template>
   <ion-grid class="stato-banner">
     <ion-row>
       <ion-col size="2" class="ion-text-center">
@@ -24,23 +22,13 @@
     </ion-row>
   </ion-grid>
 </template>
-      
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { defineComponent } from "vue";
+
 export default defineComponent({
-  name: "LastOrders",
-  components: {},
-  setup() {
-    const getData = async () => {
-      const data = "";
-    };
-    onMounted(async () => {
-      getData();
-    });
-    return {};
-  },
+  name: "OrdersInProgress",
+  setup() {},
 });
 </script>
-
- <style>
+<style>
 </style>

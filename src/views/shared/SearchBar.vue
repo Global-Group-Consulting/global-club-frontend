@@ -31,7 +31,7 @@
 <script lang="ts">
 import { ProductCategoryApis } from "@/plugins/httpCalls/ProductCategoryApis";
 import { defineComponent, inject, onMounted, ref } from "vue";
-import AutoComplete from "./AutoComplete.vue";
+import AutoComplete from "../../components/AutoComplete.vue";
 import { ProductCategory } from "@/@types/ProductCategory";
 import { AlertsPlugin } from "@/plugins/Alerts";
 import Icon from "@/components/Icon.vue";

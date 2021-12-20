@@ -79,7 +79,7 @@
  
   import { defineComponent } from 'vue';
   import ClubButton from '@/components/ClubButton.vue';
-  import SearchBar from '@/components/SearchBar.vue';
+  import SearchBar from '@/views/shared/SearchBar.vue';
 
 
   export default defineComponent({

@@ -30,7 +30,7 @@
 <script lang="ts">
 //import { HttpPlugin } from '@/plugins/HttpPlugin';
 import { defineComponent } from "vue";
-import OrdersInProgress from "./OrdersInProgress.vue";
+import OrdersInProgress from "../../shared/OrdersInProgress.vue";
 import CompletedOrders from "./CompletedOrders.vue";
 export default defineComponent({
   name: "History",
