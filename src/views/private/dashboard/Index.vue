@@ -66,7 +66,7 @@ export default defineComponent({
     );
     const firstName = ref<string>(authUser?.value?.firstName);
     return {
-      firstName,
+      firstName
     };
   },
 });
@@ -89,7 +89,7 @@ export default defineComponent({
 .search-container {
   display: flex;
   justify-content: center;
-  align-items: left;
+  align-items: center;
   margin-top: 30px;
   margin-left: auto;
   margin-right: auto;
