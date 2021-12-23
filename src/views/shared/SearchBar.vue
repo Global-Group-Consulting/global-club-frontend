@@ -18,7 +18,6 @@
       </li>
     </ul>
 
-
 </template>
 <script lang="ts">
 import { ProductCategoryApis } from "@/plugins/httpCalls/ProductCategoryApis";
@@ -31,7 +30,7 @@ import Icon from "@/components/Icon.vue";
 
 export default defineComponent({
   name: "SearchBar",
-  components: { AutoComplete: AutoComplete as any,SearchCollapse, },
+  components: { AutoComplete: AutoComplete as any,SearchCollapse,},
   setup () {
     const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
 
@@ -94,13 +93,14 @@ ul li {
   margin: 0;
 }
 
-ul li input[type="checkbox"] {
-  position: absolute;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  opacity: 0;
+ input[type="checkbox"] {
+    position: absolute;
+    cursor: pointer;
+    width: 17%;
+    height: 66%;
+    z-index: 1;
+    opacity: 0;
+    margin-left: 130px;
 }
 
 ul li input[type="checkbox"]:checked ~ p {

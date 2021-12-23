@@ -70,3 +70,38 @@ font-size:18px;
             text-align: center!important;
         }}
 
+
+        @include mediaQueryUp('lg'){
+          input[type="checkbox"] {
+            width: 10%!important;
+            height: 68%!important;
+            margin-left: 411px!important;
+        }}
+
+
+        @include mediaQueryUp('md') {
+
+          input[type=checkbox] {
+            width: 10% !important;
+            height: 68% !important;
+            margin-left: 192px !important;
+        }
+        }
+
+
+        @include mediaQueryUp('sm'){
+          input[type="checkbox"] {
+            width: 12%!important;
+            height: 66%!important;
+            margin-left: 278px!important;
+        }
+        }
+
+        @include mediaQueryUp('xl'){
+          input[type="checkbox"] {
+            width: 20%!important;
+            height: 68%!important;
+            margin-left: 404px!important;
+        }}
+
+       
