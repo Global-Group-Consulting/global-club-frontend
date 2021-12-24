@@ -25,6 +25,7 @@
           </ion-col>
         </ion-row>
       </ion-grid>
+      <br/>
       <ion-grid fixed class="ion-no-padding">
       <Movement></Movement>
       <br/>
@@ -80,20 +81,6 @@ export default defineComponent({
   text-align: left;
   color: #ada9a4;
 }
-.brite {
-  text-align: end;
-}
-.brite-h1 {
-  display: inline-block;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 36px;
-  letter-spacing: 0em;
-  margin: 0;
-}
-
-
 
 .user {
   font-size: 20px;
@@ -105,70 +92,6 @@ export default defineComponent({
   margin: 0;
 }
 
-.brite-img {
-  margin-right: 10px;
-  margin-bottom: -5px;
-}
-
-.trimestre {
-  border-radius: 50px;
-  padding: 10px, 30px, 10px, 30px;
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 15px;
-  letter-spacing: 0em;
-  color: #7b786f;
-}
-
-.chips {
-  justify-content: space-around;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-.banner {
-  background-color: #272727;
-  background-image: url(/assets/banner.svg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  border-radius: 30px;
-  margin-right: auto;
-  margin-left: auto;
-  padding-bottom: 6px;
-}
-
-.money {
-  text-align: left;
-}
-
-.money img {
-  display: inline-block;
-  height: 20px;
-  width: 18.612716674804688px;
-  margin-right: 5px;
-}
-
-.somma {
-  display: inline-block;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 36px;
-  letter-spacing: 0em;
-  margin-bottom: 0;
-  margin-top: 0;
-}
-
-.descrizione {
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 18px;
-  letter-spacing: 0em;
-  color: #ada9a4;
-  margin-top: 0;
-}
 
 .stato-banner {
   background-color: rgb(30, 30, 30);
@@ -180,38 +103,10 @@ export default defineComponent({
 }
 
 
-.button1 {
-  position: absolute;
-  bottom: 20px;
-}
-
 .progress-lavorazione {
   height: 8px;
   border-radius: 10px;
   margin-top: 6px;
-}
-
-.sc-ion-searchbar-md-h {
-  border-radius: 20px;
-}
-
-.scrolling-wrapper {
-  overflow-x: scroll;
-  overflow-y: hidden;
-  white-space: nowrap;
-}
-
-.modulo-cerca {
-  display: inline-block;
-}
-
-.modulo-cerca :hover {
-  background-color: #967d4a;
-  color: white;
-}
-
-.scrolling-wrapper::-webkit-scrollbar {
-  display: none;
 }
 
 

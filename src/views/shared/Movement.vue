@@ -1,9 +1,9 @@
 <template>
- <ion-grid>
+ 
       <div class="scrolling-wrapper">
 
        <div class="modulo-cerca" @click="category='totale-resoconto'" value="totale-resoconto">
-            <ion-chip class="resoconto">
+            <ion-chip class="trimestre">
               <ion-label>Resoconto</ion-label>
             </ion-chip>
         </div>
@@ -27,8 +27,8 @@
         </div>
         
       </div>
-  </ion-grid>
-
+   
+    <br/>
 
    <v-switch :case="category">
     <template #totale-resoconto>
@@ -208,4 +208,74 @@ import { defineComponent, onMounted, ref } from "vue";
 </script>
 
  <style>
+
+ .modulo-cerca {
+  display: inline-block;
+}
+
+.modulo-cerca :hover {
+  background-color: #967d4a;
+  color: white;
+}
+
+.trimestre {
+  border-radius: 50px;
+  padding: 10px, 30px, 10px, 30px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 15px;
+  letter-spacing: 0em;
+  color: #7b786f;
+  background-color: #272727;
+}
+
+
+.banner {
+  background-color: #272727;
+  background-image: url(/assets/banner.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 30px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-bottom: 6px;
+}
+
+.money {
+  text-align: left;
+}
+
+.somma {
+  display: inline-block;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 36px;
+  letter-spacing: 0em;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.descrizione {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0em;
+  color: #ada9a4;
+  margin-top: 0;
+}
+
+
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.scrolling-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
  </style>
