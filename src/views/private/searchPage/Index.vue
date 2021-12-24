@@ -4,7 +4,8 @@
       <TopToolbar include-back>Risultato ricerca</TopToolbar>
         </div>
       
-     <IonContent class="ion-padding">    
+     <IonContent class="ion-padding"> 
+       <SearchBar></SearchBar>   
      <!-- <div class="search-container">
         <div v-if="options.length">
           <AutoComplete :options="options" :optionsKey="optionsKey" @save-option="saveResult"/>
@@ -27,8 +28,7 @@
           <Popover></Popover>
         </ion-popover>
       </div> -->
-      <SearchBar></SearchBar>
-
+      
      <ion-grid>
       <ion-row class="ion-text-start">
           <ion-col>
@@ -44,6 +44,7 @@
          <ion-router-link href="http://localhost:8100/product"><ion-icon class="top-left" src="./assets/icons/circle-right.svg"></ion-icon></ion-router-link>
            <ion-icon class="bottom-right" src="./assets/WishListBtn.svg"></ion-icon>
           </div>
+          Viaggio ...
         </ion-col>
     <ion-col size-lg="3" size-md="4" size-sm="6" size-xs="6" size="12">
      <div class="container">
@@ -93,29 +94,6 @@
 
 <style>
 
-.searchbar-input {
-  max-width: 30rem;
-  --background: white;
-  --border-radius: 15px;
-}
-
-.searchbar-input.sc-ion-searchbar-md {
-  color: #ada9a4;
-  font-size: 14px;
-  text-align: left;
-} 
-
-.search-container {
-  display: flex;
-  justify-content: center;
-  align-items: left;
-  margin-top: 30px;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: white;
-  border-radius: 15px;
-  max-width: 31rem;
-}
 
 .img-prodotto{
     border-radius: 20px;

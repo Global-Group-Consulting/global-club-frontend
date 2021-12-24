@@ -26,16 +26,7 @@
         </ion-row>
 
         <div class="pb-5 pt-2">
-          <!--
-           Non ha senso usare una row per creare i pulsanti delle tab
-
-           In Ionic esiste il componente ion-segment
-           https://ionicframework.com/docs/api/segment
-
-           Usiamo per favore questo componente in modalità ios.
-
-
-           -->
+         
           <ion-row class="btn-tabs">
             <ion-col value="descrizione">
               <ClubButton color="secondary" version="link" @click="categoria='descrizione'" value="descrizione"

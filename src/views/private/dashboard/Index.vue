@@ -74,29 +74,6 @@ export default defineComponent({
 
 
  <style>
-.searchbar-input {
-  max-width: 30rem;
-  --background: white;
-  --border-radius: 15px;
-}
-
-.searchbar-input.sc-ion-searchbar-md {
-  color: #ada9a4;
-  font-size: 14px;
-  text-align: left;
-}
-
-.search-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 30px;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: white;
-  border-radius: 15px;
-  
-}
 
 .bentornato {
   margin-top:20px;

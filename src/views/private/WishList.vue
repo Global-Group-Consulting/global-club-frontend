@@ -18,6 +18,7 @@
          <ion-router-link href="http://localhost:8100/product"><ion-icon class="top-left" src="./assets/icons/circle-right.svg"></ion-icon></ion-router-link>
            <ion-icon class="bottom-right" src="./assets/WishListBtn.svg"></ion-icon>
           </div>
+           Viaggio ...
         </ion-col>
     <ion-col size-lg="3" size-md="4" size-sm="6" size-xs="6" size="12">
      <div class="container">
