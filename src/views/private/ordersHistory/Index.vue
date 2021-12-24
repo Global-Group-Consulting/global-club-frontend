@@ -31,7 +31,7 @@
 //import { HttpPlugin } from '@/plugins/HttpPlugin';
 import { defineComponent } from "vue";
 import OrdersInProgress from "../../shared/OrdersInProgress.vue";
-import CompletedOrders from "./CompletedOrders.vue";
+import CompletedOrders from "../../shared/CompletedOrders.vue";
 export default defineComponent({
   name: "History",
   components : { OrdersInProgress, CompletedOrders},
