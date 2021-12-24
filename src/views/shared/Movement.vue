@@ -195,9 +195,9 @@ import { defineComponent, onMounted, ref } from "vue";
   
        await DashboardApis?.readAll().then(resp => {
        statistic.value=resp;
-          });
+      });
     }
-    // onMounted(async()=> {getData()})
+    onMounted(async()=> {getData()})
   return {
       statistic,
       category

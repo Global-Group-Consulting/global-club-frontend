@@ -12,7 +12,7 @@
         </ion-row>
       </ion-grid>
       <br />
-      <OrdersInProgress></OrdersInProgress>
+      <SharedOrder ></SharedOrder>
       <br />
       <ion-grid class="ion-no-padding">
         <ion-row>
@@ -22,21 +22,53 @@
         </ion-row>
       </ion-grid>
       <br />
-      <CompletedOrders></CompletedOrders>
+      <SharedOrder></SharedOrder>
     </IonContent>
   </IonPage>
 </template>
 
 <script lang="ts">
 //import { HttpPlugin } from '@/plugins/HttpPlugin';
-import { defineComponent } from "vue";
-import OrdersInProgress from "../../shared/OrdersInProgress.vue";
-import CompletedOrders from "../../shared/CompletedOrders.vue";
+import SharedOrder from "../../shared/SharedOrder.vue";
+import { useStore } from "vuex";
+import { storeKey } from "@/store";
+import { Order } from "@/@types/Order";
+import { OrderApis } from "@/plugins/httpCalls/OrderApis";
+import { defineComponent, onMounted,ref,computed,ComputedRef} from "vue";
+import { User } from "@/@types/User";
+import { OrderStatusEnum } from "@/@enums/order.status.enum";
 export default defineComponent({
   name: "History",
-  components : { OrdersInProgress, CompletedOrders},
+  components : { SharedOrder},
   setup() {
-    //const http: HttpPlugin = inject('http');
+
+    const store = useStore(storeKey);
+    const authUser: ComputedRef<User> = computed(
+      () => store.getters["auth/user"]
+    );
+    const orderPending = ref<Order[]>([]);
+    const orderCompleted = ref<Order[]>([]);
+    const orderCancelled = ref<Order[]>([]);
+    const orderInProgress = ref<Order[]>([]);
+    const getData = async () => {
+       await OrderApis?.readAll(undefined,authUser.value.id).then(resp => {
+       orderPending.value=resp?.data.filter(x=> x.status===OrderStatusEnum.PENDING)?? [];
+       orderCompleted.value=resp?.data.filter(x=> x.status===OrderStatusEnum.COMPLETED)?? [];
+       orderCancelled.value=resp?.data.filter(x=> x.status===OrderStatusEnum.CANCELLED)?? [];
+       orderInProgress.value=resp?.data.filter(x=> x.status===OrderStatusEnum.IN_PROGRESS)?? [];
+
+          });
+    };
+    onMounted(async () => {
+      getData();
+    });
+   
+    return {
+      orderPending, 
+      orderInProgress, 
+      orderCompleted, 
+      orderCancelled
+    };
   },
 });
 </script>
