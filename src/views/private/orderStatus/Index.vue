@@ -8,12 +8,12 @@
       <IonContent class="ion-padding">
          <ion-app>
             <ion-content>
-               <ion-grid>
+               <ion-grid fixed>
                   <ion-row>
-                     <ion-col>
-                        <h6>Totale</h6>
+                     <ion-col class="ion-text-start">
+                        <h3>Totale</h3>
                      </ion-col>
-                     <ion-col>
+                     <ion-col class="icon-position">
                           <BriteValue :value="product?.price"></BriteValue>
                      </ion-col>
                   </ion-row>
@@ -29,7 +29,7 @@
                         <BriteValue :value="product?.price"></BriteValue>
                         <div class="quantity">1</div>
                      </ion-col>
-                     <ion-col size="2">
+                     <ion-col size="2" class="icon-position">
                         <ion-icon style="zoom:2.0;" src="./assets/icons/chevron-right.svg"></ion-icon>
                      </ion-col>
                   </ion-row>
@@ -43,14 +43,16 @@
                         <BriteValue :value="product?.price"></BriteValue>
                        <div class="quantity">1</div>
                      </ion-col>
-                     <ion-col size="2">
+                     <ion-col size="2" class="icon-position">
                        <ion-icon style="zoom:2.0;" src="./assets/icons/chevron-right.svg"></ion-icon>
                      </ion-col>
                   </ion-row>
                   <hr/>
                   
                </ion-grid>
+               <ion-grid fixed>
                <BottomDrawer></BottomDrawer>
+               </ion-grid>
             </ion-content>
          </ion-app>
       </IonContent>
@@ -109,5 +111,11 @@ padding-right: 75px;
     justify-content: center;
 }
 
+
+.icon-position{
+   display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
 
 </style>
