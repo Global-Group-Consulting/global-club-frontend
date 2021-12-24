@@ -5,105 +5,8 @@
         </div>
     
     <IonContent class="ion-padding">
-        <ion-grid fixed>
-      <div class="scrolling-wrapper">
-       <div class="modulo-cerca" @click="categoria='totale-resoconto'" value="totale-resoconto">
-            <ion-chip class="resoconto">
-              <ion-label>Resoconto</ion-label>
-            </ion-chip>
-        </div>
-       <div class="modulo-cerca" @click="categoria='totale-trimestre'" value="totale-trimestre">
-            <ion-chip class="trimestre">
-              <ion-label>1/1/21 - 30/06/21</ion-label>
-            </ion-chip>
-        </div>
-       <div class="modulo-cerca">
-            <ion-chip class="trimestre">
-              <ion-label>1/7/21 - 31/12/21</ion-label>
-            </ion-chip>
-        </div>
-        <div class="modulo-cerca">
-            <ion-chip class="trimestre">
-              <ion-label>1/7/21 - 31/12/21</ion-label>
-            </ion-chip>
-        </div>
-      </div>
-      </ion-grid>
-        <br>
-        <v-switch :case="categoria">
-
-    <template #totale-resoconto>
-      
-        <ion-grid class="banner" >
-        <ion-row>
-          <ion-col size-lg="3" size-md="6" size-sm="12" size-xs="12" size="12">
-          <div class="money">
-            <BriteValue></BriteValue>
-            <p class="somma">76.654</p>
-            <p class="descrizione">Totale utilizzabile</p>
-            </div>
-            </ion-col>
-       
-          <ion-col size-lg="3" size-md="6" size-sm="12" size-xs="12" size="12">
-            <div class="money">
-              <BriteValue></BriteValue>
-              <p class="somma">30.876</p>
-              <p class="descrizione">Scadono a Gennaio '22</p>
-            </div>
-          </ion-col>
-        
-          <ion-col size-lg="3" size-md="6" size-sm="6" size-xs="6" size="6">
-            <div class="money">
-              <BriteValue></BriteValue>
-              <p class="somma">45.778</p>
-              <p class="descrizione">Scadono a Luglio '22</p>
-            </div>
-          </ion-col>
-          <ion-col size-lg="3" size-md="6" size-sm="6" size-xs="6" size="6">
-            <ClubButton size="small" version="filled">Dettagli</ClubButton>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-
-    </template>
-    <template #totale-trimestre>
-      
-
-      <ion-grid class="banner">
-        <ion-row>
-          <ion-col size-lg="3" size-md="6" size-sm="12" size-xs="12" size="12">
-          <div class="money">
-           <BriteValue></BriteValue>
-            <p class="somma">27.820</p>
-            <p class="descrizione">Totale disponibile</p>
-          </div>
-         </ion-col>
-          <ion-col size-lg="3" size-md="6" size-sm="12" size-xs="12" size="12">
-            <div class="money">
-              <BriteValue></BriteValue>
-              <p class="somma">5000</p>
-              <p class="descrizione">Brite utilizzati</p>
-            </div>
-          </ion-col>
-       
-          <ion-col size-lg="3" size-md="6" size-sm="6" size-xs="6" size="6">
-            <div class="money">
-             <BriteValue></BriteValue>
-              <p class="somma">32.830</p>
-              <p class="descrizione">Brite accumulati</p>
-            </div>
-          </ion-col>
-
-          <ion-col size-lg="3" size-md="6" size-sm="6" size-xs="6" size="6">
-               <ClubButton size="small" version="filled">Dettagli</ClubButton>
-          </ion-col>
-
-
-        </ion-row>
-      </ion-grid>
-    </template>
-  </v-switch>
-
+    <Movement></Movement>
+    
 </IonContent>
 </IonPage>
 </template>
@@ -114,13 +17,13 @@ import { defineComponent, ref } from "vue";
 import VSwitch from '@lmiller1990/v-switch';
 import BriteValue from '@/components/BriteValue.vue';
 import ClubButton from '@/components/ClubButton.vue';
+import Movement from '@/views/shared/Movement.vue';
 
 
 export default defineComponent({
   name: "PremiumWallet",
   components: {
-    VSwitch,ClubButton, BriteValue, 
-  },
+    VSwitch,ClubButton, BriteValue,Movement},
   setup() {
     return {
       categoria: ref('totale-resoconto')
@@ -132,66 +35,5 @@ export default defineComponent({
 </script>
 
 <style>
-
-.banner {
-  background-color: #272727;
-  background-image: url(/assets/banner.svg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  border-radius: 30px;
-  padding-bottom: 6px;
-  
-}
-
-.money {
-  text-align: left;
-}
-
-.somma {
-  display: inline-block;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 36px;
-  letter-spacing: 0em;
-  margin-bottom: 0;
-  margin-top: 0;
-}
-
-.descrizione {
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 18px;
-  letter-spacing: 0em;
-  color: #ada9a4;
-  margin-top: 0;
-}
-
-
-.scrolling-wrapper {
-  overflow-x: scroll;
-  overflow-y: hidden;
-  white-space: nowrap;
-}
-
-.modulo-cerca {
-    display: inline-block;
-  }
-
-  .modulo-cerca :hover{
- background-color:#967d4a;
-}
-
-.scrolling-wrapper::-webkit-scrollbar {
-    display: none;
-}
-
-.header-nav{
-color: white;
-padding-left: 30px;
-padding-right: 75px;
-}
-
 
 </style>
