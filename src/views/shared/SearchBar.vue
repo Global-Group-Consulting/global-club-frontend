@@ -1,36 +1,36 @@
 <template>
 <div class="logo-container"></div>
-    <ul>
-      <li>
-         <input type="checkbox" checked />
-         <div class="search-container">
-          <ion-searchbar placeholder="Cosa desideri cercare"></ion-searchbar>
-          <btn
-          @click="setOpen(true, $event)"
-          fill="clear"
-          size="small"
-          shape="round"
-          slot="icon-only"
-          icon-name="filter">
-          </btn>
-        </div>
-       <p style="margin: 0px;"><SearchCollapse></SearchCollapse></p>
-      </li>
-    </ul>
+  <ul>
+    <li>
+      <input type="checkbox" checked/>
+      <div class="search-container">
+        <ion-searchbar placeholder="Cosa desideri cercare"></ion-searchbar>
+        <btn
+            @click="setOpen(true, $event)"
+            fill="clear"
+            size="small"
+            shape="round"
+            slot="icon-only"
+            icon-name="filter">
+        </btn>
+      </div>
+      <p style="margin: 0px;">
+        <SearchCollapse></SearchCollapse>
+      </p>
+    </li>
+  </ul>
 
 </template>
 <script lang="ts">
 import { ProductCategoryApis } from "@/plugins/httpCalls/ProductCategoryApis";
 import SearchCollapse from '../shared/SearchCollapse.vue';
 import { defineComponent, inject, onMounted, ref } from "vue";
-import AutoComplete from "../../components/AutoComplete.vue";
 import { ProductCategory } from "@/@types/ProductCategory";
 import { AlertsPlugin } from "@/plugins/Alerts";
-import Icon from "@/components/Icon.vue";
 
 export default defineComponent({
   name: "SearchBar",
-  components: { AutoComplete: AutoComplete as any,SearchCollapse,},
+  components: { SearchCollapse, },
   setup () {
     const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
 
@@ -100,7 +100,7 @@ export default defineComponent({
   margin-right: auto;
   background-color: white;
   border-radius: 15px;
-  
+
 }
 
 ul {

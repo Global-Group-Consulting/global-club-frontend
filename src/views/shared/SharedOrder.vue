@@ -65,19 +65,19 @@
               src="./assets/icons/circle-right.svg"
             ></ion-icon>
           </ion-col>
-        </ion-row> 
+        </ion-row>
       </ion-grid> -->
 </template>
 <script lang="ts">
-import { defineComponent,toRefs} from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
     name:'SharedOrder',
   //   props: {
-  //       order: [] 
+  //       order: []
   //     },
   //   setup(props) {
-  // const { order } = toRefs(props) 
+  // const { order } = toRefs(props)
   // return {
   //     order
   //   };

@@ -9,6 +9,7 @@ import { AlertsPlugin } from '@/plugins/Alerts';
 import { UserApis } from '@/plugins/httpCalls/UserApis';
 import { OrderApis } from '@/plugins/httpCalls/OrderApis';
 import { MovementApis } from '@/plugins/httpCalls/MovementApis';
+import { DashboardApis } from '@/plugins/httpCalls/DashboardApis';
 
 type RequestsQueue = {
   resolve: (value?: unknown) => void;
@@ -23,6 +24,7 @@ interface ApiModules {
   users: typeof UserApis;
   orders: typeof OrderApis;
   movements: typeof MovementApis;
+  dashboard: typeof DashboardApis;
 }
 
 class HttpQueue {
@@ -122,7 +124,8 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
       productCategories: ProductCategoryApis,
       users: UserApis,
       orders: OrderApis,
-      movements: MovementApis
+      movements: MovementApis,
+      dashboard: DashboardApis
     };
     this.queue = new HttpQueue();
     this.loading = new LoadingHandler(this.plugins["$t"]);
