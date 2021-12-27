@@ -26,7 +26,7 @@
         {{ entry.label }}
       </ion-label>
 
-      <ion-badge v-if="entry.badge"
+      <ion-badge v-show="entry.badge?.value"
                  mode="ios" color="warning">{{ entry.badge }}
       </ion-badge>
 

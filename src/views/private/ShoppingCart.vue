@@ -51,7 +51,7 @@
 
       <ion-row class="ion-justify-content-center mt-5">
         <ion-col class="ion-text-center" size="12" size-sm="7" size-md="6">
-          <ClubButton size="large" expanded>
+          <ClubButton size="large" expanded @click="submitCart">
             Procedi all'ordine
           </ClubButton>
         </ion-col>
@@ -66,7 +66,7 @@
     IonPage,
   } from "@ionic/vue";
   import { warning } from "ionicons/icons";
-  import { computed, defineComponent } from "vue";
+  import { computed, defineComponent, inject } from "vue";
   import { useStore } from 'vuex';
   import { storeKey } from '@/store';
   import { formatBrites } from '@/@utilities/currency';
@@ -77,6 +77,8 @@
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import ClubButton from '@/components/ClubButton.vue';
   import PageLink from '@/components/PageLink.vue';
+  import { HttpPlugin } from '@/plugins/HttpPlugin';
+  import { AlertsPlugin } from '@/plugins/Alerts';
 
   export default defineComponent({
     components: {
@@ -90,6 +92,8 @@
     name: "ShoppingCart",
     setup () {
       const store = useStore(storeKey);
+      const http = inject("http") as HttpPlugin;
+      const alerts = inject("alerts") as AlertsPlugin;
       const products: ComputedRef<OrderProduct[]> = computed(() => store.getters["cart/products"]);
       const cartTotal = computed(() => store.getters["cart/totalPrice"]);
 
@@ -108,12 +112,23 @@
         store.dispatch("cart/remove", entry.product._id)
       }
 
+      async function submitCart () {
+        const products = store.getters['cart/products'];
+
+        await http.api.orders.create(products);
+
+        await alerts.info("Ordine correttamente inviato!");
+
+        // await store.dispatch("cart/clean");
+      }
+
       return {
         warning,
         cartTotal,
         products,
         formatBrites, formatImgUrl,
-        changeQta, removeProduct
+        changeQta, removeProduct,
+        submitCart
       };
     },
   });

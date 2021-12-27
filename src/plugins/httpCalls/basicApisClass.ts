@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosResponse } from 'axios';
+import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { LoadingHandler } from '@/plugins/HttpPlugin';
 import { AlertsPlugin } from '@/plugins/Alerts';
 
@@ -29,8 +29,6 @@ export class BasicApisClass {
    static async withLoader<T> (method, ...args): Promise<AxiosResponse<T> | undefined> {
       let result;
       let error;
-      
-  
       
       if (method === "delete" && args.length > 1 && !args[1].data) {
          console.error("[HTTP_PLUGIN] - Seems that you're trying to send extra data in a 'DELETE' request.\n"

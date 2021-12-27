@@ -234,7 +234,7 @@ const desktopMenuEntries: Record<"admin" | "private", MenuEntry[]> = {
       icon: "user",
     },
     {
-      route: 'private.orders',
+      route: 'private.history',
       label: 'userOrders',
       icon: "ticket",
     },
