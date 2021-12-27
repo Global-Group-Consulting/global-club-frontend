@@ -1,7 +1,7 @@
 <template>
   <AccordionList :sections="accordionSections">
     <template v-slot:content_communication>
-      <Chat :communication="order?.communication"></Chat>
+      <Chat :communication="order?.communication" @newMessage="onNewMessage"></Chat>
     </template>
     <template v-slot:content_products>
       <ion-list>
@@ -25,6 +25,7 @@
   import { formatOrderStatus } from '@/@utilities/statuses';
   import Chat from '@/components/chats/Chat.vue';
   import ProductListItem from '@/components/lists/products/AdminProductListItem.vue';
+  import { Communication } from '@/@types/Communication';
 
   export default defineComponent({
     name: "OrderAccordion",
@@ -65,6 +66,12 @@
         }
       ])
 
+      function onNewMessage (data: Communication) {
+        if (order.value?.communication?.messages) {
+          order.value.communication.messages = data.messages;
+        }
+      }
+
       watch(() => props.orderId, async (orderId) => {
         if (!orderId) {
           return
@@ -84,7 +91,8 @@
       return {
         order,
         accordionSections,
-        formatLocaleDate, formatCurrency, formatOrderStatus
+        formatLocaleDate, formatCurrency, formatOrderStatus,
+        onNewMessage
       }
     }
   });

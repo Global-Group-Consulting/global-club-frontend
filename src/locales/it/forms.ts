@@ -32,7 +32,11 @@ export const forms = {
     btnUpdate: "Salva"
   },
   userContract,
-  userAnagraphic
+  userAnagraphic,
+  communications: {
+    message: "Messaggio",
+    attachments: "Allegati"
+  }
   
   
 }

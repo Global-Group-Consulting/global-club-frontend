@@ -179,7 +179,6 @@
   </v-switch>
 </template>
 <script lang="ts">
-  import { DashboardApis } from "@/plugins/httpCalls/DashboardApis";
   import { Statistic } from '@/@types/Statistics';
   import BriteValue from '@/components/BriteValue.vue';
   import ClubButton from '@/components/ClubButton.vue';

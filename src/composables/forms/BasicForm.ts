@@ -5,7 +5,7 @@ import { AlertsPlugin } from '@/plugins/Alerts';
 import { Composer, useI18n } from 'vue-i18n';
 import { UpdateUserContractDto } from '@/@types/User';
 import { MixedSchema } from 'yup/lib/mixed';
-import { ArraySchema, BooleanSchema, DateSchema, NumberSchema, ObjectSchema } from 'yup';
+import { array, ArraySchema, BooleanSchema, DateSchema, NumberSchema, ObjectSchema } from 'yup';
 import StringSchema from 'yup/lib/string';
 
 export type FormFields<T = any> = Record<keyof T, FormField>;
@@ -31,7 +31,19 @@ export interface FormSettings<T = any> {
   i18nKeyTransformer?: (key: string) => string;
 }
 
-export abstract class BasicForm<T> {
+type BasicFormEventType = "submitCompleted";
+
+export declare interface BasicForm<T> {
+  addEventListener (type: "submitCompleted", callback: ((evt: BasicFormEvent<T>) => void) | null, options?: AddEventListenerOptions | boolean): void;
+}
+
+class BasicFormEvent<T> extends CustomEvent<T> {
+  constructor (type: BasicFormEventType, eventInitDict?: (CustomEventInit<T> | undefined)) {
+    super(type, eventInitDict);
+  }
+}
+
+export abstract class BasicForm<T> extends EventTarget {
   protected abstract schema: Record<string, any>
   private formFields: FormFields = {};
   private initialData: Ref<Record<string, any> | null> = ref({})
@@ -51,6 +63,8 @@ export abstract class BasicForm<T> {
   private isEditing = ref(false);
   
   protected constructor (private settings: FormSettings<T>) {
+    super();
+  
     if (settings.dataToWatch) {
       // when data changes, update initial data.
       watch(settings.dataToWatch,
@@ -62,6 +76,10 @@ export abstract class BasicForm<T> {
     this.apiCalls = inject("http") as HttpPlugin;
     this.alerts = inject("alerts") as AlertsPlugin;
     this.i18n = useI18n();
+  }
+  
+  public addEventListener (type, callback, options?): void {
+    return super.addEventListener(type, callback, options);
   }
   
   /**
@@ -139,19 +157,21 @@ export abstract class BasicForm<T> {
   protected afterValidSubmit (result?: T) {
     const initialData = this.settings.dataToWatch ? this.settings.dataToWatch() : {}
     const dataToEmit = Object.assign({}, initialData, result || {});
-    
+  
     // merges new data with initial data. This because new data does not contain
     // all the user data, but only the necessary data.
     this.updateInitialFormData<UpdateUserContractDto>(result || {});
-    
+  
     if (this.settings.emit) {
       this.settings.emit("update:modelValue", dataToEmit);
     }
-    
+  
+    this.dispatchEvent(new BasicFormEvent("submitCompleted", { detail: result }))
+  
     if (this.cbOnSubmitSuccess) {
       this.cbOnSubmitSuccess(result)
     }
-    
+  
     this.onEditClick(false);
   }
   
@@ -181,3 +201,4 @@ export abstract class BasicForm<T> {
     this.form.resetForm()
   }
 }
+

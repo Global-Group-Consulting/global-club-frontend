@@ -12,6 +12,9 @@
             <SimpleToolbarButton :disabled="!order"
                                  :text="$t('pages.orderDetails.btn_approve')"
             />
+            <SimpleToolbarButton :disabled="!order"
+                                 :text="$t('pages.orderDetails.btn_approve')"
+            />
           </template>
         </SimpleToolbar>
 

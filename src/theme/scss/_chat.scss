@@ -1,5 +1,6 @@
 .chat-component {
   --border-color: var(--ion-color-secondary-border);
+  --msg-padding-left: #{$spacer * 2.5};
   position: relative;
 
   .chat-container {
@@ -12,7 +13,7 @@
       height: 100%;
       border-left: dashed 1px var(--border-color);
       position: absolute;
-      left: 4px;
+      left: calc((var(--msg-padding-left) / 2) - .5px);
       top: 0;
     }
   }
@@ -23,9 +24,10 @@
     --dot-primary-color: var(--ion-color-secondary);
     --dot-bg-color: var(--border-color);
     --title-color: white;
+    padding-top: 3px;
 
     position: relative;
-    padding-left: $spacer * 2;
+    padding-left: var(--msg-padding-left);
     padding-bottom: $spacer;
 
     &:before {
@@ -36,7 +38,7 @@
       border-radius: 50%;
       border: solid 3px var(--dot-primary-color);
       position: absolute;
-      left: calc(5px - (var(--dot-size) / 2));
+      left: calc((var(--msg-padding-left) / 2) - (var(--dot-size) / 2));
       top: 4px;
       box-sizing: border-box;
       box-shadow: 0 0 10px rgba(var(--ion-color-primary-rgb), .4);
@@ -49,7 +51,7 @@
       background-color: var(--dot-primary-color);
       border-radius: 50%;
       position: absolute;
-      left: calc(5px - (var(--dot-inner-size) / 2));
+      left: calc((var(--msg-padding-left) / 2) - (var(--dot-inner-size) / 2));
       top: calc(4px + (var(--dot-size) / 2) - (var(--dot-inner-size) / 2));
       box-sizing: border-box;
     }
@@ -58,6 +60,16 @@
       --dot-primary-color: var(--ion-color-primary);
       --dot-bg-color: white;
       --title-color: var(--ion-color-primary)
+    }
+
+    .status-index {
+      position: absolute;
+      left: 0;
+      top: 4px;
+      color: var(--ion-color-primary);
+      font-weight: bold;
+      transform: translateX(-100%);
+      line-height: var(--dot-size);
     }
 
     ul {
@@ -69,5 +81,14 @@
       //font-size: 1.2rem;
     }
 
+    .attachments-container {
+      a {
+        display: inline-block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 100%;
+      }
+    }
   }
 }

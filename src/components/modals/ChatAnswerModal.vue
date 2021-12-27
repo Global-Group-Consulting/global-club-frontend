@@ -5,30 +5,33 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding modal-content">
+    <Form @submit="chatForm.onSubmit">
+      <FormRTE v-model="chatForm.formData.message.modelValue" label="Messaggio"
+               :error="chatForm.formData.message.errorMessage"></FormRTE>
 
-    <FormRTE v-model="newMessage" label="Messaggio"></FormRTE>
-
-    <FormFiles label="Allegati" v-model="attachments"></FormFiles>
-
+      <FormFiles label="Allegati" v-model="chatForm.formData.attachments.modelValue"></FormFiles>
+    </Form>
   </ion-content>
 
   <ion-footer class="modal-footer">
-    <ClubButton version="outline" @click="onOkClick">
+    <ClubButton version="outline" @click="onCancelClick">
       {{ cancelText }}
     </ClubButton>
 
-    <ClubButton @click="onOkClick">
+    <ClubButton @click="chatForm.onSubmit">
       {{ okText }}
     </ClubButton>
   </ion-footer>
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue';
+  import { defineComponent, PropType, ref } from 'vue';
   import FormFiles from '@/components/forms/FormFiles.vue';
   import FormRTE from '@/components/forms/FormRTE.vue';
-  import { modalController } from '@ionic/vue';
   import ClubButton from '@/components/ClubButton.vue';
+  import { ChatMessageForm } from '@/composables/forms/ChatMessageForm';
+  import { modalController } from '@ionic/vue';
+  import { Communication } from '@/@types/Communication';
 
   export default defineComponent({
     name: "ChatAnswerModal",
@@ -42,25 +45,31 @@
       cancelText: {
         type: String,
         default: "Annulla"
-      }
+      },
+      conversation: Object as PropType<Communication>
     },
-    setup () {
+    setup (props) {
       const newMessage = ref("");
       const attachments = ref(null)
+      const chatForm = new ChatMessageForm({
+        dataToWatch: () => props.conversation
+      })
 
-      function onOkClick () {
-        //TODO::  must check data validity
+      chatForm.addEventListener("submitCompleted", (evt) => {
+        modalController.dismiss(evt.detail, "ok")
 
-        modalController.dismiss({
-          message: newMessage.value,
-          attachments: attachments.value
-        }, "ok")
+        return
+      })
+
+      function onCancelClick () {
+        modalController.dismiss()
       }
 
       return {
         newMessage,
         attachments,
-        onOkClick
+        onCancelClick,
+        chatForm
       }
     }
   });

@@ -199,8 +199,10 @@
           apiCalls.push(http.api.products.read(route.params.id as string))
         }
 
-        const results = await Promise.all<ProductCategory[], Product>(apiCalls as any);
+        const results = await Promise.all<ProductCategory[]>(apiCalls as any);
+        //@ts-ignore
         categoriesList.value = results[0]
+        //@ts-ignore
         currentProduct.value = results[1];
       });
 

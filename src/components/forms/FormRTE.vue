@@ -1,12 +1,15 @@
 <template>
-  <ion-item class="form-input form-rte item-interactive item-textarea item-input ion-margin-bottom"
-            :class="{'item-has-focus': focus, 'item-has-value': hasValue }">
-    <ion-label position="floating">{{ label }}</ion-label>
-    <div class="sc-ion-textarea-md-h">
-      <EditorContent :editor="editor"/>
-    </div>
-  </ion-item>
-
+  <div class="form-input-wrapper">
+    <ion-item class="form-input form-rte item-interactive item-textarea item-input ion-margin-bottom"
+              :class="{'item-has-focus': focus, 'item-has-value': hasValue }">
+      <ion-label position="floating">{{ label }}</ion-label>
+      <div class="sc-ion-textarea-md-h">
+        <EditorContent :editor="editor"/>
+      </div>
+    </ion-item>
+    <small v-if="showError" class="form-input-error">{{ error }}</small>
+    <small v-if="message && !showError" class="form-input-message">{{ message }}</small>
+  </div>
 </template>
 
 <script lang="ts">
@@ -24,7 +27,11 @@
         type: String,
         default: '',
       },
-      label: String
+      label: String,
+      error: String,
+      message: String,
+      readonly: Boolean,
+      disabled: Boolean
     },
     setup (props, { emit }) {
       const focus = ref(false)
@@ -37,8 +44,15 @@
           StarterKit,
         ],
         onUpdate: () => {
-          textValue.value = editor.value.getText();
-          emit('update:modelValue', editor.value.getHTML())
+          const value = editor.value.getText();
+          let htmlValue = editor.value.getHTML();
+
+          if (!value.trim()) {
+            htmlValue = ""
+          }
+
+          textValue.value = value;
+          emit('update:modelValue', htmlValue)
         },
         onFocus: () => {
           focus.value = true
@@ -48,8 +62,10 @@
         }
       })
 
+      const showError = computed(() => props.error && !props.readonly && !props.disabled)
+
       watch(() => props.modelValue, (value) => {
-        const isSame = editor.value.getHTML() === value
+        const isSame = editor.value.getHTML() === value;
 
         if (isSame) {
           return
@@ -62,7 +78,7 @@
         editor.value.destroy()
       })
 
-      return { editor, focus, hasValue }
+      return { editor, focus, hasValue, showError }
     },
   });
 </script>

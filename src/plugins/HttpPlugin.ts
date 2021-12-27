@@ -10,6 +10,8 @@ import { UserApis } from '@/plugins/httpCalls/UserApis';
 import { OrderApis } from '@/plugins/httpCalls/OrderApis';
 import { MovementApis } from '@/plugins/httpCalls/MovementApis';
 import { DashboardApis } from '@/plugins/httpCalls/DashboardApis';
+import { CommunicationApis } from '@/plugins/httpCalls/CommunicationApis';
+import { FileApis } from '@/plugins/httpCalls/FileApis';
 
 type RequestsQueue = {
   resolve: (value?: unknown) => void;
@@ -25,6 +27,8 @@ interface ApiModules {
   orders: typeof OrderApis;
   movements: typeof MovementApis;
   dashboard: typeof DashboardApis;
+  communications: typeof CommunicationApis;
+  files: typeof FileApis;
 }
 
 class HttpQueue {
@@ -125,7 +129,9 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
       users: UserApis,
       orders: OrderApis,
       movements: MovementApis,
-      dashboard: DashboardApis
+      dashboard: DashboardApis,
+      communications: CommunicationApis,
+      files: FileApis
     };
     this.queue = new HttpQueue();
     this.loading = new LoadingHandler(this.plugins["$t"]);

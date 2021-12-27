@@ -26,7 +26,7 @@
         </ion-row>
 
         <div class="pb-5 pt-2">
-         
+
           <ion-row class="btn-tabs">
             <ion-col value="descrizione">
               <ClubButton color="secondary" version="link" @click="categoria='descrizione'" value="descrizione"
@@ -77,7 +77,6 @@
   import { formatImgUrl } from '@/@utilities/images';
   import BriteValue from '@/components/BriteValue.vue';
   import { useStore } from 'vuex';
-  import { OrderProduct } from '@/@types/Order';
   import { storeKey } from '@/store';
   import { AlertsPlugin } from '@/plugins/Alerts';
 

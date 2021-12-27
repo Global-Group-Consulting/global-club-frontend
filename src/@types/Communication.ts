@@ -1,5 +1,7 @@
 import { UserBasic } from '@/@types/User';
 import { Attachment } from '@/@types/Attachment';
+import { MessageTypeEnum } from '@/@enums/message.type.enum';
+import { OrderStatusEnum } from '@/@enums/order.status.enum';
 
 export interface Communication {
   type: string;
@@ -21,8 +23,18 @@ export interface Message {
   sender: UserBasic;
   attachments: Attachment[];
   content: string;
+  type: MessageTypeEnum;
+  data?: {
+    orderStatus?: OrderStatusEnum;
+  };
   
   _id: string;
   createdAt: string;
   updatedAt: string;
 }
+
+export interface CommunicationAnswerDto {
+  message: "";
+  attachments?: Attachment[];
+}
+
