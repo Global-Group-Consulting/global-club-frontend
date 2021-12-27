@@ -1,9 +1,10 @@
 <template>
   <IonPage>
-    <IonContent class="ion-padding">
-      <SearchBar></SearchBar>
+    <IonContent class="ion-padding" >
 
       <ion-grid fixed class="ion-no-padding">
+        <SearchBar></SearchBar>
+
         <ion-row>
           <ion-col>
             <div class="bentornato">

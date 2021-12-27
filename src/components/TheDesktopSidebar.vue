@@ -1,5 +1,5 @@
 <template>
-  <ion-menu side="start" content-id="main-content" menu-id="main-menu" autoHide="false" class="main-menu">
+  <div class="main-menu" slot="top">
     <ion-header>
       <ion-toolbar>
         <ion-img :src="require('/public/assets/logo_full_bicolor.svg')"></ion-img>
@@ -18,7 +18,7 @@
                       @click="onItemClick"/>
       </ion-list>
     </ion-footer>
-  </ion-menu>
+  </div>
 </template>
 
 

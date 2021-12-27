@@ -78,7 +78,7 @@ const getters: GetterTree<RootState, RootState> = {
   mdAndDown (state): boolean {
     const minSize = state.sizes.find(el => el.label === "lg") ?? { value: 0 };
     
-    return state.screenSize <= minSize.value;
+    return state.screenSize < minSize.value;
   },
   mdAndUp (state): boolean {
     const minSize = state.sizes.find(el => el.label === "md") ?? { value: 0 };
@@ -88,7 +88,7 @@ const getters: GetterTree<RootState, RootState> = {
   smAndDown (state): boolean {
     const minSize = state.sizes.find(el => el.label === "md") ?? { value: 0 };
     
-    return state.screenSize <= minSize.value;
+    return state.screenSize < minSize.value;
   },
 };
 

@@ -1,13 +1,17 @@
 .main-menu {
-  background-color: var(--ion-color-secondary);
   --background: var(--ion-color-secondary);
+  min-width: 220px;
+  max-width: 330px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--ion-color-secondary);
 
   ion-header ion-toolbar {
-    padding-top: 32px;
-    padding-bottom: 32px;
+    padding: 32px 16px;
 
     ion-img {
       height: 40px;
+      width: 100%;
       max-width: 250px;
       margin-left: auto;
       margin-right: auto;

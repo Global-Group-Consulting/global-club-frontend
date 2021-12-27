@@ -61,3 +61,11 @@
 ion-grid {
   //max-width: 600px;
 }
+
+
+@include mediaQueryUp(md){
+  .app-tabs{
+    flex-direction: row-reverse !important;
+
+  }
+}

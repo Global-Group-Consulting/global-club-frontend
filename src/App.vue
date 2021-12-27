@@ -1,9 +1,7 @@
 <template>
   <IonApp>
 
-    <component :is="$store.getters['smAndDown'] ? 'IonTabs' : 'IonSplitPane'"
-               content-id="main-content" when="(min-width: 500px)">
-
+    <IonTabs class="app-tabs">
       <!-- the side menu -->
       <TheDesktopSidebar v-if="$store.getters['mdAndUp'] && isLoggedIn"/>
 
@@ -12,8 +10,7 @@
 
       <!-- the main content -->
       <IonRouterOutlet id="main-content"></IonRouterOutlet>
-    </component>
-
+    </IonTabs>
 
   </IonApp>
 </template>
