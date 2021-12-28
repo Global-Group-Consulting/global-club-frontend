@@ -52,6 +52,10 @@
   margin-right: auto;
 }
 
+.clickable-area{
+  padding: 6px;
+}
+
 @include mediaQueryDown(md) {
   .logo-container {
     height: 50px;

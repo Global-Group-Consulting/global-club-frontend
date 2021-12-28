@@ -3,7 +3,7 @@ import { cloneDeep } from 'lodash';
 
 export default function () {
   const options = {
-    modules: ["cart"],
+    modules: ["cart", "favourites"],
     storageKey: "vuex"
   }
   const storage = new Storage()

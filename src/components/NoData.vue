@@ -1,6 +1,7 @@
 <template>
   <p>
-    Nessun dato disponibile
+    <template v-if="text">{{text}}</template>
+    <template v-else>Nessun dato disponibile</template>
   </p>
 </template>
 
@@ -8,7 +9,10 @@
   import { defineComponent } from 'vue';
 
   export default defineComponent({
-    name: "NoData"
+    name: "NoData",
+    props: {
+      text: String
+    }
   });
 </script>
 

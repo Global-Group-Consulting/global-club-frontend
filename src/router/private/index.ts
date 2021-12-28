@@ -43,8 +43,8 @@ export default [
     },
   },
   {
-    path: "/wish",
-    component: () => import("@/views/private/WishList.vue"),
+    path: "/favourites",
+    component: () => import("@/views/private/Favourites.vue"),
     name: "private.wish",
     meta: {
       isPrivate: true,

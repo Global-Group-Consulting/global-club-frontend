@@ -3,6 +3,7 @@ import { ActionTree, createStore, GetterTree, MutationTree, Store } from 'vuex';
 import AuthModule from './modules/auth';
 import CartModule from './modules/cart';
 import VuexPersistance from '@/plugins/VuexPersistance';
+import FavouritesModule from '@/store/modules/favourites';
 
 type GridSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
@@ -102,7 +103,9 @@ export const store = createStore({
     // @ts-ignore
     auth: AuthModule,
     // @ts-ignore
-    cart: CartModule
+    cart: CartModule,
+    // @ts-ignore
+    favourites: FavouritesModule
   },
   plugins: [VuexPersistance()]
 });

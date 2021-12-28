@@ -6,7 +6,7 @@
       <ion-grid fixed>
         <ion-row>
           <ion-col size-lg="3" size-md="4" size="6" v-for="product of productsList" :key="product._id">
-            <PrivateProductListItem :product="product" class="m-0 h-100"/>
+            <PrivateProductListItem :product="product" class="m-0 h-100" />
           </ion-col>
         </ion-row>
       </ion-grid>
