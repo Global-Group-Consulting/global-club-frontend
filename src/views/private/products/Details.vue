@@ -4,7 +4,6 @@
       <TopToolbar include-back slot="fixed" class="product-toolbar"></TopToolbar>
 
       <div class="product-slideshow-container">
-
         <ion-slides v-if="product && product.images"
                     class="h-100"
                     pager
@@ -25,33 +24,16 @@
           </ion-col>
         </ion-row>
 
-        <div class="pb-5 pt-2">
-
-          <ion-row class="btn-tabs">
-            <ion-col value="descrizione">
-              <ClubButton color="secondary" version="link" @click="categoria='descrizione'" value="descrizione"
-                          class="btn-hover">Descrizione
-              </ClubButton>
-
-            </ion-col>
-
-            <ion-col>
-              <ClubButton color="secondary" version="link" @click="categoria='condizioni'" value="condizioni"
-                          class="btn-hover">Condizioni
-              </ClubButton>
-            </ion-col>
-
-          </ion-row>
-
-          <v-switch :case="categoria">
-            <template #descrizione>
+        <div class="pb-4 pt-5">
+          <Tabs :data="tabsItems">
+            <template v-slot:tabSlide_description>
               <div v-html="product?.description"></div>
             </template>
 
-            <template #condizioni>
-              testo 2 Aenean commodo ligula eget dolor. Aenean massa.
+            <template v-slot:tabSlide_conditions>
+              <div>Presto disponibili...</div>
             </template>
-          </v-switch>
+          </Tabs>
         </div>
 
         <div class="ion-text-center">
@@ -67,26 +49,27 @@
 
 <script lang="ts">
   import { defineComponent, inject, Ref, ref } from "vue";
-  import VSwitch from '@lmiller1990/v-switch';
-  import ClubButton from '@/components/ClubButton.vue';
   import { onIonViewDidEnter, onIonViewDidLeave } from '@ionic/vue';
-  import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { useRoute } from 'vue-router';
-  import { Product } from '@/@types/Product';
-  import TopToolbar from '@/components/toolbars/TopToolbar.vue';
-  import { formatImgUrl } from '@/@utilities/images';
-  import BriteValue from '@/components/BriteValue.vue';
   import { useStore } from 'vuex';
   import { storeKey } from '@/store';
+  import BriteValue from '@/components/BriteValue.vue';
+  import ClubButton from '@/components/ClubButton.vue';
+  import TopToolbar from '@/components/toolbars/TopToolbar.vue';
+  import Tabs from '@/components/tabs/Tabs.vue';
+  import { formatImgUrl } from '@/@utilities/images';
+  import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { AlertsPlugin } from '@/plugins/Alerts';
+  import { Product } from '@/@types/Product';
+  import { TabEntry } from '@/@types/TabEntry';
 
   export default defineComponent({
-
     name: "Product",
     components: {
+      Tabs,
       BriteValue,
       TopToolbar,
-      VSwitch, ClubButton
+      ClubButton
     },
     setup () {
       const route = useRoute();
@@ -94,7 +77,14 @@
       const http = inject("http") as HttpPlugin;
       const alerts = inject("alerts") as AlertsPlugin;
       const product: Ref<Product | undefined> = ref()
-      const categoria = ref('descrizione')
+      const category = ref('descrizione')
+      const tabsItems: TabEntry[] = [{
+        id: "description",
+        text: "Descrizione"
+      }, {
+        id: "conditions",
+        text: "Condizioni"
+      }]
       const slideOpts = {
         initialSlide: 0,
         speed: 400,
@@ -111,7 +101,7 @@
 
       onIonViewDidLeave(async () => {
         product.value = undefined;
-        categoria.value = "descrizione";
+        category.value = "descrizione";
       })
 
       const addToCart = async () => {
@@ -121,11 +111,12 @@
       }
 
       return {
-        categoria,
+        category,
         product,
         slideOpts,
         formatImgUrl,
-        addToCart
+        addToCart,
+        tabsItems
       }
     }
   })
@@ -157,53 +148,9 @@
     + ion-grid {
       position: relative;
       z-index: 2;
-      background: var(--secondary-bg-gradient);
+      backdrop-filter: blur(12px);
+      //background: var(--secondary-bg-gradient);
     }
   }
-
-  /*.prodotto-container{
-
-    background-image: url(/assets/product1.jpg);
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center center;
-      height: 40%;
-
-  }*/
-  /*
-  .titolo-prodotto{
-    font-size:20px;
-    text-align: left;
-  }
-
-
-  .prezzo-prodotto{
-    font-size: 15px;
-    color: #9a9a9a;
-    text-align: left;
-
-  }
-
-
-  .btn-tabs {
-  background-color: #1e1e1e;
-  border-radius: 20px;
-  }
-
-  .header-nav{
-  color: white;
-  padding-left: 30px;
-  padding-right: 75px;
-  }
-
-  .btn-hover:hover{
-    background-color:#ab8e54;
-    border-radius: 20px;
-  }
-
-  .btn-hover:hover{
-    background-color:#ab8e54;
-    border-radius: 20px;
-  }*/
 
 </style>

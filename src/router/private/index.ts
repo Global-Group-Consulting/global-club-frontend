@@ -1,4 +1,5 @@
 import { RouteRecordRaw } from 'vue-router';
+import products from '@/router/private/products';
 
 export default [
   {
@@ -25,14 +26,6 @@ export default [
       isPrivate: true,
     },
   },
-  {
-    path: "/products",
-    component: () => import("@/views/private/ProductsList.vue"),
-    name: "private.products",
-    meta: {
-      isPrivate: true,
-    },
-  },
   
   {
     path: "/help",
@@ -42,14 +35,7 @@ export default [
       isPrivate: true,
     },
   },
-  {
-    path: "/favourites",
-    component: () => import("@/views/private/Favourites.vue"),
-    name: "private.wish",
-    meta: {
-      isPrivate: true,
-    },
-  },
+
   {
     path: "/wallet",
     component: () => import("@/views/private/WalletStatement.vue"),
@@ -62,14 +48,6 @@ export default [
     path: "/search",
     component: () => import("@/views/private/searchPage/Index.vue"),
     name: "private.search",
-    meta: {
-      isPrivate: true,
-    },
-  },
-  {
-    path: "/product/:id",
-    component: () => import("@/views/private/ProductDetails.vue"),
-    name: "private.product",
     meta: {
       isPrivate: true,
     },
@@ -116,5 +94,5 @@ export default [
       isAdmin: true,
     },
   },
-
+  ...products
 ] as RouteRecordRaw[]

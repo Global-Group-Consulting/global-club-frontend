@@ -1,7 +1,7 @@
 <template>
   <div class="form-input-wrapper">
     <ion-item class="form-input form-rte item-interactive item-textarea item-input ion-margin-bottom"
-              :class="{'item-has-focus': focus, 'item-has-value': hasValue }">
+              :class="{'item-has-focus': isEditable && focus, 'item-has-value': hasValue }">
       <ion-label position="floating">{{ label }}</ion-label>
       <div class="sc-ion-textarea-md-h">
         <EditorContent :editor="editor"/>
@@ -36,6 +36,7 @@
     setup (props, { emit }) {
       const focus = ref(false)
       const textValue = ref(props.modelValue)
+      const isEditable = computed(() => !props.readonly && !props.disabled)
       const hasValue = computed(() => !!textValue.value)
 
       const editor: Ref<Editor> = useEditor({
@@ -43,6 +44,8 @@
         extensions: [
           StarterKit,
         ],
+        // enableCoreExtensions: true,
+        editable: isEditable.value,
         onUpdate: () => {
           const value = editor.value.getText();
           let htmlValue = editor.value.getHTML();
@@ -78,7 +81,7 @@
         editor.value.destroy()
       })
 
-      return { editor, focus, hasValue, showError }
+      return { editor, focus, hasValue, showError, isEditable }
     },
   });
 </script>

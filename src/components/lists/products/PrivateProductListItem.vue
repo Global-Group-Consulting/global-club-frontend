@@ -1,21 +1,30 @@
 <template>
-  <PageLink :to="{name: 'private.product', params: {id: product._id}}"
+  <PageLink :to="{name: 'private.products.details', params: {id: product._id}}"
             only-container>
     <template v-slot:default="{href, navigate}">
       <ion-card class="product-card" :href="href" @click="navigate">
-        <ion-img class="product-card-img" :src="formatImgUrl(product.thumbnail?.id)" alt="cover_image"/>
+        <div class="product-img-wrapper">
+          <ion-img class="product-card-img" :src="formatImgUrl(product.thumbnail?.id)" alt="cover_image"/>
+
+          <div class="overlay">
+            <div class="clickable-area btn-fav" @click.stop.prevent="toggleFavourite">
+              <ClubButton only-icon icon icon-name="star"
+                          :color="isFavourite ? 'primary' : 'secondary'"
+                          class="m-0"></ClubButton>
+            </div>
+
+            <div class="clickable-area btn-go">
+              <ClubButton only-icon icon icon-name="chevron-right"
+                          version="outline"
+                          class="m-0"></ClubButton>
+            </div>
+          </div>
+        </div>
 
         <ion-card-header>
           <ion-card-title v-html="prodTitle"/>
         </ion-card-header>
 
-        <div class="overlay">
-          <div class="clickable-area btn-fav" @click.stop.prevent="toggleFavourite">
-            <ClubButton only-icon icon icon-name="star"
-                        :color="isFavourite ? 'primary' : 'secondary'"
-                        class="m-0"></ClubButton>
-          </div>
-        </div>
 
       </ion-card>
     </template>

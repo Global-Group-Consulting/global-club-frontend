@@ -1,22 +1,22 @@
 <template>
   <IonPage>
-      <div class="header-nav"> 
+      <div class="header-nav">
             <TopToolbar include-back>Account personale</TopToolbar>
             </div>
     <IonContent class="ion-padding">
 
-      <Tabs></Tabs>
-    
+      <TabsItems></TabsItems>
+
     </IonContent>
   </IonPage>
 </template>
 
 <script lang="ts">
-import Tabs from './Tabs.vue';
+import TabsItems from './PersonalDataTabs.vue';
 import { defineComponent} from "vue";
 export default defineComponent({
   name: "PersonalData",
-  components: {Tabs},
+  components: {TabsItems},
 
 });
 </script>

@@ -144,7 +144,7 @@ const mobileMenuEntries: Record<"admin" | "private", MenuEntry[]> = {
       icon: "home",
     },
     {
-      route: 'private.wish',
+      route: 'private.products.favourites',
       label: 'userFavouritesMobile',
       icon: "star",
     },
@@ -210,8 +210,13 @@ const desktopMenuEntries: Record<"admin" | "private", MenuEntry[]> = {
       icon: "home",
     },
     {
-      route: 'private.wish',
+      route: 'private.products.favourites',
       label: 'userFavourites',
+      icon: "star",
+    },
+    {
+      route: 'private.products',
+      label: 'products',
       icon: "star",
     },
     {

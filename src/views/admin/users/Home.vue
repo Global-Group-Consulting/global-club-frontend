@@ -14,7 +14,7 @@
                 </SimpleToolbar>-->
 
 
-        <Tabs :tabs-list="groupsList" v-model.number="activeTab"></Tabs>
+        <TabsItems :tabs-list="groupsList" v-model.number="activeTab"></TabsItems>
 
         <ion-list>
           <AdminListItem v-for="user of usersList" :key="user._id"
@@ -46,7 +46,7 @@
   import PaginationBar from '@/components/PaginationBar.vue';
   import { TabEntry } from '@/@types/TabEntry';
   import { useI18n } from 'vue-i18n';
-  import Tabs from '@/components/Tabs.vue';
+  import TabsItems from '@/components/tabs/TabsItems.vue';
   import { UserBasic } from '@/@types/User';
   import AdminListItem from '@/components/lists/AdminListItem.vue';
   import { formatUserName } from '@/@utilities/fields';
@@ -54,7 +54,7 @@
 
   export default defineComponent({
     name: "UsersPage",
-    components: { Icon, AdminListItem, Tabs, PaginationBar, TopToolbar },
+    components: { Icon, AdminListItem, TabsItems, PaginationBar, TopToolbar },
     setup () {
       const http = inject<HttpPlugin>("http") as HttpPlugin
       const { t } = useI18n()

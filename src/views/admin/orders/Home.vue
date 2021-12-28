@@ -4,7 +4,7 @@
 
     <ion-content>
       <ion-grid fixed>
-        <Tabs :tabs-list="tabs" v-model="activeTab"></Tabs>
+        <TabsItems :tabs-list="tabs" v-model="activeTab"></TabsItems>
 
         <ion-list>
           <AdminListItem v-for="order of ordersList" :key="order._id"
@@ -50,11 +50,11 @@
   import { OrderStatusEnum } from '@/@enums/order.status.enum';
   import { useI18n } from 'vue-i18n';
   import { TabEntry } from '@/@types/TabEntry';
-  import Tabs from '@/components/Tabs.vue';
+  import TabsItems from '@/components/tabs/TabsItems.vue';
 
   export default defineComponent({
     name: "OrdersPage",
-    components: { Tabs, Icon, PaginationBar, AdminListItem, TopToolbar, IonPage },
+    components: { TabsItems, Icon, PaginationBar, AdminListItem, TopToolbar, IonPage },
     setup () {
       const http: HttpPlugin = inject<HttpPlugin>('http') as HttpPlugin;
       const { t } = useI18n();

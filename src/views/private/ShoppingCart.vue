@@ -38,7 +38,7 @@
           </ion-label>
 
           <ion-buttons>
-            <PageLink :to="{name: 'private.product', params: {id: entry.product._id}}"
+            <PageLink :to="{name: 'private.products.details', params: {id: entry.product._id}}"
                       :btn-props="{fill:'clear'}">
               Vai al prodotto
             </PageLink>

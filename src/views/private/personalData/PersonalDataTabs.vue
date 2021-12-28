@@ -24,7 +24,7 @@ import VSwitch from '@lmiller1990/v-switch'
 import PersonalDataDetail from '../PersonalDataDetail.vue';
 import ClubButton from '@/components/ClubButton.vue';
 export default defineComponent({
-    name:'Tabs',
+    name:'PersonalDataTabs',
      components: {PersonalDataDetail,ClubButton,VSwitch},
     setup() {
         return {

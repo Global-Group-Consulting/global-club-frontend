@@ -2,7 +2,7 @@
   <AdminListItem
       :title="prodTitle"
       :description="product?.description"
-      :open-link="{ name: (asAdmin ? 'admin.products.details': 'private.product'), params: { id: product?._id ?? '' } }"
+      :open-link="{ name: (asAdmin ? 'admin.products.details': 'private.products.details'), params: { id: product?._id ?? '' } }"
       :open-link-label="$t('pages.products.btn_open')"
       :image="product?.thumbnail?.id"
   >
