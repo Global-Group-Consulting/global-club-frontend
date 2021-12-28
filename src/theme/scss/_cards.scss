@@ -1,14 +1,30 @@
 .product-card {
+  --background: transparent;
+  --border-width: 0;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   position: relative;
   margin: 0;
+  box-shadow: none;
 
   .product-card-img {
     flex-grow: 1;
     object-fit: cover;
     overflow: hidden;
     aspect-ratio: 1 / 1;
+  }
+
+  .product-img-wrapper {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  ion-card-header {
+    ion-card-title {
+      font-size: 1rem;
+    }
   }
 
   .overlay {
@@ -18,10 +34,40 @@
     right: 0;
     bottom: 0;
 
+    &:before {
+      content: "";
+      width: 80px;
+      height: 80px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: linear-gradient(135deg, black -20%, rgba(0, 0, 0, 0) 60%);
+      z-index: 0;
+    }
+
+    &:after {
+      content: "";
+      width: 80px;
+      height: 80px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: linear-gradient(317deg, black -20%, rgba(0, 0, 0, 0) 60%);
+      z-index: 0;
+    }
+
     .clickable-area.btn-fav {
       left: 0;
       top: 0;
       position: absolute;
+      z-index: 1;
+    }
+
+    .clickable-area.btn-go {
+      right: 0;
+      bottom: 0;
+      position: absolute;
+      z-index: 1;
     }
   }
 }

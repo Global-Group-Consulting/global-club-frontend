@@ -1,10 +1,12 @@
 <template>
-  <ion-segment class="tabs" :value="modelValue"
+  <ion-segment class="tabs" :value="modelValue" mode="ios"
+               color="primary"
                @ionChange="onSelectionChange" scrollable="scrollable">
     <ion-segment-button v-for="tab in tabsList" :key="tab.id"
-                        :value="tab.id">
+                        :value="tab.id" class="tabs-item"
+                        layout="icon-bottom">
       <ion-label>
-        {{ tab.text }} ({{ tab.count }})
+        {{ tab.text }} <span v-if="tab.count">({{ tab.count }})</span>
       </ion-label>
     </ion-segment-button>
   </ion-segment>
@@ -15,7 +17,7 @@
   import { TabEntry } from '@/@types/TabEntry';
 
   export default defineComponent({
-    name: 'Tabs',
+    name: 'TabsItems',
     props: {
       tabsList: {
         required: true,
