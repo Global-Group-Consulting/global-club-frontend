@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../../../../Downloads/glyphter-font/css/Global-Club.css">
 <template>
   <Icon name="brite-logo"></Icon>
 </template>

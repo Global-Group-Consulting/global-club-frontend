@@ -8,7 +8,12 @@
         <ProductListItem v-for="(prod, i) in order?.products" :key="'prod_' + i"
                          :product="prod.product"
                          :qta="prod.qta"
-                         :price="prod.price"></ProductListItem>
+                         :price="prod.price">
+          <template v-slot:buttons-start>
+            <ClubButton only-icon icon icon-name="edit-square" version="link"
+                        color="secondary" @click="editProduct(prod)"></ClubButton>
+          </template>
+        </ProductListItem>
       </ion-list>
     </template>
   </AccordionList>
@@ -19,17 +24,20 @@
   import AccordionList, { AccordionSection } from '@/components/AccordionList.vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { useI18n } from 'vue-i18n';
-  import { Order } from '@/@types/Order';
-  import { formatCurrency } from '@/@utilities/currency';
+  import { Order, OrderProduct, UpdateOrderProductDto } from '@/@types/Order';
+  import { formatBrites, formatCurrency } from '@/@utilities/currency';
   import { formatLocaleDate } from '@/@utilities/dates';
   import { formatOrderStatus } from '@/@utilities/statuses';
   import Chat from '@/components/chats/Chat.vue';
   import ProductListItem from '@/components/lists/products/AdminProductListItem.vue';
-  import { Communication } from '@/@types/Communication';
+  import { Communication, CommunicationAnswerDto } from '@/@types/Communication';
+  import ClubButton from '@/components/ClubButton.vue';
+  import { modalController } from '@ionic/vue';
+  import OrderProductEditModal from '@/components/modals/OrderProductEditModal.vue';
 
   export default defineComponent({
     name: "OrderAccordion",
-    components: { ProductListItem, Chat, AccordionList },
+    components: { ClubButton, ProductListItem, Chat, AccordionList },
     props: {
       orderData: {
         type: Object as PropType<Order>
@@ -38,7 +46,7 @@
         type: String,
       }
     },
-    setup (props) {
+    setup (props, { emit }) {
       const http: HttpPlugin = inject<HttpPlugin>('http') as HttpPlugin;
       const { t } = useI18n()
       const order: Ref<Order | null> = ref(null)
@@ -53,10 +61,10 @@
         },
         {
           id: "products",
-          text: t("pages.orderDetails.tab_products", {
-            qta: productsCount.value,
-            total: formatCurrency(order.value?.amount ?? 0)
-          }),
+          text: computed(() => t("pages.orderDetails.tab_products", {
+            qta: productsCount.value ?? 0,
+            total: formatBrites(order.value?.amount ?? 0)
+          })),
           open: false
         },
         {
@@ -69,6 +77,25 @@
       function onNewMessage (data: Communication) {
         if (order.value?.communication?.messages) {
           order.value.communication.messages = data.messages;
+        }
+      }
+
+      async function editProduct (product: OrderProduct) {
+        const modal = await modalController
+            .create({
+              component: OrderProductEditModal,
+              componentProps: {
+                title: 'Modifica prodotto',
+                product: product,
+                orderId: order.value?._id
+              },
+            })
+
+        await modal.present();
+        const result = await modal.onWillDismiss<UpdateOrderProductDto>();
+
+        if (result.role === "ok" && result.data) {
+          emit("productUpdated", result.data);
         }
       }
 
@@ -92,7 +119,7 @@
         order,
         accordionSections,
         formatLocaleDate, formatCurrency, formatOrderStatus,
-        onNewMessage
+        onNewMessage, editProduct
       }
     }
   });

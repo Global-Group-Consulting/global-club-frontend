@@ -20,10 +20,14 @@
       <slot name="extraLabels"></slot>
     </ion-label>
 
+    <slot name="buttons-start"></slot>
+
     <page-link :to="openLink"
                :btn-props="{ version: 'link' }">
       {{ openLinkLabel ?? "Open" }}
     </page-link>
+
+    <slot name="buttons-end"></slot>
   </ion-item>
 </template>
 

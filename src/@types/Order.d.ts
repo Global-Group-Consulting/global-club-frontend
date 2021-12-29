@@ -2,6 +2,7 @@ import { User, UserBasic } from '@/@types/User';
 import { OrderStatusEnum } from '@/@enums/order.status.enum';
 import { Communication } from '@/@types/Communication';
 import { Product } from '@/@types/Product';
+import { Attachment } from '@/@types/Attachment';
 
 export interface Order {
   user: UserBasic;
@@ -30,4 +31,9 @@ export interface OrderProduct {
 export interface ReadOrderStatusesDto {
   _id: OrderStatusEnum;
   count: number;
+}
+
+export interface UpdateOrderProductDto {
+  qta: number;
+  price: number;
 }

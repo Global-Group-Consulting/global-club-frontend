@@ -95,7 +95,7 @@ export abstract class BasicForm<T> extends EventTarget {
     return this.isEditing.value
   }
   
-  protected get formData (): UnwrapRef<FormFields<T>> {
+  public get formData (): UnwrapRef<FormFields<T>> {
     return reactive<any>(this.formFields);
   }
   

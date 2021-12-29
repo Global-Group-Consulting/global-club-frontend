@@ -6,7 +6,7 @@
     >
       <ion-button color="secondary" size="default" expand="full" class="accordion-header"
                   @click="onToggleOpenClick(section.el, section._key)">
-        <div class="accordion-header-text">{{ section.el.text }}</div>
+        <div class="accordion-header-text" v-html="section.el.text"></div>
         <Icon class="accordion-header-icon" name="chevron-down"></Icon>
       </ion-button>
 

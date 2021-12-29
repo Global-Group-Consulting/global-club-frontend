@@ -25,7 +25,7 @@
                 {{ $t("pages.orderDetails.order_status") }}: <strong>{{ formatOrderStatus(order?.status) }}</strong>
               </li>
               <li>
-                {{ $t("pages.orderDetails.order_amount") }}: <strong>{{ formatCurrency(order?.amount) }}</strong>
+                {{ $t("pages.orderDetails.order_amount") }}: <strong v-html="formatBrites(order?.amount)"></strong>
               </li>
               <li>
                 {{ $t("pages.orderDetails.user_pack") }}: <strong>{{ formatClubPack(order?.user.clubPack) }}</strong>
@@ -48,7 +48,7 @@
           </ion-col>
         </ion-row>
 
-        <OrderAccordion :order-data="order"></OrderAccordion>
+        <OrderAccordion :order-data="order" @productUpdated="onProductUpdated"></OrderAccordion>
       </ion-grid>
     </ion-content>
   </IonPage>
@@ -64,7 +64,7 @@
   import SimpleToolbar from '@/components/toolbars/SimpleToolbar.vue';
   import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
   import { formatLocaleDate } from "@/@utilities/dates"
-  import { formatCurrency } from "@/@utilities/currency"
+  import { formatBrites } from "@/@utilities/currency"
   import { formatClubPack, formatOrderStatus } from "@/@utilities/statuses"
   import OrderAccordion from '@/components/accordions/admin/OrderAccordion.vue';
 
@@ -74,8 +74,11 @@
     setup () {
       const http: HttpPlugin = inject<HttpPlugin>('http') as HttpPlugin;
       const route = useRoute()
-      // const { t } = useI18n()
       const order: Ref<Order | null> = ref(null)
+
+      function onProductUpdated (updatedOrder: Order) {
+        order.value = updatedOrder
+      }
 
       onIonViewWillEnter(async () => {
         const result = await http.api.orders.read(route.params.id as string);
@@ -85,8 +88,8 @@
 
       return {
         order,
-        formatLocaleDate, formatCurrency, formatOrderStatus,
-        formatClubPack
+        formatLocaleDate, formatBrites, formatOrderStatus,
+        formatClubPack, onProductUpdated
       }
     }
   });
