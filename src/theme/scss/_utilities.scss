@@ -38,3 +38,31 @@
 .bg-secondary {
   background: var(--ion-color-secondary);
 }
+
+ion-row.masonry-row {
+  --masonry-cols: 2;
+
+  display: block;
+  column-count: var(--masonry-cols);
+  column-gap: 10px;
+
+  ion-col {
+    //margin: 0;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    //margin-bottom: 10px;
+    break-inside: avoid;
+    width: 100% !important;
+    max-width: unset !important;
+  }
+
+  &.cols-3 {
+    --masonry-cols: 3;
+  }
+}
+
+@include mediaQueryDown(md) {
+  ion-row.masonry-row {
+    --masonry-cols: 1;
+  }
+}

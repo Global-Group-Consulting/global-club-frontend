@@ -1,20 +1,19 @@
 .form-input-wrapper {
   position: relative;
+  text-align: left;
 
   .form-input-error {
     color: var(--ion-color-danger);
-    margin-left: var(--spacer);
-    position: absolute;
-    bottom: var(--ion-margin-negative);
-    left: 0;
+    left: var(--spacer);
+    position: relative;
   }
 
   .form-input-message {
     color: white;
-    margin-left: var(--spacer);
-    position: absolute;
-    bottom: var(--ion-margin-megative);
-    left: 0;
+    left: var(--spacer);
+    position: relative;
+    //position: absolute;
+    //bottom: var(--ion-margin-megative);
   }
 }
 

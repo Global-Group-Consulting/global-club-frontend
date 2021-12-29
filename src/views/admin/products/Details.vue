@@ -12,61 +12,117 @@
           </template>
         </SimpleToolbar>
 
-        <ion-row>
-          <ion-col size="6">
-            <FormFiles v-model="formData.images"
-                       :remote-images="currentProduct ? currentProduct['images'] : null"
-                       :label="$t('forms.products.images')"
-                       :multiple="true"
-                       @delete="onImageDeleteClick"/>
-          </ion-col>
-          <ion-col size="6">
-            <FormFiles v-model="formData.thumbnail"
-                       :remote-images="currentProduct ? currentProduct['thumbnail'] : null"
-                       :max-images="1"
-                       :label="$t('forms.products.thumbnail')"
-                       @delete="onImageDeleteClick"/>
-          </ion-col>
-        </ion-row>
+        <Form @submit="productForm.onSubmit">
+          <ion-row>
+            <ion-col size="12" sizeMd="6">
+              <FormFiles v-model="productForm.formData.images.modelValue"
+                         :error="productForm.formData.images.errorMessage"
+                         :remote-images="currentProduct ? currentProduct['images'] : null"
+                         :label="$t('forms.products.images')"
+                         :multiple="true"
+                         @delete="onImageDeleteClick"/>
+            </ion-col>
+            <ion-col size="12" sizeMd="6">
+              <FormFiles v-model="productForm.formData.thumbnail.modelValue"
+                         :error="productForm.formData.thumbnail.errorMessage"
+                         :remote-images="currentProduct ? currentProduct['thumbnail'] : null"
+                         :max-images="1"
+                         :label="$t('forms.products.thumbnail')"
+                         @delete="onImageDeleteClick"/>
+            </ion-col>
+          </ion-row>
 
-        <ion-row>
-          <ion-col size="6">
-            <FormInput :label="$t('forms.products.title')" v-model="formData.title"/>
+          <ion-row class="masonry-row">
+            <ion-col>
+              <FormInputV :label="$t('forms.products.title')"
+                          v-model="productForm.formData.title.modelValue"
+                          :error="productForm.formData.title.errorMessage"/>
+            </ion-col>
 
-            <FormInput :label="$t('forms.products.description')" v-model="formData.description"
-                       component="ion-textarea"/>
-          </ion-col>
+            <ion-col>
+              <FormRTE :label="$t('forms.products.description')"
+                       v-model="productForm.formData.description.modelValue"
+                       :error="productForm.formData.description.errorMessage"/>
+            </ion-col>
 
-          <ion-col size="6">
-            <FormInput :label="$t('forms.products.price')" v-model="formData.price"/>
-            <FormInput :label="$t('forms.products.categories')" v-model="formData.categories"
-                       component="ion-select"
-                       :multiple="true"
-                       :options="categoryOptionsList"/>
-            <!--        <FormInput :label="$t('forms.products.tags')" v-model="formData.tags" component="ion-select"/>-->
-          </ion-col>
-        </ion-row>
+            <ion-col>
+              <FormInputV :label="$t('forms.products.price')"
+                          v-model="productForm.formData.price.modelValue"
+                          :error="productForm.formData.price.errorMessage"
+                          :disabled="productForm.formData.priceUndefined.modelValue"/>
+            </ion-col>
 
-        <ion-row>
-          <ion-col size="4" offset="4">
-            <ClubButton @click="onSubmitClick" version="link">
-              {{ $t('forms.products.' + (currentProduct ? "btnUpdate" : "btnCreate")) }}
-            </ClubButton>
-          </ion-col>
-        </ion-row>
+            <ion-col>
+              <FormToggleV :label="$t('forms.products.priceUndefined')"
+                           v-model="productForm.formData.priceUndefined.modelValue"
+                           :error="productForm.formData.priceUndefined.errorMessage"
+              />
+            </ion-col>
+
+            <ion-col>
+              <FormToggleV :label="$t('forms.products.hasQta')"
+                           v-model="productForm.formData.hasQta.modelValue"
+                           :error="productForm.formData.hasQta.errorMessage"
+              />
+            </ion-col>
+
+            <ion-col>
+              <FormToggleV :label="$t('forms.products.visible')"
+                           v-model="productForm.formData.visible.modelValue"
+                           :error="productForm.formData.visible.errorMessage"
+              />
+            </ion-col>
+
+            <ion-col>
+              <FormInputV :label="$t('forms.products.categories')"
+                          v-model="productForm.formData.categories.modelValue"
+                          :error="productForm.formData.categories.errorMessage"
+                          component="ion-select"
+                          :multiple="true"
+                          :options="categoryOptionsList"/>
+            </ion-col>
+
+            <ion-col>
+              <FormInputV :label="$t('forms.products.minPacks')"
+                          v-model="productForm.formData.minPacks.modelValue"
+                          :error="productForm.formData.minPacks.errorMessage"
+                          component="ion-select"
+                          :multiple="true"
+                          :options="packsOptionsList"/>
+            </ion-col>
+
+            <ion-col>
+              <FormInputV :label="$t('forms.products.createdAt')"
+                          disabled v-if="currentProduct"
+                          :model-value="formatLocaleDate(currentProduct?.createdAt)"/>
+            </ion-col>
+            <ion-col>
+              <FormInputV :label="$t('forms.products.updatedAt')"
+                          disabled v-if="currentProduct"
+                          :model-value="formatLocaleDate(currentProduct?.updatedAt)"/>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="4" offset="4">
+              <ClubButton type="submit">
+                {{ $t('forms.products.' + (currentProduct ? "btnUpdate" : "btnCreate")) }}
+              </ClubButton>
+            </ion-col>
+          </ion-row>
+        </Form>
       </ion-grid>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, inject, reactive, ref, Ref, watch } from 'vue';
+  import { computed, defineComponent, inject, reactive, ref, Ref } from 'vue';
   import { useI18n } from 'vue-i18n';
   import { useRoute, useRouter } from 'vue-router';
   import { Product } from '@/@types/Product';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { AlertsPlugin } from '@/plugins/Alerts';
-  import FormInput from '@/components/forms/FormInput.vue';
   import SimpleToolbar from '@/components/toolbars/SimpleToolbar.vue';
   import FormFiles from '@/components/forms/FormFiles.vue';
   import { CreateProductDto } from '@/views/admin/products/dto/create.product.dto';
@@ -76,56 +132,54 @@
   import { onIonViewDidLeave, onIonViewWillEnter } from '@ionic/vue';
   import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
   import ClubButton from '@/components/ClubButton.vue';
+  import { ProductForm } from '@/composables/forms/ProductForm';
+  import FormInputV from '@/components/forms/FormInputV.vue';
+  import FormRTE from '@/components/forms/FormRTE.vue';
+  import FormToggleV from '@/components/forms/FormToggleV.vue';
+  import { formatLocaleDate } from '@/@utilities/dates';
+  import { PackEnum } from '@/@enums/pack.enum';
 
   export default defineComponent({
-    components: { ClubButton, SimpleToolbarButton, FormInput, SimpleToolbar, FormFiles },
-    setup () {
+    components: { FormToggleV, FormRTE, FormInputV, ClubButton, SimpleToolbarButton, SimpleToolbar, FormFiles },
+    setup (props, { emit }) {
       const { t } = useI18n();
       const route = useRoute();
       const router = useRouter();
       const http = inject<HttpPlugin>('http') as HttpPlugin;
       const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin;
+      const colSizes = {
+        size: 6
+      }
 
-      const currentProduct: Ref<Product | undefined> = ref()
+      const currentProduct: Ref<Product & { categories: string[] } | undefined> = ref()
       const categoriesList: Ref<ProductCategory[]> = ref([])
-      const formData = reactive<CreateProductDto | UpdateProductDto>({
-        title: '',
-        description: '',
-        price: undefined,
-        tags: [],
-        categories: [],
-        thumbnail: undefined,
-        images: [],
-      });
       const categoryOptionsList = computed(() => {
         return categoriesList.value.map(el => ({
           text: el.title,
           value: el._id
         }))
       })
+      const packsOptionsList = computed(() => {
+        const toReturn = Object.values(PackEnum).map(el => ({
+          text: t("enums.PackEnum." + el),
+          value: el
+        }))
 
-      /**
-       * On submit click, check if must be created a new product or just updated
-       */
-      async function onSubmitClick () {
-        let result: Product | undefined;
+        /*toReturn.unshift({
+          text: "Tutti",
+          value: "" as any
+        })*/
 
-        if (currentProduct.value) {
-          const newData = { ...formData }
+        return toReturn;
+      })
+      const productForm = new ProductForm({
+        dataToWatch: () => currentProduct.value,
+        emit
+      })
 
-          if (!newData.thumbnail) {
-            delete newData.thumbnail
-          }
-
-          result = await http?.api.products.update(newData, currentProduct.value._id);
-        } else {
-          result = await http?.api.products.create(formData as CreateProductDto);
-        }
-
-        if (result) {
-          currentProduct.value = result;
-        }
-      }
+      productForm.addEventListener("submitCompleted", (e) => {
+        currentProduct.value = productForm.formatCurrentProduct(e.detail);
+      })
 
       /**
        * Delete a single image
@@ -146,7 +200,7 @@
           const result = await http.api.products.deleteFile(currentProduct.value._id, image.id);
 
           if (result) {
-            currentProduct.value = result;
+            currentProduct.value = productForm.formatCurrentProduct(result);
           }
         }
       }
@@ -173,23 +227,6 @@
         }
       }
 
-      function mergeInFormData (data: Product | undefined) {
-        formData.title = data?.title ?? "";
-        formData.description = data?.description ?? "";
-        formData.price = data?.price ?? undefined;
-        formData.tags = data?.tags ?? [];
-        formData.categories = data?.categories ? data.categories.reduce((acc, curr) => {
-          acc.push(curr._id)
-          return acc
-        }, [] as any) : [];
-        formData.thumbnail = undefined;
-        formData.images = [];
-      }
-
-      watch(() => currentProduct.value, (value) => {
-        mergeInFormData(value as Product)
-      })
-
       onIonViewWillEnter(async () => {
         const apiCalls: any[] = [
           http.api.productCategories.readAll()
@@ -199,11 +236,11 @@
           apiCalls.push(http.api.products.read(route.params.id as string))
         }
 
-        const results = await Promise.all<ProductCategory[]>(apiCalls as any);
+        const results = await Promise.all(apiCalls);
         //@ts-ignore
         categoriesList.value = results[0]
         //@ts-ignore
-        currentProduct.value = results[1];
+        currentProduct.value = productForm.formatCurrentProduct(results[1])
       });
 
       onIonViewDidLeave(async () => {
@@ -212,8 +249,10 @@
       });
 
       return {
-        currentProduct, categoriesList, formData, categoryOptionsList,
-        onSubmitClick, onImageDeleteClick, onDeleteClick
+        currentProduct, categoriesList, categoryOptionsList, packsOptionsList,
+        onImageDeleteClick, onDeleteClick,
+        productForm, colSizes,
+        formatLocaleDate
       }
     }
   })

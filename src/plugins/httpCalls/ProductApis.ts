@@ -1,7 +1,5 @@
 import { BasicApisClass } from '@/plugins/httpCalls/basicApisClass';
-import { Product } from '@/@types/Product';
-import { CreateProductDto } from '@/views/admin/products/dto/create.product.dto';
-import { UpdateProductDto } from '@/views/admin/products/dto/update.product.dto';
+import { Product, ProductCreateDto, ProductUpdateDto } from '@/@types/Product';
 import { PaginatedResult } from '@/@types/Pagination';
 
 export class ProductApis extends BasicApisClass {
@@ -19,13 +17,13 @@ export class ProductApis extends BasicApisClass {
     return result?.data
   }
   
-  static async create (data: CreateProductDto): Promise<Product | undefined> {
+  static async create (data: ProductCreateDto): Promise<Product | undefined> {
     const result = await this.withLoader<Product>("post", this.getUrl(), data);
-  
+    
     return result?.data;
   }
   
-  static async update (data: UpdateProductDto, id): Promise<Product | undefined> {
+  static async update (data: ProductUpdateDto, id): Promise<Product | undefined> {
     const result = await this.withLoader<Product>("patch", this.getUrl('/' + id), data);
     
     return result?.data;

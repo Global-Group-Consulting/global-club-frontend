@@ -27,6 +27,9 @@
               <li>
                 {{ $t("pages.orderDetails.order_amount") }}: <strong>{{ formatCurrency(order?.amount) }}</strong>
               </li>
+              <li>
+                {{ $t("pages.orderDetails.user_pack") }}: <strong>{{ formatClubPack(order?.user.clubPack) }}</strong>
+              </li>
             </ul>
           </ion-col>
           <ion-col size="12" sizeLg="6" class="pt-0 py-lg-5 mb-5 mb-lg-0">
@@ -62,7 +65,7 @@
   import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
   import { formatLocaleDate } from "@/@utilities/dates"
   import { formatCurrency } from "@/@utilities/currency"
-  import { formatOrderStatus } from "@/@utilities/statuses"
+  import { formatClubPack, formatOrderStatus } from "@/@utilities/statuses"
   import OrderAccordion from '@/components/accordions/admin/OrderAccordion.vue';
 
   export default defineComponent({
@@ -82,7 +85,8 @@
 
       return {
         order,
-        formatLocaleDate, formatCurrency, formatOrderStatus
+        formatLocaleDate, formatCurrency, formatOrderStatus,
+        formatClubPack
       }
     }
   });

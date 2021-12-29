@@ -1,6 +1,5 @@
 import { BasicApisClass } from '@/plugins/httpCalls/basicApisClass';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
-import JsFileDownloader from "js-file-downloader";
 
 export class FileApis extends BasicApisClass {
   static baseUrl = 'api/files';

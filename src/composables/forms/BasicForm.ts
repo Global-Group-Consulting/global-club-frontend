@@ -1,5 +1,5 @@
 import { FormContext, InvalidSubmissionContext, useField, useForm } from 'vee-validate';
-import { inject, reactive, ref, Ref, UnwrapRef, watch } from 'vue';
+import { computed, inject, reactive, ref, Ref, UnwrapRef, watch } from 'vue';
 import { HttpPlugin } from '@/plugins/HttpPlugin';
 import { AlertsPlugin } from '@/plugins/Alerts';
 import { Composer, useI18n } from 'vue-i18n';
@@ -21,6 +21,7 @@ export type YupSchema = MixedSchema
 
 export interface FormField {
   modelValue: Ref;
+  initialValue: Ref;
   errorMessage: Ref<string | undefined>;
 }
 
@@ -142,7 +143,8 @@ export abstract class BasicForm<T> extends EventTarget {
       
       acc[key] = {
         modelValue: value,
-        errorMessage
+        errorMessage,
+        initialValue: computed(() => this.initialData.value?.hasOwnProperty(key) ? this.initialData.value[key] : null)
       }
       
       return acc
@@ -155,7 +157,7 @@ export abstract class BasicForm<T> extends EventTarget {
   }
   
   protected afterValidSubmit (result?: T) {
-    const initialData = this.settings.dataToWatch ? this.settings.dataToWatch() : {}
+    const initialData = this.settings.dataToWatch ? (this.settings.dataToWatch() ?? {}) : {}
     const dataToEmit = Object.assign({}, initialData, result || {});
   
     // merges new data with initial data. This because new data does not contain
@@ -166,7 +168,7 @@ export abstract class BasicForm<T> extends EventTarget {
       this.settings.emit("update:modelValue", dataToEmit);
     }
   
-    this.dispatchEvent(new BasicFormEvent("submitCompleted", { detail: result }))
+    this.dispatch("submitCompleted", result)
   
     if (this.cbOnSubmitSuccess) {
       this.cbOnSubmitSuccess(result)
@@ -175,12 +177,16 @@ export abstract class BasicForm<T> extends EventTarget {
     this.onEditClick(false);
   }
   
+  protected dispatch (event: BasicFormEventType, data: any) {
+    super.dispatchEvent(new BasicFormEvent(event, { detail: data }))
+  }
+  
   public async onSubmitCompleted (cb: (data: T | undefined) => void) {
     this.cbOnSubmitSuccess = cb
   }
   
-  public updateInitialFormData<T> (data: Partial<Record<keyof T, any>>) {
-    if (!this.schema) {
+  public updateInitialFormData<T> (data?: Partial<Record<keyof T, any>>) {
+    if (!this.schema || !data) {
       return
     }
     

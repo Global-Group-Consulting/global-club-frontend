@@ -39,13 +39,13 @@
     name: "FormInputV",
     props: {
       label: String,
-      modelValue: [String, Number],
+      modelValue: [String, Number, Array],
       type: {
         type: String as PropType<'date' | 'datetime-local' | 'email' | 'month' | 'number' | 'currency' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' | 'week'>,
         default: "text"
       },
       component: {
-        type: String as PropType<'ion-input' | 'ion-textarea' | 'ion-select'>,
+        type: String as PropType<'ion-input' | 'ion-textarea' | 'ion-select' | 'ion-toggle'>,
         default: "ion-input"
       },
       // A hint to the browser for which keyboard to displa,

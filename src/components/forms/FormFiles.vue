@@ -1,58 +1,67 @@
 <template>
-  <ion-row v-if="label">
-    <ion-col class="ion-text-left">
-      <span>{{ label }}</span>
-    </ion-col>
-  </ion-row>
 
-  <ion-row class="form-file-previewer ion-margin-bottom">
-    <template v-if="images && images.length > 0">
-      <ion-col v-for="image of images" :key="image.id">
-        <ion-thumbnail>
-          <img :src="formatImgUrl(image.id)" :alt="image.fileName">
+  <div class="ion-margin-bottom">
 
-          <ClubButton color="danger" version="outline" icon-name="close"
-                      icon only-icon size="small"
-                      class="close-btn" @click="onRemoteFileDeleteClick(image)"
-                      :tooltip="t('forms.filePreviewer.removeRemoteFileTooltip')"
-          ></ClubButton>
-        </ion-thumbnail>
-
-        <div class="img-title-container" :title="image.fileName">
-          <small class="img-title">{{ image.fileName }}</small>
-        </div>
+    <ion-row v-if="label">
+      <ion-col class="ion-text-left">
+        <span>{{ label }}</span>
       </ion-col>
-    </template>
+    </ion-row>
 
-    <template v-if="newImages.length > 0">
-      <ion-col v-for="image of newImages" :key="image.file.name">
-        <ion-thumbnail class="temp-file">
-          <img :src="image.url" :alt="image.file.name">
+    <ion-row class="form-file-previewer ">
+      <template v-if="images && images.length > 0">
+        <ion-col v-for="image of images" :key="image.id">
+          <ion-thumbnail>
+            <img :src="formatImgUrl(image.id)" :alt="image.fileName">
 
-          <ClubButton color="danger" version="outline" icon-name="close"
-                      icon only-icon size="small"
-                      class="close-btn" @click="onLocalFileDeleteClick(image)"
-                      :tooltip="t('forms.filePreviewer.removeLocalFileTooltip')"></ClubButton>
-        </ion-thumbnail>
+            <ClubButton color="danger" version="outline" icon-name="close"
+                        icon only-icon size="small"
+                        class="close-btn" @click="onRemoteFileDeleteClick(image)"
+                        :tooltip="t('forms.filePreviewer.removeRemoteFileTooltip')"
+            ></ClubButton>
+          </ion-thumbnail>
 
-        <div class="img-title-container" :title="image.file.name">
-          <small class="img-title">{{ image.file.name }}</small>
-        </div>
-      </ion-col>
-    </template>
+          <div class="img-title-container" :title="image.fileName">
+            <small class="img-title">{{ image.fileName }}</small>
+          </div>
+        </ion-col>
+      </template>
 
-    <ion-col>
-      <label @click="onAddClick" class="btn-file-add" :class="{disabled: !canAddImages}">
-        <ion-thumbnail>
-          <icon name="plus"></icon>
-        </ion-thumbnail>
-        <span class="img-title-container">
+      <template v-if="newImages.length > 0">
+        <ion-col v-for="image of newImages" :key="image.file.name">
+          <ion-thumbnail class="temp-file">
+            <img :src="image.url" :alt="image.file.name">
+
+            <ClubButton color="danger" version="outline" icon-name="close"
+                        icon only-icon size="small"
+                        class="close-btn" @click="onLocalFileDeleteClick(image)"
+                        :tooltip="t('forms.filePreviewer.removeLocalFileTooltip')"></ClubButton>
+          </ion-thumbnail>
+
+          <div class="img-title-container" :title="image.file.name">
+            <small class="img-title">{{ image.file.name }}</small>
+          </div>
+        </ion-col>
+      </template>
+
+      <ion-col>
+        <label @click="onAddClick" class="btn-file-add" :class="{disabled: !canAddImages}"
+               v-if="canAddImages">
+          <ion-thumbnail>
+            <icon name="plus"></icon>
+          </ion-thumbnail>
+          <span class="img-title-container">
           <small class="img-title">{{ $t("forms.filePreviewer.addLabel") }}</small>
         </span>
-        <input type="file" @change="onFileChange" style="display: none" :accept="accept" :multiple="multiple">
-      </label>
-    </ion-col>
-  </ion-row>
+          <input type="file" @change="onFileChange" style="display: none" :accept="accept" :multiple="multiple">
+        </label>
+      </ion-col>
+    </ion-row>
+
+    <small v-if="showError" class="form-input-error">{{ error }}</small>
+    <small v-if="message && !showError" class="form-input-message">{{ message }}</small>
+  </div>
+
 </template>
 
 <script lang="ts" setup>
@@ -71,10 +80,14 @@
     maxImages?: number;
     accept?: string;
     multiple?: boolean;
+    readonly?: boolean;
+    disabled?: boolean;
+    error?: string;
+    message?: string;
   }>(), {
     accept: "image/*",
     multiple: false,
-    modelValue: []
+    modelValue: [],
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -86,6 +99,8 @@
   const { t } = useI18n()
   const alerts = inject<AlertsPlugin>("alerts") as AlertsPlugin
   const newImages: Ref<NewAttachmentFile[]> = ref([])
+
+  const showError = computed(() => props.error && !props.readonly && !props.disabled)
 
   const images: ComputedRef<Attachment[] | any[]> = computed(() => {
     if (!props.remoteImages) {
@@ -279,5 +294,14 @@
         }
       }
     }
+  }
+
+  .form-input-message, .form-input-error {
+    text-align: left;
+    display: block;
+  }
+
+  .form-input-error {
+    color: red;
   }
 </style>

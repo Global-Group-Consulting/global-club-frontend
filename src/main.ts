@@ -10,6 +10,7 @@ import FormInput from '@/components/forms/FormInput.vue';
 import Icon from '@/components/Icon.vue';
 import Btn from '@/components/Btn.vue';
 import PageLink from '@/components/PageLink.vue';
+import { Form } from 'vee-validate';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -63,6 +64,7 @@ app.component('FormInput', FormInput);
 app.component('Icon', Icon);
 app.component('Btn', Btn);
 app.component('PageLink', PageLink);
+app.component('Form', Form);
 
 router.isReady().then(() => {
   app.mount("#app");

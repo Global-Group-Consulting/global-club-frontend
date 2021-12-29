@@ -1,12 +1,14 @@
 <template>
-  <div class="form-input-wrapper">
-    <ion-item class="form-input form-rte item-interactive item-textarea item-input ion-margin-bottom"
+  <div class="form-input-wrapper ion-margin-bottom">
+    <ion-item class="form-input form-rte item-interactive item-textarea item-input "
               :class="{'item-has-focus': isEditable && focus, 'item-has-value': hasValue }">
       <ion-label position="floating">{{ label }}</ion-label>
       <div class="sc-ion-textarea-md-h">
+        <FormRTEBubbleMenu :editor="editor"></FormRTEBubbleMenu>
         <EditorContent :editor="editor"/>
       </div>
     </ion-item>
+
     <small v-if="showError" class="form-input-error">{{ error }}</small>
     <small v-if="message && !showError" class="form-input-message">{{ message }}</small>
   </div>
@@ -15,12 +17,15 @@
 <script lang="ts">
   import { useEditor, EditorContent, Editor } from '@tiptap/vue-3'
   import StarterKit from '@tiptap/starter-kit'
+  import Underline from '@tiptap/extension-underline';
   import { computed, defineComponent, onBeforeUnmount, Ref, ref, watch } from 'vue';
+  import FormRTEBubbleMenu from '@/components/forms/FormRTEBubbleMenu.vue';
 
   export default defineComponent({
     name: "FormRTE",
     components: {
-      EditorContent
+      FormRTEBubbleMenu,
+      EditorContent,
     },
     props: {
       modelValue: {
@@ -43,8 +48,8 @@
         content: props.modelValue,
         extensions: [
           StarterKit,
+          Underline
         ],
-        // enableCoreExtensions: true,
         editable: isEditable.value,
         onUpdate: () => {
           const value = editor.value.getText();
@@ -74,7 +79,8 @@
           return
         }
 
-        editor.value.commands.setContent(value, false)
+        editor.value.commands.setContent(value, false);
+        textValue.value = value
       })
 
       onBeforeUnmount(() => {
