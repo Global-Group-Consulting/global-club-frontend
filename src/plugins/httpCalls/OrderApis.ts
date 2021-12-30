@@ -36,12 +36,12 @@ export class OrderApis extends BasicApisClass {
     return result?.data;
   }
   
-  static async readPending (): Promise<PaginatedResult<Order[]> | undefined> {
+  static async readByStatus (statuses: OrderStatusEnum[]): Promise<PaginatedResult<Order[]> | undefined> {
     const result = await this.withLoader<PaginatedResult<Order[]>>("get",
       this.getUrl('', {
-        "filter[status]": ["pending", "inProgress"],
+        "filter[status]": statuses,
       }));
-    
+  
     return result?.data;
   }
   

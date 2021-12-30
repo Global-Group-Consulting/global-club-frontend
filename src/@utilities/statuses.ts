@@ -14,6 +14,21 @@ export function formatOrderStatus (status: OrderStatusEnum) {
   return t("enums.OrderStatusEnum." + status)
 }
 
+export function getOrderStatusColor (status: OrderStatusEnum) {
+  if (!status) {
+    return ""
+  }
+  
+  const map = {
+    [OrderStatusEnum.PENDING]: "#ffe100",
+    [OrderStatusEnum.IN_PROGRESS]: "#009dff",
+    [OrderStatusEnum.COMPLETED]: "#07c423",
+    [OrderStatusEnum.CANCELLED]: "#c71d1d",
+  }
+  
+  return map[status];
+}
+
 export function formatMovementType (movement: MovementTypeEnum) {
   if (!movement) {
     return ""

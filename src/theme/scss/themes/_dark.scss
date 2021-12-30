@@ -32,6 +32,9 @@
   --font-size-base: 14px;
   --font-size-large: calc(var(--font-size-base) * 1.45);
   --font-size-small: calc(var(--font-size-base) * .9);
+
+  --toolbar-height: 56px;
+  --navbar-height: 56px;
 }
 
 body {

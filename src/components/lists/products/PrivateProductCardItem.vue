@@ -43,7 +43,7 @@
   import { AlertsPlugin } from '@/plugins/Alerts';
 
   export default defineComponent({
-    name: "PrivateProductListItem",
+    name: "PrivateProductCardItem",
     components: { ClubButton, PageLink },
     props: {
       product: Object as PropType<Product>,

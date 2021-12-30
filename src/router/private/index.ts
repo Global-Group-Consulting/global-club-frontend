@@ -20,7 +20,7 @@ export default [
   },
   {
     path: "/cart",
-    component: () => import("@/views/private/ShoppingCart.vue"),
+    component: () => import("@/views/private/Cart.vue"),
     name: "private.cart",
     meta: {
       isPrivate: true,
@@ -53,17 +53,17 @@ export default [
     },
   },
   {
-    path: "/history",
-    component: () => import("@/views/private/ordersHistory/Index.vue"),
-    name: "private.history",
+    path: "/orders",
+    component: () => import("@/views/private/orders/Home.vue"),
+    name: "private.orders.home",
     meta: {
       isPrivate: true,
     },
   },
   {
-    path: "/order",
-    component: () => import("@/views/private/orderStatus/Index.vue"),
-    name: "private.order",
+    path: "/order/:id",
+    component: () => import("@/views/private/orders/Details.vue"),
+    name: "private.orders.details",
     meta: {
       isPrivate: true,
     },

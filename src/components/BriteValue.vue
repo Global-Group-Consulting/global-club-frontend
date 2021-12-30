@@ -1,12 +1,6 @@
 <template>
   <span class="d-inline-flex ion-align-items-center">
-    <BriteIcon class="me-2" v-if="!symbolAfter"/>
-
-    <span>
-      {{ formatBrites(value) }}
-    </span>
-
-    <BriteIcon class="ms-2" v-if="symbolAfter"/>
+    <span v-html="formatBrites(value, symbolAfter ? 'end' : 'start')"></span>
   </span>
 </template>
 
@@ -17,7 +11,6 @@
 
   export default defineComponent({
     name: "BriteValue",
-    components: { BriteIcon },
     props: {
       value: Number,
       symbolAfter: Boolean

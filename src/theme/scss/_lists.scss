@@ -19,3 +19,15 @@ ion-item-divider {
     fill: none
   }
 }
+
+.list-transparent {
+  --ion-item-background: transparent;
+
+
+  ion-item {
+    &::part(native) {
+      --padding-start: 0;
+      --inner-padding-end: 0 !important;
+    }
+  }
+}

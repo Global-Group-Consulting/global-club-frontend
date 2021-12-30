@@ -39,6 +39,10 @@
   background: var(--ion-color-secondary);
 }
 
+.bg-transparent {
+  background-color: transparent !important;
+}
+
 ion-row.masonry-row {
   --masonry-cols: 2;
 

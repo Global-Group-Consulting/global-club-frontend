@@ -2,6 +2,7 @@
   --border-color: var(--ion-color-secondary-border);
   --msg-padding-left: #{$spacer * 2.5};
   position: relative;
+  text-align: left;
 
   .chat-container {
     display: flex;

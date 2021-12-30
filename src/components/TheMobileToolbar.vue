@@ -17,8 +17,6 @@
           <ion-label>
             <small>{{ entry.label }}</small>
           </ion-label>
-
-
         </div>
       </ion-button>
 
