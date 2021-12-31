@@ -5,6 +5,7 @@ export const settings: Partial<HttpPluginOptions> = {
     withCredentials: true,
     headers: {
       'Client-Key': process.env.VUE_APP_CLIENT_KEY
-    }
+    },
+    baseURL: process.env.VUE_APP_BASE_URL
   }
 };
