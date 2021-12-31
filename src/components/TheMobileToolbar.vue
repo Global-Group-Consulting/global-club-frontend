@@ -20,7 +20,8 @@
         </div>
       </ion-button>
 
-      <ion-button fill="clear" v-else class="bottom-toolbar-center-g">
+      <ion-button fill="clear" v-else class="bottom-toolbar-center-g"
+                  @click="$router.push({name:'private.products'})">
         <Icon name="g-gold"></Icon>
       </ion-button>
     </template>

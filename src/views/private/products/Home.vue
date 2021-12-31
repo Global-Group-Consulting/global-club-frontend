@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, onMounted, ref, Ref } from 'vue';
+  import { defineComponent, inject, ref, Ref } from 'vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { Product } from '@/@types/Product';
   import { formatImgUrl } from '@/@utilities/images';
