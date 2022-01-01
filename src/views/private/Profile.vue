@@ -1,234 +1,140 @@
 <template>
-  <IonPage> 
-    <div class="header-nav"> 
-      <TopToolbar include-back>Il mio profilo</TopToolbar>
-        </div>
-    <IonContent class="ion-padding">
+  <IonPage>
+    <TopToolbar include-back>Il mio profilo</TopToolbar>
 
-         <ion-grid>
-        <ion-row>
-          <ion-col class="ion-text-center" size="2">
-            <img src="/assets/workout-pic.png">
-          </ion-col>
-          <ion-col size="6">
-           <div class="dati-user">Mario Rossi</div>
-           <div class="dati-pacchetto">Pacchetto Fast</div>
-          </ion-col>
-          <ion-col size="4">
-           <ClubButton size="small" version="filled">Modifica</ClubButton>
-          </ion-col>
+    <IonContent>
+      <ion-grid fixed>
+        <ion-item class="list-item-transparent mb-4" lines="none">
+          <ion-avatar slot="start">
+            <ion-img src="/assets/user_placeholder.png"/>
+          </ion-avatar>
 
-        </ion-row>
+          <ion-label>
+            <h2 class="font-bold">{{ userName }}</h2>
+            <h5>Pacchetto {{ userActivePack }}</h5>
+          </ion-label>
+        </ion-item>
+
+        <ion-list v-for="(group, g) in listGroups" :key="g" class="mb-4 py-3" mode="ios" lines="full">
+          <ion-list-header class="mb-3">{{ group.title }}</ion-list-header>
+
+          <ion-item v-for="(item, i) in group.childs" :key="`${g}_${i}`"
+                    :button="item.route || item.click"
+                    @click.stop.prevent="onItemClick(item)"
+                    :disabled="item.disabled">
+            <Icon :name="item.icon" slot="start"></Icon>
+
+            {{ item.label }}
+
+            <template v-if="item.slot === 'notification-popup' ">
+              <ion-toggle slot="end"></ion-toggle>
+            </template>
+          </ion-item>
+        </ion-list>
+
       </ion-grid>
-
-      <ion-grid class="dati-content">
-         <ion-row>
-           <h2>Account</h2>
-           </ion-row>
-
-        <ion-row>
-      <ion-col size="1">
-        <ion-icon src="./assets/icons/user.svg"></ion-icon>
-      </ion-col>
-      <ion-col size="10">
-        <div>Dati personali</div>
-      </ion-col>
-      <ion-col size="1" class="ion-text-end">
-        <ion-router-link class="link-color" href="#"><ion-icon src="./assets/icons/chevron-right.svg"></ion-icon></ion-router-link>
-      </ion-col>
-      </ion-row>
-
-      <ion-row>
-      <ion-col size="1">
-        <ion-icon src="./assets/icons/document.svg"></ion-icon>
-      </ion-col>
-      <ion-col size="10">
-        <div>Dati contratuali</div>
-      </ion-col>
-      <ion-col size="1" class="ion-text-end">
-      <ion-router-link class="link-color" href="#"><ion-icon src="./assets/icons/chevron-right.svg"></ion-icon></ion-router-link>      </ion-col>
-      </ion-row>
-
-      <ion-row>
-      <ion-col size="1">
-        <ion-icon src="./assets/icons/graph.svg"></ion-icon>
-      </ion-col>
-      <ion-col size="10">
-        <div>I miei ordini</div>
-      </ion-col>
-      <ion-col size="1" class="ion-text-end">
-      <ion-router-link class="link-color" href="#"><ion-icon src="./assets/icons/chevron-right.svg"></ion-icon></ion-router-link>      </ion-col>
-      </ion-row>
-
-      <ion-row>
-      <ion-col size="1">
-        <ion-icon src="./assets/icons/chart.svg"></ion-icon>
-      </ion-col>
-      <ion-col size="10">
-        <div>Il mio profilo</div>
-      </ion-col>
-      <ion-col size="1" class="ion-text-end">
-      <ion-router-link class="link-color" href="#"><ion-icon src="./assets/icons/chevron-right.svg"></ion-icon></ion-router-link>      </ion-col>
-      </ion-row>
-
-  </ion-grid>
-
-    <br>
-
-
-  <ion-grid class="dati-content">
-         <ion-row>
-           <h2>Notifiche</h2>
-           </ion-row>
-
-        <ion-row>
-      <ion-col size="1">
-        <ion-icon src="./assets/icons/settings.svg"></ion-icon>
-      </ion-col>
-      <ion-col size="10" class="ion-no-padding">
-        <div>Notifiche Pop-up</div>
-      </ion-col>
-      <ion-col size="1" class="ion-text-end ion-no-padding">
-       <ion-toggle></ion-toggle>   
-      </ion-col>
-      </ion-row>
-
-      <ion-row>
-      <ion-col size="1">
-        <ion-icon src="./assets/icons/settings.svg"></ion-icon>
-      </ion-col>
-      <ion-col size="10">
-        <div>Le mie notifiche</div>
-      </ion-col>
-      <ion-col size="1">
-
-      </ion-col>
-      </ion-row>
-
-  </ion-grid>
-
-          <br>
-
-
-     <ion-grid class="dati-content">
-         <ion-row>
-           <h2>Altri</h2>
-           </ion-row>
-
-        <ion-row>
-      <ion-col size="1">
-        <ion-icon src="./assets/icons/settings.svg"></ion-icon>
-      </ion-col>
-      <ion-col size="10">
-        <div>Contattaci</div>
-      </ion-col>
-      <ion-col size="1" class="ion-text-end">
-      <ion-icon src="./assets/icons/chevron-right.svg"></ion-icon>
-      </ion-col>
-      </ion-row>
-
-      <ion-row>
-      <ion-col size="1">
-        <ion-icon src="./assets/icons/folder.svg"></ion-icon>
-      </ion-col>
-      <ion-col size="10">
-        <div>Privacy Policy</div>
-      </ion-col>
-      <ion-col size="1" class="ion-text-end">
-        <ion-icon src="./assets/icons/chevron-right.svg"></ion-icon>
-      </ion-col>
-      </ion-row>
-
-      <ion-row>
-      <ion-col size="1">
-        <ion-icon src="./assets/icons/logout.svg"></ion-icon>
-      </ion-col>
-      <ion-col size="10">
-        <div>Logout</div>
-      </ion-col>
-      <ion-col size="1" class="ion-text-end">
-       <ion-router-link class="link-color" href="#"><ion-icon src="./assets/icons/chevron-right.svg"></ion-icon></ion-router-link>
-      </ion-col>
-      </ion-row>
-
-
-     </ion-grid>
-
-
     </IonContent>
-    </IonPage>
+  </IonPage>
 </template>
 
 <script lang="ts">
-//import { HttpPlugin } from '@/plugins/HttpPlugin';
-import { defineComponent} from "vue";
-import ClubButton from '@/components/ClubButton.vue';
+  import { computed, ComputedRef, defineComponent, inject } from "vue";
+  import TopToolbar from '@/components/toolbars/TopToolbar.vue';
+  import { useStore } from 'vuex';
+  import { storeKey } from '@/store';
+  import { formatClubPack } from '@/@utilities/statuses';
+  import menuEntries, { MenuEntry } from '@/composables/menuEntries';
+  import Icon from '@/components/Icon.vue';
+  import { AuthPlugin } from '@/plugins/AuthPlugin';
 
-export default defineComponent({
-  name: "Product",
-   components: {ClubButton,
-  
-  },
-  setup() {
-    return {
-      categoria: ('descrizione')
-    }
+  interface MenuGroup {
+    title: string;
+    childs: MenuEntry[];
   }
-})
+
+  export default defineComponent({
+    name: "Product",
+    components: {
+      Icon,
+      TopToolbar,
+    },
+    setup () {
+      const store = useStore(storeKey);
+      const auth = inject("auth") as AuthPlugin
+
+      const userName = computed(() => store.getters['auth/fullName']);
+      const userActivePack = computed(() => formatClubPack(store.getters['auth/user'].clubPack));
+      const { onItemClick, logout } = menuEntries()
+
+      const listGroups: ComputedRef<MenuGroup[]> = computed(() => [
+        {
+          title: "Account",
+          childs: [
+            {
+              icon: "user",
+              label: "Dati personali",
+              route: 'private.user',
+            },
+            {
+              icon: "chart",
+              label: "I miei ordini",
+              route: 'private.orders.home',
+            },
+            {
+              icon: "wallet",
+              label: "Il mio portfolio",
+              route: 'private.portfolio',
+            }
+          ]
+        },
+        {
+          title: "Notifiche",
+          childs: [
+            {
+              icon: "notification",
+              label: "Notifiche pop-up",
+              disabled: true,
+              slot: "notification-popup"
+            },
+            {
+              icon: "notification",
+              label: "Le mie notifiche",
+              disabled: true,
+            }
+          ]
+        },
+        {
+          title: "Altro",
+          childs: [
+            {
+              icon: "message",
+              label: "Contattaci",
+              disabled: true
+            },
+            {
+              icon: "privacy",
+              label: "Note Legali",
+              disabled: true
+            },
+            {
+              icon: "logout",
+              label: "Logout",
+              click: () => logout()
+            }
+          ]
+        }
+      ])
+
+      return {
+        userName,
+        userActivePack,
+        listGroups,
+        onItemClick
+      }
+    }
+  })
 </script>
 
 <style>
-
-.titoloprodotto{
-  font-size:20px;
-  text-align: left;
-}
-
-.descprodotto{
-  text-align: left;
-  margin-top: 20px;
-  color: #ffffffd9;
-}
-
-.btntittolo{
-    font-size: 15px;
-    padding: 20px;
-}
-
-.prezzoprodotto{
-  font-size: 15px;
-  color: #9a9a9a;
-  text-align: left;
-
-}
-
-.dati-content{
-background-color: rgb(30, 30, 30);
-border-radius: 30px;
-text-align: left;
-}
-
-.link-color{
- color:#fff;
-}
-
-.dati-user{
- text-align: left;
- font-size: 20px;
-}
-
-.dati-pacchetto{
- text-align: left;
- font-size: 15px;
- color:#909090;
-}
-
-
-.header-nav{
-color: white;
-padding-left: 30px;
-padding-right: 75px;
-}
-
 
 </style>

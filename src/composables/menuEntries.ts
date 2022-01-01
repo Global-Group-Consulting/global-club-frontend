@@ -9,10 +9,11 @@ import { formatUserName } from '@/@utilities/fields';
 import { useI18n } from 'vue-i18n';
 import MenuDropdownPopover from '@/components/popovers/MenuDropdownPopover.vue';
 import { AuthPlugin } from '@/plugins/AuthPlugin';
+import { AlertsPlugin } from '@/plugins/Alerts';
 
 export interface MenuEntry {
   route?: string;
-  click?: (this: MenuEntry & { auth: AuthPlugin }, event?: Event, authUser?: User) => void | Promise<void>;
+  click?: (this: MenuEntry & { auth: AuthPlugin; logout () }, event?: Event, authUser?: User) => void | Promise<void>;
   label: string | ((data?: any) => string);
   divider?: boolean;
   icon?: string;
@@ -24,6 +25,8 @@ export interface MenuEntry {
   onlyDesktop?: boolean;
   children?: MenuEntry[];
   badge?: ComputedRef<string>;
+  disabled?: boolean;
+  slot?: string;
 }
 
 const genericFooterEntries: MenuEntry[] = [
@@ -48,12 +51,13 @@ const genericFooterEntries: MenuEntry[] = [
       {
         label: "userProfile",
         icon: "user",
+        route: "private.profile"
       },
       {
         label: "logout",
         icon: "logout",
         click () {
-          this.auth.logout();
+          this.logout()
         }
       },
     ]
@@ -131,7 +135,7 @@ const mobileMenuEntries: Record<"admin" | "private", MenuEntry[]> = {
           icon: "logout",
           onlyMobile: true,
           click () {
-            this.auth.logout();
+            this.logout()
           }
         },
       ]
@@ -158,7 +162,7 @@ const mobileMenuEntries: Record<"admin" | "private", MenuEntry[]> = {
       })
     },
     {
-      route: 'private.user',
+      route: 'private.profile',
       label: 'userProfileMobile',
       icon: "user",
     },
@@ -234,7 +238,7 @@ const desktopMenuEntries: Record<"admin" | "private", MenuEntry[]> = {
       divider: true
     },
     {
-      route: 'private.user',
+      route: 'private.profile',
       label: 'userProfile',
       icon: "user",
     },
@@ -256,6 +260,7 @@ export default () => {
   const router = useRouter();
   const { t } = useI18n();
   const auth = inject("auth") as AuthPlugin
+  const alerts = inject("alerts") as AlertsPlugin
   const store = useStore(storeKey);
   const userAuth: ComputedRef<User> = computed(() => store.getters["auth/user"]);
   const userIsAdmin: ComputedRef<boolean> = computed(() => store.getters["auth/isAdmin"]);
@@ -320,7 +325,7 @@ export default () => {
       label: "",
       isMainBtn: true
     });
-    
+  
     return prepareForReturn(data)
   })
   
@@ -330,9 +335,22 @@ export default () => {
     return prepareForReturn(data.filter(el => el.inFooter))
   })
   
+  async function logout () {
+    const result = await alerts.ask({
+      header: "Effettuare il logou?",
+      message: "Siete sicuri di voler uscire dall'applicazione?",
+      buttonOkText: "Si, esci",
+      buttonCancelText: "No, rimani"
+    })
+    
+    if (result) {
+      await auth.logout()
+    }
+  }
+  
   async function onItemClick (entry: MenuEntry, event?: Event) {
     if (entry.click) {
-      entry.click.call({ ...entry, auth }, event, userAuth.value);
+      entry.click.call({ ...entry, auth, logout }, event, userAuth.value);
     } else {
       await router.push({ name: entry.route });
     }
@@ -346,6 +364,6 @@ export default () => {
     desktopEntries,
     desktopFooterEntries,
     mobileEntries,
-    onItemClick
+    onItemClick, logout
   }
 }

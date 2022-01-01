@@ -41,6 +41,13 @@ const getters: GetterTree<RootState, RootState> = {
   user (state: AuthState): User | null {
     return state.user;
   },
+  fullName (state: AuthState): string {
+    if (!state.user) {
+      return ""
+    }
+    
+    return state.user.firstName + state.user.lastName;
+  },
   permissions (state: AuthState): AclPermissionsEnum[] | any[] {
     return state.user?.permissions ?? [];
   },

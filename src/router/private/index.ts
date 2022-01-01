@@ -37,9 +37,9 @@ export default [
   },
 
   {
-    path: "/wallet",
+    path: "/portfolio",
     component: () => import("@/views/private/WalletStatement.vue"),
-    name: "private.WalletStatement",
+    name: "private.portfolio",
     meta: {
       isPrivate: true,
     },

@@ -1,3 +1,7 @@
+ion-list {
+  border-radius: var(--border-radius);
+}
+
 ion-thumbnail.center-inner-icon {
   justify-content: center;
   align-items: center;
@@ -23,11 +27,20 @@ ion-item-divider {
 .list-transparent {
   --ion-item-background: transparent;
 
-
   ion-item {
     &::part(native) {
       --padding-start: 0;
       --inner-padding-end: 0 !important;
     }
+  }
+}
+
+
+.list-item-transparent {
+  --ion-item-background: transparent;
+
+  &::part(native) {
+    --padding-start: 0;
+    --inner-padding-end: 0 !important;
   }
 }
