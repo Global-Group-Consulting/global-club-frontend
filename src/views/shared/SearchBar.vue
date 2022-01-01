@@ -71,7 +71,7 @@ export default defineComponent({
 
 </script>
 
-<style>
+<style scoped>
 
 .sc-ion-searchbar-md-h {
   border-radius: 20px;
