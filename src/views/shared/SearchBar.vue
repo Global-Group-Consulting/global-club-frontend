@@ -1,5 +1,5 @@
 <template>
-<div class="logo-container"></div>
+<div class=""></div>
   <ul>
     <li>
       <input type="checkbox" checked/>

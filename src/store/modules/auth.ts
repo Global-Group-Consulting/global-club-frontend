@@ -46,7 +46,7 @@ const getters: GetterTree<RootState, RootState> = {
       return ""
     }
     
-    return state.user.firstName + state.user.lastName;
+    return [state.user.firstName, state.user.lastName].join(" ");
   },
   permissions (state: AuthState): AclPermissionsEnum[] | any[] {
     return state.user?.permissions ?? [];

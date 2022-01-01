@@ -100,6 +100,24 @@
   @import "/src/theme/scss/variables";
   @import "/src/theme/scss/functions";
 
+  // ios doesn't supports contain
+  // so the bottom size must be set differently
+  @include mediaQueryDown(md) {
+    @supports not (contain: layout) {
+      .bottom-drawer {
+        bottom: calc(var(--toolbar-height) + var(--ion-safe-area-bottom)) !important;
+      }
+    }
+  }
+
+  @include mediaQueryUp(md) {
+    @supports not (contain: layout) {
+      .bottom-drawer {
+        left: var(--sidebar-width) !important;
+      }
+    }
+  }
+
   .bottom-drawer {
     position: fixed;
     bottom: 0;

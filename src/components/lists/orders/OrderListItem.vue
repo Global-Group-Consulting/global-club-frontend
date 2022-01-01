@@ -17,7 +17,7 @@
 
     <ion-label slot="end">
       <PageLink :to="{name: 'private.orders.details', params: { id: order._id }}"
-                :btn-props="{icon: true, onlyIcon: true, iconName: 'chevron-right', fill:'outline'}">
+                :btn-props="{icon: true, onlyIcon: true, iconName: 'chevron-right', fill:'outline', size:'small'}">
         {{ $t("sections.orders.btn_got_to_details") }}
       </PageLink>
     </ion-label>

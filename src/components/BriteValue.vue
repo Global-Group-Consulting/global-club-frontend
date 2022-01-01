@@ -1,7 +1,7 @@
 <template>
-  <span class="d-inline-flex ion-align-items-center">
-    <span v-html="formatBrites(value, symbolAfter ? 'end' : 'start')"></span>
-  </span>
+  <component :is="component" class="d-inline-flex ion-align-items-center ">
+    <span class="ion-text-nowrap" v-html="formatBrites(value, symbolAfter ? 'end' : 'start')"></span>
+  </component>
 </template>
 
 <script lang="ts">
@@ -13,7 +13,11 @@
     name: "BriteValue",
     props: {
       value: Number,
-      symbolAfter: Boolean
+      symbolAfter: Boolean,
+      component: {
+        type: String,
+        default: "span"
+      }
     },
     setup () {
       return {

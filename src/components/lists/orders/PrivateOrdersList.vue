@@ -8,7 +8,7 @@
     </ion-list>
 
     <template v-else>
-      <NoData></NoData>
+      <NoData :text="noDataText"></NoData>
     </template>
   </div>
 </template>
@@ -30,7 +30,8 @@
       statuses: {
         type: Array as PropType<OrderStatusEnum[]>,
         required: true
-      }
+      },
+      noDataText: String
     },
     setup (props) {
       const http = inject("http") as HttpPlugin;

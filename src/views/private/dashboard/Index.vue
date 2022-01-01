@@ -1,72 +1,66 @@
 <template>
   <IonPage>
     <IonContent>
+      <LogoToolbar/>
 
       <ion-grid fixed>
-        <SearchBar></SearchBar>
 
-        <ion-row>
-          <ion-col>
-            <div class="bentornato">
-              Bentornato,
+        <div class="mb-5">
+          <ion-text color="medium"><h6 class="ion-text-left mb-0">Bentornato,</h6></ion-text>
+
+          <div class="d-flex ion-justify-content-between">
+            <div class="ion-text-left">
+              <h4 class="mt-2  mb-0"> {{ $store.getters["auth/fullName"] }} </h4>
             </div>
-          </ion-col>
-          <ion-col>
-            <div></div>
-          </ion-col>
-        </ion-row>
-        <ion-row class="ion-align-items-center">
-          <ion-col>
-            <div class="user">
-              {{ firstName }}
+            <div class="ion-text-right">
+              <BriteValue class="mt-2 mb-0" component="h4" value="76654"></BriteValue>
             </div>
-          </ion-col>
-          <ion-col>
-            <BriteValue></BriteValue>
-          </ion-col>
-        </ion-row>
+          </div>
+        </div>
 
-        <Movement></Movement>
+        <div class="mb-5">
+          <SearchBar></SearchBar>
+        </div>
 
-        <LastOrders></LastOrders>
+        <div class="mb-5">
+          <Movement></Movement>
+        </div>
+
+        <PrivateOrdersList :statuses="pendingStatuses"
+                           title="Stato ordini in corso"
+                           no-data-text="Ancora nessun ordine"
+        ></PrivateOrdersList>
       </ion-grid>
     </IonContent>
-    <!--    <ion-footer>
-          <ion-toolbar>
-            <btn
-              @click="$router.push({ name: '.order' })"
-              fill="clear"
-              size="small"
-              shape="round"
-              slot="icon-only"
-              icon-name="circle-right"
-            ></btn>
-          </ion-toolbar>
-        </ion-footer>-->
   </IonPage>
 </template>
 
 <script lang="ts">
+  import { defineComponent, ref, computed, ComputedRef } from "vue";
   import { useStore } from "vuex";
   import { storeKey } from "@/store";
-  import { defineComponent, ref, computed, ComputedRef } from "vue";
   import { User } from "@/@types/User";
+  import { OrderStatusEnum } from '@/@enums/order.status.enum';
   import Movement from "../../shared/Movement.vue";
-  import LastOrders from "./LastOrders.vue"
   import SearchBar from '@/views/shared/SearchBar.vue';
   import BriteValue from '@/components/BriteValue.vue';
+  import PrivateOrdersList from '@/components/lists/orders/PrivateOrdersList.vue';
+  import LogoToolbar from '@/components/toolbars/LogoToolbar.vue';
 
   export default defineComponent({
     name: "Dashboard",
-    components: { Movement, LastOrders, SearchBar, BriteValue, },
+    components: { LogoToolbar, PrivateOrdersList, Movement, SearchBar, BriteValue, },
     setup () {
       const store = useStore(storeKey);
       const authUser: ComputedRef<User> = computed(
           () => store.getters["auth/user"]
       );
       const firstName = ref<string>(authUser?.value?.firstName);
+      const pendingStatuses = [OrderStatusEnum.PENDING, OrderStatusEnum.IN_PROGRESS];
+
       return {
-        firstName
+        firstName,
+        pendingStatuses
       };
     },
   });
@@ -74,43 +68,5 @@
 
 
 <style>
-
-  .bentornato {
-    margin-top: 20px;
-    text-align: left;
-    color: #ada9a4;
-  }
-
-  .user {
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 30px;
-    letter-spacing: 0em;
-    text-align: left;
-    margin: 0;
-  }
-
-
-  .stato-banner {
-    background-color: rgb(30, 30, 30);
-    border-radius: 30px;
-    text-align: left;
-    font-size: 13px;
-    padding: 20px 0px 17px 0px;
-    margin-bottom: 20px;
-  }
-
-
-  .progress-lavorazione {
-    height: 8px;
-    border-radius: 10px;
-    margin-top: 6px;
-  }
-
-
-  .lavorazione {
-    color: #c9a866;
-  }
 
 </style>
