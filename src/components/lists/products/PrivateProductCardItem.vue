@@ -60,7 +60,14 @@
           return ""
         }
 
-        return props.product.title
+        let title = props.product.title;
+        const maxLength = 30;
+9
+        if (title.length > maxLength) {
+          title = title.slice(0, maxLength) + "..."
+        }
+
+        return title
       })
 
       const isFavourite = computed(() => store.getters["favourites/products"].find(el => el._id === props.product?._id))
