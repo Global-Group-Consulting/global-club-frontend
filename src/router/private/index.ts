@@ -12,7 +12,7 @@ export default [
   },
   {
     path: "/walletpremium",
-    component: () => import("@/views/private/PremiumWallet.vue"),
+    component: () => import("@/views/private/Wallet.vue"),
     name: "private.wallet",
     meta: {
       isPrivate: true,

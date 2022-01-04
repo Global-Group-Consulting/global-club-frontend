@@ -1,4 +1,4 @@
-export interface Statistic{
+export interface Statistics{
     totalUsable: number;
     totalRemaining: number;
     expirations: Expirations[];

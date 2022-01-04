@@ -23,7 +23,7 @@
         </div>
 
         <div class="mb-5">
-          <Movement></Movement>
+          <UserStatistics></UserStatistics>
         </div>
 
         <PrivateOrdersList :statuses="pendingStatuses"
@@ -46,10 +46,11 @@
   import BriteValue from '@/components/BriteValue.vue';
   import PrivateOrdersList from '@/components/lists/orders/PrivateOrdersList.vue';
   import LogoToolbar from '@/components/toolbars/LogoToolbar.vue';
+  import UserStatistics from '@/components/UserStatistics.vue';
 
   export default defineComponent({
     name: "Dashboard",
-    components: { LogoToolbar, PrivateOrdersList, Movement, SearchBar, BriteValue, },
+    components: { UserStatistics, LogoToolbar, PrivateOrdersList, SearchBar, BriteValue, },
     setup () {
       const store = useStore(storeKey);
       const authUser: ComputedRef<User> = computed(

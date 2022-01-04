@@ -72,3 +72,57 @@
   }
 }
 
+.statistics-card-wrapper {
+  max-width: 350px;
+
+  @include mediaQueryUp(lg){
+    max-width: 500px;
+  }
+}
+
+.statistics-card {
+  margin: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer);
+  opacity: .2;
+  transition: opacity .3s;
+  border-radius: var(--border-radius);
+  background-color: var(--ion-color-secondary);
+  background-image: url("/assets/statistics-bg.png");
+  background-position: center;
+  background-size: 120%;
+  background-blend-mode: soft-light;
+  background-repeat: no-repeat;
+
+  ion-card-content {
+    padding: calc(var(--spacer) * 2) calc(var(--spacer) * 1.3);
+  }
+
+  &.is-active {
+    opacity: 1;
+  }
+
+  .statistics-card-title {
+    font-size: 24px;
+    color: white;
+
+    i {
+      color: var(--ion-color-primary)
+    }
+  }
+
+  .statistics-card-subtitle {
+    margin-left: 32px;
+    margin-bottom: var(--spacer);
+
+  }
+
+  .statistics-card-row {
+    display: flex;
+    flex-direction: column;
+  }
+
+
+}

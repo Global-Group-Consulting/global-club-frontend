@@ -102,18 +102,17 @@
 
   // ios doesn't supports contain
   // so the bottom size must be set differently
-  @include mediaQueryDown(md) {
-    @supports not (contain: layout) {
+  @supports not (contain: layout) {
+    @include mediaQueryDown(md) {
       .bottom-drawer {
         bottom: calc(var(--toolbar-height) + var(--ion-safe-area-bottom)) !important;
       }
     }
-  }
 
-  @include mediaQueryUp(md) {
-    @supports not (contain: layout) {
+    @include mediaQueryUp(md) {
+      // on md and up, must consider the width of the sidebar
       .bottom-drawer {
-        left: var(--sidebar-width) !important;
+        right: var(--sidebar-width) !important;
       }
     }
   }

@@ -4,9 +4,13 @@
 
     <ion-content>
       <ion-grid fixed>
+        <div class="mb-5">
+          <search-bar></search-bar>
+        </div>
+
         <ion-row>
           <ion-col size-lg="3" size-md="4" size="6" v-for="product of productsList" :key="product._id">
-            <PrivateProductCardItem :product="product" class="m-0 h-100" />
+            <PrivateProductCardItem :product="product" class="m-0 h-100"/>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -22,10 +26,11 @@
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import { onIonViewWillEnter } from '@ionic/vue';
   import PrivateProductCardItem from '@/components/lists/products/PrivateProductCardItem.vue';
+  import SearchBar from '@/views/shared/SearchBar.vue';
 
   export default defineComponent({
     name: 'ProductsList',
-    components: { PrivateProductCardItem, TopToolbar },
+    components: { SearchBar, PrivateProductCardItem, TopToolbar },
     setup () {
       const http = inject<HttpPlugin>('http');
       const productsList: Ref<Product[]> = ref([]);
