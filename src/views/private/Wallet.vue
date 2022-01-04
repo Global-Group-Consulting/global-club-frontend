@@ -14,7 +14,6 @@
 
 <script lang="ts">
   import { defineComponent, ref } from "vue";
-  import Movement from '@/views/shared/Movement.vue';
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import UserStatistics from '@/components/UserStatistics.vue';
 
