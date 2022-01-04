@@ -73,8 +73,11 @@
 }
 
 .statistics-card-wrapper {
-  max-width: 400px;
+  max-width: 350px;
 
+  @include mediaQueryUp(lg){
+    max-width: 500px;
+  }
 }
 
 .statistics-card {
