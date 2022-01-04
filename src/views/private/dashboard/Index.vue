@@ -41,7 +41,6 @@
   import { storeKey } from "@/store";
   import { User } from "@/@types/User";
   import { OrderStatusEnum } from '@/@enums/order.status.enum';
-  import Movement from "../../shared/Movement.vue";
   import SearchBar from '@/views/shared/SearchBar.vue';
   import BriteValue from '@/components/BriteValue.vue';
   import PrivateOrdersList from '@/components/lists/orders/PrivateOrdersList.vue';
