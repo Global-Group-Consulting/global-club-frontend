@@ -1,7 +1,9 @@
 <template>
-  <ion-segment class="tabs" :value="modelValue" mode="ios"
+  <ion-segment class="tabs" :value="modelValue"
+               mode="ios"
                color="primary"
-               @ionChange="onSelectionChange" scrollable="scrollable">
+               @ionChange="onSelectionChange"
+               scrollable="scrollable">
     <ion-segment-button v-for="tab in tabsList" :key="tab.id"
                         :value="tab.id" class="tabs-item"
                         layout="icon-bottom">

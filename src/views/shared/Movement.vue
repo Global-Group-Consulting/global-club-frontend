@@ -179,7 +179,7 @@
   </v-switch>
 </template>
 <script lang="ts">
-  import { Statistic } from '@/@types/Statistics';
+  import { Statistics } from '@/@types/Statistics';
   import BriteValue from '@/components/BriteValue.vue';
   import ClubButton from '@/components/ClubButton.vue';
   import { defineComponent, inject, onMounted, ref } from "vue";
@@ -191,7 +191,7 @@
     components: { VSwitch, ClubButton, BriteValue, },
     setup () {
       const category = ref('totale-resoconto');
-      const statistic = ref<Statistic>();
+      const statistic = ref<Statistics>();
       const http = inject("http") as HttpPlugin
       const getData = async () => {
 
