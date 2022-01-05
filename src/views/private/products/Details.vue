@@ -64,7 +64,7 @@
   import { TabEntry } from '@/@types/TabEntry';
 
   export default defineComponent({
-    name: "Product",
+    name: "Details",
     components: {
       Tabs,
       BriteValue,

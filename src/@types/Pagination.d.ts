@@ -14,4 +14,5 @@ export interface PaginatedResult<T = any> extends PaginationOptions {
   data: T;
   totalPages: number;
   totalItems: number;
+  filter?: any;
 }
