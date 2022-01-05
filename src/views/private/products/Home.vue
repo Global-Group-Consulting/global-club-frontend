@@ -62,7 +62,6 @@
       }
 
       watch(() => activeFilters.value, (filters: SearchFilters) => {
-        // Object.assign(route.query, filtersComposable.prepareFilters(filters))
         router.replace({ query: filtersComposable.prepareFilters(filters) })
 
         fetchData(filters);

@@ -19,7 +19,7 @@
         </div>
 
         <div class="mb-5">
-          <SearchBar></SearchBar>
+          <SearchBar @update:filters="onSearchUpdate"></SearchBar>
         </div>
 
         <div class="mb-5">
@@ -46,21 +46,30 @@
   import PrivateOrdersList from '@/components/lists/orders/PrivateOrdersList.vue';
   import LogoToolbar from '@/components/toolbars/LogoToolbar.vue';
   import UserStatistics from '@/components/UserStatistics.vue';
+  import { useRouter } from 'vue-router';
+  import Filters from '@/composables/filters';
 
   export default defineComponent({
     name: "Dashboard",
     components: { UserStatistics, LogoToolbar, PrivateOrdersList, SearchBar, BriteValue, },
     setup () {
       const store = useStore(storeKey);
+      const router = useRouter();
       const authUser: ComputedRef<User> = computed(
           () => store.getters["auth/user"]
       );
       const firstName = ref<string>(authUser?.value?.firstName);
       const pendingStatuses = [OrderStatusEnum.PENDING, OrderStatusEnum.IN_PROGRESS];
+      const filtersComposable = Filters()
+
+      function onSearchUpdate (filters) {
+        router.push({ name: "private.products", query: filtersComposable.prepareFilters(filters) })
+      }
 
       return {
         firstName,
-        pendingStatuses
+        pendingStatuses,
+        onSearchUpdate
       };
     },
   });
