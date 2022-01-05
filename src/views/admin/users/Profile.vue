@@ -52,7 +52,16 @@
           </template>
 
           <template v-slot:content_orders>
-            <OrdersList :user-id="user?._id"></OrdersList>
+            <AdminOrdersList :user-id="user?._id" :limit="6" class="mb-3"
+                             :title="$t('sections.orders.last_x_orders', { number: 5 })"></AdminOrdersList>
+
+            <div class="ion-text-center">
+              <PageLink :to="{name: 'admin.orders'}" :btn-props="{target: '_blank'}"
+                        color="primary" version="outline" icon
+                        icon-name="link" icon-position="end">
+                {{ $t("sections.orders.show_all_orders") }}
+              </PageLink>
+            </div>
           </template>
         </AccordionList>
       </IonGrid>
@@ -67,19 +76,28 @@
   import { useI18n } from 'vue-i18n';
   import { useRoute } from 'vue-router';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
-  // import { AlertsPlugin } from '@/plugins/Alerts';
   import { onIonViewDidLeave, onIonViewWillEnter } from '@ionic/vue';
   import { User, UserBasic } from '@/@types/User';
   import AccordionList, { AccordionSection } from '@/components/AccordionList.vue';
   import { UserRoleEnum } from "@/@enums/user.role.enum"
   import MovementsList from '@/components/lists/MovementsList.vue';
-  import OrdersList from '@/components/lists/OrdersList.vue';
   import UserContractForm from '@/components/forms/sections/UserContractForm.vue';
   import { formatClubPack, formatUserRole } from '@/@utilities/statuses';
   import UserAnagraphicForm from '@/components/forms/sections/UserAnagraphicForm.vue';
+  import AdminOrdersList from '@/components/lists/orders/AdminOrdersList.vue';
+  import PageLink from '@/components/PageLink.vue';
+
   export default defineComponent({
     name: "Profile",
-    components: { UserAnagraphicForm, UserContractForm, OrdersList, MovementsList, AccordionList, TopToolbar },
+    components: {
+      PageLink,
+      AdminOrdersList,
+      UserAnagraphicForm,
+      UserContractForm,
+      MovementsList,
+      AccordionList,
+      TopToolbar
+    },
     setup () {
       const { t } = useI18n();
       const route = useRoute();

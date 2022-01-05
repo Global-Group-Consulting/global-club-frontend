@@ -2,7 +2,7 @@
   <ion-slides :options="slideOpts" ref="slides">
     <ion-slide v-for="tab of tabsList" :key="tab.id" class="tabs-slide">
       <div class="ion-padding-vertical">
-        <slot :name="'tabSlide_' + tab.id" :tab="tab">
+        <slot :name="'tabSlide_' + tab.id" :tab="tab" :isActive="activeTab === tab.id">
           please overwrite this tab by creating a template fort the
           <br>
           <code>v-slot:tabSlide_{{ tab.id }}</code>
@@ -25,7 +25,7 @@
         required: true,
         type: Array as PropType<TabEntry[]>
       },
-      modelValue: [String, Number]
+      activeTab: [String, Number]
     },
     setup (props) {
       const slides: Ref<typeof IonSlide | null> = ref(null);
@@ -34,7 +34,7 @@
         autoHeight: true
       };
 
-      watch(() => props.modelValue, (newValue) => {
+      watch(() => props.activeTab, (newValue) => {
         const index = props.tabsList.findIndex(el => el.id === newValue);
 
         slides.value?.$el.slideTo(index)
