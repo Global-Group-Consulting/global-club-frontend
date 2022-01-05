@@ -5,17 +5,21 @@
     <ion-content>
       <ion-grid fixed>
         <Tabs :data="tabs">
-          <template v-slot:tabSlide_pending="{isActive}">
-            <AdminOrdersList :statuses="[OrderStatusEnum.PENDING]" :visible="isActive"></AdminOrdersList>
+          <template v-slot:tabSlide_pending="{isActive, onDataFetched}">
+            <AdminOrdersList :statuses="[OrderStatusEnum.PENDING]" :visible="isActive"
+                             @dataFetched="onDataFetched"></AdminOrdersList>
           </template>
-          <template v-slot:tabSlide_inProgress="{isActive}">
-            <AdminOrdersList :statuses="[OrderStatusEnum.IN_PROGRESS]" :visible="isActive"></AdminOrdersList>
+          <template v-slot:tabSlide_inProgress="{isActive, onDataFetched}">
+            <AdminOrdersList :statuses="[OrderStatusEnum.IN_PROGRESS]" :visible="isActive"
+                             @dataFetched="onDataFetched"></AdminOrdersList>
           </template>
-          <template v-slot:tabSlide_completed="{isActive}">
-            <AdminOrdersList :statuses="[OrderStatusEnum.COMPLETED]" :visible="isActive"></AdminOrdersList>
+          <template v-slot:tabSlide_completed="{isActive, onDataFetched}">
+            <AdminOrdersList :statuses="[OrderStatusEnum.COMPLETED]" :visible="isActive"
+                             @dataFetched="onDataFetched"></AdminOrdersList>
           </template>
-          <template v-slot:tabSlide_cancelled="{isActive}">
-            <AdminOrdersList :statuses="[OrderStatusEnum.CANCELLED]" :visible="isActive"></AdminOrdersList>
+          <template v-slot:tabSlide_cancelled="{isActive, onDataFetched}">
+            <AdminOrdersList :statuses="[OrderStatusEnum.CANCELLED]" :visible="isActive"
+                             @dataFetched="onDataFetched"></AdminOrdersList>
           </template>
         </Tabs>
 

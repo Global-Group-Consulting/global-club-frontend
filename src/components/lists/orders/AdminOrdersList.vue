@@ -55,7 +55,7 @@
       userId: String,
       limit: Number
     },
-    setup (props) {
+    setup (props, { emit }) {
       const http = inject("http") as HttpPlugin;
       const { t } = useI18n();
       const orders = new PaginatedResultEntity<Order>();
@@ -81,6 +81,8 @@
         orders.merge(result);
 
         loaded.value = true;
+
+        emit("dataFetched");
       }
 
       watch(() => props.visible, (value) => {
