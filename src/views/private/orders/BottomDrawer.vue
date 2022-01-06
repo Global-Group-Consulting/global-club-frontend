@@ -125,6 +125,11 @@
     transform: translateY(calc(100% - 64px));
     transition: transform .4s;
 
+    @include mediaQueryUp(md){
+      left: var(--spacer);
+      right: var(--spacer);
+    }
+
     > ion-grid {
       background-color: var(--ion-color-secondary);
       border-top-left-radius: 40px;

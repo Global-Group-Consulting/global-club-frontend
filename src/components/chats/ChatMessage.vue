@@ -1,10 +1,11 @@
 <template>
   <div class="chat-message"
        :class="{'status-change': typeOfOrderStatusChange, 'incoming': !senderIsUser || typeOfOrderStatusChange}">
-    <div class="status-index" v-if="typeOfOrderStatusChange">{{ statusIndex }}</div>
+    <div class="status-index">{{ statusIndex }}</div>
 
     <strong class="chat-message-title">{{ title }}</strong>
-    <div v-html="data.content"></div>
+
+    <div v-html="content" v-if="content"></div>
 
     <div class="attachments-container" v-if="data.attachments && data.attachments.length > 0">
       <ul class>
@@ -24,19 +25,18 @@
 
 <script lang="ts">
   import { computed, defineComponent, inject, PropType } from 'vue';
-  import { Message } from '@/@types/Communication';
+  import { Communication, Message } from '@/@types/Communication';
   import { formatUserName, getUserId } from "@/@utilities/fields"
   import { formatLocaleDate } from '@/@utilities/dates';
   import { useStore } from 'vuex';
   import { storeKey } from '@/store';
   import { User } from '@/@types/User';
   import { MessageTypeEnum } from '@/@enums/message.type.enum';
-  import { CommunicationApis } from '@/plugins/httpCalls/CommunicationApis';
   import { formatOrderStatus } from '@/@utilities/statuses';
-  import { OrderStatusEnum } from '@/@enums/order.status.enum';
   import { formatImgUrl } from '@/@utilities/images';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { Attachment } from '@/@types/Attachment';
+  import { useI18n } from 'vue-i18n';
 
   export default defineComponent({
     name: "ChatMessage",
@@ -45,11 +45,12 @@
         type: Object as PropType<Message>,
         required: true
       },
-      communication: Object as PropType<CommunicationApis>
+      communication: Object as PropType<Communication>
     },
     setup (props) {
       const http = inject("http") as HttpPlugin
       const store = useStore(storeKey);
+      const { t } = useI18n();
 
       const senderIsUser = computed(() => {
         const authUser: User = store.getters['auth/user']
@@ -58,16 +59,43 @@
       })
 
       const typeOfOrderStatusChange = computed(() => {
-        return props.data.type === MessageTypeEnum.ORDER_STATUS_UPDATE
+        return [MessageTypeEnum.ORDER_STATUS_UPDATE, MessageTypeEnum.ORDER_CREATED, MessageTypeEnum.ORDER_PRODUCT_UPDATE].includes(props.data.type)
+      })
+
+      const statusIndex = computed(() => {
+        const messagesTypes = [MessageTypeEnum.ORDER_STATUS_UPDATE, MessageTypeEnum.ORDER_CREATED];
+        let index = 0;
+        let foundedIndex;
+
+        for (const msg of props.communication?.messages || []) {
+          if (messagesTypes.includes(msg.type)) {
+            index++
+
+            if (msg._id === props.data._id) {
+              foundedIndex = index
+              break
+            }
+          }
+        }
+
+        return foundedIndex
+      })
+
+      const isFirstMessage = computed(() => {
+        return props.data?.type === MessageTypeEnum.ORDER_CREATED
       })
 
       const title = computed(() => {
-        if (typeOfOrderStatusChange.value && props.data.data?.orderStatus) {
-          if (props.data.data.orderStatus === OrderStatusEnum.PENDING) {
-            return "Ordine creato"
-          }
+        if (isFirstMessage.value) {
+          return "Ordine creato"
+        }
 
-          return "Ordine" + formatOrderStatus(props.data.data.orderStatus)
+        if (props.data.type === MessageTypeEnum.ORDER_PRODUCT_UPDATE) {
+          return "Dati ordine aggiornati"
+        }
+
+        if (typeOfOrderStatusChange.value) {
+          return "Ordine " + formatOrderStatus(props.data.data?.orderStatus)
         }
 
         if (senderIsUser.value) {
@@ -77,8 +105,39 @@
         }
       })
 
-      const statusIndex = computed(() => {
-        return (1).toString()//.padStart(2, "0")
+      const content = computed(() => {
+        if (props.data.type === MessageTypeEnum.MESSAGE) {
+          return props.data.content
+        }
+
+        if (props.data.type === MessageTypeEnum.ORDER_PRODUCT_UPDATE && props.data.data?.productUpdate) {
+          const updates = props.data.data.productUpdate;
+          const product = updates.product;
+          const toReturn: string[] = [`Prodotto: <strong>${product.title}</strong>`, "<ul>"];
+
+          Object.keys(updates.diff).forEach(key => {
+            toReturn.push(`<li>${t("pages.orderDetails." + key)}: <strong>${updates.originalData[key]} -> ${updates.diff[key]}</strong></li>`)
+          })
+
+          toReturn.push("</ul>")
+
+          return toReturn.join("")
+        }
+
+        if (props.data.type === MessageTypeEnum.ORDER_CREATED && props.data.data?.orderProducts) {
+          const orderProducts = props.data.data.orderProducts;
+          const toReturn = ["Riepilogo dell'ordine<br>", `N° prodotti: ${orderProducts.length}<br>`, "<ul>"];
+
+          orderProducts.forEach(el => {
+            toReturn.push(`<li><strong>${el.product.title}</strong> x ${el.qta}</li>`)
+          })
+
+          toReturn.push("</ul>")
+
+          return toReturn.join("")
+        }
+
+        return props.data.content
       })
 
       async function previewFile (file: Attachment) {
@@ -87,9 +146,11 @@
 
       return {
         formatUserName, formatLocaleDate, formatImgUrl,
-        previewFile,
+        previewFile, isFirstMessage,
         senderIsUser, typeOfOrderStatusChange,
-        title, statusIndex
+        title, statusIndex,
+        MessageTypeEnum,
+        content
       }
     }
   });

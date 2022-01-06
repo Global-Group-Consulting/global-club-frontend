@@ -37,3 +37,8 @@ export interface UpdateOrderProductDto {
   qta: number;
   price: number;
 }
+
+export interface UpdateOrderStatusDto {
+  status: OrderStatusEnum;
+  reason?: string;
+}

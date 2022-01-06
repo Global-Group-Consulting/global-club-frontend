@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, PropType } from 'vue';
+  import { defineComponent, inject, PropType, watch } from 'vue';
   import { Communication, CommunicationAnswerDto } from '@/@types/Communication';
   import ChatMessage from '@/components/chats/ChatMessage.vue';
   import ChatAnswerModal from '@/components/modals/ChatAnswerModal.vue';
@@ -39,6 +39,12 @@
       }
     },
     setup (props, { emit }) {
+
+      watch(() => props.communication, (value) => {
+        console.log(value)
+      }, {
+        deep: true
+      })
 
       async function onAnswerClick () {
         const modal = await modalController

@@ -1,5 +1,5 @@
 <template>
-  <ion-segment class="tabs" :value="modelValue"
+  <ion-segment class="tabs-items" :value="modelValue"
                mode="ios"
                color="primary"
                @ionChange="onSelectionChange"

@@ -4,7 +4,7 @@ import { MovementTypeEnum } from '@/@enums/movement.type.enum';
 import { PackEnum } from '@/@enums/pack.enum';
 import { UserRoleEnum } from '@/@enums/user.role.enum';
 
-export function formatOrderStatus (status: OrderStatusEnum) {
+export function formatOrderStatus (status?: OrderStatusEnum) {
   if (!status) {
     return ""
   }
