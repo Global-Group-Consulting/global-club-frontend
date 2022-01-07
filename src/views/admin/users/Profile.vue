@@ -9,6 +9,7 @@
                     <SimpleToolbarButton :text="$t('pages.userProfile.btn_delete')"/>
                   </template>
                 </SimpleToolbar>-->
+        <UserStatistics :user-id="userId"></UserStatistics>
 
         <ion-row>
           <ion-col size="12" sizeLg="6" class="pb-0 py-lg-5">
@@ -37,6 +38,7 @@
             </ul>
           </ion-col>
         </ion-row>
+
 
         <AccordionList :sections="profileSections">
           <template v-slot:content_contract>
@@ -70,7 +72,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, ref, Ref } from 'vue';
+  import { computed, defineComponent, inject, ref, Ref } from 'vue';
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import { formatUserName } from '@/@utilities/fields';
   import { useI18n } from 'vue-i18n';
@@ -86,10 +88,12 @@
   import UserAnagraphicForm from '@/components/forms/sections/UserAnagraphicForm.vue';
   import AdminOrdersList from '@/components/lists/orders/AdminOrdersList.vue';
   import PageLink from '@/components/PageLink.vue';
+  import UserStatistics from '@/components/UserStatistics.vue';
 
   export default defineComponent({
     name: "Profile",
     components: {
+      UserStatistics,
       PageLink,
       AdminOrdersList,
       UserAnagraphicForm,
@@ -102,6 +106,7 @@
       const { t } = useI18n();
       const route = useRoute();
       const http = inject<HttpPlugin>('http') as HttpPlugin;
+      const userId = computed(() => route.params.id)
       // const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin;
       const user: Ref<User | null> = ref(null)
       const profileSections: Ref<AccordionSection[]> = ref([
@@ -145,6 +150,7 @@
         formatUserName, formatClubPack, formatUserRole,
         profileSections,
         UserRoleEnum,
+        userId
       }
     }
   });

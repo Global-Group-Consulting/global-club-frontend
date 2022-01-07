@@ -1,5 +1,5 @@
 export interface TabEntry {
-  id: string | number;
+  id: string;
   text: string;
   count?: number;
 }

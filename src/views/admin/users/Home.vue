@@ -14,22 +14,17 @@
                 </SimpleToolbar>-->
 
 
-        <TabsItems :tabs-list="groupsList" v-model.number="activeTab"></TabsItems>
+        <Tabs :data="tabs">
+          <template v-slot:tabSlide_4="{isActive, onDataFetched, tab}">
+            <AdminUsersList :role="tab.id" :visible="isActive"
+                            @dataFetched="onDataFetched"></AdminUsersList>
+          </template>
+          <template v-slot:tabSlide_3="{isActive, onDataFetched, tab}">
+            <AdminUsersList :role="tab.id" :visible="isActive"
+                            @dataFetched="onDataFetched"></AdminUsersList>
+          </template>
+        </Tabs>
 
-        <ion-list>
-          <AdminListItem v-for="user of usersList" :key="user._id"
-                         :title="formatUserName(user)"
-                         :description="user.email"
-                         :open-link="{ name:'admin.users.profile', params: { id: user._id } }"
-                         :open-link-label="$t('pages.users.btn_open')"
-          >
-            <template v-slot:image>
-              <Icon :name="activeTab === UserRoleEnum.CLIENTE ? 'user' : 'user-2'"></Icon>
-            </template>
-          </AdminListItem>
-        </ion-list>
-
-        <pagination-bar :paginationData="paginationData" @pageChanged="onPageChanged"></pagination-bar>
       </ion-grid>
     </ion-content>
   </IonPage>
@@ -51,71 +46,52 @@
   import AdminListItem from '@/components/lists/AdminListItem.vue';
   import { formatUserName } from '@/@utilities/fields';
   import Icon from '@/components/Icon.vue';
+  import Tabs from '@/components/tabs/Tabs.vue';
+  import AdminUsersList from '@/components/lists/users/AdminUsersList.vue';
 
   export default defineComponent({
     name: "UsersPage",
-    components: { Icon, AdminListItem, TabsItems, PaginationBar, TopToolbar },
+    components: { AdminUsersList, Tabs, TopToolbar },
     setup () {
       const http = inject<HttpPlugin>("http") as HttpPlugin
       const { t } = useI18n()
 
-      const paginatedUsersData: Ref<PaginatedResult<UserBasic[]>> = ref({} as any);
-      const activeTab: Ref<UserRoleEnum> = ref(UserRoleEnum.CLIENTE)
-      const groupsList: Ref<TabEntry[]> = ref([
+      const tabs: Ref<TabEntry[]> = ref([
         {
-          id: UserRoleEnum.CLIENTE,
+          id: UserRoleEnum.CLIENTE.toString(),
           text: t("enums.UserRoleEnum." + UserRoleEnum[UserRoleEnum.CLIENTE]),
           count: 0
         }, {
-          id: UserRoleEnum.AGENTE,
+          id: UserRoleEnum.AGENTE.toString(),
           text: t("enums.UserRoleEnum." + UserRoleEnum[UserRoleEnum.AGENTE]),
           count: 0
         }
       ])
 
-      const usersList: ComputedRef<UserBasic[]> = computed(() => {
-        return paginatedUsersData.value.data
-      })
+      /**
+       * Fetches the counters and store the value in the tabs list
+       */
+      async function fetchCounters () {
+        const result = await http.api.users.readGroups()
 
-      const paginationData: ComputedRef<any> = computed(() => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { data, ...rest } = paginatedUsersData.value
+        result?.forEach(el => {
+          const correspondingTab = tabs.value.find(tab => tab.id === el._id.toString())
 
-        return {
-          ...rest
-        }
-      })
-
-      async function fetchUsers (page = 1) {
-        paginatedUsersData.value = await http.api.users.readAll(activeTab.value, page) ?? {} as any
-      }
-
-      async function onPageChanged (newPage: number) {
-        await fetchUsers(newPage)
-      }
-
-      watch(activeTab, async () => fetchUsers())
-
-      onIonViewWillEnter(async () => {
-        const result = await Promise.all([
-          http.api.users.readGroups(),
-          fetchUsers()
-        ])
-
-        groupsList.value.forEach(entry => {
-          const fetchedGroups = result[0];
-          const group = fetchedGroups?.find(el => el._id === entry.id);
-
-          if (group) {
-            entry.count = group.count
+          if (correspondingTab) {
+            correspondingTab.count = el.count
           }
         })
+      }
+
+      onIonViewWillEnter(async () => {
+        await Promise.all([
+          fetchCounters(),
+        ])
       });
 
       return {
-        usersList, groupsList, activeTab, paginationData,
+        tabs,
         UserRoleEnum,
-        fetchUsers, onPageChanged,
         formatUserName
       }
     }

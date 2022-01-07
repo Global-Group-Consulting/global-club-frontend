@@ -25,5 +25,5 @@ export function formatBrites (value: number, currPosition: "start" | "end" = "st
     toReturn.unshift(icon)
   }
   
-  return toReturn.join(" ")
+  return "<span class='ion-text-nowrap'>" + toReturn.join(" ") + "</span>"
 }

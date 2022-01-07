@@ -76,21 +76,11 @@
         })
       }
 
-      async function fetchData (status: OrderStatusEnum) {
-        const paginatedResult = await http.api.orders.readAll(status);
-
-        ordersList.value = paginatedResult?.data ?? []
-        paginationData.value = omit(paginatedResult, ["data"])
-      }
-
-      // when activeTab changes, fetch the corresponding data
-      watch(activeTab, async (value) => fetchData(value))
 
       onIonViewWillEnter(async () => {
         // Fetch counters and actual data for the current tab
         await Promise.all([
           fetchCounters(),
-          // fetchData(activeTab.value)
         ])
       })
 

@@ -1,9 +1,9 @@
 <template>
   <Swiper v-bind="slideOpts" ref="slides"
           @init="setControlledSwiper">
-    <SwiperSlide v-for="tab of tabsList" :key="tab.id" class="tabs-slide">
+    <SwiperSlide v-for="tab of tabsList" :key="tab.id" class="tabs-slide" v-slot="{isActive}">
       <div class="ion-padding-vertical">
-        <slot :name="'tabSlide_' + tab.id" :tab="tab" :isActive="activeTab === tab.id" :onDataFetched="onDataFetched">
+        <slot :name="'tabSlide_' + tab.id" :tab="tab" :isActive="isActive" :onDataFetched="onDataFetched">
           please overwrite this tab by creating a template fort the
           <br>
           <code>v-slot:tabSlide_{{ tab.id }}</code>
