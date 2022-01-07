@@ -33,7 +33,7 @@
         </ion-list>
       </ion-grid>
 
-      <BottomDrawer :order="order"></BottomDrawer>
+      <BottomDrawer :order="order" slot="fixed"></BottomDrawer>
     </IonContent>
   </IonPage>
 </template>

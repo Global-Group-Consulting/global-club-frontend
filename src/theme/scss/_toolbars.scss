@@ -52,6 +52,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      position: relative;
     }
 
     ion-label {
@@ -61,7 +62,7 @@
     ion-badge {
       position: absolute;
       top: 2px;
-      right: 24px;
+      right: 0px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, .8);
     }
   }

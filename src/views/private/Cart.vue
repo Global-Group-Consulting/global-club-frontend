@@ -125,15 +125,32 @@
         })
       }
 
-      function removeProduct (entry: OrderProduct) {
-        store.dispatch("cart/remove", entry.product._id)
+      async function removeProduct (entry: OrderProduct) {
+        const askResult = await alerts.ask({
+          header: "Rimuovere il prodotto dal carrello?",
+          message: `Siete sicuri ti voler rimuovere il prodotto <strong>${entry.product.title}</strong> dal proprio carrello?`,
+          buttonOkText: "Si, rimuovi"
+        })
+
+        askResult && await store.dispatch("cart/remove", entry.product._id)
       }
 
       async function submitCart () {
         const products = store.getters['cart/products'];
+        const totalPrice = store.getters['cart/totalPrice'];
+
+        const askResult = await alerts.ask({
+          header: "Inviare l'ordine?",
+          message: `Siete sicuri ti voler inviare il corrente ordine per un totale di <strong>${formatBrites(totalPrice)}</strong>?`,
+          buttonOkText: "Si, invia"
+        })
+
+        if (!askResult) {
+          return
+        }
 
         await http.api.orders.create(products);
-        await alerts.info("Ordine correttamente inviato!");
+        await alerts.toast("Ordine correttamente inviato!");
         await store.dispatch("cart/clean");
       }
 

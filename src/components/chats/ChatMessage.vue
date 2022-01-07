@@ -137,7 +137,7 @@
           return toReturn.join("")
         }
 
-        return props.data.content
+        return ""
       })
 
       async function previewFile (file: Attachment) {

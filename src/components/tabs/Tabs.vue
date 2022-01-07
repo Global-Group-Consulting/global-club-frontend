@@ -1,7 +1,7 @@
 <template>
   <div class="tabs">
     <TabsItems :tabs-list="data" v-model="activeTab"/>
-    <TabsSlides :tabs-list="data" :active-tab="activeTab">
+    <TabsSlides :tabs-list="data" :active-tab="activeTab" ref="tabsSlides">
       <template v-for="tab of data" :key="tab.id"
                 v-slot:[`tabSlide_`+tab.id]="item">
         <slot :name="'tabSlide_' + tab.id" v-bind="item"></slot>
@@ -26,10 +26,16 @@
       }
     },
     setup (props) {
-      const activeTab = ref(props.data[0].id)
+      const activeTab = ref(props.data[0].id);
+      const tabsSlides = ref();
+
+      function updateSlider () {
+        tabsSlides.value?.onDataFetched()
+      }
 
       return {
-        activeTab
+        activeTab, tabsSlides,
+        updateSlider
       }
     }
   });

@@ -1,5 +1,5 @@
 <template>
-  <div class="bottom-drawer" :class="{'opened': opened}">
+  <div class="bottom-drawer" :class="{'opened': opened}" v-show="communication">
     <ion-grid fixed class="ion-no-padding">
       <div @click="toggleDrawer" class="toggle-drawer-btn pt-2 pb-4 py-md-3 " ref="toggleDrawerBtn">
         <Icon name="dash" size="large"></Icon>
@@ -51,7 +51,8 @@
       }
 
       watch(() => props.order, (value: Order) => {
-        communication.value = value?.communication
+        communication.value = value?.communication;
+
       }, { immediate: true })
 
       onMounted(() => {
@@ -105,29 +106,34 @@
   @supports not (contain: layout) {
     @include mediaQueryDown(md) {
       .bottom-drawer {
-        bottom: calc(var(--toolbar-height) + var(--ion-safe-area-bottom)) !important;
+        //max-height: calc(100vh - var(--toolbar-height) - var(--ion-safe-area-bottom)) !important;
+        //top: var(--toolbar-height);
+        //bottom: calc(var(--toolbar-height) + var(--ion-safe-area-bottom)) !important;
       }
     }
 
     @include mediaQueryUp(md) {
+
       // on md and up, must consider the width of the sidebar
       .bottom-drawer {
-        right: var(--sidebar-width) !important;
+        //width: calc(100% - var(--sidebar-width) - (var(--spacer) * 2)) !important;
+        //transform: translateX(var(--sidebar-width));
+        //right: var(--sidebar-width) !important;
       }
     }
   }
 
   .bottom-drawer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    width: 100%;
     transform: translateY(calc(100% - 64px));
     transition: transform .4s;
+    z-index: 2;
+    bottom: 0;
+    max-height: 100%;
 
-    @include mediaQueryUp(md){
+    @include mediaQueryUp(md) {
+      width: calc(100% - (var(--spacer) * 2));
       left: var(--spacer);
-      right: var(--spacer);
     }
 
     > ion-grid {
@@ -138,7 +144,7 @@
       max-height: calc(100vh - var(--toolbar-height));
 
       @include mediaQueryDown(md) {
-        max-height: calc(100vh - var(--toolbar-height) - var(--navbar-height));
+        max-height: calc(100vh - var(--toolbar-height) - var(--navbar-height) - var(--ion-safe-area-bottom) - var(--ion-safe-area-top));
       }
 
       display: flex;

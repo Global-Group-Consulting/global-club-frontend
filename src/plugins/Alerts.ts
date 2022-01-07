@@ -36,10 +36,10 @@ export class AlertsPlugin extends PluginTemplate<void> {
   async ask (options: AlertAskOptions): Promise<boolean> {
     const buttons = [
       Object.assign({}, this.defaultCancelButton, {
-        text: options.buttonCancelText
+        text: options.buttonCancelText ?? "Annulla"
       }),
       Object.assign({}, this.defaultOkButton, {
-        text: options.buttonOkText
+        text: options.buttonOkText ?? "Ok"
       })
     ];
     
