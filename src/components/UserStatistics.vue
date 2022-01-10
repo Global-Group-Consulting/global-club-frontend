@@ -4,8 +4,9 @@
   <Swiper :slidesPerView="'auto'"
           :centeredSlides="true"
           :spaceBetween="16"
-          :allowTouchMove="false"
-          @init="setControlledSwiper">
+          :allowTouchMove="true"
+          @init="setControlledSwiper"
+          @activeIndexChange="onActiveIndexChange">
     <swiper-slide class="statistics-card-wrapper"
                   v-for="tab in tabs" :key="tab.id"
                   :data-ref="tab.id" v-slot="{ isActive }">
@@ -27,7 +28,7 @@
 </template>
 
 <script lang="ts">
-  import { computed, ComputedRef, defineComponent, inject, onMounted, Ref, ref, watch } from 'vue';
+  import { computed, ComputedRef, defineComponent, inject, onMounted, Ref, ref, unref, watch } from 'vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { TabEntry } from '@/@types/TabEntry';
   import { Semesters, Statistics } from '@/@types/Statistics';
@@ -50,7 +51,8 @@
     props: {
       userId: String
     },
-    setup (props) {
+    emits: ["update:data", "update:activeTab"],
+    setup (props, { emit }) {
       const http = inject("http") as HttpPlugin;
       const data: Ref<Statistics | null> = ref(null)
       const activeTab = ref("resoconto");
@@ -148,25 +150,33 @@
         swiperInstance = swiper;
       }
 
+      function onActiveIndexChange (e: any) {
+        activeTab.value = tabs.value[e.activeIndex].id;
+      }
+
       onMounted(async () => {
         const result = await http.api.dashboard.readAll(props.userId)
 
         if (result) {
           data.value = result
         }
+
+        emit("update:data", data.value)
       })
 
       watch(() => activeTab.value, (value) => {
         const newIndex = Array.from(swiperInstance.slides).findIndex(slide => slide["dataset"].ref === value)
 
         swiperInstance.slideTo(newIndex)
+
+        emit("update:activeTab", value)
       })
 
       return {
         tabs,
         activeTab,
         data,
-        setControlledSwiper,
+        setControlledSwiper, onActiveIndexChange
       }
     }
   });

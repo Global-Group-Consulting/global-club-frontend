@@ -49,7 +49,7 @@
 <script lang="ts">
   import { computed, defineComponent, inject, Ref, ref } from "vue";
   import { onIonViewDidEnter, onIonViewDidLeave } from '@ionic/vue';
-  import { useRoute } from 'vue-router';
+  import { useRoute, useRouter } from 'vue-router';
   import { useStore } from 'vuex';
   import { storeKey } from '@/store';
   import BriteValue from '@/components/BriteValue.vue';
@@ -72,6 +72,7 @@
     },
     setup () {
       const route = useRoute();
+      const router = useRouter();
       const store = useStore(storeKey);
       const http = inject("http") as HttpPlugin;
       const alerts = inject("alerts") as AlertsPlugin;
@@ -112,11 +113,17 @@
       onIonViewDidEnter(async () => {
         // only fetch data if the params contain an id
         if (route.params.id) {
-          const productDetails = await http.api.products.read(route.params.id as string)
+          try {
+            const productDetails = await http.api.products.read(route.params.id as string)
 
-          product.value = productDetails
+            product.value = productDetails
 
-          tabs.value?.updateSlider()
+            tabs.value?.updateSlider()
+          } catch (er: any) {
+            if (er?.response.status === 404) {
+              await router.back()
+            }
+          }
         }
       })
 

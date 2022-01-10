@@ -8,12 +8,15 @@
         <div class="mb-5">
           <ion-text color="medium"><h6 class="ion-text-left mb-0">Bentornato,</h6></ion-text>
 
-          <div class="d-flex ion-justify-content-between">
+          <div class="d-flex ion-justify-content-between ion-align-items-center">
             <div class="ion-text-left">
               <h4 class="mt-2  mb-0"> {{ $store.getters["auth/fullName"] }} </h4>
             </div>
             <div class="ion-text-right">
-              <BriteValue class="mt-2 mb-0" component="h4" value="76654"></BriteValue>
+              <h4 class="mt-2 mb-0" style="color: var(--ion-color-primary)" v-if="userIsPremium">
+                Cliente Premium
+              </h4>
+              <ClubButton v-else  class="m-0">Passa a premium</ClubButton>
             </div>
           </div>
         </div>
@@ -36,7 +39,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, computed, ComputedRef } from "vue";
+  import { computed, ComputedRef, defineComponent, ref } from "vue";
   import { useStore } from "vuex";
   import { storeKey } from "@/store";
   import { User } from "@/@types/User";
@@ -48,10 +51,12 @@
   import UserStatistics from '@/components/UserStatistics.vue';
   import { useRouter } from 'vue-router';
   import Filters from '@/composables/filters';
+  import { PackEnum } from '@/@enums/pack.enum';
+  import ClubButton from '@/components/ClubButton.vue';
 
   export default defineComponent({
     name: "Dashboard",
-    components: { UserStatistics, LogoToolbar, PrivateOrdersList, SearchBar, BriteValue, },
+    components: { ClubButton, UserStatistics, LogoToolbar, PrivateOrdersList, SearchBar },
     setup () {
       const store = useStore(storeKey);
       const router = useRouter();
@@ -62,13 +67,17 @@
       const pendingStatuses = [OrderStatusEnum.PENDING, OrderStatusEnum.IN_PROGRESS];
       const filtersComposable = Filters()
 
+      const userIsPremium = computed(() => {
+        return authUser.value.clubPack === PackEnum.PREMIUM;
+      })
+
       function onSearchUpdate (filters) {
         router.push({ name: "private.products", query: filtersComposable.prepareFilters(filters) })
       }
 
       return {
         firstName,
-        pendingStatuses,
+        pendingStatuses, userIsPremium,
         onSearchUpdate
       };
     },

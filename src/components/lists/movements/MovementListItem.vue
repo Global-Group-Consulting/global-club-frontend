@@ -6,8 +6,8 @@
 
     <ion-label>
       <h2>
-        <strong> {{ type === "in" ? "+" : "-" }} {{ formatBrites(movement.amountChange) }}</strong>
-        <BriteIcon class="ms-1"></BriteIcon>
+        <strong v-html="value"></strong>
+<!--        <BriteIcon class="ms-1"></BriteIcon>-->
       </h2>
       <h4>{{ formatMovementType(movement.movementType) }}</h4>
     </ion-label>
@@ -29,7 +29,7 @@
 
   export default defineComponent({
     name: "MovementListItem",
-    components: { BriteIcon },
+    components: { },
     props: {
       movement: {
         type: Object as PropType<Movement>,
@@ -59,8 +59,12 @@
         }
       })
 
+      const value = computed(() => {
+        return (type.value === 'in' ? '+' : '-') + " " + formatBrites(props.movement.amountChange)
+      })
+
       return {
-        type, icon, color,
+        type, icon, color,value,
         formatMovementType,
         formatBrites, formatCurrency, formatLocaleDate
       }

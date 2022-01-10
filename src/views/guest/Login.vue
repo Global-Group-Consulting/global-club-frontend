@@ -34,16 +34,6 @@
                           :error="loginForm.formData.password.errorMessage"
               />
 
-              <FormInputV class="mb-4"
-                          v-model="userType"
-                          component="ion-select"
-                          label="Account to user for login"
-                          :options="userTypeOptions"
-                          :add-space-after="false"
-                          message="Only for development reasons. This field will be removed in production!!"
-              >
-              </FormInputV>
-
               <PageLink :to="{name:'public.reset'}"
                         :btn-props="{version:'link'}">
                 Hai dimenticato la password?
@@ -87,39 +77,8 @@
         dataToWatch: () => ({})
       });
 
-      /*
-        ONLY FOR DEVELOPMENT PURPOSES
-       */
-      const userType = ref("user");
-      const userTypeOptions = [{
-        text: "Admin",
-        value: "admin"
-      }, {
-        text: "User",
-        value: "user"
-      }]
-
-      /*
-       ONLY FOR DEVELOPMENT PURPOSES
-      */
-      watch(() => userType.value, (value) => {
-        if (value === "admin") {
-          loginForm.updateInitialFormData({
-            email: "florian.leica@gmail.com",
-            password: "password1234",
-          })
-        } else if (value === "user") {
-          loginForm.updateInitialFormData({
-            email: "florian.leica@hotmail.it",
-            password: "password1234",
-          })
-        }
-      }, { immediate: true })
-
       return {
         colSize,
-        userTypeOptions,
-        userType,
         loginForm
       }
     }

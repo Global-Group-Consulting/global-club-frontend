@@ -46,6 +46,7 @@
   import menuEntries, { MenuEntry } from '@/composables/menuEntries';
   import Icon from '@/components/Icon.vue';
   import { AuthPlugin } from '@/plugins/AuthPlugin';
+  import { useI18n } from 'vue-i18n';
 
   interface MenuGroup {
     title: string;
@@ -60,7 +61,8 @@
     },
     setup () {
       const store = useStore(storeKey);
-      const auth = inject("auth") as AuthPlugin
+      const auth = inject("auth") as AuthPlugin;
+      const {t} = useI18n();
 
       const userName = computed(() => store.getters['auth/fullName']);
       const userActivePack = computed(() => formatClubPack(store.getters['auth/user'].clubPack));
@@ -82,7 +84,11 @@
             },
             {
               icon: "wallet",
-              label: "Il mio portfolio",
+              label: t("mainMenu.userPortfolio"),
+              route: 'private.portfolio',
+            },{
+              icon: "wallet",
+              label: t("mainMenu.userPortfolioPremium"),
               route: 'private.portfolio',
             }
           ]

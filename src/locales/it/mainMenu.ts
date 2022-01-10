@@ -10,8 +10,9 @@ export const mainMenu = {
   userCart: 'Carrello',
   userFavourites: 'Prodotti preferiti',
   userOrders: 'I miei ordini',
-  userPortfolio: "Il mio portfolio",
   userProfile: "Il mio profilo",
+  userPortfolio: "Wallet Brite",
+  userPortfolioPremium: "Wallet Premium",
   
   homeMobile: 'Home',
   usersMobile: 'Utenti',
