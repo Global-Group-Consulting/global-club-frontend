@@ -43,6 +43,11 @@
           </ion-col>
         </ion-row>
 
+        <div class="mb-5 ion-text-center static-alert alert-info" v-if="order?.notes">
+          <h5 class="mt-0">Note ordine</h5>
+          <div v-html="order?.notes" class="notes-container"></div>
+        </div>
+
         <OrderAccordion :order-data="order" @productUpdated="updateOrder"></OrderAccordion>
       </ion-grid>
     </ion-content>

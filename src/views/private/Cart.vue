@@ -15,30 +15,31 @@
           </ion-col>
         </ion-row>
 
-        <ion-list v-if="hasProducts" class="list-transparent">
-          <ion-item v-for="entry of products" :key="entry.product._id">
-            <ion-thumbnail slot="start">
-              <slot name="image">
-                <img :src="formatImgUrl(entry.product.thumbnail.id)" alt="cover_image">
-              </slot>
-            </ion-thumbnail>
+        <div v-if="hasProducts">
+          <ion-list class="list-transparent mb-4">
+            <ion-item v-for="entry of products" :key="entry.product._id">
+              <ion-thumbnail slot="start">
+                <slot name="image">
+                  <img :src="formatImgUrl(entry.product.thumbnail.id)" alt="cover_image">
+                </slot>
+              </ion-thumbnail>
 
-            <ion-label>
-              <h2 v-html="entry.product.title"></h2>
-              <div class="d-flex ion-align-items-center">
-                <ClubButton size="small" only-icon icon icon-name="minus"
-                            @click="changeQta(entry, -1)"/>
-                <span class="px-2 ion-text-center" style="min-width: 40px;">
+              <ion-label>
+                <h2 v-html="entry.product.title"></h2>
+                <div class="d-flex ion-align-items-center">
+                  <ClubButton size="small" only-icon icon icon-name="minus"
+                              @click="changeQta(entry, -1)"/>
+                  <span class="px-2 ion-text-center" style="min-width: 40px;">
                 {{ entry.qta }}
               </span>
-                <ClubButton size="small" only-icon icon icon-name="plus"
-                            @click="changeQta(entry,+1)"/>
+                  <ClubButton size="small" only-icon icon icon-name="plus"
+                              @click="changeQta(entry,+1)"/>
 
-                <BriteValue :value="entry.price" class="ms-3"/>
-              </div>
-            </ion-label>
+                  <BriteValue :value="entry.price" class="ms-3"/>
+                </div>
+              </ion-label>
 
-            <ion-buttons>
+              <ion-buttons>
               <template v-if="$store.getters['mdAndUp']">
                 <ClubButton version="link" style="color: red" only-icon icon icon-name="trash"
                             @click="removeProduct(entry)"/>
@@ -48,12 +49,15 @@
                 </PageLink>
               </template>
 
-              <ClubButton v-else icon icon-name="menu-v" only-icon version="link"
-                          @click="openProductMenu($event, entry)"></ClubButton>
-            </ion-buttons>
+                <ClubButton v-else icon icon-name="menu-v" only-icon version="link"
+                            @click="openProductMenu($event, entry)"></ClubButton>
+              </ion-buttons>
 
-          </ion-item>
-        </ion-list>
+            </ion-item>
+          </ion-list>
+
+          <FormRTE label="Note aggiuntive" v-model="orderNotes"></FormRTE>
+        </div>
 
         <NoData v-else text="Nessun prodotto nel carrello."></NoData>
 
@@ -75,7 +79,7 @@
     IonPage, popoverController,
   } from "@ionic/vue";
   import { warning } from "ionicons/icons";
-  import { computed, defineComponent, inject } from "vue";
+  import { computed, defineComponent, inject, ref, watch } from "vue";
   import { useStore } from 'vuex';
   import { storeKey } from '@/store';
   import { formatBrites } from '@/@utilities/currency';
@@ -92,9 +96,11 @@
   import MenuDropdownPopover from '@/components/popovers/MenuDropdownPopover.vue';
   import { MenuEntry } from '@/composables/menuEntries';
   import { useRouter } from 'vue-router';
+  import FormRTE from '@/components/forms/FormRTE.vue';
 
   export default defineComponent({
     components: {
+      FormRTE,
       NoData,
       PageLink,
       ClubButton,
@@ -111,7 +117,8 @@
       const alerts = inject("alerts") as AlertsPlugin;
       const products: ComputedRef<OrderProduct[]> = computed(() => store.getters["cart/products"]);
       const cartTotal = computed(() => store.getters["cart/totalPrice"]);
-      const hasProducts = computed(() => products.value.length > 0)
+      const hasProducts = computed(() => products.value.length > 0);
+      const orderNotes = ref(store.getters["cart/notes"]);
 
       function changeQta (entry: OrderProduct, value: number) {
         if (entry.qta <= 1 && value === -1) {
@@ -148,13 +155,15 @@
           return
         }
 
-        await http.api.orders.create(products);
-        await alerts.toast("Ordine correttamente inviato!");
+        // first check how much money the user has.
+        await http.api.movements.checkEnough(store.getters['auth/user'].id, cartTotal.value);
+
+        await http.api.orders.create(products, orderNotes.value);
+        await alerts.toastSuccess("Ordine correttamente inviato!");
         await store.dispatch("cart/clean");
       }
 
       async function openProductMenu (event: Event, entry: OrderProduct) {
-
         const popover = await popoverController
             .create({
               component: MenuDropdownPopover,
@@ -179,10 +188,14 @@
         await popover.present();
       }
 
+      watch(() => orderNotes.value, (value) => {
+        store.dispatch("cart/updateNotes", value)
+      })
+
       return {
         warning,
         cartTotal, hasProducts,
-        products,
+        products, orderNotes,
         formatBrites, formatImgUrl,
         changeQta, removeProduct,
         submitCart, openProductMenu

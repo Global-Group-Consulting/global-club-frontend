@@ -4,12 +4,14 @@ import { Product } from '@/@types/Product';
 
 export interface CartState {
   products: OrderProduct[];
+  notes: string;
   creationDate: string | null;
   lastUpdate: string | null;
 }
 
 const state: () => CartState = () => ({
   products: [],
+  notes: "",
   creationDate: null,
   lastUpdate: null
 });
@@ -40,14 +42,17 @@ const mutations: MutationTree<RootState> = {
     if (state.products.length === 0) {
       state.lastUpdate = null;
       state.creationDate = null;
+      state.notes = ""
     }
-    
+  
     if (!state.creationDate) {
       state.creationDate = new Date().toISOString();
     }
-    
+  
     state.lastUpdate = new Date().toISOString();
-    
+  },
+  UPDATE_ORDER_NOTES (state, payload: string) {
+    state.notes = payload
   }
 };
 
@@ -104,6 +109,10 @@ const actions: ActionTree<RootState, RootState> = {
     commit("UPDATE_STORE_DATES")
   },
   
+  updateNotes ({ commit }, payload: string) {
+    commit("UPDATE_ORDER_NOTES", payload)
+  },
+  
   clean ({ commit }) {
     commit("REMOVE_ALL_PRODUCT");
     commit("UPDATE_STORE_DATES");
@@ -118,7 +127,7 @@ const getters: GetterTree<RootState, RootState> = {
     if (state.products.length === 0) {
       return 0
     }
-    
+  
     return state.products.reduce((acc, curr) => acc + curr.qta, 0);
   },
   totalPrice (state): number {
@@ -129,6 +138,9 @@ const getters: GetterTree<RootState, RootState> = {
     })
     
     return total
+  },
+  notes (state): string {
+    return state.notes
   }
 };
 

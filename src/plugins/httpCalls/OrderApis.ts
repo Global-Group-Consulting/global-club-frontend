@@ -58,7 +58,7 @@ export class OrderApis extends BasicApisClass {
     return result?.data
   }
   
-  static async create (products: OrderProduct[]) {
+  static async create (products: OrderProduct[], notes: string) {
     const result = await this.withLoader<Order>("post", this.getUrl(), {
       products: products.reduce((acc, curr) => {
         acc.push({
@@ -66,9 +66,10 @@ export class OrderApis extends BasicApisClass {
           qta: curr.qta,
           price: curr.price
         })
-  
+      
         return acc;
-      }, [] as any[])
+      }, [] as any[]),
+      notes
     })
   
     return result?.data

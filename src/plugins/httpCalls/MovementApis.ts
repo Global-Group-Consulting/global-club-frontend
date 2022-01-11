@@ -7,13 +7,20 @@ export class MovementApis extends BasicApisClass {
   
   static async readAll (userId: string, semesterId?: string): Promise<PaginatedResult<Movement[]> | undefined> {
     const filters = { "sortBy[created_at]": -1 }
-    
+  
     if (semesterId) {
       filters["filter[semesterId]"] = semesterId
     }
-    
+  
     const result = await this.withLoader<PaginatedResult<Movement[]>>("get",
       this.getUrl('/' + userId, { ...filters }));
+  
+    return result?.data;
+  }
+  
+  static async checkEnough (userId: string, amount: number): Promise<PaginatedResult<Movement[]> | undefined> {
+    const result = await this.withLoader<PaginatedResult<Movement[]>>("get",
+      this.getUrl('/' + userId + "/checkEnough", { amount }));
     
     return result?.data;
   }

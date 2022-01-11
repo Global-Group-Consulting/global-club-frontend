@@ -10,6 +10,7 @@ export interface Order {
   amount: number;
   communication: Communication;
   status: OrderStatusEnum;
+  notes: string;
   
   _id: string;
   createdAt: Date;
