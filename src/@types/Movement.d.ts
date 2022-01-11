@@ -17,6 +17,6 @@ export interface Movement {
   /* ReadOnly props */
   
   _id: Types.ObjectId;
-  created_at: Date;
-  updated_at: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
