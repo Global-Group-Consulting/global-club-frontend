@@ -40,6 +40,7 @@ export class OrderApis extends BasicApisClass {
     const result = await this.withLoader<PaginatedResult<Order[]>>("get",
       this.getUrl('', {
         "filter[status]": statuses,
+        "sortBy[createdAt]": -1
       }));
   
     return result?.data;

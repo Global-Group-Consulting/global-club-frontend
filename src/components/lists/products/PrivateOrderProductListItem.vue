@@ -1,7 +1,8 @@
 <template>
   <PageLink :to="linkTo" only-container>
     <template v-slot:default="{href, navigate}">
-      <ion-item :href="readonly ? null : href" @click="navigate" :disabled="readonly">
+      <ion-item v-bind="!readonly ? {href: href} : null"
+                @click="!readonly ? navigate : null">
         <ion-thumbnail slot="start" class="center-inner-icon">
           <ion-img class="product-card-img" :src="formatImgUrl(product?.thumbnail?.id)" alt="cover_image"/>
         </ion-thumbnail>

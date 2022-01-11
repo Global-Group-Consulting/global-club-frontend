@@ -28,8 +28,9 @@
         </ion-row>
 
         <ion-list class="list-transparent" lines="full">
-          <PrivateOrderProductListItem v-for="product in order?.products" :key="product.product._id"
-                                       :order-product="product"></PrivateOrderProductListItem>
+          <PrivateOrderProductListItem v-for="(product, i) in order?.products" :key="i"
+                                       :order-product="product"
+                                       :readonly="!product.product"></PrivateOrderProductListItem>
         </ion-list>
       </ion-grid>
 
