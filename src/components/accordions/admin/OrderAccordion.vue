@@ -30,7 +30,7 @@
   import { formatOrderStatus } from '@/@utilities/statuses';
   import Chat from '@/components/chats/Chat.vue';
   import ProductListItem from '@/components/lists/products/AdminProductListItem.vue';
-  import { Communication, CommunicationAnswerDto } from '@/@types/Communication';
+  import { Communication } from '@/@types/Communication';
   import ClubButton from '@/components/ClubButton.vue';
   import { modalController } from '@ionic/vue';
   import OrderProductEditModal from '@/components/modals/OrderProductEditModal.vue';

@@ -1,17 +1,22 @@
 <template>
   <IonPage>
-    <TopToolbar include-back>Il mio portfolio</TopToolbar>
+    <TopToolbar include-back>Il mio Wallet Brite</TopToolbar>
 
     <IonContent>
       <ion-grid fixed>
-        <UserStatistics :user-id="$store.getters['auth/user'].id"
-                        @update:data="onTabsReady"
-                        @update:activeTab="onActiveTabChange"></UserStatistics>
+        <div class="mb-4">
+          <UserStatistics :user-id="$store.getters['auth/user'].id"
+                          @update:data="onTabsReady"
+                          @update:activeTab="onActiveTabChange"></UserStatistics>
+        </div>
 
-        <TabsSlides :tabs-list="tabs" :active-tab="activeTabs">
-          <template v-slot:tabSlide_resoconto>
+        <TabsSlides :tabs-list="tabs" :active-tab="activeTab">
+          <template v-for="tab in tabs" :key="tab.id"
+                    v-slot:[`tabSlide_${tab.id}`]="{onDataFetched, isActive}">
             <PrivateMovementsList :user-id="$store.getters['auth/user'].id"
-                                  :semester="activeTabs"></PrivateMovementsList>
+                                  :semester="tab.id"
+                                  :visible="isActive"
+                                  @dataFetched="onDataFetched"></PrivateMovementsList>
           </template>
         </TabsSlides>
 
@@ -24,12 +29,10 @@
   import { computed, ComputedRef, defineComponent, Ref, ref } from "vue";
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import UserStatistics from '@/components/UserStatistics.vue';
-  import MovementListItem from '@/components/lists/movements/MovementListItem.vue';
   import TabsSlides from '@/components/tabs/TabsSlides.vue';
   import { TabEntry } from '@/@types/TabEntry';
   import { Statistics } from '@/@types/Statistics';
   import { formatSemesterId } from '@/@utilities/statuses';
-  import MovementsList from '@/components/lists/MovementsList.vue';
   import PrivateMovementsList from '@/components/lists/movements/PrivateMovementsList.vue';
 
   export default defineComponent({
@@ -41,7 +44,7 @@
       TopToolbar,
     },
     setup () {
-      const activeTabs: Ref<string> = ref("");
+      const activeTab: Ref<string> = ref("");
       const data: Ref<Statistics | null> = ref(null);
 
       const tabs: ComputedRef<TabEntry[]> = computed(() => {
@@ -65,11 +68,11 @@
       }
 
       function onActiveTabChange (newTab: string) {
-        activeTabs.value = newTab
+        activeTab.value = newTab
       }
 
       return {
-        activeTabs, tabs,
+        activeTab, tabs,
         onTabsReady, onActiveTabChange
       }
     },

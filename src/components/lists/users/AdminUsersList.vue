@@ -28,7 +28,6 @@
   import { PaginatedResultEntity } from '@/@entities/paginatedResult.entity';
   import { Order } from '@/@types/Order';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
-  import { OrderStatusEnum } from '@/@enums/order.status.enum';
   import NoData from '@/components/NoData.vue';
   import AdminListItem from '@/components/lists/AdminListItem.vue';
   import { formatLocaleDate } from '@/@utilities/dates';

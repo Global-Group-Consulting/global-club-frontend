@@ -2,9 +2,6 @@ import { BasicForm, FormSettings, YupSchema } from '@/composables/forms/BasicFor
 import * as yup from "yup";
 import { FormContext } from 'vee-validate';
 import { snakeCase } from 'lodash';
-import { LoginDto } from '@/@types/Login';
-import { inject } from 'vue';
-import { AuthPlugin } from '@/plugins/AuthPlugin';
 import { CommunicationAnswerDto } from '@/@types/Communication';
 
 export class ChatMessageForm extends BasicForm<CommunicationAnswerDto> {

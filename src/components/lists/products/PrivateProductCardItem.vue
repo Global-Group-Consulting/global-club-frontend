@@ -34,7 +34,6 @@
 <script lang="ts">
   import { computed, defineComponent, inject, PropType } from 'vue';
   import { Product } from '@/@types/Product';
-  import { formatCurrency } from '@/@utilities/currency';
   import { formatImgUrl } from '@/@utilities/images';
   import PageLink from '@/components/PageLink.vue';
   import ClubButton from '@/components/ClubButton.vue';

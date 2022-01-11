@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, nextTick, PropType, Ref, ref, watch } from 'vue';
+  import { defineComponent, nextTick, PropType, watch } from 'vue';
   import { TabEntry } from '@/@types/TabEntry';
   import { Swiper, SwiperSlide } from 'swiper/vue/swiper-vue';
   import { Swiper as SwiperInstance, SwiperOptions } from 'swiper';

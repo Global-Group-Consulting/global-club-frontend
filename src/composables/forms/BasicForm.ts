@@ -5,7 +5,7 @@ import { AlertsPlugin } from '@/plugins/Alerts';
 import { Composer, useI18n } from 'vue-i18n';
 import { UpdateUserContractDto } from '@/@types/User';
 import { MixedSchema } from 'yup/lib/mixed';
-import { array, ArraySchema, BooleanSchema, DateSchema, NumberSchema, ObjectSchema } from 'yup';
+import { ArraySchema, BooleanSchema, DateSchema, NumberSchema, ObjectSchema } from 'yup';
 import StringSchema from 'yup/lib/string';
 
 export type FormFields<T = any> = Record<keyof T, FormField>;

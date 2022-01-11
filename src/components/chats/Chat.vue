@@ -20,14 +20,12 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, PropType, watch } from 'vue';
+  import { defineComponent, PropType, watch } from 'vue';
   import { Communication, CommunicationAnswerDto } from '@/@types/Communication';
   import ChatMessage from '@/components/chats/ChatMessage.vue';
   import ChatAnswerModal from '@/components/modals/ChatAnswerModal.vue';
   import { modalController } from '@ionic/vue';
-  import { HttpPlugin } from '@/plugins/HttpPlugin';
   import ClubButton from '@/components/ClubButton.vue';
-  import { ChatMessageForm } from '@/composables/forms/ChatMessageForm';
 
   export default defineComponent({
     name: "Chat",

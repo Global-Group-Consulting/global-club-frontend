@@ -21,8 +21,7 @@
 </template>
 
 <script lang="ts">
-  import { HttpPlugin } from '@/plugins/HttpPlugin';
-  import { computed, ComputedRef, defineComponent, inject } from "vue";
+  import { computed, ComputedRef, defineComponent} from "vue";
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import { useStore } from 'vuex';
   import { storeKey } from '@/store';

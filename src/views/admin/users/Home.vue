@@ -32,20 +32,14 @@
 </template>
 
 <script lang="ts">
-  import { computed, ComputedRef, defineComponent, inject, Ref, ref, watch } from 'vue';
+  import { defineComponent, inject, Ref, ref } from 'vue';
   import { onIonViewWillEnter } from '@ionic/vue';
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { UserRoleEnum } from '@/@enums/user.role.enum';
-  import { PaginatedResult } from '@/@types/Pagination';
-  import PaginationBar from '@/components/PaginationBar.vue';
   import { TabEntry } from '@/@types/TabEntry';
   import { useI18n } from 'vue-i18n';
-  import TabsItems from '@/components/tabs/TabsItems.vue';
-  import { UserBasic } from '@/@types/User';
-  import AdminListItem from '@/components/lists/AdminListItem.vue';
   import { formatUserName } from '@/@utilities/fields';
-  import Icon from '@/components/Icon.vue';
   import Tabs from '@/components/tabs/Tabs.vue';
   import AdminUsersList from '@/components/lists/users/AdminUsersList.vue';
 

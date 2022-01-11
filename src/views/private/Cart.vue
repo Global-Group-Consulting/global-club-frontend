@@ -91,7 +91,6 @@
   import NoData from '@/components/NoData.vue';
   import MenuDropdownPopover from '@/components/popovers/MenuDropdownPopover.vue';
   import { MenuEntry } from '@/composables/menuEntries';
-  import { Product } from '@/@types/Product';
   import { useRouter } from 'vue-router';
 
   export default defineComponent({

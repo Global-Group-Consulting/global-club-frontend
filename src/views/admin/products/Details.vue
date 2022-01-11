@@ -117,7 +117,7 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, inject, reactive, ref, Ref } from 'vue';
+  import { computed, defineComponent, inject, ref, Ref } from 'vue';
   import { useI18n } from 'vue-i18n';
   import { useRoute, useRouter } from 'vue-router';
   import { Product } from '@/@types/Product';
@@ -125,8 +125,6 @@
   import { AlertsPlugin } from '@/plugins/Alerts';
   import SimpleToolbar from '@/components/toolbars/SimpleToolbar.vue';
   import FormFiles from '@/components/forms/FormFiles.vue';
-  import { CreateProductDto } from '@/views/admin/products/dto/create.product.dto';
-  import { UpdateProductDto } from '@/views/admin/products/dto/update.product.dto';
   import { ProductCategory } from '@/@types/ProductCategory';
   import { Attachment } from '@/@types/Attachment';
   import { onIonViewDidLeave, onIonViewWillEnter } from '@ionic/vue';

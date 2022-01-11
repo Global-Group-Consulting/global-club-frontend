@@ -4,7 +4,8 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios';
 export class FileApis extends BasicApisClass {
   static baseUrl = 'api/files';
   
-  static async preview (fileId: string, mimeType: string, fileName: string) {
+  static async preview (fileId: string, mimeType: string, fileName?: string) {
+    console.log(fileName);
     const resp: AxiosResponse<Blob> | undefined = await this.withLoader("get", this.getUrl("/" + fileId), {
       responseType: "blob",
     } as AxiosRequestConfig);

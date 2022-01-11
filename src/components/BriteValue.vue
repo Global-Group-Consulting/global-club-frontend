@@ -6,7 +6,6 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import BriteIcon from '@/components/BriteIcon.vue';
   import { formatBrites } from '@/@utilities/currency';
 
   export default defineComponent({

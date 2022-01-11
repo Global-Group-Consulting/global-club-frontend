@@ -2,7 +2,6 @@ import { BasicForm, FormSettings, YupSchema } from '@/composables/forms/BasicFor
 import { Product, ProductCreateDto } from '@/@types/Product';
 import { FormContext } from 'vee-validate';
 import * as yup from 'yup';
-import { CreateProductDto } from '@/views/admin/products/dto/create.product.dto';
 import { computed, ComputedRef } from 'vue';
 import { ProductCategory } from '@/@types/ProductCategory';
 

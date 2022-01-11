@@ -1,5 +1,4 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
-import { OrderProduct } from '@/@types/Order';
 import { Product } from '@/@types/Product';
 
 export interface FavouritesState {

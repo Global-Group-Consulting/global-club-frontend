@@ -19,7 +19,7 @@
   import { computed, defineComponent, PropType } from 'vue';
   import AdminListItem from '@/components/lists/AdminListItem.vue';
   import { Product } from '@/@types/Product';
-  import { formatBrites, formatCurrency } from '@/@utilities/currency';
+  import { formatBrites } from '@/@utilities/currency';
 
   export default defineComponent({
     name: "AdminProductListItem",

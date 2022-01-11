@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-  import { computed, ComputedRef, defineComponent, inject, onMounted, Ref, ref, unref, watch } from 'vue';
+  import { computed, ComputedRef, defineComponent, inject, onMounted, Ref, ref, watch } from 'vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { TabEntry } from '@/@types/TabEntry';
   import { Semesters, Statistics } from '@/@types/Statistics';
@@ -37,7 +37,7 @@
   import { Swiper, SwiperSlide } from 'swiper/vue/swiper-vue';
   import BriteValue from '@/components/BriteValue.vue';
   import { Swiper as SwiperInstance } from 'swiper';
-  import { formatLocaleDate, formatLocaleDateLong } from '@/@utilities/dates';
+  import { formatLocaleDateLong } from '@/@utilities/dates';
   import { formatBrites } from '@/@utilities/currency';
   import { PackEnum } from '@/@enums/pack.enum';
 

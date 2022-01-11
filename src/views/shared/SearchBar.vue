@@ -27,13 +27,9 @@
 </template>
 
 <script lang="ts">
-  import { computed, ComputedRef, defineComponent, inject, PropType, Ref, ref, watch } from "vue";
-  import { AlertsPlugin } from "@/plugins/Alerts";
-  import { HttpPlugin } from '@/plugins/HttpPlugin';
+  import { computed, ComputedRef, defineComponent, PropType, Ref, ref, watch } from "vue";
   import ClubButton from '@/components/ClubButton.vue';
   import Icon from '@/components/Icon.vue';
-  import { useRouter } from 'vue-router';
-  import { IonSearchbar } from '@ionic/vue';
 
   export type SearchFilters = Record<string, string | number>;
 

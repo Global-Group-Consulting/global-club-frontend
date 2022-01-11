@@ -29,12 +29,11 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, Ref, ref, watch } from 'vue';
+  import { defineComponent, inject, Ref, ref } from 'vue';
   import { IonPage, onIonViewWillEnter } from '@ionic/vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { Order } from '@/@types/Order';
   import { PaginatedResult } from '@/@types/Pagination';
-  import { omit } from 'lodash';
   import { formatLocaleDate } from "@/@utilities/dates"
   import { formatOrderStatus } from "@/@utilities/statuses"
   import { OrderStatusEnum } from '@/@enums/order.status.enum';

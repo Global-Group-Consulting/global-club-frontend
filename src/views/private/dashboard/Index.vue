@@ -45,7 +45,6 @@
   import { User } from "@/@types/User";
   import { OrderStatusEnum } from '@/@enums/order.status.enum';
   import SearchBar from '@/views/shared/SearchBar.vue';
-  import BriteValue from '@/components/BriteValue.vue';
   import PrivateOrdersList from '@/components/lists/orders/PrivateOrdersList.vue';
   import LogoToolbar from '@/components/toolbars/LogoToolbar.vue';
   import UserStatistics from '@/components/UserStatistics.vue';

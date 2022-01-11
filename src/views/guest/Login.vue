@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, watch } from "vue";
+  import { defineComponent } from "vue";
   import TheFooterButton from '@/components/TheFooterButton.vue';
   import FormInputV from '@/components/forms/FormInputV.vue';
   import PageLink from '@/components/PageLink.vue';

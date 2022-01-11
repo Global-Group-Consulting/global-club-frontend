@@ -1,7 +1,6 @@
-import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosInstance, AxiosResponse } from 'axios';
 import { LoadingHandler } from '@/plugins/HttpPlugin';
 import { AlertsPlugin } from '@/plugins/Alerts';
-import { AuthPlugin } from '@/plugins/AuthPlugin';
 
 export class BasicApisClass {
    static baseUrl = 'api/ext/';

@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, getCurrentInstance, getCurrentScope, PropType } from 'vue';
+  import { computed, defineComponent, PropType } from 'vue';
 
   export default defineComponent({
     name: "FormToggleV",

@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, onMounted, ref, Ref } from 'vue';
+  import { defineComponent, inject, onMounted, ref, Ref, watch } from 'vue';
   import NoData from '@/components/NoData.vue';
   import MovementListItem from '@/components/lists/movements/MovementListItem.vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
@@ -22,19 +22,41 @@
         type: String,
         required: true
       },
-      semester: String
+      semester: String,
+      visible: {
+        type: Boolean,
+        default: true
+      },
     },
-    setup (props) {
+    setup (props, { emit }) {
       const http = inject<HttpPlugin>('http') as HttpPlugin;
       const movementsList: Ref<Movement[] | null> = ref(null)
+      const loaded = ref(false);
 
-      onMounted(async () => {
-        const data = await http.api.movements.readAll(props.userId);
+      async function fetchData () {
+        const semester = props.semester === "resoconto" ? undefined : props.semester;
+        const data = await http.api.movements.readAll(props.userId, semester);
 
         if (data) {
           movementsList.value = data.data;
         }
+
+        loaded.value = true
+
+        emit("dataFetched")
+      }
+
+      watch(() => props.visible, (value) => {
+        if (!loaded.value && value) {
+          fetchData()
+        }
       })
+
+      onMounted(async () => {
+        if (!loaded.value && props.visible) {
+          await fetchData()
+        }
+      });
 
       return {
         http, movementsList

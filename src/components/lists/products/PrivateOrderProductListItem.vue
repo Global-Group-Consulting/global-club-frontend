@@ -24,13 +24,10 @@
 </template>
 
 <script lang="ts">
-  import { computed, ComputedRef, defineComponent, inject, PropType } from 'vue';
+  import { computed, ComputedRef, defineComponent, PropType } from 'vue';
   import { Product } from '@/@types/Product';
   import { formatImgUrl } from '@/@utilities/images';
   import PageLink from '@/components/PageLink.vue';
-  import { useStore } from 'vuex';
-  import { storeKey } from '@/store';
-  import { AlertsPlugin } from '@/plugins/Alerts';
   import { OrderProduct } from '@/@types/Order';
   import ClubButton from '@/components/ClubButton.vue';
   import BriteValue from '@/components/BriteValue.vue';
@@ -42,16 +39,9 @@
       orderProduct: Object as PropType<OrderProduct>,
     },
     setup (props) {
-      const store = useStore(storeKey)
-      const alerts = inject("alerts") as AlertsPlugin;
+      // const store = useStore(storeKey)
+      // const alerts = inject("alerts") as AlertsPlugin;
       const product: ComputedRef<Product | undefined> = computed(() => props.orderProduct?.product);
-      // const prodTitle = computed(() => {
-      //   if (!props.product) {
-      //     return ""
-      //   }
-      //
-      //   return props.product.title
-      // })
 
       return {
         product,

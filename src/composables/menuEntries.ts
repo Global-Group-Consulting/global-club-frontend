@@ -253,7 +253,7 @@ const desktopMenuEntries: Record<"admin" | "private", MenuEntry[]> = {
       icon: "wallet",
     },
     {
-      route: 'private.wallet',
+      route: 'private.walletPremium',
       label: 'userPortfolioPremium',
       icon: "wallet",
     },

@@ -38,14 +38,13 @@
 </template>
 
 <script lang="ts">
-  import { computed, ComputedRef, defineComponent, inject } from "vue";
+  import { computed, ComputedRef, defineComponent} from "vue";
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import { useStore } from 'vuex';
   import { storeKey } from '@/store';
   import { formatClubPack } from '@/@utilities/statuses';
   import menuEntries, { MenuEntry } from '@/composables/menuEntries';
   import Icon from '@/components/Icon.vue';
-  import { AuthPlugin } from '@/plugins/AuthPlugin';
   import { useI18n } from 'vue-i18n';
 
   interface MenuGroup {
@@ -61,7 +60,7 @@
     },
     setup () {
       const store = useStore(storeKey);
-      const auth = inject("auth") as AuthPlugin;
+      // const auth = inject("auth") as AuthPlugin;
       const {t} = useI18n();
 
       const userName = computed(() => store.getters['auth/fullName']);
