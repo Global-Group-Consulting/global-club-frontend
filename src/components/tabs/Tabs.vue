@@ -1,6 +1,6 @@
 <template>
   <div class="tabs">
-    <TabsItems :tabs-list="data" v-model="activeTab"/>
+    <TabsItems :tabs-list="data" v-model="activeTab" v-if="showTabs"/>
     <TabsSlides :tabs-list="data" :active-tab="activeTab" ref="tabsSlides">
       <template v-for="tab of data" :key="tab.id"
                 v-slot:[`tabSlide_`+tab.id]="item">
@@ -23,6 +23,10 @@
       data: {
         required: true,
         type: Array as PropType<TabEntry[]>
+      },
+      showTabs: {
+        type: Boolean,
+        default: true
       }
     },
     setup (props) {

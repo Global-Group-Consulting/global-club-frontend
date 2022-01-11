@@ -25,13 +25,13 @@
         </ion-row>
 
         <div class="pb-4 pt-5">
-          <Tabs :data="tabsItems" ref="tabs">
+          <Tabs :data="tabsItems" ref="tabs" :show-tabs="tabsItems.length > 1">
             <template v-slot:tabSlide_description>
               <div v-html="product?.description"></div>
             </template>
 
             <template v-slot:tabSlide_conditions>
-              <div>Presto disponibili...</div>
+              <div v-html="product?.conditions"></div>
             </template>
           </Tabs>
         </div>
@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, inject, Ref, ref } from "vue";
+  import { computed, ComputedRef, defineComponent, inject, Ref, ref } from "vue";
   import { onIonViewDidEnter, onIonViewDidLeave } from '@ionic/vue';
   import { useRoute, useRouter } from 'vue-router';
   import { useStore } from 'vuex';
@@ -79,13 +79,15 @@
       const product: Ref<Product | undefined> = ref()
       const tabs: Ref<typeof Tabs | null> = ref(null)
       const category = ref('descrizione')
-      const tabsItems: TabEntry[] = [{
-        id: "description",
-        text: "Descrizione"
-      }, {
-        id: "conditions",
-        text: "Condizioni"
-      }]
+      const tabsItems: ComputedRef<TabEntry[]> = computed(() => [{
+            id: "description",
+            text: "Descrizione",
+          }, {
+            id: "conditions",
+            text: "Condizioni",
+            if: !!product.value?.conditions
+          }].filter(el => el.if ?? true)
+      )
       const slideOpts = {
         initialSlide: 0,
         speed: 400,
