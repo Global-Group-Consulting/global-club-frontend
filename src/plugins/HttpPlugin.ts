@@ -202,10 +202,14 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
       
       if (elValue instanceof Array) {
         elValue.forEach(el => {
-          formDataToSend.append(key + "[]", el);
+          if (elValue !== undefined) {
+            formDataToSend.append(key + "[]", el);
+          }
         })
       } else {
-        formDataToSend.append(key, data[key]);
+        if (elValue !== undefined) {
+          formDataToSend.append(key, data[key]);
+        }
       }
     }
     
