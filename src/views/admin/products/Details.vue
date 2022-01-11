@@ -1,12 +1,12 @@
 <template>
-  <ion-page>
+  <IonPage>
     <TopToolbar include-back>{{ $t('pages.productDetails.title') }}</TopToolbar>
 
     <ion-content>
       <ion-grid fixed>
-        <SimpleToolbar>
+        <SimpleToolbar v-if="!isNew">
           <template v-slot:center>
-            <SimpleToolbarButton v-if="currentProduct"
+            <SimpleToolbarButton v-if="!isNew"
                                  :text="$t('pages.productDetails.btn_delete')"
                                  @click="onDeleteClick"/>
           </template>
@@ -43,6 +43,12 @@
               <FormRTE :label="$t('forms.products.description')"
                        v-model="productForm.formData.description.modelValue"
                        :error="productForm.formData.description.errorMessage"/>
+            </ion-col>
+
+            <ion-col>
+              <FormRTE :label="$t('forms.products.conditions')"
+                       v-model="productForm.formData.conditions.modelValue"
+                       :error="productForm.formData.conditions.errorMessage"/>
             </ion-col>
 
             <ion-col>
@@ -93,12 +99,12 @@
 
             <ion-col>
               <FormInputV :label="$t('forms.products.createdAt')"
-                          disabled v-if="currentProduct"
+                          disabled v-if="!isNew"
                           :model-value="formatLocaleDate(currentProduct?.createdAt)"/>
             </ion-col>
             <ion-col>
               <FormInputV :label="$t('forms.products.updatedAt')"
-                          disabled v-if="currentProduct"
+                          disabled v-if="!isNew"
                           :model-value="formatLocaleDate(currentProduct?.updatedAt)"/>
             </ion-col>
           </ion-row>
@@ -113,7 +119,7 @@
         </Form>
       </ion-grid>
     </ion-content>
-  </ion-page>
+  </IonPage>
 </template>
 
 <script lang="ts">
@@ -136,9 +142,19 @@
   import FormToggleV from '@/components/forms/FormToggleV.vue';
   import { formatLocaleDate } from '@/@utilities/dates';
   import { PackEnum } from '@/@enums/pack.enum';
+  import TopToolbar from '@/components/toolbars/TopToolbar.vue';
 
   export default defineComponent({
-    components: { FormToggleV, FormRTE, FormInputV, ClubButton, SimpleToolbarButton, SimpleToolbar, FormFiles },
+    components: {
+      TopToolbar,
+      FormToggleV,
+      FormRTE,
+      FormInputV,
+      ClubButton,
+      SimpleToolbarButton,
+      SimpleToolbar,
+      FormFiles
+    },
     setup (props, { emit }) {
       const { t } = useI18n();
       const route = useRoute();
@@ -174,6 +190,7 @@
         dataToWatch: () => currentProduct.value,
         emit
       })
+      const isNew = computed(() => !currentProduct.value?._id)
 
       productForm.addEventListener("submitCompleted", (e) => {
         currentProduct.value = productForm.formatCurrentProduct(e.detail);
@@ -250,7 +267,7 @@
         currentProduct, categoriesList, categoryOptionsList, packsOptionsList,
         onImageDeleteClick, onDeleteClick,
         productForm, colSizes,
-        formatLocaleDate
+        formatLocaleDate, isNew
       }
     }
   })

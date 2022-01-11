@@ -25,6 +25,7 @@ export const forms = {
     images: "Immagini principali",
     title: "Titolo",
     description: "Descrizione",
+    conditions: "Condizioni di vendita",
     price: "Prezzo",
     priceUndefined: "Importo da definire",
     tags: "Tag",

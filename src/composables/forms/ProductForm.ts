@@ -19,6 +19,7 @@ export class ProductForm extends BasicForm<Product> {
     this.schema = {
       title: yup.string().required(),
       description: yup.string().required(),
+      conditions: yup.string(),
       price: yup.number(),
       categories: yup.array().required(),
       minPacks: yup.array(),
@@ -56,7 +57,9 @@ export class ProductForm extends BasicForm<Product> {
     return {
       ...product,
       // @ts-ignore
-      categories: this.formatCategories(product.categories)
+      categories: product?.categories ? this.formatCategories(product.categories) : null,
+      visible: product?.visible ?? true,
+      hasQta: product?.hasQta ?? true
     };
   }
   

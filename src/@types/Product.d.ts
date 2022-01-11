@@ -6,6 +6,7 @@ import { PackEnum } from '@/@enums/pack.enum';
 export interface Product {
   title: string;
   description: string;
+  conditions: string;
   price: number;
   tags: string[];
   categories: ProductCategory[];
