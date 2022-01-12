@@ -85,7 +85,7 @@
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: var(--spacer);
+  //gap: var(--spacer);
   opacity: .2;
   transition: opacity .3s;
   border-radius: var(--border-radius);
@@ -98,6 +98,9 @@
 
   ion-card-content {
     padding: calc(var(--spacer) * 2) calc(var(--spacer) * 1.3);
+    gap: var(--spacer);
+    display: flex;
+    flex-direction: column;
   }
 
   &.is-active {
@@ -115,14 +118,16 @@
 
   .statistics-card-subtitle {
     margin-left: 32px;
-    margin-bottom: var(--spacer);
-
   }
 
   .statistics-card-row {
     display: flex;
     flex-direction: column;
   }
+}
 
-
+.ion-card-footer {
+  display: flex;
+  justify-content: end;
+  padding: 0 var(--spacer) var(--spacer);
 }

@@ -10,6 +10,7 @@
                  :clearInput="clearInput"
                  :placeholder="placeholder"
                  :multiple="multiple"
+                 :interfaceOptions="interfaceOptions"
                  :disabled="component === 'ion-select' ? (readonly || disabled) : disabled"
                  :readonly="readonly"
                  :okText="selectBtnOk || $t('forms.generic.selects.okText')"
@@ -40,6 +41,7 @@
     props: {
       label: String,
       modelValue: [String, Number, Array],
+      interfaceOptions: Object,
       type: {
         type: String as PropType<'date' | 'datetime-local' | 'email' | 'month' | 'number' | 'currency' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' | 'week'>,
         default: "text"

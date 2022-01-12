@@ -5,6 +5,10 @@ ion-alert {
   &[class*="sc-ion-alert"] {
     user-select: auto;
   }
+
+  &.alert-large {
+    --width: 350px;
+  }
 }
 
 .static-alert {

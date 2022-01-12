@@ -1,4 +1,5 @@
 import { MovementTypeEnum } from '@/@enums/movement.type.enum';
+import { PackEnum } from '@/@enums/pack.enum';
 
 export interface Movement {
   amountChange: number;
@@ -19,4 +20,13 @@ export interface Movement {
   _id: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export class CreateManualMovementDto {
+  amountChange: number;
+  notes: string;
+  semesterId: string;
+  type: 'add' | 'remove';
+  userId: string;
+  clubPack: PackEnum;
 }

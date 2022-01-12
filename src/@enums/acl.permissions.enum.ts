@@ -14,4 +14,6 @@ export enum AclPermissionsEnum {
   
   CLUB_PRODUCTS_CAT_ALL_READ = "club.products_cat.all:read",
   CLUB_PRODUCTS_CAT_ALL_WRITE = "club.products_cat.all:write",
+
+  BRITES_ALL_WRITE = "brites.all:write",
 }

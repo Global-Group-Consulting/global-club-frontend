@@ -1,12 +1,12 @@
 import { BasicApisClass } from '@/plugins/httpCalls/basicApisClass';
 import { PaginatedResult } from '@/@types/Pagination';
-import { Movement } from '@/@types/Movement';
+import { CreateManualMovementDto, Movement } from '@/@types/Movement';
 
 export class MovementApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'club/movements';
   
   static async readAll (userId: string, semesterId?: string): Promise<PaginatedResult<Movement[]> | undefined> {
-    const filters = { "sortBy[created_at]": -1 }
+    const filters = { "sortBy[createdAt]": -1 }
   
     if (semesterId) {
       filters["filter[semesterId]"] = semesterId
@@ -19,8 +19,24 @@ export class MovementApis extends BasicApisClass {
   }
   
   static async checkEnough (userId: string, amount: number): Promise<PaginatedResult<Movement[]> | undefined> {
-    const result = await this.withLoader<PaginatedResult<Movement[]>>("get",
-      this.getUrl('/' + userId + "/checkEnough", { amount }));
+    const result = await this.withLoader<PaginatedResult<Movement[]>>('get',
+      this.getUrl('/' + userId + '/checkEnough', { amount }));
+    
+    return result?.data;
+  }
+  
+  static async manualAdd (userId: string, data: CreateManualMovementDto): Promise<Movement | undefined> {
+    const result = await this.withLoader<Movement>('post',
+      this.getUrl('/' + userId), data);
+    
+    return result?.data;
+  }
+  
+  static async manualRemove (userId: string, data: CreateManualMovementDto): Promise<Movement | undefined> {
+    const result = await this.withLoader<Movement>('delete',
+      this.getUrl('/' + userId), {
+        data
+      });
     
     return result?.data;
   }

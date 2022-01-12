@@ -32,8 +32,8 @@
   import TabsSlides from '@/components/tabs/TabsSlides.vue';
   import { TabEntry } from '@/@types/TabEntry';
   import { Statistics } from '@/@types/Statistics';
-  import { formatSemesterId } from '@/@utilities/statuses';
   import PrivateMovementsList from '@/components/lists/movements/PrivateMovementsList.vue';
+  import { formatSemesterId } from '@/@utilities/movements';
 
   export default defineComponent({
     name: "PremiumWallet",

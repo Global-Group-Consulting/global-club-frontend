@@ -22,17 +22,26 @@
             </span>
           </div>
         </ion-card-content>
+
+        <div v-if="tab.buttons && tab.buttons.length" class="ion-card-footer">
+          <ClubButton v-for="(btn, i) in tab.buttons" :key="i"
+                      @click.stop="btn.click ? btn.click() : null"
+                      size="small" version="link">
+            {{ btn.label }}
+          </ClubButton>
+        </div>
       </ion-card>
     </swiper-slide>
   </Swiper>
 </template>
 
 <script lang="ts">
-  import { computed, ComputedRef, defineComponent, inject, onMounted, Ref, ref, watch } from 'vue';
+  import { computed, ComputedRef, defineComponent, inject, onMounted, PropType, Ref, ref, watch } from 'vue';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { TabEntry } from '@/@types/TabEntry';
   import { Semesters, Statistics } from '@/@types/Statistics';
-  import { formatClubPack, formatSemesterId } from '@/@utilities/statuses';
+  import { formatClubPack } from '@/@utilities/statuses';
+  import { formatSemesterId } from '@/@utilities/movements';
   import TabsItems from '@/components/tabs/TabsItems.vue';
   import { Swiper, SwiperSlide } from 'swiper/vue/swiper-vue';
   import BriteValue from '@/components/BriteValue.vue';
@@ -40,26 +49,34 @@
   import { formatLocaleDateLong } from '@/@utilities/dates';
   import { formatBrites } from '@/@utilities/currency';
   import { PackEnum } from '@/@enums/pack.enum';
+  import { AuthPlugin } from '@/plugins/AuthPlugin';
+  import { AclPermissionsEnum } from '@/@enums/acl.permissions.enum';
+  import ClubButton from '@/components/ClubButton.vue';
+  import { modalController } from '@ionic/vue';
+  import BritesModal from '@/components/modals/BritesModal.vue';
 
   export default defineComponent({
-    name: "UserStatistics",
+    name: 'UserStatistics',
     components: {
+      ClubButton,
       BriteValue,
       TabsItems, Swiper,
       SwiperSlide,
     },
     props: {
-      userId: String
+      userId: String,
+      clubPack: String as PropType<PackEnum>,
     },
-    emits: ["update:data", "update:activeTab"],
+    emits: ['update:data', 'update:activeTab'],
     setup (props, { emit }) {
-      const http = inject("http") as HttpPlugin;
-      const data: Ref<Statistics | null> = ref(null)
-      const activeTab = ref("resoconto");
+      const http = inject('http') as HttpPlugin;
+      const auth = inject('auth') as AuthPlugin;
+      const data: Ref<Statistics | null> = ref(null);
+      const activeTab = ref('resoconto');
       let swiperInstance: SwiperInstance;
 
       function calcSemesterTotals (semester: Semesters, prop: keyof Semesters): Record<string, number> {
-        const totals = {}
+        const totals = {};
 
         Object.entries(semester.packs).forEach(entry => {
           const pack = entry[0];
@@ -96,29 +113,50 @@
               totals[entry[0]] = 0;
             }
 
-            totals[entry[0]] += entry[1]
-          })
+            totals[entry[0]] += entry[1];
+          });
         })
 
-        return formatCalcTotals(totals)
+        return formatCalcTotals(totals);
+      }
+
+      async function showBritesModal (type: 'add' | 'remove', semesterId?: string) {
+        const modal = await modalController
+            .create({
+              component: BritesModal,
+              componentProps: {
+                title: type === 'add' ? 'Aggiungi brite' : 'Rimuovi brite',
+                userId: props.userId,
+                type,
+                semesterId,
+                clubPack: props.clubPack
+              },
+            });
+
+        await modal.present();
+        const result = await modal.onWillDismiss();
+
+        if (result.role === 'ok') {
+          await fetchData();
+        }
       }
 
       const tabs: ComputedRef<TabEntry[]> = computed(() => {
-        const toReturn = [{
-          id: "resoconto",
-          text: "Resoconto",
+        const toReturn: TabEntry[] = [{
+          id: 'resoconto',
+          text: 'Resoconto',
           data: [
             {
-              label: "Totale utilizzabile",
+              label: 'Totale utilizzabile',
               value: data.value?.totalRemaining || 0,
               details: calcResTotal()
             },
             ...(data.value?.expirations.reduce((acc, curr) => {
               acc.push({
-                label: "Scadenza: " + formatLocaleDateLong(new Date(curr.date)),
+                label: 'Scadenza: ' + formatLocaleDateLong(new Date(curr.date)),
                 value: curr.remaining,
-                details: formatCalcTotals(calcSemesterTotals(data.value?.semesters.find(sem => sem.expiresAt === curr.date) as Semesters, "totalRemaining"))
-              })
+                details: formatCalcTotals(calcSemesterTotals(data.value?.semesters.find(sem => sem.expiresAt === curr.date) as Semesters, 'totalRemaining'))
+              });
 
               return acc
             }, [] as any[]) || [])
@@ -130,16 +168,29 @@
             id: el.semesterId,
             text: formatSemesterId(el.semesterId),
             data: [{
-              label: "Brite disponibili",
+              label: 'Brite disponibili',
               value: el.totalRemaining,
-              details: formatCalcTotals(calcSemesterTotals(el, "totalRemaining"))
+              details: formatCalcTotals(calcSemesterTotals(el, 'totalRemaining')),
             }, {
-              label: "Brite utilizzati",
+              label: 'Brite utilizzati',
               value: el.totalUsed
             }, {
-              label: "Totale accumulato",
+              label: 'Totale accumulato',
               value: el.totalEarned
-            }]
+            }],
+            buttons: [
+              {
+                label: 'Rimuovi',
+                click: () => showBritesModal('remove', activeTab.value),
+                if: auth.hasPermissions(AclPermissionsEnum.BRITES_ALL_WRITE)
+              },
+              {
+                label: 'Aggiungi',
+                click: () => showBritesModal('add', activeTab.value),
+                if: auth.hasPermissions(AclPermissionsEnum.BRITES_ALL_WRITE)
+              },
+
+            ].filter(el => el.if ?? true)
           })
         })
 
@@ -154,23 +205,27 @@
         activeTab.value = tabs.value[e.activeIndex].id;
       }
 
-      onMounted(async () => {
-        const result = await http.api.dashboard.readAll(props.userId)
+      async function fetchData () {
+        const result = await http.api.dashboard.readAll(props.userId);
 
         if (result) {
-          data.value = result
+          data.value = result;
         }
 
-        emit("update:data", data.value)
-      })
+        emit('update:data', data.value);
+      }
+
+      onMounted(async () => {
+        await fetchData();
+      });
 
       watch(() => activeTab.value, (value) => {
-        const newIndex = Array.from(swiperInstance.slides).findIndex(slide => slide["dataset"].ref === value)
+        const newIndex = Array.from(swiperInstance.slides).findIndex(slide => slide['dataset'].ref === value);
 
-        swiperInstance.slideTo(newIndex)
+        swiperInstance.slideTo(newIndex);
 
-        emit("update:activeTab", value)
-      })
+        emit('update:activeTab', value);
+      });
 
       return {
         tabs,

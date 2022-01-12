@@ -9,7 +9,7 @@
                     <SimpleToolbarButton :text="$t('pages.userProfile.btn_delete')"/>
                   </template>
                 </SimpleToolbar>-->
-        <UserStatistics :user-id="userId"></UserStatistics>
+        <UserStatistics :user-id="userId" :club-pack="user?.clubPack"></UserStatistics>
 
         <ion-row>
           <ion-col size="12" sizeLg="6" class="pb-0 py-lg-5">
