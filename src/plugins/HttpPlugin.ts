@@ -137,6 +137,8 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
     this.loading = new LoadingHandler(this.plugins["$t"]);
     this.alerts = this.plugins["$alerts"];
   
+    axios.defaults.headers["Client-Key"] = process.env.VUE_APP_CLIENT_KEY;
+  
     // init an instance of axios
     this.axiosInstance = axios.create(options.axiosInstanceDefault);
   
