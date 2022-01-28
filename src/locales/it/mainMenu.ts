@@ -6,6 +6,7 @@ export const mainMenu = {
   users: 'Utenti',
   orders: 'Ordini',
   products: 'Prodotti',
+  news: 'News ed Eventi',
   productCategories: 'Categorie Prodotti',
   userCart: 'Carrello',
   userFavourites: 'Prodotti preferiti',

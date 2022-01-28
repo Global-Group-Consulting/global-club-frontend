@@ -86,6 +86,15 @@ export default [
       isAdmin: true,
     },
   },
+  {
+    path: "/news",
+    component: () => import("@/views/private/News.vue"),
+    name: "news.index",
+    meta: {
+      isPrivate: true,
+      isAdmin: true,
+    },
+  },
   /* {
      path: "/components/buttons",
      component: () => import("@/views/private/components/Buttons.vue"),
