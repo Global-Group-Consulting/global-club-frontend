@@ -6,7 +6,8 @@
       <ion-grid fixed>
 
         <div class="mb-5">
-          <ion-text color="medium"><h6 class="ion-text-left mb-0">Bentornato,</h6></ion-text>
+          <ion-text color="medium"><h6 class="ion-text-left mb-0">
+            Bentornat{{ authUser.gender === 'f' ? "a" : 'o' }},</h6></ion-text>
 
           <div class="d-flex ion-justify-content-between ion-align-items-center">
             <div class="ion-text-left">
@@ -16,7 +17,7 @@
               <h4 class="mt-2 mb-0" style="color: var(--ion-color-primary)" v-if="userIsPremium">
                 Cliente Premium
               </h4>
-              <ClubButton v-else  class="m-0">Passa a premium</ClubButton>
+              <ClubButton v-else class="m-0">Passa a premium</ClubButton>
             </div>
           </div>
         </div>
@@ -75,6 +76,7 @@
       }
 
       return {
+        authUser,
         firstName,
         pendingStatuses, userIsPremium,
         onSearchUpdate

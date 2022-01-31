@@ -74,7 +74,8 @@ export default [
     component: () => import("@/views/private/personalData/Index.vue"),
     name: "private.user",
     meta: {
-      isPrivate: true
+      isPrivate: true,
+      isAdmin: true,
     },
   },
   {

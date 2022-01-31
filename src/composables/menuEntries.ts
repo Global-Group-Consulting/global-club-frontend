@@ -27,6 +27,7 @@ export interface MenuEntry {
   badge?: ComputedRef<string>;
   disabled?: boolean;
   slot?: string;
+  if?: boolean;
 }
 
 const genericFooterEntries: MenuEntry[] = [

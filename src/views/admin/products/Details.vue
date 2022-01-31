@@ -109,6 +109,20 @@
             </ion-col>
           </ion-row>
 
+          <h3 class="d-flex ion-align-items-center">
+            Dati aggiuntivi
+            <ClubButton version="outline" size="small" class="ms-3"
+                        @click="addExtraData">Aggiungi
+            </ClubButton>
+          </h3>
+
+          <ion-row>
+            <ion-col>
+              <FormCustomField v-for="(field, i) in extraData" :key="i"
+                               @removeInput="removeExtraData(i)"/>
+            </ion-col>
+          </ion-row>
+
           <ion-row>
             <ion-col size="4" offset="4">
               <ClubButton type="submit">
@@ -143,9 +157,11 @@
   import { formatLocaleDate } from '@/@utilities/dates';
   import { PackEnum } from '@/@enums/pack.enum';
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
+  import FormCustomField from "@/components/forms/FormCustomField.vue";
 
   export default defineComponent({
     components: {
+      FormCustomField,
       TopToolbar,
       FormToggleV,
       FormRTE,
@@ -164,6 +180,7 @@
       const colSizes = {
         size: 6
       }
+      const extraData: Ref<any[]> = ref([]);
 
       const currentProduct: Ref<Product & { categories: string[] } | undefined> = ref()
       const categoriesList: Ref<ProductCategory[]> = ref([])
@@ -238,8 +255,19 @@
         if (alertResult) {
           await http.api.products.deleteProduct(currentProduct.value._id);
 
-          await router.replace({ name: "admin.products" })
+          await router.replace({name: "admin.products"})
         }
+      }
+
+      function addExtraData() {
+
+        // TODO:: aprire un modale per inz<erire le specifiche del nuovo campo.
+        extraData.value.push({})
+      }
+
+      function removeExtraData(index: number) {
+        debugger
+        extraData.value.splice(index, 1)
       }
 
       onIonViewWillEnter(async () => {
@@ -267,7 +295,8 @@
         currentProduct, categoriesList, categoryOptionsList, packsOptionsList,
         onImageDeleteClick, onDeleteClick,
         productForm, colSizes,
-        formatLocaleDate, isNew
+        formatLocaleDate, isNew,
+        addExtraData, removeExtraData, extraData
       }
     }
   })

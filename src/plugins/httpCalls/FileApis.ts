@@ -9,10 +9,10 @@ export class FileApis extends BasicApisClass {
     const resp: AxiosResponse<Blob> | undefined = await this.withLoader("get", this.getUrl("/" + fileId), {
       responseType: "blob",
     } as AxiosRequestConfig);
-    
+  
     if (resp?.data) {
-      const url = URL.createObjectURL(new Blob([resp.data], { type: mimeType }))
-      
+      const url = URL.createObjectURL(new Blob([resp.data], {type: mimeType}))
+    
       window.open(url, "download")
       URL.revokeObjectURL(url);
     }

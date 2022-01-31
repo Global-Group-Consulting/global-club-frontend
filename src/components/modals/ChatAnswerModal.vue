@@ -9,7 +9,9 @@
       <FormRTE v-model="chatForm.formData.message.modelValue" label="Messaggio"
                :error="chatForm.formData.message.errorMessage"></FormRTE>
 
-      <FormFiles label="Allegati" v-model="chatForm.formData.attachments.modelValue"></FormFiles>
+      <FormFiles label="Allegati" v-model="chatForm.formData.attachments.modelValue"
+                 accept="image/png,image/jpeg,image/png,image/jpg,application/pdf"
+      ></FormFiles>
     </Form>
   </ion-content>
 
