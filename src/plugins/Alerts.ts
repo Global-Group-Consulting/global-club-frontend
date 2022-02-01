@@ -1,7 +1,5 @@
 import { installPlugin, PluginTemplate } from '@/plugins/PluginTemplate';
-import { alertController } from '@ionic/vue';
-import { useI18n } from 'vue-i18n';
-import { inject } from 'vue';
+import { alertController, toastController } from '@ionic/vue';
 
 interface AlertAskOptions {
   header: string;
@@ -31,17 +29,17 @@ export class AlertsPlugin extends PluginTemplate<void> {
     role: 'cancel',
   };
   
-  protected onInit (options: void | undefined): void {
+  protected onInit (): void {
     console.log('alerts init');
   }
   
   async ask (options: AlertAskOptions): Promise<boolean> {
     const buttons = [
       Object.assign({}, this.defaultCancelButton, {
-        text: options.buttonCancelText
+        text: options.buttonCancelText ?? "Annulla"
       }),
       Object.assign({}, this.defaultOkButton, {
-        text: options.buttonOkText
+        text: options.buttonOkText ?? "Ok"
       })
     ];
     
@@ -97,12 +95,38 @@ export class AlertsPlugin extends PluginTemplate<void> {
         buttons
       })
     );
-    
+  
     await alert.present();
-    
+  
     const { role } = await alert.onDidDismiss();
-    
+  
     return role === 'ok';
+  }
+  
+  async toast (message: string, color?: string) {
+    const toast = await toastController
+      .create({
+        message,
+        animated: true,
+        duration: 3000,
+        color,
+        buttons: [
+          {
+            icon: "close",
+            role: 'cancel',
+          }
+        ]
+      })
+    
+    await toast.present();
+  }
+  
+  async toastSuccess (message: string) {
+    return this.toast(message, "success")
+  }
+  
+  async toastError (message: string) {
+    return this.toast(message, "danger")
   }
 }
 

@@ -1,4 +1,5 @@
 @import "scss/variables";
+@import "fonts/globa_club";
 
 /* @import "scss/themes/light"; */
 @import "scss/themes/dark";
@@ -11,10 +12,24 @@
 @import "scss/toolbars";
 @import "scss/utilities";
 @import "scss/alerts";
+@import "scss/accordions";
+@import "scss/tabs";
+@import "scss/chat";
+@import "scss/modals";
+@import "scss/lists";
+@import "scss/main_menu";
+@import "scss/popovers";
+@import "scss/cards";
+@import "scss/slides";
 
 :root {
   --basic-space: 30px;
   font-family: "Poppins", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+
 }
 
 ion-app {

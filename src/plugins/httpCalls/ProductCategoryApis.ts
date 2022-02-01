@@ -1,6 +1,4 @@
 import { BasicApisClass } from '@/plugins/httpCalls/basicApisClass';
-import { Product } from '@/@types/Product';
-import { AxiosResponse } from 'axios';
 import { ProductCategory } from '@/@types/ProductCategory';
 import { UpdateProductCategoryDto } from '@/views/admin/productCategories/dto/update.product.category.dto';
 import { CreateProductCategoryDto } from '@/views/admin/productCategories/dto/create.product.category.dto';

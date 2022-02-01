@@ -7,6 +7,12 @@ import { ProductCategoryApis } from '@/plugins/httpCalls/ProductCategoryApis';
 import { loadingController } from '@ionic/vue';
 import { AlertsPlugin } from '@/plugins/Alerts';
 import { UserApis } from '@/plugins/httpCalls/UserApis';
+import { OrderApis } from '@/plugins/httpCalls/OrderApis';
+import { MovementApis } from '@/plugins/httpCalls/MovementApis';
+import { DashboardApis } from '@/plugins/httpCalls/DashboardApis';
+import { CommunicationApis } from '@/plugins/httpCalls/CommunicationApis';
+import { FileApis } from '@/plugins/httpCalls/FileApis';
+import { NewsApis } from '@/plugins/httpCalls/NewsApis';
 
 type RequestsQueue = {
   resolve: (value?: unknown) => void;
@@ -18,7 +24,13 @@ type Token = string
 interface ApiModules {
   products: typeof ProductApis;
   productCategories: typeof ProductCategoryApis;
-  user: typeof UserApis;
+  users: typeof UserApis;
+  orders: typeof OrderApis;
+  movements: typeof MovementApis;
+  dashboard: typeof DashboardApis;
+  communications: typeof CommunicationApis;
+  files: typeof FileApis;
+  news: typeof NewsApis;
 }
 
 class HttpQueue {
@@ -116,11 +128,19 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
     this.api = {
       products: ProductApis,
       productCategories: ProductCategoryApis,
-      user: UserApis
+      users: UserApis,
+      orders: OrderApis,
+      movements: MovementApis,
+      dashboard: DashboardApis,
+      communications: CommunicationApis,
+      files: FileApis,
+      news: NewsApis
     };
     this.queue = new HttpQueue();
     this.loading = new LoadingHandler(this.plugins["$t"]);
     this.alerts = this.plugins["$alerts"];
+  
+    axios.defaults.headers["Client-Key"] = process.env.VUE_APP_CLIENT_KEY;
   
     // init an instance of axios
     this.axiosInstance = axios.create(options.axiosInstanceDefault);
@@ -187,10 +207,14 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
       
       if (elValue instanceof Array) {
         elValue.forEach(el => {
-          formDataToSend.append(key + "[]", el);
+          if (elValue !== undefined) {
+            formDataToSend.append(key + "[]", el);
+          }
         })
       } else {
-        formDataToSend.append(key, data[key]);
+        if (elValue !== undefined) {
+          formDataToSend.append(key, data[key]);
+        }
       }
     }
     

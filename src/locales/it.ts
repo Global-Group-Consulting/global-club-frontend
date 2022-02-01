@@ -1,20 +1,23 @@
 import { alerts } from '@/locales/it/alerts';
 import { forms } from '@/locales/it/forms';
 import { enums } from '@/locales/it/enums';
+import { orders } from '@/locales/it/pages/orders';
+import { orderDetails } from '@/locales/it/pages/orderDetails';
+import { ordersSection } from '@/locales/it/sections/orders';
+import { users } from '@/locales/it/pages/users';
+import { userProfile } from '@/locales/it/pages/userProfile';
+import { mainMenu } from '@/locales/it/mainMenu';
 
 export default {
   alerts,
   forms,
   enums,
-  hi: 'Ciao come va?',
-  mainMenu: {
-    home: 'Home',
-    users: 'Utenti',
-    products: 'Prodotti',
-    productCategories: 'Categorie Prodotti',
-    logout: 'Logout',
-  },
+  mainMenu,
   pages: {
+    users,
+    userProfile,
+    orders,
+    orderDetails,
     products: {
       'title': "Elenco prodotti",
       'btn_add': 'Aggiungi',
@@ -32,7 +35,9 @@ export default {
     productCategoryDetails: {
       'title': "Dettagli categoria prodotto",
       'btn_delete': "Elimina",
-    }
-    
-  }
+    },
+  },
+  sections: {
+    orders: ordersSection
+  },
 };

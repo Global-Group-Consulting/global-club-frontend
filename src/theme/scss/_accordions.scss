@@ -1,0 +1,54 @@
+@import "./variables";
+
+.accordion-list {
+
+  > .accordion-item {
+    --padding-top: #{$spacer};
+    --padding-bottom: #{$spacer};
+
+    border-bottom: solid 1px var(--ion-border-color);
+
+    > .accordion-header {
+      --padding-top: #{$spacer};
+      --padding-bottom: #{$spacer};
+
+      margin: 0;
+      display: flex;
+      height: auto;
+
+      .accordion-header-text {
+        text-align: left;
+        flex: 1;
+      }
+
+      .accordion-header-icon {
+        color: var(--ion-color-primary);
+        transition: transform .3s;
+      }
+    }
+
+    .accordion-collapse-container {
+      height: 0;
+      overflow: hidden;
+      text-align: left;
+
+      .accordion-collapse-content {
+        padding: var(--padding-top);
+      }
+    }
+
+    &.expanded {
+      > .accordion-collapse-container {
+        height: auto;
+      }
+
+      > .accordion-header {
+        > .accordion-header-icon {
+          transform: rotateZ(180deg);
+        }
+      }
+    }
+  }
+
+
+}

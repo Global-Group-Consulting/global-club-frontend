@@ -1,0 +1,56 @@
+.tabs {
+  overflow: auto;
+  //justify-content: center;
+
+  .tabs-item {
+    flex-shrink: 0;
+    flex-basis: auto;
+  }
+
+  .tabs-slide {
+    user-select: text;
+    display: block;
+    text-align: unset;
+  }
+}
+
+.tabs-items.tabs-chips {
+  background-color: transparent;
+  margin-left: auto;
+  margin-right: auto;
+  display: inline-flex;
+  max-width: 100%;
+
+  ion-segment-button.tabs-item {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: auto;
+    --padding-start: calc(var(--spacer) * 1.5) !important;
+    --padding-end: calc(var(--spacer) * 1.5) !important;
+    --border-radius: 20px;
+
+    &::part(indicator) {
+    }
+
+    &::part(indicator-background) {
+      background: var(--primary-dark-bg-gradient);
+    }
+
+    &.segment-button-checked {
+      &::part(indicator) {
+        //z-index: 33;
+      }
+    }
+
+    &:not(.segment-button-checked) {
+      &::part(indicator) {
+        //opacity: 1;
+      }
+
+      &::part(indicator-background) {
+        background: var(--ion-color-secondary);
+      }
+    }
+
+  }
+}

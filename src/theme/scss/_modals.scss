@@ -1,0 +1,39 @@
+ion-modal {
+  ion-backdrop {
+    --backdrop-opacity: .7;
+  }
+
+  .modal-wrapper {
+    --box-shadow: 0 0 200px 20px rgba(var(--ion-color-primary-rgb), .2);
+
+    @include mediaQueryUp("md") {
+      --border-radius: 20px
+    }
+
+    .modal-header {
+      --ion-toolbar-background: var(--ion-color-secondary);
+
+      &:after {
+        background: var(--ion-color-primary);
+        height: 1px;
+        bottom: -1px;
+      }
+    }
+
+    .modal-content {
+      //--background: var(--ion-color-secondary) !important;
+
+      &::part(background):before {
+        display: none;
+      }
+    }
+
+    .modal-footer {
+      background-color: var(--ion-color-secondary);
+      padding: $spacer;
+      box-shadow: 0 0 50px rgba(var(--ion-color-primary-rgb), .15);
+    }
+
+  }
+}
+

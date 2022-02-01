@@ -1,166 +1,54 @@
 <template>
   <IonApp>
-    <IonSplitPane content-id="main-content" when="md">
-      <!--  the side menu  -->
-      <MainMenu v-show="isLoggedIn"></MainMenu>
+
+    <IonTabs class="app-tabs">
+      <!-- the side menu -->
+      <TheDesktopSidebar v-if="$store.getters['mdAndUp'] && isLoggedIn"/>
+
+      <!-- the bottom toolbar -->
+      <TheMobileToolbar v-if="$store.getters['smAndDown'] && isLoggedIn"/>
 
       <!-- the main content -->
       <IonRouterOutlet id="main-content"></IonRouterOutlet>
-    </IonSplitPane>
+    </IonTabs>
+
   </IonApp>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import { useStore } from 'vuex';
-import MainMenu from './components/MainMenu.vue';
-import { key } from '@/store';
+  import { computed, defineComponent, onMounted } from 'vue';
+  import { useRoute } from 'vue-router';
+  import { useStore } from 'vuex';
+  import { storeKey } from '@/store';
+  import TheDesktopSidebar from './components/TheDesktopSidebar.vue';
+  import TheMobileToolbar from '@/components/TheMobileToolbar.vue';
 
-export default defineComponent({
-  name: 'App',
-  components: { MainMenu },
-  setup () {
-    const store = useStore(key);
-    const route = useRoute();
+  export default defineComponent({
+    name: 'App',
+    components: { TheMobileToolbar, TheDesktopSidebar },
+    setup () {
+      const store = useStore(storeKey);
+      const route = useRoute();
+      const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
 
-    const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
+      function updateStoreGridSize (e: Event) {
+        const target = e.target as Window;
 
-    window.addEventListener('resize', (e: Event) => {
-      const target = e.target as Window;
-      store.dispatch('updateGridSize', target.outerWidth);
-    });
+        store.dispatch('updateGridSize', target.innerWidth);
+      }
 
-    onMounted(() => {
-      window.dispatchEvent(new CustomEvent('resize'));
-    });
+      window.addEventListener('resize', updateStoreGridSize);
+      window.addEventListener('orientationchange', updateStoreGridSize);
 
-    return {
-      isLoggedIn,
-      isSelected: (url: string) => (url === route.path ? 'selected' : ''),
-    };
-  }
+      onMounted(() => {
+        window.dispatchEvent(new CustomEvent('resize'));
+      });
+
+      return {
+        isLoggedIn,
+        isSelected: (url: string) => (url === route.path ? 'selected' : ''),
+      };
+    }
 });
 </script>
 
-<style scoped>
-ion-menu ion-content {
-  --background: var(--ion-item-background, var(--ion-background-color, #fff));
-}
-
-ion-menu.md ion-content {
-  --padding-start: 8px;
-  --padding-end: 8px;
-  --padding-top: 20px;
-  --padding-bottom: 20px;
-}
-
-ion-menu.md ion-list {
-  padding: 20px 0;
-}
-
-ion-menu.md ion-note {
-  margin-bottom: 30px;
-}
-
-ion-menu.md ion-list-header,
-ion-menu.md ion-note {
-  padding-left: 10px;
-}
-
-ion-menu.md ion-list#inbox-list {
-  border-bottom: 1px solid var(--ion-color-step-150, #d7d8da);
-}
-
-ion-menu.md ion-list#inbox-list ion-list-header {
-  font-size: 22px;
-  font-weight: 600;
-
-  min-height: 20px;
-}
-
-ion-menu.md ion-list#labels-list ion-list-header {
-  font-size: 16px;
-
-  margin-bottom: 18px;
-
-  color: #757575;
-
-  min-height: 26px;
-}
-
-ion-menu.md ion-item {
-  --padding-start: 10px;
-  --padding-end: 10px;
-  border-radius: 4px;
-}
-
-ion-menu.md ion-item.selected {
-  --background: rgba(var(--ion-color-primary-rgb), 0.14);
-}
-
-ion-menu.md ion-item.selected ion-icon {
-  color: var(--ion-color-primary);
-}
-
-ion-menu.md ion-item ion-icon {
-  color: #616e7e;
-}
-
-ion-menu.md ion-item ion-label {
-  font-weight: 500;
-}
-
-ion-menu.ios ion-content {
-  --padding-bottom: 20px;
-}
-
-ion-menu.ios ion-list {
-  padding: 20px 0 0 0;
-}
-
-ion-menu.ios ion-note {
-  line-height: 24px;
-  margin-bottom: 20px;
-}
-
-ion-menu.ios ion-item {
-  --padding-start: 16px;
-  --padding-end: 16px;
-  --min-height: 50px;
-}
-
-ion-menu.ios ion-item.selected ion-icon {
-  color: var(--ion-color-primary);
-}
-
-ion-menu.ios ion-item ion-icon {
-  font-size: 24px;
-  color: #73849a;
-}
-
-ion-menu.ios ion-list#labels-list ion-list-header {
-  margin-bottom: 8px;
-}
-
-ion-menu.ios ion-list-header,
-ion-menu.ios ion-note {
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-ion-menu.ios ion-note {
-  margin-bottom: 8px;
-}
-
-ion-note {
-  display: inline-block;
-  font-size: 16px;
-
-  color: var(--ion-color-medium-shade);
-}
-
-ion-item.selected {
-  --color: var(--ion-color-primary);
-}
-</style>

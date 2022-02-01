@@ -1,6 +1,7 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
 import { User } from '@/@types/User';
 import { UserAclRolesEnum } from '@/@enums/user.acl.roles.enum';
+import { AclPermissionsEnum } from '@/@enums/acl.permissions.enum';
 
 export interface AuthState {
   loggedIn: boolean;
@@ -37,8 +38,18 @@ const getters: GetterTree<RootState, RootState> = {
   isLoggedIn (state) {
     return state.loggedIn;
   },
-  user (state) {
+  user (state: AuthState): User | null {
     return state.user;
+  },
+  fullName (state: AuthState): string {
+    if (!state.user) {
+      return ""
+    }
+    
+    return [state.user.firstName, state.user.lastName].join(" ");
+  },
+  permissions (state: AuthState): AclPermissionsEnum[] | any[] {
+    return state.user?.permissions ?? [];
   },
   isAdmin (state: AuthState) {
     const validAclRoles: string[] = [UserAclRolesEnum.SUPER_ADMIN, UserAclRolesEnum.ADMIN, UserAclRolesEnum.CLIENTS_SERVICE];

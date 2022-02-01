@@ -1,16 +1,16 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-
 import * as IonComponents from '@ionic/vue';
 import { IonicVue } from '@ionic/vue';
 import TopToolbar from '@/components/toolbars/TopToolbar.vue';
-import BottomToolbar from '@/components/toolbars/BottomToolbar.vue';
+import BottomToolbar from '@/components/TheMobileToolbar.vue';
 import FormCurrency from '@/components/forms/FormCurrency.vue';
 import FormInput from '@/components/forms/FormInput.vue';
 import Icon from '@/components/Icon.vue';
 import Btn from '@/components/Btn.vue';
 import PageLink from '@/components/PageLink.vue';
+import { Form } from 'vee-validate';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -35,16 +35,18 @@ import './theme/styles.scss';
 import { authPlugin } from '@/plugins/AuthPlugin';
 import { httpPlugin } from '@/plugins/HttpPlugin';
 import { i18n } from '@/plugins/I18n';
-
-import { store, key } from './store';
+import { store, storeKey } from './store';
 import { alertsPlugin } from '@/plugins/Alerts';
+
+
+
 
 const app = createApp(App)
   .use(IonicVue, {
     mode: 'md', // "md" | "ios",
   })
   .use(i18n)
-  .use(store, key)
+  .use(store, storeKey)
   .use(alertsPlugin)
   .use(httpPlugin)
   .use(authPlugin)
@@ -62,6 +64,7 @@ app.component('FormInput', FormInput);
 app.component('Icon', Icon);
 app.component('Btn', Btn);
 app.component('PageLink', PageLink);
+app.component('Form', Form);
 
 router.isReady().then(() => {
   app.mount("#app");

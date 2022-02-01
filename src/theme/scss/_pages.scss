@@ -1,17 +1,27 @@
-.ion-page {
-  ion-content::part(background):before {
-    content: "";
-    position: fixed;
-    width: 90vw;
+.ion-page #main-content {
+  ion-content {
+    --background: linear-gradient(180deg, #000000 0%, rgba(39, 39, 39, 0.7) 100%) !important;
+  }
 
-    height: 40vh;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    background-image: url("/assets/patternlandscape.png");
-    background-position: top center;
-    background-repeat: no-repeat;
-    background-size: contain;
+  ion-content::part(background) {
+    z-index: -1;
+    background-color: transparent;
+
+
+    &:before {
+      content: "";
+      position: fixed;
+      width: 90vw;
+
+      height: 40vh;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      background-image: url("/assets/patternlandscape.png");
+      background-position: top center;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
   }
 }
 
@@ -21,16 +31,29 @@
   width: 75%;
   max-width: 500px;
   height: 80px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 7vh;
+  margin: 5vh auto var(--spacer);
 
-  background: url(/assets/GlobalClubGold.svg) no-repeat center;
+  background: url(/assets/logo_gold.svg) no-repeat center;
   background-size: contain;
 }
 
 .content-with-fixed-btn {
   --padding-bottom: 80px !important;
+}
+
+/* Forget Password Page */
+
+.v-container {
+  margin-top: 50px;
+  background: url(/assets/Iconly.png);
+  width: 120px;
+  height: 120px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.clickable-area{
+  padding: 6px;
 }
 
 @include mediaQueryDown(md) {
@@ -40,5 +63,13 @@
 }
 
 ion-grid {
-  max-width: 600px;
+  //max-width: 600px;
+}
+
+
+@include mediaQueryUp(md){
+  .app-tabs{
+    flex-direction: row-reverse !important;
+
+  }
 }

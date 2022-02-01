@@ -1,3 +1,6 @@
+import { userContract } from '@/locales/it/forms/userContract';
+import { userAnagraphic } from '@/locales/it/forms/userAnagraphic';
+
 export const forms = {
   filePreviewer: {
     addLabel: "Aggiungi...",
@@ -22,10 +25,25 @@ export const forms = {
     images: "Immagini principali",
     title: "Titolo",
     description: "Descrizione",
+    conditions: "Condizioni di vendita",
     price: "Prezzo",
+    priceUndefined: "Importo da definire",
     tags: "Tag",
+    hasQta: "Quantificabile",
+    visible: "Visibile nelle ricerche",
     categories: "Categorie",
+    minPacks: "Pack necessari",
+    createdAt: "Data creazione",
+    updatedAt: "Data ultima modifica",
     btnCreate: "Salva e aggiungi",
     btnUpdate: "Salva"
+  },
+  userContract,
+  userAnagraphic,
+  communications: {
+    message: "Messaggio",
+    attachments: "Allegati"
   }
+  
+  
 }

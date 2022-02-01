@@ -1,5 +1,5 @@
 <template>
-  <ion-item :class="{'ion-margin-bottom': addSpaceAfter}" class="form-input">
+  <ion-item :class="{'ion-margin-bottom': addSpaceAfter, 'is-readonly': readonly, 'is-disabled': disabled}" class="form-input">
     <ion-label position="floating">{{ label }}</ion-label>
     <component :is="component"
                ref="inputComponent"
@@ -9,6 +9,7 @@
                :disabled="disabled"
                :placeholder="placeholder"
                :multiple="multiple"
+               :readonly="readonly"
                :okText="selectBtnOk || $t('forms.generic.selects.okText')"
                :cancelText="selectBtnCancel || $t('forms.generic.selects.cancelText')"
                @ionInput="onInput($event)"
@@ -44,6 +45,7 @@
     selectBtnOk?: string;
     selectBtnCancel?: string;
     addSpaceAfter?: boolean;
+    readonly?: boolean;
   }>(), {
     type: 'text',
     component: 'ion-input',

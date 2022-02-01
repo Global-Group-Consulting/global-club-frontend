@@ -1,11 +1,17 @@
 <template>
   <ion-header>
     <ion-toolbar color="transparent" class="top-toolbar">
-      <ion-buttons slot="start">
+      <div slot="start">
         <!--        <ion-menu-button menu="main-menu"></ion-menu-button>-->
-        <btn type="icon-only" icon-name="chevron-left" v-if="includeBack"
-             @click="$router.back()" color="primary"></btn>
-      </ion-buttons>
+        <ClubButton version="outline"
+                    icon only-icon icon-name="chevron-left"
+                    size="default"
+                    color="primary"
+                    class="ms-3"
+                    v-if="includeBack"
+                    @click="$router.back()"
+        ></ClubButton>
+      </div>
 
       <ion-title>
         <slot></slot>
@@ -15,15 +21,19 @@
 
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 
-  const props = defineProps<{
-    includeBack?: boolean;
-  }>();
+  import { defineComponent } from 'vue';
+  import ClubButton from '@/components/ClubButton.vue';
 
+  export default defineComponent({
+    components: { ClubButton },
+    props: {
+      includeBack: Boolean
+    },
+    setup () {
 
+      return {}
+    }
+  })
 </script>
-
-<style scoped>
-
-</style>

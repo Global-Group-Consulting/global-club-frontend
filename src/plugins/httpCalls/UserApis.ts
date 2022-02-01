@@ -1,5 +1,5 @@
 import { BasicApisClass } from '@/plugins/httpCalls/basicApisClass';
-import { ReadUserGroupsDto, User } from '@/@types/User';
+import { ReadUserGroupsDto, UpdateUserAnagraphicDto, UpdateUserContractDto, User, UserBasic } from '@/@types/User';
 import { UserRoleEnum } from '@/@enums/user.role.enum';
 import { PaginatedResult } from '@/@types/Pagination';
 
@@ -8,12 +8,18 @@ export type UserGroup = { id: UserRoleEnum; data: User[] }
 export class UserApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'club/users';
   
-  static async readAll (group: UserRoleEnum, page: number): Promise<PaginatedResult<User[]> | undefined> {
-    const result = await this.withLoader<PaginatedResult<User[]>>("get", this.getUrl(), {
+  static async readAll (group?: UserRoleEnum, page = 1): Promise<PaginatedResult<UserBasic[]> | undefined> {
+    const filters = {}
+    
+    if (group) {
+      filters["role"] = group.toString()
+    }
+    
+    const result = await this.withLoader<PaginatedResult<UserBasic[]>>("get", this.getUrl(), {
       params: {
-        filter: [
-          "role:+" + group,
-        ],
+        "sortBy[firstName]": 1,
+        "sortBy[lastName]": 1,
+        ...this.prepareFilterParams(filters),
         page
       }
     });
@@ -27,13 +33,25 @@ export class UserApis extends BasicApisClass {
     return result?.data;
   }
   
-  /*
-  static async read (id: string): Promise<Product | undefined> {
-    const result = await this.withLoader<Product>("get", this.getUrl('/' + id))
-    
+  static async readProfile (id: string, full?: boolean): Promise<UserBasic | undefined> {
+    const queryParams = {}
+  
+    if (full !== undefined) {
+      queryParams["full"] = full
+    }
+  
+    const result = await this.withLoader<UserBasic>("get", this.getUrl('/' + id, queryParams))
+  
     return result?.data
   }
   
+  static async update<T> (data: UpdateUserContractDto | UpdateUserAnagraphicDto, id): Promise<T | undefined> {
+    const result = await this.withLoader<T>("patch", this.getUrl('/' + id), data);
+    
+    return result?.data;
+  }
+  
+  /*
   static async create (data: CreateProductDto): Promise<Product | undefined> {
     const result = await this.withLoader<Product>("post", this.getUrl(), data);
   

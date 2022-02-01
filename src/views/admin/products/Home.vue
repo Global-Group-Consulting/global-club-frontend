@@ -1,5 +1,5 @@
 <template>
-  <ion-page>
+  <IonPage>
     <TopToolbar>{{ $t('pages.products.title') }}</TopToolbar>
 
     <ion-content>
@@ -11,27 +11,13 @@
           </template>
         </SimpleToolbar>
 
-
         <ion-list>
-          <ion-item v-for="product of productsList" :key="product._id">
-            <ion-thumbnail slot="start">
-              <img :src="formatImgUrl(product.thumbnail?.id)">
-            </ion-thumbnail>
-
-            <ion-label>
-              <h2>{{ product.title }}</h2>
-              <h4>{{ product.description }}</h4>
-            </ion-label>
-
-            <page-link :to="{ name: 'admin.products.details', params: { id: product._id } }"
-                       :btn-props="{ fill: 'outline', shape: 'round' }">
-              {{ $t("pages.products.btn_open") }}
-            </page-link>
-          </ion-item>
+          <ProductListItem v-for="product of productsList" :key="product._id"
+                           :product="product"/>
         </ion-list>
       </ion-grid>
     </ion-content>
-  </ion-page>
+  </IonPage>
 </template>
 
 <script lang="ts">
@@ -43,9 +29,11 @@
   import { formatImgUrl } from '@/@utilities/images';
   import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
   import { onIonViewWillEnter } from '@ionic/vue';
+  import ProductListItem from '@/components/lists/products/AdminProductListItem.vue';
+  import TopToolbar from '@/components/toolbars/TopToolbar.vue';
 
   export default defineComponent({
-    components: { SimpleToolbar, SimpleToolbarButton },
+    components: { TopToolbar, ProductListItem, SimpleToolbar, SimpleToolbarButton },
     setup () {
       // const { t } = useI18n();
       // const router = useRouter();
@@ -53,8 +41,9 @@
       const productsList: Ref<Product[]> = ref([]);
 
       onIonViewWillEnter(async () => {
-        productsList.value = await http.api.products.readAll() ?? [];
+        const paginatedData = await http.api.products.readAll();
 
+        productsList.value = paginatedData?.data ?? [];
       });
 
       return { productsList, formatImgUrl }

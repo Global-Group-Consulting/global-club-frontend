@@ -1,7 +1,7 @@
 module.exports = {
   outputDir: "dist",
   devServer: {
-    "public": "staging.globalclub.consulting",
+    "public": "dev.globalclub.consulting",
     proxy: {
       "/api/": {
         target: process.env.VUE_APP_BASE_URL,

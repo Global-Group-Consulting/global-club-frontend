@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    //"target": "esnext",
     "target": "ES6",
     "module": "es2020",
     "strict": true,
@@ -17,7 +16,8 @@
     "types": [
       "webpack-env",
       "jest",
-      "lodash"
+      "lodash",
+      "yup"
     ],
     "paths": {
       "@/*": [
@@ -40,7 +40,8 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx",
+    "src/@types/*"
   ],
   "exclude": [
     "node_modules"

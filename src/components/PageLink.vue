@@ -2,20 +2,23 @@
   <router-link
       :to="resolvedPath"
       custom
-      v-slot="{ href,navigate}">
-    <ion-button v-bind="ionBtnProps"
-                @click="navigate"
-                :href="href">
+      v-slot="{ href, navigate}">
+    <ClubButton v-bind="ionBtnProps"
+                v-if="!onlyContainer"
+                @click="onClick(navigate, $event)"
+                :href="href"
+                type="button">
       <slot></slot>
-    </ion-button>
+    </ClubButton>
 
+    <slot v-if="onlyContainer" v-bind="{href, navigate}"></slot>
   </router-link>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
   import { RouteLocationRaw, useRouter } from 'vue-router';
-  import { computed } from 'vue';
-  import { IonButton } from '@ionic/vue';
+  import { computed, defineComponent, PropType } from 'vue';
+  import ClubButton from '@/components/ClubButton.vue';
 
   export interface IonButtonInterface {
     disabled?: boolean;
@@ -37,20 +40,57 @@
     target?: string;
   }
 
-  const props = defineProps<{
-    to: RouteLocationRaw;
-    btnProps: IonButtonInterface;
-  }>();
+  export default defineComponent({
+    components: { ClubButton },
+    props: {
+      to: {
+        type: Object as PropType<RouteLocationRaw>
+      },
+      btnProps: Object as PropType<IonButtonInterface>,
+      onlyContainer: Boolean
+    },
+    setup (props, { attrs }) {
+      const router = useRouter();
 
-  const router = useRouter();
+      const resolvedPath = computed(() => {
+        if (!props.to) {
+          return ""
+        }
 
-  const resolvedPath = computed(() => {
-    return router.resolve(props.to).path;
-  });
+        return router.resolve(props.to).path;
+      });
 
-  const ionBtnProps = computed(() => {
-    return Object.assign({}, props.btnProps);
-  });
+      const ionBtnProps = computed(() => {
+        return Object.assign({
+          version: "link"
+        }, props.btnProps, attrs);
+      });
+
+      function onClick (navigate, e) {
+        const keys = ["metaKey", "ctrlKey"].reduce((acc, key) => {
+          if (e[key]) {
+            acc[key] = e[key]
+          }
+
+          return acc;
+        }, {})
+
+        if (props.btnProps?.target !== "_blank" && Object.keys(keys).length === 0) {
+          e.preventDefault()
+
+          navigate()
+        }
+
+      }
+
+      return {
+        resolvedPath,
+        ionBtnProps,
+        onClick
+      }
+    }
+  })
+
 </script>
 
 <style scoped>

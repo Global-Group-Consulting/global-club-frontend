@@ -1,0 +1,133 @@
+.product-card {
+  --background: transparent;
+  --border-width: 0;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin: 0;
+  box-shadow: none;
+
+  .product-card-img {
+    flex-grow: 1;
+    object-fit: cover;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+  }
+
+  .product-img-wrapper {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  ion-card-header {
+    ion-card-title {
+      font-size: 1rem;
+    }
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    &:before {
+      content: "";
+      width: 80px;
+      height: 80px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: linear-gradient(135deg, black -20%, rgba(0, 0, 0, 0) 60%);
+      z-index: 0;
+    }
+
+    &:after {
+      content: "";
+      width: 80px;
+      height: 80px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: linear-gradient(317deg, black -20%, rgba(0, 0, 0, 0) 60%);
+      z-index: 0;
+    }
+
+    .clickable-area.btn-fav {
+      left: 0;
+      top: 0;
+      position: absolute;
+      z-index: 1;
+    }
+
+    .clickable-area.btn-go {
+      right: 0;
+      bottom: 0;
+      position: absolute;
+      z-index: 1;
+    }
+  }
+}
+
+.statistics-card-wrapper {
+  max-width: 350px;
+
+  @include mediaQueryUp(lg){
+    max-width: 500px;
+  }
+}
+
+.statistics-card {
+  margin: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  //gap: var(--spacer);
+  opacity: .2;
+  transition: opacity .3s;
+  border-radius: var(--border-radius);
+  background-color: var(--ion-color-secondary);
+  background-image: url("/assets/statistics-bg.png");
+  background-position: center;
+  background-size: 120%;
+  background-blend-mode: soft-light;
+  background-repeat: no-repeat;
+
+  ion-card-content {
+    padding: calc(var(--spacer) * 2) calc(var(--spacer) * 1.3);
+    gap: var(--spacer);
+    display: flex;
+    flex-direction: column;
+  }
+
+  &.is-active {
+    opacity: 1;
+  }
+
+  .statistics-card-title {
+    font-size: 24px;
+    color: white;
+
+    i {
+      color: var(--ion-color-primary)
+    }
+  }
+
+  .statistics-card-subtitle {
+    margin-left: 32px;
+  }
+
+  .statistics-card-row {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.ion-card-footer {
+  display: flex;
+  justify-content: end;
+  padding: 0 var(--spacer) var(--spacer);
+}

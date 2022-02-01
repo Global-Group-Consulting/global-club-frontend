@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { settings } from '@/config/authPlugin';
 import * as jwt from 'jsonwebtoken';
 import { AlertsPlugin } from '@/plugins/Alerts';
+import { AclPermissionsEnum } from '@/@enums/acl.permissions.enum';
 
 interface LoginDto {
   email: string;
@@ -35,7 +36,11 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
         const tokens = await this.readTokens();
         
         if (tokens) {
-          await this.fetchUser();
+          try {
+            await this.fetchUser();
+          } catch (er) {
+            await this.logout(true)
+          }
         }
         
         AuthPlugin.pendingInitiation();
@@ -89,13 +94,27 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
     
     await this.cleanToken();
     await this.store.dispatch('auth/setUser', null);
-    
+  
     if (forceRedirect) {
       const url = await this.plugins.$router.resolve({ name: "public.login" })
       window.location.assign(url.path);
     } else if (logged) {
       await this.plugins.$router.replace({ name: "public.login" })
       //window.location.assign('/');
+    }
+  }
+  
+  public async forgotPassword (email: string) {
+    await this.loading.show()
+    
+    try {
+      await this.http.rawRequest({
+        method: 'POST',
+        url: this.options.forgotUrl,
+        data: { email }
+      })
+    } finally {
+      await this.loading.hide()
     }
   }
   
@@ -142,6 +161,28 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
   
   public async checkStatus (): Promise<boolean> {
     return !!(await this.readTokens());
+  }
+  
+  public hasPermissions (requestedPermissions: AclPermissionsEnum | AclPermissionsEnum[]) {
+    if (!(requestedPermissions instanceof Array)) {
+      requestedPermissions = [requestedPermissions];
+    }
+    
+    const userPermissions = this.store.getters['auth/permissions'];
+    
+    // For each requested permission, check if the user has that permission
+    return requestedPermissions?.every(el => {
+      // club.users.all:read
+      const permRoot = el.split(':')[0];
+      const permAction = el.split(':')[1];
+      
+      return userPermissions.some(userPerm => {
+        const userPermRoot = userPerm.split(':')[0];
+        const userPermAction = userPerm.split(':')[1];
+        
+        return permRoot === userPermRoot && (permAction === userPermAction || userPermAction === '*');
+      });
+    });
   }
   
   get http (): HttpPlugin {
@@ -289,6 +330,7 @@ declare module '@vue/runtime-core' {
 export interface AuthPluginOptions {
   loginUrl: string;
   logoutUrl: string;
+  forgotUrl: string;
   userUrl: string;
   refreshTokenUrl: string;
   tokenKey: string;

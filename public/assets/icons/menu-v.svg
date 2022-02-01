@@ -1,0 +1,17 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g id="Iconly/Light/MenuV" style="transform:rotateZ(90deg);transform-origin: center; ">
+        <g id="Filter">
+            <g id="Group 10294">
+                <path id="Stroke 5" fill-rule="evenodd" clip-rule="evenodd"
+                      d="M8.72629 12.3463C8.72629 11.0506 7.66813 10 6.36314 10C5.05816 10 4 11.0506 4 12.3463C4 13.6419 5.05816 14.6925 6.36314 14.6925C7.66813 14.6925 8.72629 13.6419 8.72629 12.3463Z"
+                      fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                <path id="Stroke 8" fill-rule="evenodd" clip-rule="evenodd"
+                      d="M14.7263 12.3463C14.7263 11.0506 13.6681 10 12.3631 10C11.0582 10 10 11.0506 10 12.3463C10 13.6419 11.0582 14.6925 12.3631 14.6925C13.6681 14.6925 14.7263 13.6419 14.7263 12.3463Z"
+                      fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                <path id="Stroke 9" fill-rule="evenodd" clip-rule="evenodd"
+                      d="M20.7263 12.3463C20.7263 11.0506 19.6681 10 18.3631 10C17.0582 10 16 11.0506 16 12.3463C16 13.6419 17.0582 14.6925 18.3631 14.6925C19.6681 14.6925 20.7263 13.6419 20.7263 12.3463Z"
+                      fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+        </g>
+    </g>
+</svg>
