@@ -4,19 +4,21 @@
 
     <IonContent>
       <ion-grid fixed>
-        <ion-card v-for="news of newsList" :key="news._id" class="mb-5">
-          <img :src="news.coverImg"
-               style="width: 100%; max-height: 350px; object-fit: cover; object-position: center"/>
-          <ion-card-header class="ion-text-start">
-            <!--            <ion-card-subtitle>Card Subtitle</ion-card-subtitle>-->
-            <ion-card-title>{{ news.title }}</ion-card-title>
-          </ion-card-header>
+        <no-data v-if="newsList.length === 0"></no-data>
+        <template v-else>
+          <ion-card v-for="news of newsList" :key="news._id" class="mb-5">
+            <img :src="news.coverImg"
+                 style="width: 100%; max-height: 350px; object-fit: cover; object-position: center"/>
+            <ion-card-header class="ion-text-start">
+              <!--            <ion-card-subtitle>Card Subtitle</ion-card-subtitle>-->
+              <ion-card-title>{{ news.title }}</ion-card-title>
+            </ion-card-header>
 
-          <ion-card-content v-html="news.content">
+            <ion-card-content v-html="news.content">
 
-          </ion-card-content>
-        </ion-card>
-
+            </ion-card-content>
+          </ion-card>
+        </template>
       </ion-grid>
     </IonContent>
   </IonPage>
@@ -27,10 +29,12 @@ import {defineComponent, inject, ref} from "vue";
 import TopToolbar from '@/components/toolbars/TopToolbar.vue';
 import {HttpPlugin} from "@/plugins/HttpPlugin";
 import {onIonViewWillEnter} from "@ionic/vue";
+import NoData from "@/components/NoData.vue";
 
 export default defineComponent({
   name: "News",
   components: {
+    NoData,
     TopToolbar,
   },
   setup() {

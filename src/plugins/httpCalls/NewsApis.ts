@@ -1,5 +1,5 @@
 import {BasicApisClass} from '@/plugins/httpCalls/basicApisClass';
-import {AxiosRequestConfig, AxiosResponse} from 'axios';
+import { AxiosResponse} from 'axios';
 
 export class NewsApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'news';

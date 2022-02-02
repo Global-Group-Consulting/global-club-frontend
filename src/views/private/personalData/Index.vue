@@ -13,7 +13,6 @@
 </template>
 
 <script lang="ts">
-import TabsItems from './PersonalDataTabs.vue';
 import { defineComponent} from "vue";
 import OnlineSoon from "@/components/OnlineSoon.vue";
 export default defineComponent({

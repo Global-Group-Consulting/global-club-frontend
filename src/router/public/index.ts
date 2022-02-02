@@ -3,8 +3,8 @@ import { RouteRecordRaw } from 'vue-router';
 export default [
   {
     path: "/",
-    component: () => import("@/views/guest/WelcomePage.vue"),
     name: "public.home",
+    redirect: "/login",
     meta: {
       guest: true,
     },
