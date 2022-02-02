@@ -18,6 +18,8 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+  window.document.title = (to.meta.title ? to.meta.title + ' | ' : '') + 'Global Club'
+  
   // Due to the fact that this could be accessed
   // before the AuthPlugin gets completed, we await that this first gets initiated
   await AuthPlugin.isInitiated;
