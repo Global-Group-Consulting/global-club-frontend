@@ -25,7 +25,7 @@
     props: {
       editor: Object as PropType<Editor>
     },
-    setup (props) {
+    setup () {
       const config = [
         // Text style group
         [

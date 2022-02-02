@@ -63,6 +63,14 @@
       --title-color: var(--ion-color-primary)
     }
 
+    &.status-change{
+      --title-color: #4ead5b;
+
+      .chat-message-title{
+        font-style: italic;
+      }
+    }
+
     .status-index {
       position: absolute;
       left: 0;

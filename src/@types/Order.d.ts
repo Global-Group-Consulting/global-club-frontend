@@ -10,6 +10,7 @@ export interface Order {
   amount: number;
   communication: Communication;
   status: OrderStatusEnum;
+  notes: string;
   
   _id: string;
   createdAt: Date;
@@ -36,4 +37,9 @@ export interface ReadOrderStatusesDto {
 export interface UpdateOrderProductDto {
   qta: number;
   price: number;
+}
+
+export interface UpdateOrderStatusDto {
+  status: OrderStatusEnum;
+  reason?: string;
 }

@@ -1,12 +1,12 @@
 <template>
-  <ion-page>
+  <IonPage>
     <TopToolbar include-back>{{ $t('pages.productDetails.title') }}</TopToolbar>
 
     <ion-content>
       <ion-grid fixed>
-        <SimpleToolbar>
+        <SimpleToolbar v-if="!isNew">
           <template v-slot:center>
-            <SimpleToolbarButton v-if="currentProduct"
+            <SimpleToolbarButton v-if="!isNew"
                                  :text="$t('pages.productDetails.btn_delete')"
                                  @click="onDeleteClick"/>
           </template>
@@ -43,6 +43,12 @@
               <FormRTE :label="$t('forms.products.description')"
                        v-model="productForm.formData.description.modelValue"
                        :error="productForm.formData.description.errorMessage"/>
+            </ion-col>
+
+            <ion-col>
+              <FormRTE :label="$t('forms.products.conditions')"
+                       v-model="productForm.formData.conditions.modelValue"
+                       :error="productForm.formData.conditions.errorMessage"/>
             </ion-col>
 
             <ion-col>
@@ -93,13 +99,27 @@
 
             <ion-col>
               <FormInputV :label="$t('forms.products.createdAt')"
-                          disabled v-if="currentProduct"
+                          disabled v-if="!isNew"
                           :model-value="formatLocaleDate(currentProduct?.createdAt)"/>
             </ion-col>
             <ion-col>
               <FormInputV :label="$t('forms.products.updatedAt')"
-                          disabled v-if="currentProduct"
+                          disabled v-if="!isNew"
                           :model-value="formatLocaleDate(currentProduct?.updatedAt)"/>
+            </ion-col>
+          </ion-row>
+
+          <h3 class="d-flex ion-align-items-center">
+            Dati aggiuntivi
+            <ClubButton version="outline" size="small" class="ms-3"
+                        @click="addExtraData">Aggiungi
+            </ClubButton>
+          </h3>
+
+          <ion-row>
+            <ion-col>
+              <FormCustomField v-for="(field, i) in extraData" :key="i"
+                               @removeInput="removeExtraData(i)"/>
             </ion-col>
           </ion-row>
 
@@ -113,11 +133,11 @@
         </Form>
       </ion-grid>
     </ion-content>
-  </ion-page>
+  </IonPage>
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, inject, reactive, ref, Ref } from 'vue';
+  import { computed, defineComponent, inject, ref, Ref } from 'vue';
   import { useI18n } from 'vue-i18n';
   import { useRoute, useRouter } from 'vue-router';
   import { Product } from '@/@types/Product';
@@ -125,8 +145,6 @@
   import { AlertsPlugin } from '@/plugins/Alerts';
   import SimpleToolbar from '@/components/toolbars/SimpleToolbar.vue';
   import FormFiles from '@/components/forms/FormFiles.vue';
-  import { CreateProductDto } from '@/views/admin/products/dto/create.product.dto';
-  import { UpdateProductDto } from '@/views/admin/products/dto/update.product.dto';
   import { ProductCategory } from '@/@types/ProductCategory';
   import { Attachment } from '@/@types/Attachment';
   import { onIonViewDidLeave, onIonViewWillEnter } from '@ionic/vue';
@@ -138,9 +156,21 @@
   import FormToggleV from '@/components/forms/FormToggleV.vue';
   import { formatLocaleDate } from '@/@utilities/dates';
   import { PackEnum } from '@/@enums/pack.enum';
+  import TopToolbar from '@/components/toolbars/TopToolbar.vue';
+  import FormCustomField from "@/components/forms/FormCustomField.vue";
 
   export default defineComponent({
-    components: { FormToggleV, FormRTE, FormInputV, ClubButton, SimpleToolbarButton, SimpleToolbar, FormFiles },
+    components: {
+      FormCustomField,
+      TopToolbar,
+      FormToggleV,
+      FormRTE,
+      FormInputV,
+      ClubButton,
+      SimpleToolbarButton,
+      SimpleToolbar,
+      FormFiles
+    },
     setup (props, { emit }) {
       const { t } = useI18n();
       const route = useRoute();
@@ -150,6 +180,7 @@
       const colSizes = {
         size: 6
       }
+      const extraData: Ref<any[]> = ref([]);
 
       const currentProduct: Ref<Product & { categories: string[] } | undefined> = ref()
       const categoriesList: Ref<ProductCategory[]> = ref([])
@@ -176,6 +207,7 @@
         dataToWatch: () => currentProduct.value,
         emit
       })
+      const isNew = computed(() => !currentProduct.value?._id)
 
       productForm.addEventListener("submitCompleted", (e) => {
         currentProduct.value = productForm.formatCurrentProduct(e.detail);
@@ -223,8 +255,19 @@
         if (alertResult) {
           await http.api.products.deleteProduct(currentProduct.value._id);
 
-          await router.replace({ name: "admin.products" })
+          await router.replace({name: "admin.products"})
         }
+      }
+
+      function addExtraData() {
+
+        // TODO:: aprire un modale per inz<erire le specifiche del nuovo campo.
+        extraData.value.push({})
+      }
+
+      function removeExtraData(index: number) {
+        debugger
+        extraData.value.splice(index, 1)
       }
 
       onIonViewWillEnter(async () => {
@@ -252,7 +295,8 @@
         currentProduct, categoriesList, categoryOptionsList, packsOptionsList,
         onImageDeleteClick, onDeleteClick,
         productForm, colSizes,
-        formatLocaleDate
+        formatLocaleDate, isNew,
+        addExtraData, removeExtraData, extraData
       }
     }
   })

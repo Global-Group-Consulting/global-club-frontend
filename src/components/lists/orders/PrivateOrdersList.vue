@@ -2,10 +2,11 @@
   <div>
     <h4 class="ion-text-start" v-if="title">{{ title }}</h4>
 
-    <ion-list v-if="orders.data.length > 0">
-      <OrderListItem v-for="(order, i) in orders.data" :key="i"
-                     :order="order"></OrderListItem>
-    </ion-list>
+    <template v-if="orders.data.length > 0">
+      <ion-list v-for="(order, i) in orders.data" :key="i" class="mb-3">
+        <OrderListItem :order="order"></OrderListItem>
+      </ion-list>
+    </template>
 
     <template v-else>
       <NoData :text="noDataText"></NoData>

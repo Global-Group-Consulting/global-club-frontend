@@ -8,18 +8,22 @@ export type UserGroup = { id: UserRoleEnum; data: User[] }
 export class UserApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'club/users';
   
-  static async readAll (group: UserRoleEnum, page: number): Promise<PaginatedResult<UserBasic[]> | undefined> {
+  static async readAll (group?: UserRoleEnum, page = 1): Promise<PaginatedResult<UserBasic[]> | undefined> {
+    const filters = {}
+    
+    if (group) {
+      filters["role"] = group.toString()
+    }
+    
     const result = await this.withLoader<PaginatedResult<UserBasic[]>>("get", this.getUrl(), {
       params: {
         "sortBy[firstName]": 1,
         "sortBy[lastName]": 1,
-        ...this.prepareFilterParams({
-          role: group.toString()
-        }),
+        ...this.prepareFilterParams(filters),
         page
       }
     });
-  
+    
     return result?.data;
   }
   

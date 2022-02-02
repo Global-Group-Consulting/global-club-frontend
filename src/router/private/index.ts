@@ -11,9 +11,17 @@ export default [
     },
   },
   {
-    path: "/walletpremium",
+    path: "/wallet",
     component: () => import("@/views/private/Wallet.vue"),
     name: "private.wallet",
+    meta: {
+      isPrivate: true,
+    },
+  },
+  {
+    path: "/walletPremium",
+    component: () => import("@/views/private/WalletPremium.vue"),
+    name: "private.walletPremium",
     meta: {
       isPrivate: true,
     },
@@ -36,14 +44,7 @@ export default [
     },
   },
 
-  {
-    path: "/portfolio",
-    component: () => import("@/views/private/WalletStatement.vue"),
-    name: "private.portfolio",
-    meta: {
-      isPrivate: true,
-    },
-  },
+
   {
     path: "/search",
     component: () => import("@/views/private/searchPage/Index.vue"),
@@ -73,7 +74,8 @@ export default [
     component: () => import("@/views/private/personalData/Index.vue"),
     name: "private.user",
     meta: {
-      isPrivate: true
+      isPrivate: true,
+      isAdmin: true,
     },
   },
   {
@@ -86,13 +88,22 @@ export default [
     },
   },
   {
-    path: "/components/buttons",
-    component: () => import("@/views/private/components/Buttons.vue"),
-    name: "private.components/buttons",
+    path: "/news",
+    component: () => import("@/views/private/News.vue"),
+    name: "news.index",
     meta: {
       isPrivate: true,
       isAdmin: true,
     },
   },
+  /* {
+     path: "/components/buttons",
+     component: () => import("@/views/private/components/Buttons.vue"),
+     name: "private.components/buttons",
+     meta: {
+       isPrivate: true,
+       isAdmin: true,
+     },
+   },*/
   ...products
 ] as RouteRecordRaw[]

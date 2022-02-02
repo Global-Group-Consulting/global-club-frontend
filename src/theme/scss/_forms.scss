@@ -52,6 +52,12 @@
 
 }
 
+.form-input-condensed {
+  //--padding-top: calc(var(--spacer) / 2) !important;
+  --padding-bottom: calc(var(--spacer) / 2) !important;
+  height: auto;
+}
+
 ion-input {
   --padding-start: 15px;
   --placeholder-color: #888;

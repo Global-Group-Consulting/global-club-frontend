@@ -27,6 +27,7 @@ export interface MenuEntry {
   badge?: ComputedRef<string>;
   disabled?: boolean;
   slot?: string;
+  if?: boolean;
 }
 
 const genericFooterEntries: MenuEntry[] = [
@@ -205,6 +206,17 @@ const desktopMenuEntries: Record<"admin" | "private", MenuEntry[]> = {
       icon: "folder",
       permissions: [AclPermissionsEnum.CLUB_PRODUCTS_CAT_ALL_READ]
     },
+    {
+      route: '',
+      label: '',
+      divider: true
+    },
+    {
+      route: 'news.index',
+      label: 'news',
+      icon: "calendar",
+      permissions: [AclPermissionsEnum.CLUB_NEWS_ALL_READ]
+    },
     ...genericFooterEntries
   ],
   private: [
@@ -251,6 +263,22 @@ const desktopMenuEntries: Record<"admin" | "private", MenuEntry[]> = {
       route: 'private.wallet',
       label: 'userPortfolio',
       icon: "wallet",
+    },
+    {
+      route: 'private.walletPremium',
+      label: 'userPortfolioPremium',
+      icon: "wallet",
+    },
+    {
+      route: '',
+      label: '',
+      divider: true
+    },
+    {
+      route: 'news.index',
+      label: 'news',
+      icon: "calendar",
+      permissions: [AclPermissionsEnum.CLUB_NEWS_ALL_READ]
     },
     ...genericFooterEntries
   ]

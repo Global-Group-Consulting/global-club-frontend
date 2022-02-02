@@ -2,7 +2,6 @@ import { BasicForm, FormSettings, YupSchema } from '@/composables/forms/BasicFor
 import { Product, ProductCreateDto } from '@/@types/Product';
 import { FormContext } from 'vee-validate';
 import * as yup from 'yup';
-import { CreateProductDto } from '@/views/admin/products/dto/create.product.dto';
 import { computed, ComputedRef } from 'vue';
 import { ProductCategory } from '@/@types/ProductCategory';
 
@@ -20,6 +19,7 @@ export class ProductForm extends BasicForm<Product> {
     this.schema = {
       title: yup.string().required(),
       description: yup.string().required(),
+      conditions: yup.string(),
       price: yup.number(),
       categories: yup.array().required(),
       minPacks: yup.array(),
@@ -57,7 +57,9 @@ export class ProductForm extends BasicForm<Product> {
     return {
       ...product,
       // @ts-ignore
-      categories: this.formatCategories(product.categories)
+      categories: product?.categories ? this.formatCategories(product.categories) : null,
+      visible: product?.visible ?? true,
+      hasQta: product?.hasQta ?? true
     };
   }
   

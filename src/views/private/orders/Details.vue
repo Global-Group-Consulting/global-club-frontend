@@ -3,7 +3,7 @@
     <TopToolbar include-back>Ordine #{{ order?._id }}</TopToolbar>
 
     <IonContent>
-      <ion-grid fixed>
+      <ion-grid fixed class="mb-5">
         <ion-row class="">
           <ion-col class="ion-text-start">
             <h3 class="m-0">Totale</h3>
@@ -15,6 +15,7 @@
             </h3>
           </ion-col>
         </ion-row>
+
         <ion-row class="mb-4">
           <ion-col class="ion-text-start">
             <h4 class="m-0">Stato ordine</h4>
@@ -27,13 +28,19 @@
           </ion-col>
         </ion-row>
 
+        <div class="mb-4 ion-text-center static-alert alert-info" v-if="order?.notes">
+          <h5 class="mt-0">Note ordine</h5>
+          <div v-html="order?.notes" class="notes-container"></div>
+        </div>
+
         <ion-list class="list-transparent" lines="full">
-          <PrivateOrderProductListItem v-for="product in order?.products" :key="product.product._id"
-                                       :order-product="product"></PrivateOrderProductListItem>
+          <PrivateOrderProductListItem v-for="(product, i) in order?.products" :key="i"
+                                       :order-product="product"
+                                       :readonly="!product.product"></PrivateOrderProductListItem>
         </ion-list>
       </ion-grid>
 
-      <BottomDrawer :order="order"></BottomDrawer>
+      <BottomDrawer :order="order" slot="fixed"></BottomDrawer>
     </IonContent>
   </IonPage>
 </template>

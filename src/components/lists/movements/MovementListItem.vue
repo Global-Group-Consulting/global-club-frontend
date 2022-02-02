@@ -1,19 +1,19 @@
 <template>
   <ion-item>
-    <ion-thumbnail slot="start" class="center-inner-icon">
+    <ion-thumbnail slot="start" class="center-inner-icon" v-if="$store.getters['mdAndUp']">
       <Icon :name="icon" :color="color" size="large"></Icon>
     </ion-thumbnail>
 
-    <ion-label>
-      <h2>
-        <strong> {{ type === "in" ? "+" : "-" }} {{ formatBrites(movement.amountChange) }}</strong>
-        <BriteIcon class="ms-1"></BriteIcon>
-      </h2>
+    <ion-label >
+      <h2 :style="`color: ${color}`"><strong v-html="value"></strong></h2>
       <h4>{{ formatMovementType(movement.movementType) }}</h4>
     </ion-label>
 
     <ion-label slot="end">
-      <small>{{ formatLocaleDate(movement.created_at) }}</small>
+      <div class="d-flex flex-column ion-align-items-center">
+        <ion-chip :color="movementColor" >{{ movementPack }}</ion-chip>
+        <small>{{ formatLocaleDate(movement.createdAt) }}</small>
+      </div>
     </ion-label>
   </ion-item>
 </template>
@@ -22,14 +22,13 @@
   import { computed, ComputedRef, defineComponent, PropType } from 'vue';
   import { Movement } from '@/@types/Movement';
   import { MovementTypeInList, MovementTypeOutList } from '@/@enums/movement.type.enum';
-  import { formatMovementType } from '@/@utilities/statuses';
+  import { formatClubPack, formatMovementType } from '@/@utilities/statuses';
   import { formatBrites, formatCurrency } from '@/@utilities/currency';
   import { formatLocaleDate } from '@/@utilities/dates';
-  import BriteIcon from '@/components/BriteIcon.vue';
 
   export default defineComponent({
     name: "MovementListItem",
-    components: { BriteIcon },
+    components: { },
     props: {
       movement: {
         type: Object as PropType<Movement>,
@@ -53,14 +52,27 @@
 
       const color = computed(() => {
         if (type.value === "out") {
-          return "red"
+          return "var(--ion-color-danger)"
         } else {
-          return "green"
+          return "var(--ion-color-success)"
         }
       })
 
+      const value = computed(() => {
+        return (type.value === 'in' ? '+' : '-') + " " + formatBrites(props.movement.amountChange)
+      })
+
+      const movementColor = computed(() => {
+        return "primary"
+      })
+
+      const movementPack = computed(() => {
+        return formatClubPack(props.movement.clubPack) || "Sconosciuto"
+      })
+
       return {
-        type, icon, color,
+        type, icon, color, value, movementColor,
+        movementPack,
         formatMovementType,
         formatBrites, formatCurrency, formatLocaleDate
       }

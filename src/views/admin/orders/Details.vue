@@ -4,16 +4,11 @@
 
     <ion-content>
       <ion-grid fixed>
-        <SimpleToolbar>
+        <SimpleToolbar v-if="order && actions.length > 0">
           <template v-slot:center>
-            <SimpleToolbarButton :disabled="!order"
-                                 :text="$t('pages.orderDetails.btn_cancel')"
-            />
-            <SimpleToolbarButton :disabled="!order"
-                                 :text="$t('pages.orderDetails.btn_approve')"
-            />
-            <SimpleToolbarButton :disabled="!order"
-                                 :text="$t('pages.orderDetails.btn_approve')"
+            <SimpleToolbarButton v-for="(action, i) in actions" :key="i"
+                                 :text="action.text"
+                                 @click="action.click"
             />
           </template>
         </SimpleToolbar>
@@ -48,14 +43,19 @@
           </ion-col>
         </ion-row>
 
-        <OrderAccordion :order-data="order" @productUpdated="onProductUpdated"></OrderAccordion>
+        <div class="mb-5 ion-text-center static-alert alert-info" v-if="order?.notes">
+          <h5 class="mt-0">Note ordine</h5>
+          <div v-html="order?.notes" class="notes-container"></div>
+        </div>
+
+        <OrderAccordion :order-data="order" @productUpdated="updateOrder"></OrderAccordion>
       </ion-grid>
     </ion-content>
   </IonPage>
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, Ref, ref } from 'vue';
+  import { computed, defineComponent, inject, Ref, ref } from 'vue';
   import { Order } from '@/@types/Order';
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import { onIonViewWillEnter } from '@ionic/vue';
@@ -67,18 +67,84 @@
   import { formatBrites } from "@/@utilities/currency"
   import { formatClubPack, formatOrderStatus } from "@/@utilities/statuses"
   import OrderAccordion from '@/components/accordions/admin/OrderAccordion.vue';
+  import { OrderStatusEnum } from '@/@enums/order.status.enum';
+  import { useI18n } from 'vue-i18n';
+  import { AlertsPlugin } from '@/plugins/Alerts';
 
   export default defineComponent({
     name: "Details",
     components: { OrderAccordion, SimpleToolbarButton, SimpleToolbar, TopToolbar },
     setup () {
-      const http: HttpPlugin = inject<HttpPlugin>('http') as HttpPlugin;
+      const http = inject<HttpPlugin>('http') as HttpPlugin;
+      const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin;
       const route = useRoute()
+      const { t } = useI18n()
       const order: Ref<Order | null> = ref(null)
+      const mustStartWorking = computed(() => order.value?.status === OrderStatusEnum.PENDING)
+      const mustCompleteWorking = computed(() => order.value?.status === OrderStatusEnum.IN_PROGRESS)
+      const completedWorking = computed(() => order.value && [OrderStatusEnum.COMPLETED, OrderStatusEnum.CANCELLED].includes(order.value?.status))
 
-      function onProductUpdated (updatedOrder: Order) {
-        order.value = updatedOrder
+      function updateOrder (updatedOrder: Order) {
+        console.log("[] Updating order!")
+
+        Object.assign(order.value, updatedOrder)
+        // order.value = updatedOrder
       }
+
+      const actions = computed(() => {
+        return [{
+          icon: "",
+          text: t('pages.orderDetails.btn_cancel'),
+          if: mustCompleteWorking,
+          click: async () => {
+            if (order.value) {
+              const result = await http.api.orders.updateStatus(order.value._id, {
+                status: OrderStatusEnum.PENDING
+              })
+
+              if (result) {
+                updateOrder(result)
+
+                await alerts.toastSuccess("Ordine preso in carico correttamente.")
+              }
+            }
+          }
+        }, {
+          icon: "",
+          text: t('pages.orderDetails.btn_approve'),
+          if: mustCompleteWorking,
+          click: async () => {
+            if (order.value) {
+              const result = await http.api.orders.updateStatus(order.value._id, {
+                status: OrderStatusEnum.COMPLETED
+              })
+
+              if (result) {
+                updateOrder(result)
+
+                await alerts.toastSuccess("Ordine concluso correttamente.")
+              }
+            }
+          }
+        }, {
+          icon: "",
+          text: t('pages.orderDetails.btn_start_working'),
+          if: mustStartWorking,
+          click: async () => {
+            if (order.value) {
+              const result = await http.api.orders.updateStatus(order.value._id, {
+                status: OrderStatusEnum.IN_PROGRESS
+              })
+
+              if (result) {
+                updateOrder(result)
+
+                await alerts.toastSuccess("Ordine preso in carico correttamente.")
+              }
+            }
+          }
+        }].filter(el => el.if.value)
+      })
 
       onIonViewWillEnter(async () => {
         const result = await http.api.orders.read(route.params.id as string);
@@ -87,9 +153,10 @@
       })
 
       return {
-        order,
+        actions,
+        order, mustStartWorking, mustCompleteWorking, completedWorking,
         formatLocaleDate, formatBrites, formatOrderStatus,
-        formatClubPack, onProductUpdated
+        formatClubPack, updateOrder
       }
     }
   });

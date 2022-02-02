@@ -1,81 +1,111 @@
 <template>
-  <div class="search-bar-wrapper">
-    <IonSearchbar placeholder="Cosa desideri cercare"
-                  v-model.lazy="searchValue"
-                  inputmode="search"
-                  enterkeyhint="Cerca"
-                  @keydown.enter="onEnterDown"
-    ></IonSearchbar>
+  <div>
+    <div class="search-bar-wrapper">
+      <IonSearchbar placeholder="Cosa desideri cercare"
+                    :value="activeFilters[mainField]"
+                    @ionInput="activeFilters[mainField] = $event.currentTarget.value"
+                    inputmode="search"
+                    enterkeyhint="Cerca"
+                    @keydown.enter="onEnterDown"
 
-    <ClubButton class="search-advanced-btn mx-3" version="link">
-      <Icon name="filter"></Icon>
-    </ClubButton>
+      ></IonSearchbar>
+
+      <ClubButton class="search-advanced-btn mx-3" version="link">
+        <Icon name="filter"></Icon>
+      </ClubButton>
+    </div>
+
+    <div v-if="hasFilters" class="mt-3">
+      <ion-chip v-for="filter in filtersChips" :key="filter.field"
+                color="primary" @click="onChipClick(filter)">
+        Titolo:&nbsp;<strong>{{ filter.value }}</strong>
+
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-chip>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-  import { ProductCategoryApis } from "@/plugins/httpCalls/ProductCategoryApis";
-  import { defineComponent, inject, onMounted, Ref, ref } from "vue";
-  import { ProductCategory } from "@/@types/ProductCategory";
-  import { AlertsPlugin } from "@/plugins/Alerts";
-  import { HttpPlugin } from '@/plugins/HttpPlugin';
+  import { computed, ComputedRef, defineComponent, PropType, Ref, ref, watch } from "vue";
   import ClubButton from '@/components/ClubButton.vue';
   import Icon from '@/components/Icon.vue';
-  import { useRouter } from 'vue-router';
+
+  export type SearchFilters = Record<string, string | number>;
+
+  interface FiltersChip {
+    field: string;
+    value: string | number;
+  }
 
   export default defineComponent({
     name: "SearchBar",
     components: { Icon, ClubButton },
-    setup () {
-      const router = useRouter();
-      const alerts: AlertsPlugin = inject<AlertsPlugin>("alerts") as AlertsPlugin;
-      const http = inject("http") as HttpPlugin;
-      const searchValue: Ref<string> = ref("");
-
-      /* const options = ref<ProductCategory[]>([]);
-       const optionsKey = ref("title");
-       const selected = ref({});
-       const isOpenRef = ref(false);
-       const event = ref();*/
-
-      /*const getData = async () => {
-        try {
-          await ProductCategoryApis?.readAll().then((resp) => {
-            options.value = (resp as never[]) ?? [];
-          });
-        } catch (error) {
-          alerts.error(error);
+    props: {
+      filters: Object as PropType<SearchFilters>,
+      mainField: {
+        type: String,
+        default: "title"
+      }
+    },
+    emits: ["update:filters"],
+    setup (props, { emit }) {
+      const activeFilters: Ref<SearchFilters> = ref({
+        [props.mainField]: ""
+      })
+      const hasFilters = computed(() => props.filters && Object.keys(props.filters).length > 0);
+      const filtersChips: ComputedRef<FiltersChip[]> = computed(() => {
+        if (!hasFilters.value || !props.filters) {
+          return []
         }
-      };
-      onMounted(async () => {
-        getData();
-      });*/
 
-      /*   const setOpen = (state: boolean, ev?: Event) => {
-           event.value = ev;
-           isOpenRef.value = state;
-         };
-   */
-      function onEnterDown () {
-        console.log("call search api from the server", searchValue.value)
+        return Object.entries(props.filters).reduce((acc, curr) => {
+          acc.push({
+            field: curr[0],
+            value: curr[1]
+          })
 
-        router.push({
-          name: "private.products",
-          query: {
-            search: searchValue.value
+          return acc;
+        }, [] as FiltersChip[])
+      })
+
+      watch(() => props.filters, (filters: SearchFilters | undefined) => {
+        // must remove the reference
+        filters && (activeFilters.value = { ...filters })
+      }, { immediate: true, deep: true });
+
+      function emitUpdate () {
+        const toEmit: SearchFilters = Object.entries(activeFilters.value).reduce((acc, entry) => {
+          const value = entry[1];
+
+          if (value) {
+            acc[entry[0]] = entry[1];
           }
-        })
+
+          return acc
+        }, {})
+
+        // emits only fields that have a value
+        emit("update:filters", toEmit)
+      }
+
+      async function onEnterDown (e: KeyboardEvent) {
+        const searchInput: HTMLIonSearchbarElement = e.currentTarget as HTMLIonSearchbarElement;
+
+        activeFilters.value[props.mainField] = searchInput.value as string;
+
+        emitUpdate()
+      }
+
+      function onChipClick (filter: FiltersChip) {
+        activeFilters.value[filter.field] = "";
+        emitUpdate()
       }
 
       return {
-        searchValue,
-        onEnterDown
-        /* options,
-         selected,
-         optionsKey,
-         isOpenRef,
-         setOpen,
-         event*/
+        hasFilters,
+        onEnterDown, onChipClick,
+        activeFilters, filtersChips
       };
     },
   });

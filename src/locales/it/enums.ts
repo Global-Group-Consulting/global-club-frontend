@@ -24,6 +24,7 @@ export const enums = {
     [MovementTypeEnum.INTEREST_RECAPITALIZED]: "Ricapitalizzazione",
   },
   PackEnum: {
+    [PackEnum.NONE]: "Sconosciuto",
     [PackEnum.BASIC]: "Basic",
     [PackEnum.FAST]: "Fast",
     [PackEnum.PREMIUM]: "Premium",

@@ -9,6 +9,7 @@
                     <SimpleToolbarButton :text="$t('pages.userProfile.btn_delete')"/>
                   </template>
                 </SimpleToolbar>-->
+        <UserStatistics :user-id="userId" :club-pack="user?.clubPack"></UserStatistics>
 
         <ion-row>
           <ion-col size="12" sizeLg="6" class="pb-0 py-lg-5">
@@ -38,6 +39,7 @@
           </ion-col>
         </ion-row>
 
+
         <AccordionList :sections="profileSections">
           <template v-slot:content_contract>
             <UserContractForm v-model="user"></UserContractForm>
@@ -52,7 +54,16 @@
           </template>
 
           <template v-slot:content_orders>
-            <OrdersList :user-id="user?._id"></OrdersList>
+            <AdminOrdersList :user-id="user?._id" :limit="6" class="mb-3"
+                             :title="$t('sections.orders.last_x_orders', { number: 5 })"></AdminOrdersList>
+
+            <div class="ion-text-center">
+              <PageLink :to="{name: 'admin.orders'}" :btn-props="{target: '_blank'}"
+                        color="primary" version="outline" icon
+                        icon-name="link" icon-position="end">
+                {{ $t("sections.orders.show_all_orders") }}
+              </PageLink>
+            </div>
           </template>
         </AccordionList>
       </IonGrid>
@@ -61,29 +72,41 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, ref, Ref } from 'vue';
+  import { computed, defineComponent, inject, ref, Ref } from 'vue';
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import { formatUserName } from '@/@utilities/fields';
   import { useI18n } from 'vue-i18n';
   import { useRoute } from 'vue-router';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
-  // import { AlertsPlugin } from '@/plugins/Alerts';
   import { onIonViewDidLeave, onIonViewWillEnter } from '@ionic/vue';
   import { User, UserBasic } from '@/@types/User';
   import AccordionList, { AccordionSection } from '@/components/AccordionList.vue';
   import { UserRoleEnum } from "@/@enums/user.role.enum"
   import MovementsList from '@/components/lists/MovementsList.vue';
-  import OrdersList from '@/components/lists/OrdersList.vue';
   import UserContractForm from '@/components/forms/sections/UserContractForm.vue';
   import { formatClubPack, formatUserRole } from '@/@utilities/statuses';
   import UserAnagraphicForm from '@/components/forms/sections/UserAnagraphicForm.vue';
+  import AdminOrdersList from '@/components/lists/orders/AdminOrdersList.vue';
+  import PageLink from '@/components/PageLink.vue';
+  import UserStatistics from '@/components/UserStatistics.vue';
+
   export default defineComponent({
     name: "Profile",
-    components: { UserAnagraphicForm, UserContractForm, OrdersList, MovementsList, AccordionList, TopToolbar },
+    components: {
+      UserStatistics,
+      PageLink,
+      AdminOrdersList,
+      UserAnagraphicForm,
+      UserContractForm,
+      MovementsList,
+      AccordionList,
+      TopToolbar
+    },
     setup () {
       const { t } = useI18n();
       const route = useRoute();
       const http = inject<HttpPlugin>('http') as HttpPlugin;
+      const userId = computed(() => route.params.id)
       // const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin;
       const user: Ref<User | null> = ref(null)
       const profileSections: Ref<AccordionSection[]> = ref([
@@ -127,6 +150,7 @@
         formatUserName, formatClubPack, formatUserRole,
         profileSections,
         UserRoleEnum,
+        userId
       }
     }
   });
