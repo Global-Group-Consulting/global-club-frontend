@@ -94,6 +94,7 @@ const mobileMenuEntries: Record<"admin" | "private", MenuEntry[]> = {
         
         const popover = await popoverController.create({
           component: MenuDropdownPopover,
+          cssClass: "custom-popover",
           componentProps: {
             data: this.children,
             // title: userAuth ? formatUserName(userAuth) : null
@@ -122,6 +123,12 @@ const mobileMenuEntries: Record<"admin" | "private", MenuEntry[]> = {
           permissions: [AclPermissionsEnum.CLUB_PRODUCTS_CAT_ALL_READ]
         },
         {
+          route: 'news.index',
+          label: 'news',
+          icon: "calendar",
+          permissions: [AclPermissionsEnum.CLUB_NEWS_ALL_READ]
+        },
+        {
           route: '',
           label: '',
           divider: true
@@ -129,6 +136,7 @@ const mobileMenuEntries: Record<"admin" | "private", MenuEntry[]> = {
         {
           label: (userAuth) => formatUserName(userAuth),
           icon: "user",
+          route: 'private.profile',
           onlyMobile: true
         },
         {
