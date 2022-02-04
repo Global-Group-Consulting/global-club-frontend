@@ -137,18 +137,18 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, inject, ref, Ref } from 'vue';
-  import { useI18n } from 'vue-i18n';
-  import { useRoute, useRouter } from 'vue-router';
-  import { Product } from '@/@types/Product';
-  import { HttpPlugin } from '@/plugins/HttpPlugin';
-  import { AlertsPlugin } from '@/plugins/Alerts';
-  import SimpleToolbar from '@/components/toolbars/SimpleToolbar.vue';
-  import FormFiles from '@/components/forms/FormFiles.vue';
-  import { ProductCategory } from '@/@types/ProductCategory';
-  import { Attachment } from '@/@types/Attachment';
-  import { onIonViewDidLeave, onIonViewWillEnter } from '@ionic/vue';
-  import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
+import {computed, defineComponent, inject, ref, Ref, watch} from 'vue';
+import {useI18n} from 'vue-i18n';
+import {useRoute, useRouter} from 'vue-router';
+import {Product} from '@/@types/Product';
+import {HttpPlugin} from '@/plugins/HttpPlugin';
+import {AlertsPlugin} from '@/plugins/Alerts';
+import SimpleToolbar from '@/components/toolbars/SimpleToolbar.vue';
+import FormFiles from '@/components/forms/FormFiles.vue';
+import {ProductCategory} from '@/@types/ProductCategory';
+import {Attachment} from '@/@types/Attachment';
+import {onIonViewDidLeave, onIonViewWillEnter} from '@ionic/vue';
+import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
   import ClubButton from '@/components/ClubButton.vue';
   import { ProductForm } from '@/composables/forms/ProductForm';
   import FormInputV from '@/components/forms/FormInputV.vue';
@@ -269,6 +269,12 @@
         debugger
         extraData.value.splice(index, 1)
       }
+
+      watch(() => productForm.formData.priceUndefined.modelValue, (value => {
+        if (value) {
+          productForm.formData.price.modelValue = 0
+        }
+      }))
 
       onIonViewWillEnter(async () => {
         const apiCalls: any[] = [
