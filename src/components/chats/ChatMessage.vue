@@ -34,10 +34,8 @@ import {User} from '@/@types/User';
 import {MessageTypeEnum} from '@/@enums/message.type.enum';
 import {formatOrderStatus} from '@/@utilities/statuses';
 import {formatImgUrl, resolveDownloadUrl} from '@/@utilities/images';
-import {HttpPlugin} from '@/plugins/HttpPlugin';
 import {Attachment} from '@/@types/Attachment';
 import {useI18n} from 'vue-i18n';
-import {AlertsPlugin} from "@/plugins/Alerts";
 
 export default defineComponent({
   name: "ChatMessage",
@@ -49,8 +47,6 @@ export default defineComponent({
     communication: Object as PropType<Communication>
   },
   setup(props) {
-    const http = inject("http") as HttpPlugin
-    const alerts = inject("alerts") as AlertsPlugin
     const store = useStore(storeKey);
     const {t} = useI18n();
 

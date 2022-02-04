@@ -7,6 +7,7 @@ export default [
     name: "admin.orders",
     meta: {
       isAdmin: true,
+      title: "Ordini"
     },
   },
   {
@@ -15,6 +16,7 @@ export default [
     name: "admin.orders.details",
     meta: {
       isAdmin: true,
+      title: "Dettagli Ordine"
     },
   },
 ]

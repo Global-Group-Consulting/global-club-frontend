@@ -1,3 +1,8 @@
-.dropdown-popover{
+.dropdown-popover {
   //--box-shadow: 0 0 50px 0px rgba(var(--ion-color-primary-rgb), .3);
+}
+
+.popover-content {
+  border-radius: 20px!important;
+  overflow: hidden!important;
 }

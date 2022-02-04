@@ -7,7 +7,7 @@ export default [
     component: () => import("@/views/private/dashboard/Index.vue"),
     name: "private.home",
     meta: {
-      isPrivate: true,
+      isPrivate: true
     },
   },
   {
@@ -16,6 +16,7 @@ export default [
     name: "private.wallet",
     meta: {
       isPrivate: true,
+      title: "Wallet"
     },
   },
   {
@@ -24,6 +25,7 @@ export default [
     name: "private.walletPremium",
     meta: {
       isPrivate: true,
+      title: "Wallet Premium"
     },
   },
   {
@@ -32,6 +34,7 @@ export default [
     name: "private.cart",
     meta: {
       isPrivate: true,
+      title: "Carrello"
     },
   },
   
@@ -59,6 +62,7 @@ export default [
     name: "private.orders.home",
     meta: {
       isPrivate: true,
+      title: "Ordini"
     },
   },
   {
@@ -67,6 +71,7 @@ export default [
     name: "private.orders.details",
     meta: {
       isPrivate: true,
+      title: "Dettagli Ordine"
     },
   },
   {
@@ -76,6 +81,7 @@ export default [
     meta: {
       isPrivate: true,
       isAdmin: true,
+      title: "Il mio account"
     },
   },
   {
@@ -85,6 +91,7 @@ export default [
     meta: {
       isPrivate: true,
       isAdmin: true,
+      title: "Il mio profilo"
     },
   },
   {
@@ -94,6 +101,7 @@ export default [
     meta: {
       isPrivate: true,
       isAdmin: true,
+      title: "News ed Eventi"
     },
   },
   /* {
