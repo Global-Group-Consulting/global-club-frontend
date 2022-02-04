@@ -4,7 +4,7 @@
       <ion-item v-bind="!readonly ? {href: href} : null"
                 @click="!readonly ? navigate : null">
         <ion-thumbnail slot="start" class="center-inner-icon">
-          <ion-img class="product-card-img" :src="formatImgUrl(product?.thumbnail?.id)" alt="cover_image"/>
+          <Image class="product-card-img" :file-id="formatImgUrl(product?.thumbnail?.id)" file-name="cover_image"/>
         </ion-thumbnail>
 
         <ion-label>
@@ -32,10 +32,11 @@
   import { OrderProduct } from '@/@types/Order';
   import ClubButton from '@/components/ClubButton.vue';
   import BriteValue from '@/components/BriteValue.vue';
+  import Image from "@/components/Image.vue";
 
   export default defineComponent({
     name: "PrivateProductListItem",
-    components: { BriteValue, ClubButton, PageLink },
+    components: {Image, BriteValue, ClubButton, PageLink },
     props: {
       orderProduct: Object as PropType<OrderProduct>,
       readonly: Boolean

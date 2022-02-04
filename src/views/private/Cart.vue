@@ -20,22 +20,28 @@
             <ion-item v-for="entry of products" :key="entry.product._id">
               <ion-thumbnail slot="start">
                 <slot name="image">
-                  <img :src="formatImgUrl(entry.product.thumbnail.id)" alt="cover_image">
+                  <Image :file-id="entry.product.thumbnail?.id" file-name="cover_image"/>
                 </slot>
               </ion-thumbnail>
 
               <ion-label>
                 <h2 v-html="entry.product.title"></h2>
                 <div class="d-flex ion-align-items-center">
-                  <ClubButton size="small" only-icon icon icon-name="minus"
-                              @click="changeQta(entry, -1)"/>
-                  <span class="px-2 ion-text-center" style="min-width: 40px;">
-                {{ entry.qta }}
-              </span>
-                  <ClubButton size="small" only-icon icon icon-name="plus"
-                              @click="changeQta(entry,+1)"/>
+                  <div v-if="entry.product.hasQta" class="d-flex ion-align-items-center">
+                    <ClubButton size="small" only-icon icon icon-name="minus"
+                                @click="changeQta(entry, -1)"/>
+                    <span class="px-2 ion-text-center" style="min-width: 40px;">
+                      {{ entry.qta }}
+                    </span>
+                    <ClubButton size="small" only-icon icon icon-name="plus"
+                                @click="changeQta(entry,+1)"/>
 
-                  <BriteValue :value="entry.price" class="ms-3"/>
+                  </div>
+
+                  <span :class="{'ms-3': entry.product.hasQta}">
+                    <BriteValue :value="entry.price" v-if="!entry.product.priceUndefined"/>
+                    <template v-else>Prezzo da definie</template>
+                  </span>
                 </div>
               </ion-label>
 
@@ -97,9 +103,11 @@
   import { MenuEntry } from '@/composables/menuEntries';
   import { useRouter } from 'vue-router';
   import FormRTE from '@/components/forms/FormRTE.vue';
+  import Image from "@/components/Image.vue";
 
   export default defineComponent({
     components: {
+      Image,
       FormRTE,
       NoData,
       PageLink,

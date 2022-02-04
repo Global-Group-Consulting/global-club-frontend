@@ -36,7 +36,12 @@ export const forms = {
     createdAt: "Data creazione",
     updatedAt: "Data ultima modifica",
     btnCreate: "Salva e aggiungi",
-    btnUpdate: "Salva"
+    btnUpdate: "Salva",
+    location: {
+      city: "Città",
+      province: "Provincia",
+      region: "Regione"
+    }
   },
   userContract,
   userAnagraphic,

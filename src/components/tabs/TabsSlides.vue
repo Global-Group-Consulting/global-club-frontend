@@ -44,9 +44,9 @@
       }
 
       function onDataFetched () {
-        nextTick(() => {
+        setTimeout(() => {
           swiperInstance.update()
-        })
+        }, 50)
       }
 
       watch(() => props.activeTab, (newValue) => {

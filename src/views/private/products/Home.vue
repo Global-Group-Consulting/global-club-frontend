@@ -8,11 +8,13 @@
           <SearchBar v-model:filters="activeFilters"></SearchBar>
         </div>
 
-        <ion-row>
+        <ion-row v-if="productsList.length > 0">
           <ion-col size-lg="3" size-md="4" size="6" v-for="product of productsList" :key="product._id">
             <PrivateProductCardItem :product="product" class="m-0 h-100"/>
           </ion-col>
         </ion-row>
+
+        <NoData v-else></NoData>
       </ion-grid>
     </ion-content>
   </IonPage>
@@ -30,10 +32,11 @@
   import { useRoute, useRouter } from 'vue-router';
   import { PaginatedResult } from '@/@types/Pagination';
   import Filters from '@/composables/filters';
+  import NoData from "@/components/NoData.vue";
 
   export default defineComponent({
     name: 'Home',
-    components: { SearchBar, PrivateProductCardItem, TopToolbar },
+    components: {NoData, SearchBar, PrivateProductCardItem, TopToolbar },
     setup () {
       const http = inject<HttpPlugin>('http');
       const route = useRoute();

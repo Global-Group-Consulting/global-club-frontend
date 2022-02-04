@@ -7,6 +7,7 @@ import { UpdateUserContractDto } from '@/@types/User';
 import { MixedSchema } from 'yup/lib/mixed';
 import { ArraySchema, BooleanSchema, DateSchema, NumberSchema, ObjectSchema } from 'yup';
 import StringSchema from 'yup/lib/string';
+import {get} from "lodash";
 
 export type FormFields<T = any> = Record<keyof T, FormField>;
 
@@ -23,6 +24,7 @@ export interface FormField {
   modelValue: Ref;
   initialValue: Ref;
   errorMessage: Ref<string | undefined>;
+  resetField();
 }
 
 export interface FormSettings<T = any> {
@@ -120,30 +122,46 @@ export abstract class BasicForm<T> extends EventTarget {
   protected createFormFields (initialData?: () => T) {
     // First set the initial data
     this.updateInitialFormData(initialData ? initialData() : {});
-    
+
     // Creates the VeeValidate form by setting the validation schema and
     // initialValues
     this.form = useForm({
       validationSchema: this.schema,
       initialValues: this.initialData
     });
-    
+  
     // Define the onSubmit method
     // that will be used to bind on the form submit event
     this.onSubmit = this.form.handleSubmit<Promise<T>>((values) => this.handleSubmitValid(values),
       (invalidSubmissionContext: InvalidSubmissionContext) => this.onHandleSubmitInvalid(invalidSubmissionContext))
+  
+    const keys = Object.keys(this.schema).reduce((acc, curr) => {
+      const newKey: string = curr;
     
-    this.formFields = Object.keys(this.schema).reduce<FormFields>((acc, key) => {
-      const validation = this.schema[key];
-      const { value, errorMessage } = useField<any>(key, validation, {})
-      
+      if (this.schema[curr] instanceof ObjectSchema) {
+        Object.keys(this.schema[curr].fields).forEach(subKey => {
+          acc.push(newKey + "." + subKey);
+        })
+      } else {
+        acc.push(newKey);
+      }
+    
+      return acc
+    }, [] as string[])
+  
+    this.formFields = keys.reduce<FormFields>((acc, key) => {
+      const validation = get(this.schema, key);
+    
+      const {value, errorMessage, resetField} = useField<any>(key, validation, {})
+    
       if (this.initialData.value?.hasOwnProperty(key)) {
         value.value = this.initialData.value[key]
       }
-      
+    
       acc[key] = {
         modelValue: value,
         errorMessage,
+        resetField,
         initialValue: computed(() => this.initialData.value?.hasOwnProperty(key) ? this.initialData.value[key] : null)
       }
       

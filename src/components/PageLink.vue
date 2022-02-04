@@ -2,9 +2,11 @@
   <router-link
       :to="resolvedPath"
       custom
-      v-slot="{ href, navigate}">
+      v-slot="{ href, navigate}"
+  >
     <ClubButton v-bind="ionBtnProps"
                 v-if="!onlyContainer"
+                :class="$props.class"
                 @click="onClick(navigate, $event)"
                 :href="href"
                 type="button">
@@ -47,7 +49,8 @@
         type: Object as PropType<RouteLocationRaw>
       },
       btnProps: Object as PropType<IonButtonInterface>,
-      onlyContainer: Boolean
+      onlyContainer: Boolean,
+      class: String
     },
     setup (props, { attrs }) {
       const router = useRouter();

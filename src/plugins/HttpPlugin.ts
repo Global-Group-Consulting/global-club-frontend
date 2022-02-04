@@ -12,7 +12,8 @@ import { MovementApis } from '@/plugins/httpCalls/MovementApis';
 import { DashboardApis } from '@/plugins/httpCalls/DashboardApis';
 import { CommunicationApis } from '@/plugins/httpCalls/CommunicationApis';
 import { FileApis } from '@/plugins/httpCalls/FileApis';
-import { NewsApis } from '@/plugins/httpCalls/NewsApis';
+import {NewsApis} from '@/plugins/httpCalls/NewsApis';
+import {LocationApis} from '@/plugins/httpCalls/LocationApis';
 
 type RequestsQueue = {
   resolve: (value?: unknown) => void;
@@ -31,6 +32,7 @@ interface ApiModules {
   communications: typeof CommunicationApis;
   files: typeof FileApis;
   news: typeof NewsApis;
+  locations: typeof LocationApis;
 }
 
 class HttpQueue {
@@ -134,7 +136,8 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
       dashboard: DashboardApis,
       communications: CommunicationApis,
       files: FileApis,
-      news: NewsApis
+      news: NewsApis,
+      locations: LocationApis,
     };
     this.queue = new HttpQueue();
     this.loading = new LoadingHandler(this.plugins["$t"]);
