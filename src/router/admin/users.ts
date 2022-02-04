@@ -9,19 +9,26 @@ export default [
     component: () => import("@/views/admin/users/Home.vue"),
     name: "admin.users",
     meta: {
-      isAdmin: true,
+      ...meta,
+      title: "Utenti"
     },
   },
   {
     path: prefix + '/profile/:id',
     component: () => import('@/views/admin/users/Profile.vue'),
     name: 'admin.users.profile',
-    meta
+    meta: {
+      ...meta,
+      title: "Profilo utente"
+    }
   },
   {
     path: prefix + '/:id',
     component: () => import('@/views/admin/users/Details.vue'),
     name: 'admin.users.details',
-    meta
+    meta: {
+      ...meta,
+      title: "Dettagli utente"
+    }
   },
 ]
