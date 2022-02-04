@@ -110,6 +110,44 @@
           </ion-row>
 
           <h3 class="d-flex ion-align-items-center">
+            Dati geografici
+          </h3>
+
+          <ion-row class="masonry-row">
+            <ion-col>
+              <FormInputV :label="$t('forms.products.location.region')"
+                          component="ion-select"
+                          :options="regionsList"
+                          :interface-options="{cssClass: 'alert-large'}"
+                          v-model="productForm.formData['location.region'].modelValue"
+                          :error="productForm.formData['location.region'].errorMessage"
+                          @update:modelValue="onRegionChange"
+                          clear-input/>
+            </ion-col>
+            <ion-col>
+              <FormInputV :label="$t('forms.products.location.province')"
+                          component="ion-select"
+                          :options="provincesList"
+                          :interface-options="{cssClass: 'alert-large'}"
+                          v-model="productForm.formData['location.province'].modelValue"
+                          :error="productForm.formData['location.province'].errorMessage"
+                          @update:modelValue="onProvinceChange"
+                          :disabled="provincesList.length === 0"
+                          clear-input />
+            </ion-col>
+            <ion-col>
+              <FormInputV :label="$t('forms.products.location.city')"
+                          component="ion-select"
+                          :options="citiesList"
+                          :interface-options="{cssClass: 'alert-large'}"
+                          v-model="productForm.formData['location.city'].modelValue"
+                          :error="productForm.formData['location.city'].errorMessage"
+                          :disabled="citiesList.length === 0"
+                          clear-input/>
+            </ion-col>
+          </ion-row>
+
+          <h3 class="d-flex ion-align-items-center">
             Dati aggiuntivi
             <ClubButton version="outline" size="small" class="ms-3"
                         @click="addExtraData">Aggiungi
@@ -137,7 +175,7 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, inject, ref, Ref, watch} from 'vue';
+import {computed, ComputedRef, defineComponent, inject, nextTick, ref, Ref, watch} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {useRoute, useRouter} from 'vue-router';
 import {Product} from '@/@types/Product';
@@ -149,163 +187,224 @@ import {ProductCategory} from '@/@types/ProductCategory';
 import {Attachment} from '@/@types/Attachment';
 import {onIonViewDidLeave, onIonViewWillEnter} from '@ionic/vue';
 import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
-  import ClubButton from '@/components/ClubButton.vue';
-  import { ProductForm } from '@/composables/forms/ProductForm';
-  import FormInputV from '@/components/forms/FormInputV.vue';
-  import FormRTE from '@/components/forms/FormRTE.vue';
-  import FormToggleV from '@/components/forms/FormToggleV.vue';
-  import { formatLocaleDate } from '@/@utilities/dates';
-  import { PackEnum } from '@/@enums/pack.enum';
-  import TopToolbar from '@/components/toolbars/TopToolbar.vue';
-  import FormCustomField from "@/components/forms/FormCustomField.vue";
+import ClubButton from '@/components/ClubButton.vue';
+import {ProductForm} from '@/composables/forms/ProductForm';
+import FormInputV from '@/components/forms/FormInputV.vue';
+import FormRTE from '@/components/forms/FormRTE.vue';
+import FormToggleV from '@/components/forms/FormToggleV.vue';
+import {formatLocaleDate} from '@/@utilities/dates';
+import {PackEnum} from '@/@enums/pack.enum';
+import TopToolbar from '@/components/toolbars/TopToolbar.vue';
+import FormCustomField from "@/components/forms/FormCustomField.vue";
+import {City, Province, Region} from "@/@types/Location";
+import {SelectOption} from "@/@types/Form";
+import {capitalize} from "lodash";
 
-  export default defineComponent({
-    components: {
-      FormCustomField,
-      TopToolbar,
-      FormToggleV,
-      FormRTE,
-      FormInputV,
-      ClubButton,
-      SimpleToolbarButton,
-      SimpleToolbar,
-      FormFiles
-    },
-    setup (props, { emit }) {
-      const { t } = useI18n();
-      const route = useRoute();
-      const router = useRouter();
-      const http = inject<HttpPlugin>('http') as HttpPlugin;
-      const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin;
-      const colSizes = {
-        size: 6
-      }
-      const extraData: Ref<any[]> = ref([]);
+export default defineComponent({
+  components: {
+    FormCustomField,
+    TopToolbar,
+    FormToggleV,
+    FormRTE,
+    FormInputV,
+    ClubButton,
+    SimpleToolbarButton,
+    SimpleToolbar,
+    FormFiles
+  },
+  setup(props, {emit}) {
+    const {t} = useI18n();
+    const route = useRoute();
+    const router = useRouter();
+    const http = inject<HttpPlugin>('http') as HttpPlugin;
+    const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin;
+    const colSizes = {
+      size: 6
+    }
+    const extraData: Ref<any[]> = ref([]);
 
-      const currentProduct: Ref<Product & { categories: string[] } | undefined> = ref()
-      const categoriesList: Ref<ProductCategory[]> = ref([])
-      const categoryOptionsList = computed(() => {
-        return categoriesList.value.map(el => ({
-          text: el.title,
-          value: el._id
-        }))
-      })
-      const packsOptionsList = computed(() => {
-        const toReturn = Object.values(PackEnum).map(el => ({
-          text: t("enums.PackEnum." + el),
-          value: el
-        }))
-
-        /*toReturn.unshift({
-          text: "Tutti",
-          value: "" as any
-        })*/
-
-        return toReturn;
-      })
-      const productForm = new ProductForm({
-        dataToWatch: () => currentProduct.value,
-        emit
-      })
-      const isNew = computed(() => !currentProduct.value?._id)
-
-      productForm.addEventListener("submitCompleted", (e) => {
-        currentProduct.value = productForm.formatCurrentProduct(e.detail);
-      })
-
-      /**
-       * Delete a single image
-       */
-      async function onImageDeleteClick (image: Attachment) {
-        if (!currentProduct.value) {
-          return;
-        }
-
-        const alertResult = await alerts.ask({
-          header: t('alerts.products.deleteThumbnail.title'),
-          message: t('alerts.products.deleteThumbnail.message', { imageName: image.fileName }),
-          buttonCancelText: t('alerts.products.deleteThumbnail.buttonCancel'),
-          buttonOkText: t('alerts.products.deleteThumbnail.buttonOk'),
-        });
-
-        if (alertResult) {
-          const result = await http.api.products.deleteFile(currentProduct.value._id, image.id);
-
-          if (result) {
-            currentProduct.value = productForm.formatCurrentProduct(result);
-          }
-        }
-      }
-
-      /**
-       * Delete the current Product
-       */
-      async function onDeleteClick () {
-        if (!currentProduct.value) {
-          return
-        }
-
-        const alertResult = await alerts.ask({
-          header: t('alerts.products.deleteProduct.title'),
-          message: t('alerts.products.deleteProduct.message', { productName: currentProduct.value?.title }),
-          buttonCancelText: t('alerts.products.deleteProduct.buttonCancel'),
-          buttonOkText: t('alerts.products.deleteProduct.buttonOk'),
-        });
-
-        if (alertResult) {
-          await http.api.products.deleteProduct(currentProduct.value._id);
-
-          await router.replace({name: "admin.products"})
-        }
-      }
-
-      function addExtraData() {
-
-        // TODO:: aprire un modale per inz<erire le specifiche del nuovo campo.
-        extraData.value.push({})
-      }
-
-      function removeExtraData(index: number) {
-        debugger
-        extraData.value.splice(index, 1)
-      }
-
-      watch(() => productForm.formData.priceUndefined.modelValue, (value => {
-        if (value) {
-          productForm.formData.price.modelValue = 0
-        }
+    const regions: Ref<Region[]> = ref([]);
+    const provinces: Ref<Province[]> = ref([]);
+    const cities: Ref<City[]> = ref([]);
+    const currentProduct: Ref<Product & { categories: string[] } | undefined> = ref()
+    const categoriesList: Ref<ProductCategory[]> = ref([])
+    const categoryOptionsList = computed(() => {
+      return categoriesList.value.map(el => ({
+        text: el.title,
+        value: el._id
+      }))
+    })
+    const packsOptionsList = computed(() => {
+      const toReturn = Object.values(PackEnum).map(el => ({
+        text: t("enums.PackEnum." + el),
+        value: el
       }))
 
-      onIonViewWillEnter(async () => {
-        const apiCalls: any[] = [
-          http.api.productCategories.readAll()
-        ]
+      return toReturn;
+    })
 
-        if (route.params.id) {
-          apiCalls.push(http.api.products.read(route.params.id as string))
+    const regionsList: ComputedRef<SelectOption[]> = computed(() => {
+      return regions.value.map(region => {
+        return {
+          text: capitalize(region.nome),
+          value: region.nome.toLocaleLowerCase()
         }
+      })
+    })
+    const provincesList: ComputedRef<SelectOption[]> = computed(() => {
+      return provinces.value.map(province => {
+        return {
+          text: capitalize(province.nome),
+          value: province.nome.toLocaleLowerCase()
+        }
+      })
+    })
+    const citiesList: ComputedRef<SelectOption[]> = computed(() => {
+      return cities.value.map(city => {
+        return {
+          text: capitalize(city.nome),
+          value: city.nome.toLocaleLowerCase()
+        }
+      })
+    })
 
-        const results = await Promise.all(apiCalls);
-        //@ts-ignore
-        categoriesList.value = results[0]
-        //@ts-ignore
-        currentProduct.value = productForm.formatCurrentProduct(results[1])
+    const productForm = new ProductForm({
+      dataToWatch: () => currentProduct.value,
+      emit
+    })
+
+    const isNew = computed(() => !currentProduct.value?._id)
+
+    productForm.addEventListener("submitCompleted", (e) => {
+      currentProduct.value = productForm.formatCurrentProduct(e.detail);
+    })
+
+    /**
+     * Delete a single image
+     */
+    async function onImageDeleteClick(image: Attachment) {
+      if (!currentProduct.value) {
+        return;
+      }
+
+      const alertResult = await alerts.ask({
+        header: t('alerts.products.deleteThumbnail.title'),
+        message: t('alerts.products.deleteThumbnail.message', {imageName: image.fileName}),
+        buttonCancelText: t('alerts.products.deleteThumbnail.buttonCancel'),
+        buttonOkText: t('alerts.products.deleteThumbnail.buttonOk'),
       });
 
-      onIonViewDidLeave(async () => {
-        categoriesList.value = []
-        currentProduct.value = undefined
-      });
+      if (alertResult) {
+        const result = await http.api.products.deleteFile(currentProduct.value._id, image.id);
 
-      return {
-        currentProduct, categoriesList, categoryOptionsList, packsOptionsList,
-        onImageDeleteClick, onDeleteClick,
-        productForm, colSizes,
-        formatLocaleDate, isNew,
-        addExtraData, removeExtraData, extraData
+        if (result) {
+          currentProduct.value = productForm.formatCurrentProduct(result);
+        }
       }
     }
-  })
+
+    /**
+     * Delete the current Product
+     */
+    async function onDeleteClick() {
+      if (!currentProduct.value) {
+        return
+      }
+
+      const alertResult = await alerts.ask({
+        header: t('alerts.products.deleteProduct.title'),
+        message: t('alerts.products.deleteProduct.message', {productName: currentProduct.value?.title}),
+        buttonCancelText: t('alerts.products.deleteProduct.buttonCancel'),
+        buttonOkText: t('alerts.products.deleteProduct.buttonOk'),
+      });
+
+      if (alertResult) {
+        await http.api.products.deleteProduct(currentProduct.value._id);
+
+        await router.replace({name: "admin.products"})
+      }
+    }
+
+    function addExtraData() {
+
+      // TODO:: aprire un modale per inz<erire le specifiche del nuovo campo.
+      extraData.value.push({})
+    }
+
+    function removeExtraData(index: number) {
+      debugger
+      extraData.value.splice(index, 1)
+    }
+
+    async function onRegionChange(value: string) {
+      provinces.value = value ? (await http.api.locations.provinces(value) || []) : []
+
+      productForm.formData['location.province'].modelValue = ""
+    }
+
+    async function onProvinceChange(value: string) {
+      cities.value = value ? (await http.api.locations.cities(productForm.formData['location.region'].modelValue, value) || []) : []
+
+      productForm.formData['location.city'].modelValue = ""
+    }
+
+    watch(() => productForm.formData.priceUndefined.modelValue, (value => {
+      if (value) {
+        productForm.formData.price.modelValue = 0
+      }
+    }))
+
+    onIonViewWillEnter(async () => {
+      const apiCalls: any[] = [
+        http.api.productCategories.readAll(),
+        http.api.locations.regions(),
+      ]
+
+      if (route.params.id) {
+        apiCalls.push(http.api.products.read(route.params.id as string))
+      }
+
+      const results = await Promise.all(apiCalls);
+      //@ts-ignore
+      categoriesList.value = results[0];
+      regions.value = results[1];
+      //@ts-ignore
+      currentProduct.value = productForm.formatCurrentProduct(results[2])
+
+      await nextTick(async () => {
+        if (currentProduct.value?.location && currentProduct.value.location.province) {
+          provinces.value = await http.api.locations.provinces(currentProduct.value.location.region) || [];
+          await nextTick(() => {
+            productForm.formData['location.province'].resetField()
+          })
+        }
+
+        if (currentProduct.value?.location && currentProduct.value.location.city) {
+          cities.value = await http.api.locations.cities(currentProduct.value.location.region, currentProduct.value.location.province) || [];
+          await nextTick(() => {
+            productForm.formData['location.city'].resetField()
+          })
+        }
+      });
+
+    });
+
+    onIonViewDidLeave(async () => {
+      categoriesList.value = []
+      currentProduct.value = undefined
+    });
+
+    return {
+      currentProduct, categoriesList, categoryOptionsList, packsOptionsList,
+      onImageDeleteClick, onDeleteClick,
+      productForm, colSizes,
+      formatLocaleDate, isNew,
+      addExtraData, removeExtraData, extraData,
+      regionsList, provincesList, citiesList,
+      onRegionChange, onProvinceChange
+    }
+  }
+})
 
 
 </script>

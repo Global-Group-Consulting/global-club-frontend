@@ -9,7 +9,6 @@
 
         <PrivateOrdersList :statuses="completedStatuses" title="Ordini conclusi"></PrivateOrdersList>
       </ion-grid>
-      <br/>
     </IonContent>
   </IonPage>
 </template>

@@ -2,7 +2,7 @@
   <ion-item>
     <ion-thumbnail slot="start">
       <slot name="image">
-        <img :src="formatImgUrl(image)" alt="cover_image">
+        <Image :file-id="image"></Image>
       </slot>
     </ion-thumbnail>
 
@@ -35,11 +35,12 @@
   import { defineComponent, PropType } from 'vue';
   import { formatImgUrl } from '@/@utilities/images';
   import PageLink from '@/components/PageLink.vue';
-  import { RouteLocationRaw } from 'vue-router';
+  import {RouteLocationRaw} from 'vue-router';
+  import Image from "@/components/Image.vue";
 
   export default defineComponent({
     name: "AdminListItem",
-    components: { PageLink },
+    components: {Image, PageLink},
     props: {
       image: String,
       title: String,

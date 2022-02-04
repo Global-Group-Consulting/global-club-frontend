@@ -10,6 +10,7 @@
                  :clearInput="clearInput"
                  :placeholder="placeholder"
                  :multiple="multiple"
+                 :interface="interface"
                  :interfaceOptions="interfaceOptions"
                  :disabled="component === 'ion-select' ? (readonly || disabled) : disabled"
                  :readonly="readonly"
@@ -19,6 +20,9 @@
                  @ionChange="onChange($event)"
       >
         <template v-if="component === 'ion-select'">
+          <template v-if="clearInput">
+            <ion-select-option value="">-- Nessuna scelta --</ion-select-option>
+          </template>
           <ion-select-option v-for="option of options"
                              :key="option.value"
                              :value="option.value">
@@ -41,6 +45,7 @@
     props: {
       label: String,
       modelValue: [String, Number, Array],
+      interface: String as PropType<"action-sheet" | "alert" | "popover">,
       interfaceOptions: Object,
       type: {
         type: String as PropType<'date' | 'datetime-local' | 'email' | 'month' | 'number' | 'currency' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' | 'week'>,

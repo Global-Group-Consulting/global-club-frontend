@@ -1,10 +1,10 @@
 <template>
   <PageLink :to="{name: 'private.products.details', params: {id: product._id}}"
-            only-container>
+            only-container :class="$props.class">
     <template v-slot:default="{href, navigate}">
       <ion-card class="product-card" :href="href" @click="navigate">
         <div class="product-img-wrapper">
-          <ion-img class="product-card-img" :src="formatImgUrl(product.thumbnail?.id)" alt="cover_image"/>
+          <Image class="product-card-img" :file-id="product.thumbnail?.id" file-name="cover_image"/>
 
           <div class="overlay">
             <div class="clickable-area btn-fav" @click.stop.prevent="toggleFavourite">
@@ -39,19 +39,21 @@
   import ClubButton from '@/components/ClubButton.vue';
   import { useStore } from 'vuex';
   import { storeKey } from '@/store';
-  import { AlertsPlugin } from '@/plugins/Alerts';
+  import {AlertsPlugin} from '@/plugins/Alerts';
+  import Image from "@/components/Image.vue";
 
   export default defineComponent({
     name: "PrivateProductCardItem",
-    components: { ClubButton, PageLink },
+    components: {Image, ClubButton, PageLink},
     props: {
       product: Object as PropType<Product>,
       asAdmin: {
         type: Boolean,
         default: true
-      }
+      },
+      class: String
     },
-    setup (props) {
+    setup(props) {
       const store = useStore(storeKey)
       const alerts = inject("alerts") as AlertsPlugin;
       const prodTitle = computed(() => {
@@ -61,7 +63,7 @@
 
         let title = props.product.title;
         const maxLength = 30;
-9
+
         if (title.length > maxLength) {
           title = title.slice(0, maxLength) + "..."
         }
