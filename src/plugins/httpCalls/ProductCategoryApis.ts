@@ -16,13 +16,19 @@ export class ProductCategoryApis extends BasicApisClass {
     return result?.data;
   }
   
+  static async readAllRaw(): Promise<ProductCategory[] | undefined> {
+    const result = await this.withLoader<ProductCategory[]>("get", this.getUrl("/raw"));
+    
+    return result?.data;
+  }
+  
   static async read(id: string): Promise<ProductCategory | undefined> {
     const result = await this.withLoader<ProductCategory>("get", this.getUrl('/' + id));
     
     return result?.data;
   }
   
-  static async create (data: CreateProductCategoryDto): Promise<ProductCategory | undefined> {
+  static async create(data: CreateProductCategoryDto): Promise<ProductCategory | undefined> {
     const result = await this.withLoader<ProductCategory>("post", this.getUrl(), data);
     
     return result?.data;

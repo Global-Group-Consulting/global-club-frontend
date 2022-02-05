@@ -356,7 +356,7 @@ export default defineComponent({
 
     onIonViewWillEnter(async () => {
       const apiCalls: any[] = [
-        http.api.productCategories.readAll(),
+        http.api.productCategories.readAllRaw(),
         http.api.locations.regions(),
       ]
 
