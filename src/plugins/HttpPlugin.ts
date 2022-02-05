@@ -214,6 +214,15 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
             formDataToSend.append(key + "[]", el);
           }
         })
+      } else if (elValue && elValue.constructor.name === "Object") {
+        debugger
+        Object.keys(elValue).forEach(subKey => {
+          const value = elValue[subKey];
+    
+          if (value !== undefined) {
+            formDataToSend.append(key + `[${subKey}]`, value);
+          }
+        })
       } else {
         if (elValue !== undefined) {
           formDataToSend.append(key, data[key]);
