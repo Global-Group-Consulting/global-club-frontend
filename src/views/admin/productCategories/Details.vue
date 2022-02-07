@@ -112,7 +112,7 @@
           buttonOkText: t('alerts.productCategories.deleteThumbnail.buttonOk'),
         });
 
-        if (alertResult) {
+        if (alertResult.resp) {
           const result = await http.api.productCategories.deleteThumbnail(currentCategory.value._id);
 
           if (result) {
@@ -136,7 +136,7 @@
           buttonOkText: t('alerts.productCategories.deleteCategory.buttonOk'),
         });
 
-        if (alertResult) {
+        if (alertResult.resp) {
           await http.api.productCategories.deleteCategory(currentCategory.value._id);
 
           await router.replace({ name: "admin.productCategories" })

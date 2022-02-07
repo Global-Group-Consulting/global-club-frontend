@@ -294,7 +294,7 @@ export default defineComponent({
         buttonOkText: t('alerts.products.deleteThumbnail.buttonOk'),
       });
 
-      if (alertResult) {
+      if (alertResult.resp) {
         const result = await http.api.products.deleteFile(currentProduct.value._id, image.id);
 
         if (result) {
@@ -318,7 +318,7 @@ export default defineComponent({
         buttonOkText: t('alerts.products.deleteProduct.buttonOk'),
       });
 
-      if (alertResult) {
+      if (alertResult.resp) {
         await http.api.products.deleteProduct(currentProduct.value._id);
 
         await router.replace({name: "admin.products"})
