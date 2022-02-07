@@ -4,7 +4,7 @@
       <ion-item v-bind="!readonly ? {href: href} : null"
                 @click="!readonly ? navigate : null">
         <ion-thumbnail slot="start" class="center-inner-icon">
-          <Image class="product-card-img" :file-id="formatImgUrl(product?.thumbnail?.id)" file-name="cover_image"/>
+          <Image class="product-card-img" :file-id="product?.thumbnail?.id" file-name="cover_image"/>
         </ion-thumbnail>
 
         <ion-label>

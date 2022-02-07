@@ -215,7 +215,6 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
           }
         })
       } else if (elValue && elValue.constructor.name === "Object") {
-        debugger
         Object.keys(elValue).forEach(subKey => {
           const value = elValue[subKey];
     
