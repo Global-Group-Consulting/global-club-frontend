@@ -32,6 +32,11 @@ export class ProductForm extends BasicForm<Product> {
       visible: yup.boolean(),
       hasQta: yup.boolean(),
       priceUndefined: yup.boolean(),
+      packChange: yup.boolean(),
+      packChangeTo: yup.string().when('packChange', {
+        is: true,
+        then: (schema) => schema.required()
+      }),
       location: yup.object({
         city: yup.string(),
         province: yup.string(),
