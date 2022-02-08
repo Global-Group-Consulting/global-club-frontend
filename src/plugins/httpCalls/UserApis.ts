@@ -45,10 +45,14 @@ export class UserApis extends BasicApisClass {
     return result?.data
   }
   
-  static async update<T> (data: UpdateUserContractDto | UpdateUserAnagraphicDto, id): Promise<T | undefined> {
+  static async update<T>(data: UpdateUserContractDto | UpdateUserAnagraphicDto, id): Promise<T | undefined> {
     const result = await this.withLoader<T>("patch", this.getUrl('/' + id), data);
     
     return result?.data;
+  }
+  
+  static async updatePack(id: string): Promise<void> {
+    await this.withLoader("patch", this.getUrl('/' + id + "/pack"));
   }
   
   /*

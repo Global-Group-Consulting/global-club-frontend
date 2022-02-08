@@ -317,6 +317,7 @@ export interface HttpPluginOptions {
   authHeaderPrefix: string;
   axiosDefault?: AxiosRequestConfig;
   axiosInstanceDefault?: AxiosRequestConfig;
+  links: Record<string, string>;
 }
 
 export const httpPlugin = installPlugin<HttpPluginOptions>("http", HttpPlugin, {
