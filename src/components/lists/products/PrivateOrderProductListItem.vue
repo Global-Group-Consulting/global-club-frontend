@@ -10,8 +10,10 @@
         <ion-label>
           <h3>{{ product?.title || "Prodotto non più disponibile" }}</h3>
           <h4 class="d-flex ion-align-items-center">
-            <ClubButton color="secondary" size="small" disabled>{{ orderProduct.qta }}</ClubButton>
-            <span class="mx-2">x</span>
+            <template v-if="orderProduct.product.hasQta">
+              <ClubButton color="secondary" size="small" disabled>{{ orderProduct.qta }}</ClubButton>
+              <span class="mx-2">x</span>
+            </template>
             <BriteValue :value="orderProduct?.price"></BriteValue>
           </h4>
         </ion-label>
