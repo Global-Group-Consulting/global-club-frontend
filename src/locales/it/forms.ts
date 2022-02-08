@@ -28,6 +28,8 @@ export const forms = {
     conditions: "Condizioni di vendita",
     price: "Prezzo",
     priceUndefined: "Importo da definire",
+    packChange: "Cambio pack",
+    packChangeType: "Nuovo pack",
     tags: "Tag",
     hasQta: "Quantificabile",
     visible: "Visibile nelle ricerche",
