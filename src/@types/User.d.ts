@@ -18,6 +18,7 @@ export interface User {
   businessZip: string;
   clubCardNumber: string;
   clubPack: PackEnum;
+  clubPackChangeOrder: string;
   commissionsAssigned: string[];
   contractBic: string;
   contractDate: string;

@@ -41,6 +41,7 @@ export interface Message {
         title: string;
       };
     }[];
+    packChange?: any;
   };
   
   _id: string;

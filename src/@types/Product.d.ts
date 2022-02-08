@@ -23,6 +23,8 @@ export interface Product {
   hasQta: boolean;
   visible: boolean;
   priceUndefined: boolean;
+  packChange: boolean;
+  packChangeTo: string;
   _id: string;
   createdAt: Date;
   updatedAt: Date;
