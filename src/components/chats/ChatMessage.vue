@@ -10,7 +10,7 @@
     <div class="attachments-container" v-if="data.attachments && data.attachments.length > 0">
       <ul class>
         <li v-for="file of data.attachments" :key="file.id">
-          <a target="_blank" :href="formatImgUrl(file.id) ">{{ file.fileName }}</a>
+          <a target="_blank" :href="formatImgUrl(file.id, file.server === 'files') ">{{ file.fileName }}</a>
         </li>
       </ul>
     </div>
@@ -52,6 +52,10 @@ export default defineComponent({
 
     const senderIsUser = computed(() => {
       const authUser: User = store.getters['auth/user']
+
+      if (!props.data.sender) {
+        return false
+      }
 
       return authUser.id === getUserId(props.data.sender)
     })
@@ -99,6 +103,11 @@ export default defineComponent({
         if (senderIsUser.value) {
           return 'Tu'
         } else {
+
+          if (!props.data.sender) {
+            return "Amministrazione"
+          }
+
           return formatUserName(props.data.sender)
         }
       })
@@ -129,7 +138,6 @@ export default defineComponent({
           orderProducts.forEach(el => {
             toReturn.push(`<li><strong>${el.product.title}</strong> x ${el.qta}</li>`)
           })
-
           toReturn.push("</ul>")
 
           return toReturn.join("")
