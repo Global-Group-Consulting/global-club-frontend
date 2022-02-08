@@ -3,6 +3,7 @@ export interface Attachment {
   fileName: string;
   size: number;
   mimetype: string;
+  server?: string;
 }
 
 export interface NewAttachmentFile {

@@ -102,8 +102,13 @@ export default defineComponent({
         ]
       },
       {
-        title: "Notifiche",
+        title: "News e Notifiche",
         childs: [
+          {
+            icon: "calendar",
+            label: "News ed Eventi",
+            route: 'news.index',
+          },
           {
             icon: "notification",
             label: "Notifiche pop-up",
@@ -131,7 +136,7 @@ export default defineComponent({
             disabled: true
           },
           {
-            icon: "version",
+            icon: "download",
             label: "Versione: " + appVersion.value,
             disabled: true
           },

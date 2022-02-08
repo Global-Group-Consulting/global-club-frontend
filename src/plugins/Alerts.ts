@@ -8,6 +8,12 @@ interface AlertAskOptions {
   buttonOkText?: string;
   buttonCancelText?: string;
   backdropDismiss?: boolean;
+  inputs?: any[];
+}
+
+export class AlertAskResponse<T = any> {
+  resp!: boolean;
+  values!: T | null;
 }
 
 interface AlertErrorOptions {
@@ -33,7 +39,7 @@ export class AlertsPlugin extends PluginTemplate<void> {
     console.log('alerts init');
   }
   
-  async ask (options: AlertAskOptions): Promise<boolean> {
+  async ask<T = any>(options: AlertAskOptions): Promise<AlertAskResponse<T>> {
     const buttons = [
       Object.assign({}, this.defaultCancelButton, {
         text: options.buttonCancelText ?? "Annulla"
@@ -47,15 +53,23 @@ export class AlertsPlugin extends PluginTemplate<void> {
       Object.assign({}, this.defaultOptions, {
         header: options.header,
         message: options.message,
+        inputs: options.inputs,
         buttons
       })
     );
     
     await alert.present();
+    const answer = await alert.onDidDismiss();
+    const toReturn: AlertAskResponse = {
+      resp: answer.role === 'ok',
+      values: null
+    };
     
-    const { role } = await alert.onDidDismiss();
+    if (answer.data.values) {
+      toReturn.values = answer.data.values
+    }
     
-    return role === 'ok';
+    return toReturn
   }
   
   async error (error?: any) {

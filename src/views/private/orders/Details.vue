@@ -16,7 +16,7 @@
           </ion-col>
         </ion-row>
 
-        <ion-row class="mb-4">
+        <ion-row class="">
           <ion-col class="ion-text-start">
             <h4 class="m-0">Stato ordine</h4>
           </ion-col>
@@ -24,6 +24,18 @@
           <ion-col class="icon-position">
             <h4 class="m-0 ion-text-right" :style="`color: ${getOrderStatusColor(order?.status)}`">
               {{ formatOrderStatus(order?.status) }}
+            </h4>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="mb-4">
+          <ion-col class="ion-text-start">
+            <h4 class="m-0">Data creazione</h4>
+          </ion-col>
+
+          <ion-col class="icon-position">
+            <h4 class="m-0 ion-text-right">
+              {{ formatLocaleDate(order?.createdAt) }}
             </h4>
           </ion-col>
         </ion-row>
@@ -55,6 +67,7 @@
   import PrivateOrderProductListItem from '@/components/lists/products/PrivateOrderProductListItem.vue';
   import BottomDrawer from '@/views/private/orders/BottomDrawer.vue';
   import { formatOrderStatus, getOrderStatusColor } from '@/@utilities/statuses';
+  import {formatLocaleDate} from "@/@utilities/dates";
 
   export default defineComponent({
     name: "Details",
@@ -72,7 +85,7 @@
 
       return {
         order,
-        formatOrderStatus, getOrderStatusColor
+        formatOrderStatus, getOrderStatusColor, formatLocaleDate
       }
     }
   });

@@ -28,6 +28,8 @@ export const forms = {
     conditions: "Condizioni di vendita",
     price: "Prezzo",
     priceUndefined: "Importo da definire",
+    packChange: "Cambio pack",
+    packChangeType: "Nuovo pack",
     tags: "Tag",
     hasQta: "Quantificabile",
     visible: "Visibile nelle ricerche",
@@ -36,7 +38,12 @@ export const forms = {
     createdAt: "Data creazione",
     updatedAt: "Data ultima modifica",
     btnCreate: "Salva e aggiungi",
-    btnUpdate: "Salva"
+    btnUpdate: "Salva",
+    location: {
+      city: "Città",
+      province: "Provincia",
+      region: "Regione"
+    }
   },
   userContract,
   userAnagraphic,

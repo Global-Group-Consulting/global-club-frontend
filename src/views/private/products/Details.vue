@@ -9,7 +9,7 @@
                     pager
                     :options="slideOpts">
           <ion-slide v-for="image of product.images" :key="image.id">
-            <ion-img :src="formatImgUrl(image.id)" :alt="image.fileName"/>
+            <Image :file-id="image.id" :file-name="image.fileName" fallback-large/>
           </ion-slide>
         </ion-slides>
       </div>
@@ -50,21 +50,23 @@
   import { computed, ComputedRef, defineComponent, inject, Ref, ref } from "vue";
   import { onIonViewDidEnter, onIonViewDidLeave } from '@ionic/vue';
   import { useRoute, useRouter } from 'vue-router';
-  import { useStore } from 'vuex';
-  import { storeKey } from '@/store';
+  import {useStore} from 'vuex';
+  import {storeKey} from '@/store';
   import BriteValue from '@/components/BriteValue.vue';
   import ClubButton from '@/components/ClubButton.vue';
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import Tabs from '@/components/tabs/Tabs.vue';
-  import { formatImgUrl } from '@/@utilities/images';
-  import { HttpPlugin } from '@/plugins/HttpPlugin';
-  import { AlertsPlugin } from '@/plugins/Alerts';
-  import { Product } from '@/@types/Product';
-  import { TabEntry } from '@/@types/TabEntry';
+  import {formatImgUrl} from '@/@utilities/images';
+  import {HttpPlugin} from '@/plugins/HttpPlugin';
+  import {AlertsPlugin} from '@/plugins/Alerts';
+  import {Product} from '@/@types/Product';
+  import {TabEntry} from '@/@types/TabEntry';
+  import Image from "@/components/Image.vue";
 
   export default defineComponent({
     name: "Details",
     components: {
+      Image,
       Tabs,
       BriteValue,
       TopToolbar,
@@ -147,7 +149,7 @@
         formatImgUrl,
         addToCart, onScrollEnd, onScroll,
         tabsItems, tabs,
-        scrollPercent, brightness
+        scrollPercent, brightness,
       }
     }
   })

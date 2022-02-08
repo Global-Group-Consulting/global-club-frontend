@@ -52,7 +52,7 @@ const getters: GetterTree<RootState, RootState> = {
     return state.user?.permissions ?? [];
   },
   isAdmin (state: AuthState) {
-    const validAclRoles: string[] = [UserAclRolesEnum.SUPER_ADMIN, UserAclRolesEnum.ADMIN, UserAclRolesEnum.CLIENTS_SERVICE];
+    const validAclRoles: string[] = [UserAclRolesEnum.SUPER_ADMIN, UserAclRolesEnum.ADMIN, UserAclRolesEnum.ADMIN_CLUB];
     
     return state.user?.roles.some(role => validAclRoles.includes(role));
   },

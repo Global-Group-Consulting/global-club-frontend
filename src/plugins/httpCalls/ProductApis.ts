@@ -6,8 +6,11 @@ export class ProductApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'club/products';
   
   static async readAll (filters?: Record<string, string>): Promise<PaginatedResult<Product[]> | undefined> {
-    const result = await this.withLoader<PaginatedResult<Product[]>>("get", this.getUrl("/", filters));
-    
+    const result = await this.withLoader<PaginatedResult<Product[]>>("get", this.getUrl("/", {
+      "sortBy[title]": 1,
+      ...filters
+    }));
+  
     return result?.data;
   }
   

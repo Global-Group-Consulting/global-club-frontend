@@ -16,11 +16,11 @@
 
         <Tabs :data="tabs">
           <template v-slot:tabSlide_4="{isActive, onDataFetched, tab}">
-            <AdminUsersList :role="tab.id" :visible="isActive"
+            <AdminUsersList :role="+tab.id" :visible="isActive"
                             @dataFetched="onDataFetched"></AdminUsersList>
           </template>
           <template v-slot:tabSlide_3="{isActive, onDataFetched, tab}">
-            <AdminUsersList :role="tab.id" :visible="isActive"
+            <AdminUsersList :role="+tab.id" :visible="isActive"
                             @dataFetched="onDataFetched"></AdminUsersList>
           </template>
         </Tabs>

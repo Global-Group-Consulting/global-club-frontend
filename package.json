@@ -1,9 +1,9 @@
 {
   "name": "global-club",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --mode development",
     "serve:prod": "vue-cli-service serve --mode production",
     "start": "vue-cli-service serve",
     "build": "vue-cli-service build",

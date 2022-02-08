@@ -13,7 +13,6 @@ export class ProductForm extends BasicForm<Product> {
   constructor (settings: FormSettings) {
     super(Object.assign({
       i18nRoot: "forms.products",
-      // i18nKeyTransformer: snakeCase
     }, settings));
     
     this.schema = {
@@ -33,8 +32,18 @@ export class ProductForm extends BasicForm<Product> {
       visible: yup.boolean(),
       hasQta: yup.boolean(),
       priceUndefined: yup.boolean(),
+      packChange: yup.boolean(),
+      packChangeTo: yup.string().when('packChange', {
+        is: true,
+        then: (schema) => schema.required()
+      }),
+      location: yup.object({
+        city: yup.string(),
+        province: yup.string(),
+        region: yup.string()
+      })
     }
-    
+  
     this.productId = computed(() => settings.dataToWatch ? settings.dataToWatch()?._id : null);
     this.createFormFields(settings.dataToWatch);
   }
@@ -59,7 +68,12 @@ export class ProductForm extends BasicForm<Product> {
       // @ts-ignore
       categories: product?.categories ? this.formatCategories(product.categories) : null,
       visible: product?.visible ?? true,
-      hasQta: product?.hasQta ?? true
+      hasQta: product?.hasQta ?? true,
+      location: product?.location ?? {
+        city: "",
+        region: "",
+        province: ""
+      }
     };
   }
   

@@ -7,8 +7,13 @@
       :image="product?.thumbnail?.id"
   >
     <template v-slot:buttons-start>
+      <Tooltip v-if="!product.visible" tooltip="Non visibile publicamente">
+        <Icon name="hide" class="me-3"></Icon>
+      </Tooltip>
+
       <slot name="buttons-start"></slot>
     </template>
+
     <template v-slot:buttons-end>
       <slot name="buttons-end"></slot>
     </template>
@@ -16,33 +21,35 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, PropType } from 'vue';
-  import AdminListItem from '@/components/lists/AdminListItem.vue';
-  import { Product } from '@/@types/Product';
-  import { formatBrites } from '@/@utilities/currency';
+import {computed, defineComponent, PropType} from 'vue';
+import AdminListItem from '@/components/lists/AdminListItem.vue';
+import {Product} from '@/@types/Product';
+import {formatBrites} from '@/@utilities/currency';
+import Icon from "@/components/Icon.vue";
+import Tooltip from "@/components/Tooltip.vue";
 
-  export default defineComponent({
-    name: "AdminProductListItem",
-    components: { AdminListItem },
-    props: {
-      product: Object as PropType<Product>,
-      qta: Number,
-      price: {
-        type: Number,
-        default: 0
-      },
-      asAdmin: {
-        type: Boolean,
-        default: true
-      }
+export default defineComponent({
+  name: "AdminProductListItem",
+  components: {Tooltip, Icon, AdminListItem},
+  props: {
+    product: Object as PropType<Product>,
+    qta: Number,
+    price: {
+      type: Number,
+      default: 0
     },
-    setup (props) {
-      const prodDesc = computed(() => {
-        if (!props.product) {
-          return ""
-        }
+    asAdmin: {
+      type: Boolean,
+      default: true
+    }
+  },
+  setup(props) {
+    const prodDesc = computed(() => {
+      if (!props.product) {
+        return ""
+      }
 
-        const toReturn: string[] = [];
+      const toReturn: string[] = [];
 
         if (props.qta) {
           const price = formatBrites(props.price * props.qta);
