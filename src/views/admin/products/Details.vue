@@ -66,6 +66,22 @@
             </ion-col>
 
             <ion-col>
+              <FormToggleV :label="$t('forms.products.packChange')"
+                           v-model="productForm.formData.packChange.modelValue"
+                           :error="productForm.formData.packChange.errorMessage"
+              />
+            </ion-col>
+
+            <ion-col v-show="productForm.formData.packChange.modelValue">
+              <FormInputV :label="$t('forms.products.packChangeType')"
+                          v-model="productForm.formData.packChangeTo.modelValue"
+                          :error="productForm.formData.packChangeTo.errorMessage"
+                          component="ion-select"
+                          :options="packsOptionsList"
+              />
+            </ion-col>
+
+            <ion-col>
               <FormToggleV :label="$t('forms.products.hasQta')"
                            v-model="productForm.formData.hasQta.modelValue"
                            :error="productForm.formData.hasQta.errorMessage"
