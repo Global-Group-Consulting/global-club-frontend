@@ -96,7 +96,7 @@ export default defineComponent({
       return [{
         icon: "",
         text: t('pages.orderDetails.btn_cancel'),
-        if: mustCompleteWorking,
+        if: mustStartWorking.value || mustCompleteWorking.value,
         click: async () => {
           if (!order.value) {
             return
@@ -144,7 +144,7 @@ export default defineComponent({
       }, {
         icon: "",
         text: t('pages.orderDetails.btn_approve'),
-        if: mustCompleteWorking,
+        if: mustCompleteWorking.value,
         click: async () => {
           if (!order.value) {
             return
@@ -173,7 +173,7 @@ export default defineComponent({
       }, {
         icon: "",
         text: t('pages.orderDetails.btn_start_working'),
-        if: mustStartWorking,
+        if: mustStartWorking.value,
         click: async () => {
           if (!order.value) {
             return
@@ -199,7 +199,7 @@ export default defineComponent({
             await alerts.toastSuccess("Ordine preso in carico correttamente.")
           }
         }
-      }].filter(el => el.if.value)
+      }].filter(el => el.if)
     })
 
       onIonViewWillEnter(async () => {
