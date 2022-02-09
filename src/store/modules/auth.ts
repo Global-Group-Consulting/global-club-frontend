@@ -2,6 +2,7 @@ import { ActionTree, GetterTree, MutationTree } from 'vuex';
 import { User } from '@/@types/User';
 import { UserAclRolesEnum } from '@/@enums/user.acl.roles.enum';
 import { AclPermissionsEnum } from '@/@enums/acl.permissions.enum';
+import {merge} from "lodash";
 
 export interface AuthState {
   loggedIn: boolean;
@@ -21,6 +22,9 @@ const mutations: MutationTree<RootState> = {
   },
   SET_USER (state, payload: any) {
     state.user = payload;
+  },
+  UPDATE_USER (state, payload: Partial<User>) {
+    merge(state.user, payload)
   }
 };
 
@@ -31,6 +35,10 @@ const actions: ActionTree<RootState, RootState> = {
   
   setUser({commit}, user: any) {
     commit("SET_USER", user)
+  },
+  
+  updateUser({commit}, newData: Partial<User>) {
+    commit("UPDATE_USER", newData)
   }
 };
 
