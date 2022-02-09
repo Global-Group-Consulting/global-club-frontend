@@ -102,7 +102,13 @@ export default defineComponent({
         return
       }
 
-      await http.api.users.updatePack(store.getters["auth/user"]._id);
+      const result = await http.api.users.updatePack(store.getters["auth/user"]._id);
+
+      if (result) {
+        await store.dispatch("auth/updateUser", {
+          clubPackChangeOrder: result.clubPackChangeOrder
+        });
+      }
     }
 
     return {
