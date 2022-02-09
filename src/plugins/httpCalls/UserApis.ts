@@ -1,14 +1,14 @@
-import { BasicApisClass } from '@/plugins/httpCalls/basicApisClass';
-import { ReadUserGroupsDto, UpdateUserAnagraphicDto, UpdateUserContractDto, User, UserBasic } from '@/@types/User';
-import { UserRoleEnum } from '@/@enums/user.role.enum';
-import { PaginatedResult } from '@/@types/Pagination';
+import {BasicApisClass} from '@/plugins/httpCalls/basicApisClass';
+import {ReadUserGroupsDto, UpdateUserAnagraphicDto, UpdateUserContractDto, User, UserBasic} from '@/@types/User';
+import {UserRoleEnum} from '@/@enums/user.role.enum';
+import {PaginatedResult} from '@/@types/Pagination';
 
 export type UserGroup = { id: UserRoleEnum; data: User[] }
 
 export class UserApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'club/users';
   
-  static async readAll (group?: UserRoleEnum, page = 1): Promise<PaginatedResult<UserBasic[]> | undefined> {
+  static async readAll(group?: UserRoleEnum, page = 1): Promise<PaginatedResult<UserBasic[]> | undefined> {
     const filters = {}
     
     if (group) {
@@ -51,8 +51,10 @@ export class UserApis extends BasicApisClass {
     return result?.data;
   }
   
-  static async updatePack(id: string): Promise<void> {
-    await this.withLoader("patch", this.getUrl('/' + id + "/pack"));
+  static async updatePack(id: string): Promise<User | undefined> {
+    const resp = await this.withLoader<User>("patch", this.getUrl('/' + id + "/pack"));
+    
+    return resp?.data;
   }
   
   /*
