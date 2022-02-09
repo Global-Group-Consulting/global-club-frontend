@@ -14,7 +14,7 @@
               <ClubButton color="secondary" size="small" disabled>{{ orderProduct.qta }}</ClubButton>
               <span class="mx-2">x</span>
             </template>
-            <BriteValue :value="orderProduct?.price"></BriteValue>
+            <BriteValue :value="orderProduct?.price" v-if="!orderProduct.product.packChange"></BriteValue>
           </h4>
         </ion-label>
 

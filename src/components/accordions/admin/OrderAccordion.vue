@@ -11,62 +11,74 @@
                          :price="prod.price">
           <template v-slot:buttons-start>
             <ClubButton only-icon icon icon-name="edit-square" version="link"
+                        v-if="!prod.product.packChange"
                         color="secondary" @click="editProduct(prod)"></ClubButton>
           </template>
         </ProductListItem>
       </ion-list>
     </template>
+
+    <template v-slot:content_user>
+      <div class="ion-text-center">
+        <PageLink :to="{name: 'admin.users.profile', params:{id: order?.user._id}}"
+                  :btn-props="{icon: true, 'icon-name':'link', version:'link', target: '_blank'}">
+          Apri profilo di {{ formatUserName(order?.user) }}
+        </PageLink>
+      </div>
+    </template>
   </AccordionList>
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, inject, PropType, ref, Ref, watch } from 'vue';
-  import AccordionList, { AccordionSection } from '@/components/AccordionList.vue';
-  import { HttpPlugin } from '@/plugins/HttpPlugin';
-  import { useI18n } from 'vue-i18n';
-  import { Order, OrderProduct, UpdateOrderProductDto } from '@/@types/Order';
-  import { formatBrites, formatCurrency } from '@/@utilities/currency';
-  import { formatLocaleDate } from '@/@utilities/dates';
-  import { formatOrderStatus } from '@/@utilities/statuses';
-  import Chat from '@/components/chats/Chat.vue';
-  import ProductListItem from '@/components/lists/products/AdminProductListItem.vue';
-  import { Communication } from '@/@types/Communication';
-  import ClubButton from '@/components/ClubButton.vue';
-  import { modalController } from '@ionic/vue';
-  import OrderProductEditModal from '@/components/modals/OrderProductEditModal.vue';
+import {computed, defineComponent, inject, PropType, ref, Ref, watch} from 'vue';
+import AccordionList, {AccordionSection} from '@/components/AccordionList.vue';
+import {HttpPlugin} from '@/plugins/HttpPlugin';
+import {useI18n} from 'vue-i18n';
+import {Order, OrderProduct, UpdateOrderProductDto} from '@/@types/Order';
+import {formatBrites, formatCurrency} from '@/@utilities/currency';
+import {formatLocaleDate} from '@/@utilities/dates';
+import {formatOrderStatus} from '@/@utilities/statuses';
+import Chat from '@/components/chats/Chat.vue';
+import ProductListItem from '@/components/lists/products/AdminProductListItem.vue';
+import {Communication} from '@/@types/Communication';
+import ClubButton from '@/components/ClubButton.vue';
+import {modalController} from '@ionic/vue';
+import OrderProductEditModal from '@/components/modals/OrderProductEditModal.vue';
+import PageLink from "@/components/PageLink.vue";
+import {formatUserName} from "@/@utilities/fields";
 
-  export default defineComponent({
-    name: "OrderAccordion",
-    components: { ClubButton, ProductListItem, Chat, AccordionList },
-    props: {
-      orderData: {
-        type: Object as PropType<Order>
-      },
-      orderId: {
-        type: String,
-      }
+export default defineComponent({
+  name: "OrderAccordion",
+  components: {PageLink, ClubButton, ProductListItem, Chat, AccordionList},
+  props: {
+    orderData: {
+      type: Object as PropType<Order>
     },
-    setup (props, { emit }) {
-      const http: HttpPlugin = inject<HttpPlugin>('http') as HttpPlugin;
-      const { t } = useI18n()
-      const order: Ref<Order | null> = ref(null)
+    orderId: {
+      type: String,
+    }
+  },
+  setup(props, {emit}) {
+    const http: HttpPlugin = inject<HttpPlugin>('http') as HttpPlugin;
+    const {t} = useI18n()
+    const order: Ref<Order | null> = ref(null)
 
-      const productsCount = computed(() => order.value?.products.reduce((acc, curr) => acc + curr.qta, 0))
+    const productsCount = computed(() => order.value?.products.reduce((acc, curr) => acc + curr.qta, 0))
 
-      const accordionSections: Ref<AccordionSection[]> = ref([
-        {
-          id: "communication",
-          text: t("pages.orderDetails.tab_communication"),
-          open: false
-        },
-        {
-          id: "products",
-          text: computed(() => t("pages.orderDetails.tab_products", {
-            qta: productsCount.value ?? 0,
-            total: formatBrites(order.value?.amount ?? 0)
-          })),
-          open: false
-        },
+    const accordionSections: Ref<AccordionSection[]> = ref([
+      {
+        id: "communication",
+        text: t("pages.orderDetails.tab_communication"),
+        open: false
+      },
+      {
+        id: "products",
+        text: computed(() => t("pages.orderDetails.tab_products", {
+          qta: productsCount.value ?? 0,
+          total: formatBrites(order.value?.amount ?? 0)
+        })),
+        open: false
+      },
         {
           id: "user",
           text: t("pages.orderDetails.tab_user"),
@@ -119,7 +131,7 @@
         order,
         accordionSections,
         formatLocaleDate, formatCurrency, formatOrderStatus,
-        onNewMessage, editProduct
+        onNewMessage, editProduct, formatUserName
       }
     }
   });
