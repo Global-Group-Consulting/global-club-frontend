@@ -62,6 +62,7 @@
               <FormToggleV :label="$t('forms.products.priceUndefined')"
                            v-model="productForm.formData.priceUndefined.modelValue"
                            :error="productForm.formData.priceUndefined.errorMessage"
+                           :disabled="productForm.formData.packChange.modelValue"
               />
             </ion-col>
 
@@ -77,7 +78,7 @@
                           v-model="productForm.formData.packChangeTo.modelValue"
                           :error="productForm.formData.packChangeTo.errorMessage"
                           component="ion-select"
-                          :options="packsOptionsList"
+                          :options="changePacksOptionsList"
               />
             </ion-col>
 
@@ -85,6 +86,7 @@
               <FormToggleV :label="$t('forms.products.hasQta')"
                            v-model="productForm.formData.hasQta.modelValue"
                            :error="productForm.formData.hasQta.errorMessage"
+                           :disabled="productForm.formData.packChange.modelValue"
               />
             </ion-col>
 
@@ -92,6 +94,7 @@
               <FormToggleV :label="$t('forms.products.visible')"
                            v-model="productForm.formData.visible.modelValue"
                            :error="productForm.formData.visible.errorMessage"
+                           :disabled="productForm.formData.packChange.modelValue"
               />
             </ion-col>
 
@@ -163,19 +166,19 @@
             </ion-col>
           </ion-row>
 
-          <h3 class="d-flex ion-align-items-center">
-            Dati aggiuntivi
-            <ClubButton version="outline" size="small" class="ms-3"
-                        @click="addExtraData">Aggiungi
-            </ClubButton>
-          </h3>
+          <!--          <h3 class="d-flex ion-align-items-center">
+                      Dati aggiuntivi
+                      <ClubButton version="outline" size="small" class="ms-3"
+                                  @click="addExtraData">Aggiungi
+                      </ClubButton>
+                    </h3>
 
-          <ion-row>
-            <ion-col>
-              <FormCustomField v-for="(field, i) in extraData" :key="i"
-                               @removeInput="removeExtraData(i)"/>
-            </ion-col>
-          </ion-row>
+                    <ion-row>
+                      <ion-col>
+                        <FormCustomField v-for="(field, i) in extraData" :key="i"
+                                         @removeInput="removeExtraData(i)"/>
+                      </ion-col>
+                    </ion-row>-->
 
           <ion-row>
             <ion-col size="4" offset="4">
@@ -218,7 +221,7 @@ import {capitalize} from "lodash";
 
 export default defineComponent({
   components: {
-    FormCustomField,
+    // FormCustomField,
     TopToolbar,
     FormToggleV,
     FormRTE,
@@ -251,12 +254,26 @@ export default defineComponent({
       }))
     })
     const packsOptionsList = computed(() => {
-      const toReturn = Object.values(PackEnum).map(el => ({
-        text: t("enums.PackEnum." + el),
-        value: el
-      }))
+      const validPacks = [PackEnum.BASIC, PackEnum.FAST, PackEnum.PREMIUM]
+      return Object.values(PackEnum).reduce((acc, el) => {
+        if (validPacks.includes(el)) {
+          acc.push({
+            text: t("enums.PackEnum." + el),
+            value: el
+          })
+        }
 
-      return toReturn;
+        return acc
+      }, [] as SelectOption[])
+    })
+
+    const changePacksOptionsList = computed(() => {
+      return [
+        {
+          text: t("enums.PackEnum.premium"),
+          value: PackEnum.PREMIUM
+        }
+      ]
     })
 
     const regionsList: ComputedRef<SelectOption[]> = computed(() => {
@@ -370,6 +387,14 @@ export default defineComponent({
       }
     }))
 
+    watch(() => productForm.formData.packChange.modelValue, (value => {
+      if (value) {
+        productForm.formData.hasQta.modelValue = false
+        productForm.formData.visible.modelValue = false
+        productForm.formData.priceUndefined.modelValue = true
+      }
+    }))
+
     onIonViewWillEnter(async () => {
       const apiCalls: any[] = [
         http.api.productCategories.readAllRaw(),
@@ -411,7 +436,7 @@ export default defineComponent({
     });
 
     return {
-      currentProduct, categoriesList, categoryOptionsList, packsOptionsList,
+      currentProduct, categoriesList, categoryOptionsList, packsOptionsList, changePacksOptionsList,
       onImageDeleteClick, onDeleteClick,
       productForm, colSizes,
       formatLocaleDate, isNew,

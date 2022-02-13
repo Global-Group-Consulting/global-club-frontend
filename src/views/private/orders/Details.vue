@@ -48,7 +48,7 @@
         <ion-list class="list-transparent" lines="full">
           <PrivateOrderProductListItem v-for="(product, i) in order?.products" :key="i"
                                        :order-product="product"
-                                       :readonly="!product.product"></PrivateOrderProductListItem>
+                                       :readonly="!product.product || product.product.packChange"></PrivateOrderProductListItem>
         </ion-list>
       </ion-grid>
 

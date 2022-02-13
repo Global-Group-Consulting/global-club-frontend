@@ -14,7 +14,7 @@
               <ClubButton color="secondary" size="small" disabled>{{ orderProduct.qta }}</ClubButton>
               <span class="mx-2">x</span>
             </template>
-            <BriteValue :value="orderProduct?.price"></BriteValue>
+            <BriteValue :value="orderProduct?.price" v-if="!orderProduct.product.packChange"></BriteValue>
           </h4>
         </ion-label>
 
@@ -37,7 +37,7 @@
   import Image from "@/components/Image.vue";
 
   export default defineComponent({
-    name: "PrivateProductListItem",
+    name: "PrivateOrderProductListItem",
     components: {Image, BriteValue, ClubButton, PageLink },
     props: {
       orderProduct: Object as PropType<OrderProduct>,
@@ -49,9 +49,10 @@
       const product: ComputedRef<Product | undefined> = computed(() => props.orderProduct?.product);
 
       const linkTo = computed(() => {
-        if (!product.value) {
+        if (!product.value || product.value?.packChange) {
           return null
         }
+
         return { name: 'private.products.details', params: { id: product.value?._id } }
       })
 

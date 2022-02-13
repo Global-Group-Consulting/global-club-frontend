@@ -45,15 +45,17 @@
   import TabsItems from '@/components/tabs/TabsItems.vue';
   import { Swiper, SwiperSlide } from 'swiper/vue/swiper-vue';
   import BriteValue from '@/components/BriteValue.vue';
-  import { Swiper as SwiperInstance } from 'swiper';
-  import { formatLocaleDateLong } from '@/@utilities/dates';
-  import { formatBrites } from '@/@utilities/currency';
-  import { PackEnum } from '@/@enums/pack.enum';
-  import { AuthPlugin } from '@/plugins/AuthPlugin';
-  import { AclPermissionsEnum } from '@/@enums/acl.permissions.enum';
+  import {Swiper as SwiperInstance} from 'swiper';
+  import {formatLocaleDateLong} from '@/@utilities/dates';
+  import {formatBrites} from '@/@utilities/currency';
+  import {PackEnum} from '@/@enums/pack.enum';
+  import {AuthPlugin} from '@/plugins/AuthPlugin';
+  import {AclPermissionsEnum} from '@/@enums/acl.permissions.enum';
   import ClubButton from '@/components/ClubButton.vue';
-  import { modalController } from '@ionic/vue';
+  import {modalController} from '@ionic/vue';
   import BritesModal from '@/components/modals/BritesModal.vue';
+  import {useStore} from "vuex";
+  import {storeKey} from "@/store";
 
   export default defineComponent({
     name: 'UserStatistics',
@@ -69,13 +71,16 @@
     },
     emits: ['update:data', 'update:activeTab'],
     setup (props, { emit }) {
+      const store = useStore(storeKey);
       const http = inject('http') as HttpPlugin;
       const auth = inject('auth') as AuthPlugin;
       const data: Ref<Statistics | null> = ref(null);
       const activeTab = ref('resoconto');
       let swiperInstance: SwiperInstance;
 
-      function calcSemesterTotals (semester: Semesters, prop: keyof Semesters): Record<string, number> {
+      const userIsAdmin = computed(() => store.getters["auth/isAdmin"])
+
+      function calcSemesterTotals(semester: Semesters, prop: keyof Semesters): Record<string, number> {
         const totals = {};
 
         Object.entries(semester.packs).forEach(entry => {
@@ -96,6 +101,11 @@
         return Object.entries(totals).reduce((acc, curr) => {
           const pack = formatClubPack(curr[0] as PackEnum);
           const value = formatBrites(curr[1]) as string
+
+          if (curr[0] === PackEnum.NONE && !userIsAdmin.value) {
+            return acc
+          }
+
           acc.push(`<strong>${pack}</strong>: ${value}`)
 
           return acc;

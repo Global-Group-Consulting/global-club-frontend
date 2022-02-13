@@ -51,20 +51,20 @@ export default defineComponent({
 
       const toReturn: string[] = [];
 
-        if (props.qta) {
-          const price = formatBrites(props.price * props.qta);
+      if (props.qta && !props.product.packChange) {
+        const price = formatBrites(props.price * props.qta);
 
-          if (price) {
-            toReturn.push(`${formatBrites(props.price)} X ${props.qta} =`, price);
-          }
+        if (price) {
+          toReturn.push(`${formatBrites(props.price)} X ${props.qta} =`, price);
         }
+      }
 
-        return toReturn.join(" ");
-      })
+      return toReturn.join(" ");
+    })
 
-      return { prodDesc }
-    }
-  });
+    return {prodDesc}
+  }
+});
 </script>
 
 <style scoped>

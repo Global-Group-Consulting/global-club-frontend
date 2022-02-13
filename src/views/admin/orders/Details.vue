@@ -17,7 +17,7 @@
           <ion-col size="12" sizeLg="6" class="pb-0 py-lg-5">
             <ul class="ion-text-left my-0 list-simple">
               <li>
-                {{ $t("pages.orderDetails.order_status") }}: <strong>{{ formatOrderStatus(order?.status) }}</strong>
+                {{ $t("pages.orderDetails.order_status") }}: <strong :style="'color:' + getOrderStatusColor(order?.status)">{{ formatOrderStatus(order?.status) }}</strong>
               </li>
               <li>
                 {{ $t("pages.orderDetails.order_amount") }}: <strong v-html="formatBrites(order?.amount)"></strong>
@@ -65,7 +65,7 @@ import SimpleToolbar from '@/components/toolbars/SimpleToolbar.vue';
 import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
 import {formatLocaleDate} from "@/@utilities/dates"
 import {formatBrites} from "@/@utilities/currency"
-import {formatClubPack, formatOrderStatus} from "@/@utilities/statuses"
+import {formatClubPack, formatOrderStatus, getOrderStatusColor} from "@/@utilities/statuses"
 import OrderAccordion from '@/components/accordions/admin/OrderAccordion.vue';
 import {OrderStatusEnum} from '@/@enums/order.status.enum';
 import {useI18n} from 'vue-i18n';
@@ -212,7 +212,7 @@ export default defineComponent({
         actions,
         order, mustStartWorking, mustCompleteWorking, completedWorking,
         formatLocaleDate, formatBrites, formatOrderStatus,
-        formatClubPack, updateOrder
+        formatClubPack, updateOrder, getOrderStatusColor
       }
     }
   });
