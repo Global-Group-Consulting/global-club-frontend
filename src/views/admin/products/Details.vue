@@ -309,7 +309,10 @@ export default defineComponent({
     const isNew = computed(() => !currentProduct.value?._id)
 
     productForm.addEventListener("submitCompleted", (e) => {
-      currentProduct.value = productForm.formatCurrentProduct(e.detail);
+      // currentProduct.value = productForm.formatCurrentProduct(e.detail);
+      router.replace({name: "admin.products.details", params: {id: e.detail._id}});
+
+      alerts.toastSuccess("Prodotto creato correttamente!");
     })
 
     /**
@@ -385,7 +388,7 @@ export default defineComponent({
       if (value) {
         productForm.formData.price.modelValue = 0
       }
-    }))
+    }), {immediate: true})
 
     watch(() => productForm.formData.packChange.modelValue, (value => {
       if (value) {
@@ -393,7 +396,7 @@ export default defineComponent({
         productForm.formData.visible.modelValue = false
         productForm.formData.priceUndefined.modelValue = true
       }
-    }))
+    }), {immediate: true})
 
     onIonViewWillEnter(async () => {
       const apiCalls: any[] = [

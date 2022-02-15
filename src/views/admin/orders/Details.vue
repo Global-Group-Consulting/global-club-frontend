@@ -1,6 +1,6 @@
 <template>
   <IonPage>
-    <TopToolbar include-back>{{ $t('pages.orderDetails.title', { number: order?._id }) }}</TopToolbar>
+    <TopToolbar include-back>{{ $t('pages.orderDetails.title', {number: order?._id}) }}</TopToolbar>
 
     <ion-content>
       <ion-grid fixed>
@@ -17,10 +17,14 @@
           <ion-col size="12" sizeLg="6" class="pb-0 py-lg-5">
             <ul class="ion-text-left my-0 list-simple">
               <li>
-                {{ $t("pages.orderDetails.order_status") }}: <strong :style="'color:' + getOrderStatusColor(order?.status)">{{ formatOrderStatus(order?.status) }}</strong>
+                {{ $t("pages.orderDetails.order_status") }}: <strong
+                  :style="'color:' + getOrderStatusColor(order?.status)">{{ formatOrderStatus(order?.status) }}</strong>
               </li>
               <li>
                 {{ $t("pages.orderDetails.order_amount") }}: <strong v-html="formatBrites(order?.amount)"></strong>
+              </li>
+              <li>
+                Utente: <strong>{{ order?.user.firstName }} {{ order?.user.lastName }}</strong>
               </li>
               <li>
                 {{ $t("pages.orderDetails.user_pack") }}: <strong>{{ formatClubPack(order?.user.clubPack) }}</strong>
@@ -43,10 +47,21 @@
           </ion-col>
         </ion-row>
 
-        <div class="mb-5 ion-text-center static-alert alert-info" v-if="order?.notes">
-          <h5 class="mt-0">Note ordine</h5>
-          <div v-html="order?.notes" class="notes-container"></div>
-        </div>
+        <ion-row class="mb-5 ion-text-center">
+          <ion-col v-if="order?.notes">
+            <div class="static-alert alert-info">
+              <h5 class="mt-0">Note ordine</h5>
+              <div v-html="order?.notes" class="notes-container"></div>
+            </div>
+          </ion-col>
+          <ion-col v-if="order?.cancelReason">
+            <div class="static-alert alert-error">
+              <h5 class="mt-0">Motivo annullamento</h5>
+              <div v-html="order?.cancelReason" class="notes-container"></div>
+            </div>
+          </ion-col>
+        </ion-row>
+
 
         <OrderAccordion :order-data="order" @productUpdated="updateOrder"></OrderAccordion>
       </ion-grid>
@@ -58,7 +73,7 @@
 import {computed, defineComponent, inject, Ref, ref} from 'vue';
 import {Order} from '@/@types/Order';
 import TopToolbar from '@/components/toolbars/TopToolbar.vue';
-import {onIonViewWillEnter} from '@ionic/vue';
+import {onIonViewDidLeave, onIonViewWillEnter} from '@ionic/vue';
 import {HttpPlugin} from '@/plugins/HttpPlugin';
 import {useRoute} from 'vue-router';
 import SimpleToolbar from '@/components/toolbars/SimpleToolbar.vue';
@@ -202,20 +217,24 @@ export default defineComponent({
       }].filter(el => el.if)
     })
 
-      onIonViewWillEnter(async () => {
-        const result = await http.api.orders.read(route.params.id as string);
+    onIonViewWillEnter(async () => {
+      const result = await http.api.orders.read(route.params.id as string);
 
-        order.value = result ?? null
-      })
+      order.value = result ?? null
+    })
 
-      return {
-        actions,
-        order, mustStartWorking, mustCompleteWorking, completedWorking,
-        formatLocaleDate, formatBrites, formatOrderStatus,
-        formatClubPack, updateOrder, getOrderStatusColor
-      }
+    onIonViewDidLeave(async () => {
+      order.value = null;
+    })
+
+    return {
+      actions,
+      order, mustStartWorking, mustCompleteWorking, completedWorking,
+      formatLocaleDate, formatBrites, formatOrderStatus,
+      formatClubPack, updateOrder, getOrderStatusColor
     }
-  });
+  }
+});
 </script>
 
 <style scoped>

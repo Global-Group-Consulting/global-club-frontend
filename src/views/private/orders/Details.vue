@@ -40,10 +40,21 @@
           </ion-col>
         </ion-row>
 
-        <div class="mb-4 ion-text-center static-alert alert-info" v-if="order?.notes">
-          <h5 class="mt-0">Note ordine</h5>
-          <div v-html="order?.notes" class="notes-container"></div>
-        </div>
+
+        <ion-row class="mb-4 ion-text-center">
+          <ion-col v-if="order?.notes">
+            <div class="static-alert alert-info" v-if="order?.notes">
+              <h5 class="mt-0">Note ordine</h5>
+              <div v-html="order?.notes" class="notes-container"></div>
+            </div>
+          </ion-col>
+          <ion-col v-if="order?.cancelReason">
+            <div class="static-alert alert-error">
+              <h5 class="mt-0">Motivo annullamento</h5>
+              <div v-html="order?.cancelReason" class="notes-container"></div>
+            </div>
+          </ion-col>
+        </ion-row>
 
         <ion-list class="list-transparent" lines="full">
           <PrivateOrderProductListItem v-for="(product, i) in order?.products" :key="i"
@@ -59,7 +70,7 @@
 
 <script lang="ts">
   import { defineComponent, inject, Ref, ref } from 'vue';
-  import { onIonViewWillEnter } from '@ionic/vue';
+  import {onIonViewDidLeave, onIonViewWillEnter} from '@ionic/vue';
   import { useRoute } from 'vue-router';
   import { HttpPlugin } from '@/plugins/HttpPlugin';
   import { Order } from '@/@types/Order';
@@ -81,6 +92,10 @@
         const orderId = route.params["id"] as string;
 
         order.value = await http.api.orders.read(orderId);
+      })
+
+      onIonViewDidLeave(() => {
+        order.value = undefined;
       })
 
       return {
