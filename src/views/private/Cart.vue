@@ -159,7 +159,7 @@
           buttonOkText: "Si, invia"
         })
 
-        if (!askResult) {
+        if (!askResult.resp) {
           return
         }
 
