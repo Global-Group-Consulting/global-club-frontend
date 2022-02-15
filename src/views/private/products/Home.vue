@@ -8,13 +8,16 @@
           <SearchBar v-model:filters="activeFilters"></SearchBar>
         </div>
 
-        <ion-row v-if="productsList.length > 0">
-          <ion-col size-lg="3" size-md="4" size="6" v-for="product of productsList" :key="product._id">
-            <PrivateProductCardItem :product="product" class="m-0 h-100"/>
-          </ion-col>
-        </ion-row>
+        <PaginatedList :paginated-data="fetchingResult"
+                       v-slot:default="{data}"
+                       @pageChanged="onPageChanged">
+          <ion-row>
+            <ion-col size-lg="3" size-md="4" size="6" v-for="product of data" :key="product._id">
+              <PrivateProductCardItem :product="product" class="m-0 h-100"/>
+            </ion-col>
+          </ion-row>
+        </PaginatedList>
 
-        <NoData v-else></NoData>
       </ion-grid>
     </ion-content>
   </IonPage>
@@ -33,11 +36,12 @@
   import { PaginatedResult } from '@/@types/Pagination';
   import Filters from '@/composables/filters';
   import NoData from "@/components/NoData.vue";
+  import PaginatedList from "@/components/lists/PaginatedList.vue";
 
   export default defineComponent({
     name: 'Home',
-    components: {NoData, SearchBar, PrivateProductCardItem, TopToolbar },
-    setup () {
+    components: {PaginatedList, SearchBar, PrivateProductCardItem, TopToolbar},
+    setup() {
       const http = inject<HttpPlugin>('http');
       const route = useRoute();
       const router = useRouter();
@@ -46,7 +50,7 @@
       const activeFilters: Ref<SearchFilters> = ref({});
       const filtersComposable = Filters()
 
-      function getQueryFilters (): Record<string, string> {
+      function getQueryFilters(): Record<string, string> {
         return Object.keys(route.query).reduce((acc, curr) => {
           if (curr.indexOf("filter") === 0) {
             acc[curr] = route.query[curr]
@@ -56,16 +60,20 @@
         }, {})
       }
 
-      async function fetchData (filters: SearchFilters) {
+      async function fetchData(filters: SearchFilters, page?: number) {
         const formattedFilters = filtersComposable.prepareFilters(filters)
-        const result = await http?.api.products.readAll(formattedFilters);
+        const result = await http?.api.products.readAll(formattedFilters, page);
 
         fetchingResult.value = result;
         productsList.value = result?.data ?? [];
       }
 
+      async function onPageChanged(newPage: number) {
+        await fetchData(activeFilters.value, newPage)
+      }
+
       watch(() => activeFilters.value, (filters: SearchFilters) => {
-        router.replace({ query: filtersComposable.prepareFilters(filters) })
+        router.replace({query: filtersComposable.prepareFilters(filters)})
 
         fetchData(filters);
       })
@@ -85,9 +93,9 @@
       });
 
       return {
-        productsList,
+        productsList, fetchingResult,
         activeFilters,
-        formatImgUrl,
+        formatImgUrl, onPageChanged
       };
     },
   });
