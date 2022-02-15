@@ -1,12 +1,20 @@
-export function formatCurrency (value: number) {
+export function formatCurrency(value: number, currencyStart = false) {
   if (value === undefined) {
     return null
   }
   
-  return new Intl.NumberFormat("it-IT", {
-    style: 'currency',
-    currency: "EUR"
-  }).format(value)
+  const toReturn = [new Intl.NumberFormat("it-IT", {
+    // style: 'decimal',
+    // currency: "EUR",
+  }).format(value)];
+  
+  if (currencyStart) {
+    toReturn.unshift("€")
+  } else {
+    toReturn.push("€")
+  }
+  
+  return toReturn.join(" ");
 }
 
 export function formatBrites (value: number, currPosition: "start" | "end" = "start") {

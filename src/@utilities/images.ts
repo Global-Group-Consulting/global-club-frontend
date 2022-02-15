@@ -1,6 +1,6 @@
 import {settings} from "@/config/httpPlugin";
 
-export function formatImgUrl(imgId: string, fromFilesServer = false) {
+export function formatImgUrl(imgId: string | null | undefined, fromFilesServer = false) {
   const baseUrl = settings.links?.baseUrl;
   const filesUrl = settings.links?.filesUrl;
   

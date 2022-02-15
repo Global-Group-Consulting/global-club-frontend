@@ -36,7 +36,7 @@
   import NoData from '@/components/NoData.vue';
   import AdminListItem from '@/components/lists/AdminListItem.vue';
   import { formatLocaleDate } from '@/@utilities/dates';
-  import { formatOrderStatus } from '@/@utilities/statuses';
+  import {formatOrderStatus, getOrderStatusColor} from '@/@utilities/statuses';
   import { useI18n } from 'vue-i18n';
 
   export default defineComponent({
@@ -71,7 +71,8 @@
       function getDescription (order: Order) {
         return t('pages.orders.list.subText', {
           number: order._id,
-          status: formatOrderStatus(order.status)
+          status: formatOrderStatus(order.status),
+          color: getOrderStatusColor(order.status)
         })
       }
 

@@ -8,6 +8,7 @@
         <ProductListItem v-for="(prod, i) in order?.products" :key="'prod_' + i"
                          :product="prod.product"
                          :qta="prod.qta"
+                         :repayment="prod.repayment"
                          :price="prod.price">
           <template v-slot:buttons-start>
             <ClubButton only-icon icon icon-name="edit-square" version="link"
