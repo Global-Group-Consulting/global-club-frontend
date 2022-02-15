@@ -9,7 +9,7 @@
                     pager
                     :options="slideOpts">
           <ion-slide v-for="image of product.images" :key="image.id">
-            <Image :file-id="image.id" :file-name="image.fileName" fallback-large/>
+            <Image class="full-width" :file-id="image.id" :file-name="image.fileName" fallback-large/>
           </ion-slide>
         </ion-slides>
       </div>
@@ -156,7 +156,9 @@
 </script>
 
 <style lang="scss" scoped>
-  $slider-height: 60vh;
+$slider-height: 60vh;
+
+::v-deep {
 
   .product-toolbar {
     &::after {
@@ -179,7 +181,8 @@
       right: 0;
       z-index: 1;
     }
-    ion-img {
+
+    ion-img.full-width {
       height: 100%;
       width: 100%;
       object-fit: cover;
@@ -192,5 +195,6 @@
       //background: var(--secondary-bg-gradient);
     }
   }
+}
 
 </style>
