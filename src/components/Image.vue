@@ -9,12 +9,14 @@
            :alt="fileName"
            @ionImgDidLoad="onLazyDidLoaded"
            @ionError="onImgError"
-           class="lazy-img" :class="lazyClasses"/>
+           class="lazy-img" :class="lazyClasses"
+           @click="onClick"/>
 </template>
 
 <script lang="ts">
 import {computed, defineComponent, onMounted, Ref, ref} from 'vue';
 import {formatImgUrl} from "@/@utilities/images";
+import {previewFile} from "@/@utilities/files";
 
 export default defineComponent({
   name: "Image",
@@ -25,7 +27,8 @@ export default defineComponent({
       default: "image"
     },
     fallbackLarge: Boolean,
-    class: String
+    class: String,
+    canPreview: Boolean
   },
   setup(props) {
     const src: Ref<string> = ref(`/assets/img_placeholder${props.fallbackLarge ? '_large' : ''}.png`);
@@ -59,6 +62,13 @@ export default defineComponent({
       lazyLoaded.value = true
     }
 
+    function onClick(e) {
+      if (!props.canPreview) {
+        return;
+      }
+
+      window.open(lazySrc.value, "_blank")
+    }
 
     return {
       src,
@@ -67,7 +77,8 @@ export default defineComponent({
       lazyClasses,
       baseClasses,
       lazySrc,
-      lazyLoaded
+      lazyLoaded,
+      onClick
     }
   }
 });
