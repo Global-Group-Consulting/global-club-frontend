@@ -214,7 +214,6 @@ import FormToggleV from '@/components/forms/FormToggleV.vue';
 import {formatLocaleDate} from '@/@utilities/dates';
 import {PackEnum} from '@/@enums/pack.enum';
 import TopToolbar from '@/components/toolbars/TopToolbar.vue';
-import FormCustomField from "@/components/forms/FormCustomField.vue";
 import {City, Province, Region} from "@/@types/Location";
 import {SelectOption} from "@/@types/Form";
 import {capitalize} from "lodash";

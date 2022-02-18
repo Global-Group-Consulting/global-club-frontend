@@ -35,7 +35,6 @@
   import { useRoute, useRouter } from 'vue-router';
   import { PaginatedResult } from '@/@types/Pagination';
   import Filters from '@/composables/filters';
-  import NoData from "@/components/NoData.vue";
   import PaginatedList from "@/components/lists/PaginatedList.vue";
 
   export default defineComponent({

@@ -64,7 +64,7 @@
     background-color: var(--ion-color-secondary);
     position: relative;
 
-    ::v-deep(ion-icon) {
+    &:deep(ion-icon) {
       width: var(--size);
       height: var(--size);
       color: var(--ion-color-primary);

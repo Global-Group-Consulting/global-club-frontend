@@ -158,7 +158,7 @@
 <style lang="scss" scoped>
 $slider-height: 60vh;
 
-::v-deep {
+:deep {
 
   .product-toolbar {
     &::after {
