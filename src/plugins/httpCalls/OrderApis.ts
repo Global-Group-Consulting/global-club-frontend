@@ -6,27 +6,31 @@ import { OrderStatusEnum } from '@/@enums/order.status.enum';
 export class OrderApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'club/orders';
   
-  static async readAll (status?: OrderStatusEnum | OrderStatusEnum[], userId?: string, limit?: number): Promise<PaginatedResult<Order[]> | undefined> {
+  static async readAll(status?: OrderStatusEnum | OrderStatusEnum[], userId?: string, limit?: number, page?: number): Promise<PaginatedResult<Order[]> | undefined> {
     const filters = {}
-    
+  
     if (status) {
       filters["filter[status]"] = status
     }
-    
+  
     if (userId) {
       filters["filter[user]"] = userId
     }
-    
+  
     const queryParams = {
       "sortBy[status]": 1,
       "sortBy[updatedAt]": -1,
       "sortBy[createdAt]": -1,
     }
-    
+  
+    if (page) {
+      queryParams["page"] = page
+    }
+  
     if (limit) {
       queryParams["limit"] = limit
     }
-    
+  
     const result = await this.withLoader<PaginatedResult<Order[]>>("get",
       this.getUrl('', {
         ...queryParams,
