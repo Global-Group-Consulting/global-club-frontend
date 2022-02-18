@@ -10,7 +10,8 @@
     <div class="attachments-container" v-if="data.attachments && data.attachments.length > 0">
       <ul class>
         <li v-for="file of data.attachments" :key="file.id">
-          <a target="_blank" :href="formatImgUrl(file.id, file.server === 'files') ">{{ file.fileName }}</a>
+          <a target="_blank" :href="formatImgUrl(file.id, file.server === 'files')"
+             @click="previewFile(file, $event)">{{ file.fileName }}</a>
         </li>
       </ul>
     </div>
@@ -36,6 +37,9 @@ import {formatOrderStatus} from '@/@utilities/statuses';
 import {formatImgUrl, resolveDownloadUrl} from '@/@utilities/images';
 import {Attachment} from '@/@types/Attachment';
 import {useI18n} from 'vue-i18n';
+import {PreviewAnyFile} from "@awesome-cordova-plugins/preview-any-file";
+import {isPlatform} from "@ionic/vue";
+import {HttpPlugin} from "@/plugins/HttpPlugin";
 
 export default defineComponent({
   name: "ChatMessage",
@@ -48,6 +52,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore(storeKey);
+    const http = inject("http") as HttpPlugin;
     const {t} = useI18n();
 
     const senderIsUser = computed(() => {
@@ -146,25 +151,48 @@ export default defineComponent({
         return ""
       })
 
-      async function previewFile (file: Attachment) {
-        // const url = await http.api.files.fetchPublicUrl(file.id)
-        // const url = await http.api.files.fetchPublicUrl(file.id)
+    async function previewFile(file: Attachment, event) {
+      if (isPlatform("cordova")) {
+        event.preventDefault();
 
-        // const fileTransfer: FileTransferObject = FileTransfer.create();
-        // window.open(url)
-        /*if (url) {
-          try {
-            const downloadedFile = await fileTransfer.download(url, File.dataDirectory + file.id)
+        await http.loading.show();
+        const path = formatImgUrl(file.id, file.server === 'files');
 
-            console.log(downloadedFile)
-            debugger
-            // await FileOpener.open(url, file.mimetype)
-          } catch (er) {
-            // await alerts.error(er);
-            window.open(url)
+        try {
+          await PreviewAnyFile.previewPath(path, {
+            name: file.fileName,
+            mimeType: file.mimetype
+          }).subscribe((value) => {
 
-            // await http.api.files.preview(file.id, file.mimetype, file.fileName)
-          }*/
+            console.log(value);
+            http.loading.hide();
+          });
+        } catch (e) {
+          console.error(e);
+        } finally {
+          await http.loading.hide();
+        }
+
+      }
+
+      // const url = await http.api.files.fetchPublicUrl(file.id)
+      // const url = await http.api.files.fetchPublicUrl(file.id)
+
+      // const fileTransfer: FileTransferObject = FileTransfer.create();
+      // window.open(url)
+      /*if (url) {
+        try {
+          const downloadedFile = await fileTransfer.download(url, File.dataDirectory + file.id)
+
+          console.log(downloadedFile)
+          debugger
+          // await FileOpener.open(url, file.mimetype)
+        } catch (er) {
+          // await alerts.error(er);
+          window.open(url)
+
+          // await http.api.files.preview(file.id, file.mimetype, file.fileName)
+        }*/
         // }
       }
 
