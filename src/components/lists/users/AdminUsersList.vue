@@ -5,7 +5,9 @@
     <PaginatedList :paginated-data="paginatedData"
                    v-if="paginatedData?.data.length > 0"
                    v-slot:default="{data}"
-                   @pageChanged="onPageChanged">
+                   :visible="visible"
+                   @pageChanged="onPageChanged"
+                   @manualRefresh="onManualRefresh">
       <ion-list>
         <AdminListItem v-for="user of data" :key="user._id"
                        :title="getTitle(user)"
@@ -45,7 +47,6 @@ export default defineComponent({
   props: {
     title: String,
     role: {
-      required: true,
       type: Number as PropType<UserRoleEnum>,
     },
     noDataText: String,
@@ -53,7 +54,10 @@ export default defineComponent({
       type: Boolean,
       default: true
     },
-    limit: Number
+    limit: Number,
+    filters: Object,
+    eager: Boolean,
+    refreshAsap: Boolean,
   },
   setup(props, {emit}) {
     const http = inject("http") as HttpPlugin;
@@ -61,6 +65,7 @@ export default defineComponent({
     // const users = new PaginatedResultEntity<User>();
     const loaded = ref(false);
     const paginatedData: Ref<PaginatedResult<any> | undefined> = ref();
+    const pendingRefresh = ref(false);
 
     function getTitle(user: User) {
       return formatUserName(user)
@@ -75,37 +80,67 @@ export default defineComponent({
 
 
     async function fetchData(page?: number) {
-      paginatedData.value = await http.api.users.readAll(props.role, page);
+      if (props.filters && Object.keys(props.filters).length === 0) {
+        paginatedData.value = undefined;
 
-      // users.merge(result);
+        return;
+      }
 
-      loaded.value = true;
+      try {
+        paginatedData.value = await http.api.users.readAll(props.role, page, props.filters);
 
-      await nextTick(() => {
-        emit("dataFetched");
-      })
+        // users.merge(result);
+
+        loaded.value = true;
+
+        await nextTick(() => {
+          emit("dataFetched");
+        })
+      } catch (er) {
+        paginatedData.value = undefined;
+      }
     }
 
     async function onPageChanged(page: number) {
       await fetchData(page)
     }
 
+    async function onManualRefresh(event) {
+      await fetchData(paginatedData.value?.page);
+
+      // Must call complete to let the loader know all is done
+      event.target.complete();
+    }
+
     watch(() => props.visible, (value) => {
-      if (!loaded.value && value) {
+      if ((!loaded.value && value) || (value && pendingRefresh.value)) {
         fetchData()
       }
     })
 
-    onMounted(async () => {
+    watch(() => props.filters, () => {
+      if (loaded.value || props.eager) {
+        fetchData()
+      }
+    }, {immediate: true, deep: true})
+
+    watch(() => props.refreshAsap, value => {
+      if (value) {
+        pendingRefresh.value = true
+      }
+    })
+
+    /*onMounted(async () => {
       if (!loaded.value && props.visible) {
         await fetchData()
       }
-    });
+    });*/
 
     return {
       formatLocaleDate, formatOrderStatus,
       getTitle, getDescription,
-      UserRoleEnum, onPageChanged, paginatedData
+      UserRoleEnum, onPageChanged, paginatedData,
+      onManualRefresh
     }
   }
   });

@@ -7,8 +7,13 @@
         <no-data v-if="newsList.length === 0"></no-data>
         <template v-else>
           <ion-card v-for="news of newsList" :key="news._id" class="mb-5">
-            <img :src="news.coverImg"
-                 style="width: 100%; max-height: 350px; object-fit: cover; object-position: center"/>
+            <a :href="news.coverImg" @click="previewFile(news.coverImg, $event)"
+               target="_blank">
+              <img :src="news.coverImg"
+                   style="width: 100%; max-height: 350px; object-fit: cover; object-position: center"
+              />
+            </a>
+
             <ion-card-header class="ion-text-start">
               <!--            <ion-card-subtitle>Card Subtitle</ion-card-subtitle>-->
               <ion-card-title>{{ news.title }}</ion-card-title>
@@ -28,8 +33,11 @@
 import {defineComponent, inject, ref} from "vue";
 import TopToolbar from '@/components/toolbars/TopToolbar.vue';
 import {HttpPlugin} from "@/plugins/HttpPlugin";
-import {onIonViewWillEnter} from "@ionic/vue";
+import {isPlatform, onIonViewWillEnter} from "@ionic/vue";
 import NoData from "@/components/NoData.vue";
+import {Attachment} from "@/@types/Attachment";
+import {formatImgUrl} from "@/@utilities/images";
+import {PreviewAnyFile} from "@awesome-cordova-plugins/preview-any-file";
 
 export default defineComponent({
   name: "News",
@@ -41,12 +49,32 @@ export default defineComponent({
     const http = inject("http") as HttpPlugin;
     const newsList = ref([]);
 
+    async function previewFile(file: string, event) {
+      if (isPlatform("cordova")) {
+        event.preventDefault();
+
+        await http.loading.show();
+
+        try {
+          await PreviewAnyFile.previewPath(file).subscribe((value) => {
+            http.loading.hide();
+          });
+        } catch (e) {
+          console.error(e);
+        } finally {
+          await http.loading.hide();
+        }
+      }
+    }
 
     onIonViewWillEnter(async () => {
       newsList.value = await http.api.news.read();
     })
 
-    return {newsList}
+    return {
+      newsList,
+      previewFile
+    }
   },
 
 });

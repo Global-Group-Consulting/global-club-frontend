@@ -23,8 +23,8 @@
     <slot name="buttons-start"></slot>
 
     <page-link :to="openLink"
-               :btn-props="{ version: 'link' }">
-      {{ openLinkLabel ?? "Open" }}
+               :btn-props="{ version: 'link', iconName:'chevron-right', icon: true, onlyIcon: true }">
+
     </page-link>
 
     <slot name="buttons-end"></slot>
@@ -64,7 +64,7 @@
     background-color: var(--ion-color-secondary);
     position: relative;
 
-    ::v-deep(ion-icon) {
+    &:deep(ion-icon) {
       width: var(--size);
       height: var(--size);
       color: var(--ion-color-primary);

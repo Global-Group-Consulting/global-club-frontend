@@ -1,6 +1,6 @@
 <template>
-  <div class="">
-    <TabsItems :tabs-list="data" v-model="activeTab" v-if="showTabs"/>
+  <div class="tabs">
+    <TabsItems :tabs-list="data" v-model="activeTab" v-if="showTabs" />
     <TabsSlides :tabs-list="data" :active-tab="activeTab" ref="tabsSlides">
       <template v-for="tab of data" :key="tab.id"
                 v-slot:[`tabSlide_`+tab.id]="item">

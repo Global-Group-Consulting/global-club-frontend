@@ -50,7 +50,16 @@ export const forms = {
   communications: {
     message: "Messaggio",
     attachments: "Allegati"
+  },
+  filters: {
+    "status": "Stato",
+    "clubPack": "Pack Attivo",
+    "email": "Email",
+    "user": "Utente",
+    "id": "Codice",
+    "title": "Titolo",
+    "priceUndefined": "Prezzo da definire",
+    "categories": "Categorie"
   }
-  
   
 }

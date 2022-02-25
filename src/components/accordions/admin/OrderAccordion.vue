@@ -8,10 +8,11 @@
         <ProductListItem v-for="(prod, i) in order?.products" :key="'prod_' + i"
                          :product="prod.product"
                          :qta="prod.qta"
+                         :repayment="prod.repayment"
                          :price="prod.price">
           <template v-slot:buttons-start>
             <ClubButton only-icon icon icon-name="edit-square" version="link"
-                        v-if="!prod.product.packChange"
+                        v-if="!prod.product.packChange && !orderClosed"
                         color="secondary" @click="editProduct(prod)"></ClubButton>
           </template>
         </ProductListItem>
@@ -46,6 +47,7 @@ import {modalController} from '@ionic/vue';
 import OrderProductEditModal from '@/components/modals/OrderProductEditModal.vue';
 import PageLink from "@/components/PageLink.vue";
 import {formatUserName} from "@/@utilities/fields";
+import {OrderStatusEnum} from "@/@enums/order.status.enum";
 
 export default defineComponent({
   name: "OrderAccordion",
@@ -62,7 +64,7 @@ export default defineComponent({
     const http: HttpPlugin = inject<HttpPlugin>('http') as HttpPlugin;
     const {t} = useI18n()
     const order: Ref<Order | null> = ref(null)
-
+    const orderClosed = computed(() => order.value && [OrderStatusEnum.CANCELLED, OrderStatusEnum.COMPLETED].includes(order.value.status))
     const productsCount = computed(() => order.value?.products.reduce((acc, curr) => acc + curr.qta, 0))
 
     const accordionSections: Ref<AccordionSection[]> = ref([
@@ -131,7 +133,8 @@ export default defineComponent({
         order,
         accordionSections,
         formatLocaleDate, formatCurrency, formatOrderStatus,
-        onNewMessage, editProduct, formatUserName
+        onNewMessage, editProduct, formatUserName,
+        orderClosed
       }
     }
   });

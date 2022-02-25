@@ -53,40 +53,21 @@
       const canGoBack = computed(() => page.value > 1);
       const canGoForward = computed(() => page.value < props.paginationData.totalPages);
 
-      /* const pagesList = computed(() => {
-         const pagesEmptyArray = Array(props.paginationData?.totalPages).fill(0);
-         const startFrom = page.value - 1;
-         const firstPages = pagesEmptyArray.slice(startFrom, startFrom + props.beforeNumPages).map((fakeNum, i) => i + 1 + startFrom)
-         const lastPages = pagesEmptyArray.slice(pagesEmptyArray.length - props.afterNumPages).map((fakeNum, i) => (pagesEmptyArray.length - props.afterNumPages) + (i + 1))
-
-         const toReturn: (string | number)[] = []
-
-         if (startFrom > 1) {
-           toReturn.push("...")
-         }
-
-         toReturn.push(...firstPages)
-
-         if (props.paginationData.totalPages - props.afterNumPages > page.value) {
-           toReturn.push("...")
-         }
-
-         toReturn.push(...lastPages)
-
-         return toReturn
-       })*/
-
       async function nextPage () {
         page.value++
       }
 
-      async function prevPage () {
+      async function prevPage() {
         page.value--
       }
 
       watch(page, async () => {
         emit("pageChanged", page.value)
       })
+
+      watch(() => props.paginationData, (value: Omit<PaginatedResult, "data"> | undefined) => {
+        page.value = value?.page ?? 1
+      }, {deep: true})
 
       return {
         canGoBack, canGoForward,

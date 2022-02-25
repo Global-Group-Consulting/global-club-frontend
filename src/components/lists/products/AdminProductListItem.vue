@@ -8,7 +8,11 @@
   >
     <template v-slot:buttons-start>
       <Tooltip v-if="!product.visible" tooltip="Non visibile publicamente">
-        <Icon name="hide" class="me-3"></Icon>
+        <Icon name="hide" class="me-2"></Icon>
+      </Tooltip>
+
+      <Tooltip v-if="repayment" tooltip="Rimborso">
+        <Icon name="redo" class="me-2" color="green"></Icon>
       </Tooltip>
 
       <slot name="buttons-start"></slot>
@@ -41,6 +45,10 @@ export default defineComponent({
     asAdmin: {
       type: Boolean,
       default: true
+    },
+    repayment: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props) {

@@ -242,8 +242,8 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
       let containFiles = false;
       
       for (const entry of Object.values(requestConfig.data)) {
-        if ((entry instanceof Array && entry[0] instanceof File)
-          || entry instanceof File) {
+        if ((entry instanceof Array && entry[0] && entry[0].constructor.name === "File")
+          || (entry && (entry as any).constructor.name === "File")) {
           containFiles = true
         }
       }

@@ -11,6 +11,7 @@ export interface Order {
   communication: Communication;
   status: OrderStatusEnum;
   notes: string;
+  cancelReason?: string;
   
   _id: string;
   createdAt: Date;
@@ -27,6 +28,8 @@ export interface OrderProduct {
   the one user saw when adding the product to the cart
    */
   price: number;
+  
+  repayment: boolean;
 }
 
 export interface ReadOrderStatusesDto {
@@ -37,6 +40,7 @@ export interface ReadOrderStatusesDto {
 export interface UpdateOrderProductDto {
   qta: number;
   price: number;
+  repayment?: boolean;
 }
 
 export interface UpdateOrderStatusDto {

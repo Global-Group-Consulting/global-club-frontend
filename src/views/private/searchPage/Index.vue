@@ -1,11 +1,11 @@
 <template>
-  <IonPage> 
-    <div class="header-nav"> 
+  <IonPage>
+    <div class="header-nav">
       <TopToolbar include-back>Risultato ricerca</TopToolbar>
         </div>
-      
-     <IonContent class="ion-padding"> 
-       <SearchBar></SearchBar>   
+
+     <IonContent class="ion-padding">
+       <SearchBar></SearchBar>
      <!-- <div class="search-container">
         <div v-if="options.length">
           <AutoComplete :options="options" :optionsKey="optionsKey" @save-option="saveResult"/>
@@ -28,7 +28,7 @@
           <Popover></Popover>
         </ion-popover>
       </div> -->
-      
+
      <ion-grid>
       <ion-row class="ion-text-start">
           <ion-col>
@@ -67,7 +67,7 @@
            <ion-icon class="bottom-right" src="./assets/WishListBtn.svg"></ion-icon>
           </div>
     </ion-col>
-    
+
   </ion-row>
 </ion-grid>
 
@@ -77,17 +77,17 @@
 </template>
 
 <script lang="ts">
- 
+
   import { defineComponent } from 'vue';
   import ClubButton from '@/components/ClubButton.vue';
-  import SearchBar from '@/views/shared/SearchBar.vue';
+  import SearchBar from '@/components/SearchBar.vue';
 
 
   export default defineComponent({
     name: "Search",
     components: {  ClubButton, SearchBar },
   //  setup () {
-  
+
   //  }
    });
 </script>
