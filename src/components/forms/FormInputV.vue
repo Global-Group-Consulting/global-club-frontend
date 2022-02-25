@@ -18,6 +18,8 @@
                  :cancelText="selectBtnCancel || $t('forms.generic.selects.cancelText')"
                  @ionInput="onInput($event)"
                  @ionChange="onChange($event)"
+                 @ionFocus="inFocus = true"
+                 @ionBlur="inFocus = false"
       >
         <template v-if="component === 'ion-select'">
           <template v-if="clearInput">
@@ -32,13 +34,15 @@
       </component>
     </ion-item>
 
+    <slot name="after" v-bind:inFocus="inFocus"></slot>
+
     <small v-if="showError" class="form-input-error">{{ error }}</small>
     <small v-if="message && !showError" class="form-input-message">{{ message }}</small>
   </div>
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, PropType } from 'vue';
+import {computed, defineComponent, PropType, ref} from 'vue';
 
   export default defineComponent({
     name: "FormInputV",
@@ -77,6 +81,7 @@
       const componentType = computed(() => {
         return props.type ?? 'text';
       });
+      const inFocus = ref(false);
 
       const showError = computed(() => props.error && !props.readonly && !props.disabled)
 
@@ -103,7 +108,8 @@
       return {
         componentType,
         showError,
-        onInput, onChange
+        onInput, onChange,
+        inFocus
       }
     }
   })
