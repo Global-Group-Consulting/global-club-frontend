@@ -4,7 +4,9 @@
 
     <PaginatedList :paginated-data="paginatedData"
                    v-slot:default="{data}"
-                   @pageChanged="onPageChanged">
+                   :visible="visible"
+                   @pageChanged="onPageChanged"
+                   @manualRefresh="onManualRefresh">
       <ion-list>
         <AdminListItem v-for="(order, i) in data" :key="i"
                        :title="getTitle(order)"
@@ -51,13 +53,17 @@ export default defineComponent({
       default: true
     },
     userId: String,
-    limit: Number
+    limit: Number,
+    filters: Object,
+    eager: Boolean,
+    refreshAsap: Boolean,
   },
   setup(props, {emit}) {
     const http = inject("http") as HttpPlugin;
     const {t} = useI18n();
     const paginatedData: Ref<PaginatedResult<any> | undefined> = ref();
     const loaded = ref(false);
+    const pendingRefresh = ref(false);
 
     function getTitle(order: Order) {
       return t('pages.orders.list.text', {
@@ -75,34 +81,64 @@ export default defineComponent({
     }
 
     async function fetchData(page?: number) {
-      paginatedData.value = await http.api.orders.readAll(props.statuses, props.userId, props.limit, page);
+      if (props.filters && Object.keys(props.filters).length === 0) {
+        paginatedData.value = undefined;
 
-      loaded.value = true;
+        return;
+      }
 
-      emit("dataFetched");
+      try {
+        paginatedData.value = await http.api.orders.readAll(props.statuses, props.userId, props.limit, page, props.filters);
+
+        loaded.value = true;
+        pendingRefresh.value = false
+
+        emit("dataFetched");
+      } catch (er) {
+        paginatedData.value = undefined;
+      }
     }
 
     async function onPageChanged(page: number) {
       await fetchData(page);
     }
 
+    async function onManualRefresh(event) {
+      await fetchData(paginatedData.value?.page);
+
+      // Must call complete to let the loader know all is done
+      event.target.complete();
+    }
+
     watch(() => props.visible, (value) => {
-      if (!loaded.value && value) {
+      if ((!loaded.value && value) || (value && pendingRefresh.value)) {
         fetchData()
       }
     })
 
-    onMounted(async () => {
-      if (!loaded.value && props.visible) {
-        await fetchData()
+    watch(() => props.filters, () => {
+      if (loaded.value || props.eager) {
+        fetchData()
       }
-    });
+    }, {immediate: true, deep: true})
+
+    watch(() => props.refreshAsap, value => {
+      if (value) {
+        pendingRefresh.value = true
+      }
+    })
+
+    /*  onMounted(async () => {
+        if (!loaded.value && props.visible) {
+          await fetchData()
+        }
+      });*/
 
     return {
       paginatedData,
       formatLocaleDate, formatOrderStatus,
       getTitle, getDescription,
-      onPageChanged
+      onPageChanged, onManualRefresh
     }
   }
   });

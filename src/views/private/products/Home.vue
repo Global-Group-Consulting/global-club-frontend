@@ -31,7 +31,7 @@
   import TopToolbar from '@/components/toolbars/TopToolbar.vue';
   import { onIonViewWillEnter } from '@ionic/vue';
   import PrivateProductCardItem from '@/components/lists/products/PrivateProductCardItem.vue';
-  import SearchBar, { SearchFilters } from '@/views/shared/SearchBar.vue';
+  import SearchBar, { SearchFilters } from '@/components/SearchBar.vue';
   import { useRoute, useRouter } from 'vue-router';
   import { PaginatedResult } from '@/@types/Pagination';
   import Filters from '@/composables/filters';

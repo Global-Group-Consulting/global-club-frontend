@@ -8,18 +8,22 @@ export type UserGroup = { id: UserRoleEnum; data: User[] }
 export class UserApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'club/users';
   
-  static async readAll(group?: UserRoleEnum, page = 1): Promise<PaginatedResult<UserBasic[]> | undefined> {
+  static async readAll(group?: UserRoleEnum, page = 1, queryFilters?: any): Promise<PaginatedResult<UserBasic[]> | undefined> {
     const filters = {}
     
     if (group) {
-      filters["role"] = group.toString()
+      filters["filter[role]"] = group.toString()
+    }
+  
+    if (queryFilters) {
+      Object.assign(filters, queryFilters);
     }
     
     const result = await this.withLoader<PaginatedResult<UserBasic[]>>("get", this.getUrl(), {
       params: {
         "sortBy[firstName]": 1,
         "sortBy[lastName]": 1,
-        ...this.prepareFilterParams(filters),
+        ...filters,
         page
       }
     });
@@ -87,4 +91,7 @@ export class UserApis extends BasicApisClass {
     return result?.data;
   }*/
   
+  static getUsersOptionsUrl(){
+    return this.getUrl("/filterOptionsList")
+  }
 }

@@ -6,7 +6,7 @@ import { OrderStatusEnum } from '@/@enums/order.status.enum';
 export class OrderApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'club/orders';
   
-  static async readAll(status?: OrderStatusEnum | OrderStatusEnum[], userId?: string, limit?: number, page?: number): Promise<PaginatedResult<Order[]> | undefined> {
+  static async readAll(status?: OrderStatusEnum | OrderStatusEnum[], userId?: string, limit?: number, page?: number, queryFilters?: any): Promise<PaginatedResult<Order[]> | undefined> {
     const filters = {}
   
     if (status) {
@@ -15,6 +15,10 @@ export class OrderApis extends BasicApisClass {
   
     if (userId) {
       filters["filter[user]"] = userId
+    }
+  
+    if (queryFilters) {
+      Object.assign(filters, queryFilters);
     }
   
     const queryParams = {
@@ -40,29 +44,29 @@ export class OrderApis extends BasicApisClass {
     return result?.data;
   }
   
-  static async readByStatus (statuses: OrderStatusEnum[]): Promise<PaginatedResult<Order[]> | undefined> {
+  static async readByStatus(statuses: OrderStatusEnum[]): Promise<PaginatedResult<Order[]> | undefined> {
     const result = await this.withLoader<PaginatedResult<Order[]>>("get",
       this.getUrl('', {
         "filter[status]": statuses,
         "sortBy[createdAt]": -1
       }));
-  
+    
     return result?.data;
   }
   
-  static async readCounters () {
-    const result = await this.withLoader<ReadOrderStatusesDto[]>("get", this.getUrl("/statuses"));
-  
+  static async readCounters(filters?: any) {
+    const result = await this.withLoader<ReadOrderStatusesDto[]>("get", this.getUrl("/statuses", filters));
+    
     return result?.data;
   }
   
-  static async read (id: string): Promise<Order | undefined> {
+  static async read(id: string): Promise<Order | undefined> {
     const result = await this.withLoader<Order>("get", this.getUrl("/" + id))
     
     return result?.data
   }
   
-  static async create (products: OrderProduct[], notes: string) {
+  static async create(products: OrderProduct[], notes: string) {
     const result = await this.withLoader<Order>("post", this.getUrl(), {
       products: products.reduce((acc, curr) => {
         acc.push({
@@ -70,7 +74,7 @@ export class OrderApis extends BasicApisClass {
           qta: curr.qta,
           price: curr.price
         })
-      
+        
         return acc;
       }, [] as any[]),
       notes

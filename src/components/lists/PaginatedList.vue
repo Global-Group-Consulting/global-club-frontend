@@ -1,5 +1,10 @@
 <template>
   <div v-if="paginatedResultData?.data.length > 0">
+    <ion-refresher slot="fixed" @ionRefresh="$emit('manualRefresh',$event)"
+                   v-if="visible">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
     <slot :data="paginatedResultData?.data">
 
     </slot>
@@ -22,7 +27,8 @@ export default defineComponent({
   name: "PaginatedList",
   components: {NoData, PaginationBar},
   props: {
-    paginatedData: Object as PropType<PaginatedResult>
+    paginatedData: Object as PropType<PaginatedResult>,
+    visible: Boolean
   },
   setup(props) {
     const paginatedResultData: Ref<PaginatedResultData | undefined> = ref();
