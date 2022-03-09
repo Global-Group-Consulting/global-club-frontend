@@ -10,8 +10,11 @@
     </ion-label>
 
     <ion-label slot="end">
-      <div class="d-flex flex-column ion-align-items-center">
-        <ion-chip :color="movementColor" >{{ movementPack }}</ion-chip>
+      <div class="d-flex flex-column ion-align-items-end">
+        <div class="ion-nowrap">
+          <ion-chip :color="movementColor">{{ movementPack }}</ion-chip>
+          <ion-chip class="small" disabled v-if="showSemester">{{ movement.semesterId.replace("_", "-") }}</ion-chip>
+        </div>
         <small>{{ formatLocaleDate(movement.createdAt) }}</small>
       </div>
     </ion-label>
@@ -33,7 +36,8 @@
       movement: {
         type: Object as PropType<Movement>,
         required: true
-      }
+      },
+      showSemester: Boolean
     },
     setup (props) {
       const type: ComputedRef<"in" | "out" | null> = computed(() => {
