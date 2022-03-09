@@ -4,7 +4,8 @@
       <div class="chat-container">
         <ChatMessage v-for="message in communication.messages" :key="message._id"
                      :data="message"
-                     :communication="communication"></ChatMessage>
+                     :communication="communication"
+                     @messageRead="$emit('messageRead', $event)"/>
       </div>
 
       <div class="mt-3 mx-auto w-lg-50 w-75">
@@ -29,14 +30,15 @@
 
   export default defineComponent({
     name: "Chat",
-    components: { ClubButton, ChatMessage },
+    components: {ClubButton, ChatMessage},
     props: {
       communication: {
         type: Object as PropType<Communication>,
         default: () => ({})
       }
     },
-    setup (props, { emit }) {
+    emits: ["messageRead", "newMessage"],
+    setup(props, {emit}) {
 
       watch(() => props.communication, (value) => {
         console.log(value)
@@ -44,7 +46,7 @@
         deep: true
       })
 
-      async function onAnswerClick () {
+      async function onAnswerClick() {
         const modal = await modalController
             .create({
               component: ChatAnswerModal,

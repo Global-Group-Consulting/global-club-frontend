@@ -1,7 +1,8 @@
 <template>
   <AccordionList :sections="accordionSections">
     <template v-slot:content_communication>
-      <Chat :communication="order?.communication" @newMessage="onNewMessage"></Chat>
+      <Chat :communication="order?.communication" @newMessage="onNewMessage"
+            @messageRead="onMessageRead"></Chat>
     </template>
     <template v-slot:content_products>
       <ion-list>
@@ -41,7 +42,7 @@ import {formatLocaleDate} from '@/@utilities/dates';
 import {formatOrderStatus} from '@/@utilities/statuses';
 import Chat from '@/components/chats/Chat.vue';
 import ProductListItem from '@/components/lists/products/AdminProductListItem.vue';
-import {Communication} from '@/@types/Communication';
+import {Communication, MessageReadResult} from '@/@types/Communication';
 import ClubButton from '@/components/ClubButton.vue';
 import {modalController} from '@ionic/vue';
 import OrderProductEditModal from '@/components/modals/OrderProductEditModal.vue';
@@ -81,63 +82,84 @@ export default defineComponent({
         })),
         open: false
       },
-        {
-          id: "user",
-          text: t("pages.orderDetails.tab_user"),
-          open: false,
-        }
-      ])
-
-      function onNewMessage (data: Communication) {
-        if (order.value?.communication?.messages) {
-          order.value.communication.messages = data.messages;
-        }
+      {
+        id: "user",
+        text: t("pages.orderDetails.tab_user"),
+        open: false,
       }
+    ])
 
-      async function editProduct (product: OrderProduct) {
-        const modal = await modalController
-            .create({
-              component: OrderProductEditModal,
-              componentProps: {
-                title: 'Modifica prodotto',
-                product: product,
-                orderId: order.value?._id
-              },
-            })
-
-        await modal.present();
-        const result = await modal.onWillDismiss<UpdateOrderProductDto>();
-
-        if (result.role === "ok" && result.data) {
-          emit("productUpdated", result.data);
-        }
-      }
-
-      watch(() => props.orderId, async (orderId) => {
-        if (!orderId) {
-          return
-        }
-
-        const result = await http.api.orders.read(orderId);
-
-        order.value = result ?? null
-      }, { immediate: true })
-      watch(() => props.orderData, (newOrder) => {
-        if (!newOrder) {
-          return
-        }
-        order.value = newOrder
-      }, { immediate: true })
-
-      return {
-        order,
-        accordionSections,
-        formatLocaleDate, formatCurrency, formatOrderStatus,
-        onNewMessage, editProduct, formatUserName,
-        orderClosed
+    function onNewMessage(data: Communication) {
+      if (order.value?.communication?.messages) {
+        order.value.communication.messages = data.messages;
       }
     }
-  });
+
+    async function editProduct(product: OrderProduct) {
+      const modal = await modalController
+          .create({
+            component: OrderProductEditModal,
+            componentProps: {
+              title: 'Modifica prodotto',
+              product: product,
+              orderId: order.value?._id
+            },
+          })
+
+      await modal.present();
+      const result = await modal.onWillDismiss<UpdateOrderProductDto>();
+
+      if (result.role === "ok" && result.data) {
+        emit("productUpdated", result.data);
+      }
+    }
+
+    /**
+     * When a message gets read, add the read entry to the array of readings
+     *
+     * @param messageReadData
+     */
+    function onMessageRead(messageReadData: MessageReadResult) {
+      if (order.value?.communication?.messages) {
+        const foundMessage = order.value.communication.messages.find(msg => msg._id === messageReadData.messageId);
+
+        if (foundMessage) {
+          if (!foundMessage.readings) {
+            foundMessage.readings = []
+          }
+
+          foundMessage.readings.push(messageReadData);
+          foundMessage.isRead = messageReadData;
+        }
+      }
+    }
+
+    watch(() => props.orderId, async (orderId) => {
+      if (!orderId) {
+        return
+      }
+
+      const result = await http.api.orders.read(orderId);
+
+      order.value = result ?? null
+    }, {immediate: true})
+    watch(() => props.orderData, (newOrder) => {
+      if (!newOrder) {
+        return
+      }
+      order.value = newOrder
+    }, {immediate: true})
+
+    return {
+      order,
+      accordionSections,
+      formatLocaleDate, formatCurrency, formatOrderStatus,
+      onNewMessage, editProduct, formatUserName,
+      onMessageRead,
+      orderClosed
+    }
+  }
+});
 </script>
 
 <style scoped>
