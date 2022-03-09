@@ -9,7 +9,8 @@
                     <SimpleToolbarButton :text="$t('pages.userProfile.btn_delete')"/>
                   </template>
                 </SimpleToolbar>-->
-        <UserStatistics :user-id="userId" :club-pack="user?.clubPack"></UserStatistics>
+        <UserStatistics :user-id="userId" :club-pack="user?.clubPack"
+                        @update:activeTab="onActiveTabChange"></UserStatistics>
 
         <ion-row>
           <ion-col size="12" sizeLg="6" class="pb-0 py-lg-5">
@@ -50,7 +51,8 @@
           </template>
 
           <template v-slot:content_movements>
-            <MovementsList :user-id="user?._id"></MovementsList>
+            <MovementsList :user-id="user?._id" show-semester
+                           :semester-id="activeTab"></MovementsList>
           </template>
 
           <template v-slot:content_orders>
@@ -107,6 +109,7 @@
       const route = useRoute();
       const http = inject<HttpPlugin>('http') as HttpPlugin;
       const userId = computed(() => route.params.id)
+      const activeTab: Ref<string> = ref("");
       // const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin;
       const user: Ref<User | null> = ref(null)
       const profileSections: Ref<AccordionSection[]> = ref([
@@ -132,6 +135,10 @@
         }
       ])
 
+      function onActiveTabChange(newTab: string) {
+        activeTab.value = newTab
+      }
+
       onIonViewWillEnter(async () => {
         const apiCalls: any[] = [
           http.api.users.readProfile(route.params.id as string, true)
@@ -150,7 +157,8 @@
         formatUserName, formatClubPack, formatUserRole,
         profileSections,
         UserRoleEnum,
-        userId
+        userId, activeTab,
+        onActiveTabChange
       }
     }
   });

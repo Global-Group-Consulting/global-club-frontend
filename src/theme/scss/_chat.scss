@@ -63,6 +63,12 @@
       --title-color: var(--ion-color-primary)
     }
 
+    &.unread {
+      --dot-primary-color: red;
+      --dot-bg-color: red;
+      --title-color: red
+    }
+
     &.status-change{
       --title-color: #4ead5b;
 

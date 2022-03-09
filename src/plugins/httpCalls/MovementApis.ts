@@ -5,16 +5,20 @@ import { CreateManualMovementDto, Movement } from '@/@types/Movement';
 export class MovementApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'club/movements';
   
-  static async readAll (userId: string, semesterId?: string): Promise<PaginatedResult<Movement[]> | undefined> {
-    const filters = { "sortBy[createdAt]": -1 }
-  
+  static async readAll(userId: string, semesterId?: string, page?: string): Promise<PaginatedResult<Movement[]> | undefined> {
+    const filters = {"sortBy[createdAt]": -1}
+    
     if (semesterId) {
       filters["filter[semesterId]"] = semesterId
     }
-  
+    
+    if (page) {
+      filters["page"] = page;
+    }
+    
     const result = await this.withLoader<PaginatedResult<Movement[]>>("get",
-      this.getUrl('/' + userId, { ...filters }));
-  
+      this.getUrl('/' + userId, {...filters}));
+    
     return result?.data;
   }
   

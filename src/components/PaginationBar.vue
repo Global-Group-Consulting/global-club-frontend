@@ -1,5 +1,5 @@
 <template>
-  <ion-grid v-if="paginationData.totalPages > 1">
+  <ion-grid v-if="paginationData.totalPages > 1" class="ion-text-center">
     <ion-button @click="prevPage" :disabled="!canGoBack" shape="round" size="small">
       <Icon name="chevron-left" slot="icon-only"></Icon>
     </ion-button>
@@ -7,12 +7,6 @@
     <ion-button disabled color="transparent" style="color: white">
       {{ paginationData.page }} / {{ paginationData.totalPages }}
     </ion-button>
-
-    <!--
-      <ion-button shape="round" v-for="(page, i) in pagesList" :key="i">
-          {{ page }}
-      </ion-button>
-    -->
 
     <ion-button @click="nextPage" :disabled="!canGoForward" shape="round" size="small">
       <Icon name="chevron-right" slot="icon-only"></Icon>
