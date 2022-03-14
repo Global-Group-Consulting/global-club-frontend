@@ -102,9 +102,9 @@
           const pack = formatClubPack(curr[0] as PackEnum);
           const value = formatBrites(curr[1]) as string
 
-          if (curr[0] === PackEnum.NONE && !userIsAdmin.value) {
-            return acc
-          }
+          // if (curr[0] === PackEnum.NONE && !userIsAdmin.value) {
+          //   return acc
+          // }
 
           acc.push(`<strong>${pack}</strong>: ${value}`)
 
@@ -116,6 +116,10 @@
         const totals: Record<string, number> = {};
 
         data.value?.semesters.forEach(semester => {
+          if (!semester.usableNow) {
+            return;
+          }
+
           const semTotals = calcSemesterTotals(semester, "totalRemaining");
 
           Object.entries(semTotals).forEach(entry => {
@@ -158,13 +162,13 @@
           data: [
             {
               label: 'Totale utilizzabile',
-              value: data.value?.totalRemaining || 0,
-              details: calcResTotal()
+              value: data.value?.totalUsable || 0,
+              // details: calcResTotal()
             },
             ...(data.value?.expirations.reduce((acc, curr) => {
               acc.push({
                 label: 'Scadenza: ' + formatLocaleDateLong(new Date(curr.date)),
-                value: curr.remaining,
+                value: curr.usable,
                 details: formatCalcTotals(calcSemesterTotals(data.value?.semesters.find(sem => sem.expiresAt === curr.date) as Semesters, 'totalRemaining'))
               });
 
@@ -178,15 +182,18 @@
             id: el.semesterId,
             text: formatSemesterId(el.semesterId),
             data: [{
-              label: 'Brite disponibili',
-              value: el.totalRemaining,
-              details: formatCalcTotals(calcSemesterTotals(el, 'totalRemaining')),
+              label: 'Brite utilizzabili',
+              value: el.totalUsable,
+              // details: formatCalcTotals(el.),
             }, {
               label: 'Brite utilizzati',
-              value: el.totalUsed
+              value: el.totalUsed,
+              details: formatCalcTotals(calcSemesterTotals(el, 'totalUsed')),
             }, {
               label: 'Totale accumulato',
-              value: el.totalEarned
+              value: el.totalEarned,
+              details: formatCalcTotals(calcSemesterTotals(el, 'totalEarned')),
+
             }],
             buttons: [
               {
