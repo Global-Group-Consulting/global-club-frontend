@@ -3,7 +3,7 @@
     <div class="chat-message"
          :class="{'status-change': typeOfOrderStatusChange,
                   'incoming': !senderIsUser || typeOfOrderStatusChange,
-                  'unread': !data.isRead && (!senderIsUser || typeOfOrderStatusChange)
+                  'unread': isUnread && (!senderIsUser || typeOfOrderStatusChange)
                 }">
       <div class="status-index">{{ statusIndex }}</div>
 
@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, inject, PropType, ref} from 'vue';
+import {computed, defineComponent, inject, onMounted, PropType, ref} from 'vue';
 import {Communication, Message, MessageRead} from '@/@types/Communication';
 import {formatUserName, getUserId} from "@/@utilities/fields"
 import {formatLocaleDate} from '@/@utilities/dates';
@@ -64,6 +64,7 @@ export default defineComponent({
     const http = inject("http") as HttpPlugin;
     const {t} = useI18n();
     const read = ref();
+    const isUnread = ref(false);
 
     const senderIsUser = computed(() => {
       const authUser: User = store.getters['auth/user']
@@ -184,28 +185,7 @@ export default defineComponent({
         } finally {
           await http.loading.hide();
         }
-
       }
-
-      // const url = await http.api.files.fetchPublicUrl(file.id)
-      // const url = await http.api.files.fetchPublicUrl(file.id)
-
-      // const fileTransfer: FileTransferObject = FileTransfer.create();
-      // window.open(url)
-      /*if (url) {
-        try {
-          const downloadedFile = await fileTransfer.download(url, File.dataDirectory + file.id)
-
-          console.log(downloadedFile)
-          debugger
-          // await FileOpener.open(url, file.mimetype)
-        } catch (er) {
-          // await alerts.error(er);
-          window.open(url)
-
-          // await http.api.files.preview(file.id, file.mimetype, file.fileName)
-        }*/
-      // }
     }
 
     async function onWaypointChange(waypointState: WaypointState) {
@@ -226,6 +206,10 @@ export default defineComponent({
       }
     }
 
+    onMounted(() => {
+      isUnread.value = !props.data.isRead;
+    })
+
     return {
       formatUserName, formatLocaleDate, formatImgUrl, resolveDownloadUrl,
       previewFile, isFirstMessage,
@@ -233,7 +217,8 @@ export default defineComponent({
       title, statusIndex,
       MessageTypeEnum,
       content,
-      onWaypointChange
+      onWaypointChange,
+      isUnread
     }
   }
 });

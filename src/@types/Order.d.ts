@@ -35,6 +35,7 @@ export interface OrderProduct {
 export interface ReadOrderStatusesDto {
   _id: OrderStatusEnum;
   count: number;
+  unreadCount: number;
 }
 
 export interface UpdateOrderProductDto {

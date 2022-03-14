@@ -93,7 +93,8 @@ export default defineComponent({
       return {
         id: key,
         text: t("enums.OrderStatusEnum." + key),
-        count: 0
+        count: 0,
+        unreadCount: 0
       }
     }));
 
@@ -119,6 +120,7 @@ export default defineComponent({
 
         if (correspondingTab) {
           correspondingTab.count = el.count
+          correspondingTab.unreadCount = el.unreadCount
         }
       })
     }

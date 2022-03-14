@@ -9,6 +9,7 @@
                         layout="icon-bottom">
       <ion-label>
         {{ tab.text }} <span v-if="tab.count">({{ tab.count }})</span>
+        <ion-badge color="red">{{tab.unreadCount}}</ion-badge>
       </ion-label>
     </ion-segment-button>
   </ion-segment>

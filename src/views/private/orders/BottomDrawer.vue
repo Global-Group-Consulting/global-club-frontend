@@ -6,31 +6,32 @@
       </div>
 
       <div class="toggle-drawer-content pe-4 ps-5 pb-4">
-        <Chat :communication="communication" @newMessage="onNewMessage"></Chat>
+        <Chat :communication="communication" @newMessage="onNewMessage"
+              @messageRead="onMessageRead"></Chat>
       </div>
     </ion-grid>
   </div>
 </template>
 
 <script lang="ts">
-  import { createGesture } from "@ionic/core";
-  import Icon from '@/components/Icon.vue';
-  import { computed, defineComponent, onMounted, PropType, Ref, ref, watch } from 'vue';
-  import { useStore } from 'vuex';
-  import { storeKey } from '@/store';
-  import Chat from '@/components/chats/Chat.vue';
-  import { Order } from '@/@types/Order';
-  import { Communication } from '@/@types/Communication';
+import {createGesture} from "@ionic/core";
+import Icon from '@/components/Icon.vue';
+import {computed, defineComponent, onMounted, PropType, Ref, ref, watch} from 'vue';
+import {useStore} from 'vuex';
+import {storeKey} from '@/store';
+import Chat from '@/components/chats/Chat.vue';
+import {Order} from '@/@types/Order';
+import {Communication, MessageReadResult} from '@/@types/Communication';
 
-  export default defineComponent({
-    name: "BottomDrawer",
-    components: { Chat, Icon },
-    props: {
-      order: {
-        type: Object as PropType<Order>,
-        required: true
-      }
-    },
+export default defineComponent({
+  name: "BottomDrawer",
+  components: {Chat, Icon},
+  props: {
+    order: {
+      type: Object as PropType<Order>,
+      required: true
+    }
+  },
     setup (props) {
       const store = useStore(storeKey);
       const opened = ref(false);
@@ -44,16 +45,36 @@
         }
       }
 
-      function onNewMessage (data: Communication) {
+      function onNewMessage(data: Communication) {
         if (communication.value?.messages) {
           communication.value.messages = data.messages;
+        }
+      }
+
+      /**
+       * When a message gets read, add the read entry to the array of readings
+       *
+       * @param messageReadData
+       */
+      function onMessageRead(messageReadData: MessageReadResult) {
+        if (communication.value?.messages) {
+          const foundMessage = communication.value.messages.find(msg => msg._id === messageReadData.messageId);
+
+          if (foundMessage) {
+            if (!foundMessage.readings) {
+              foundMessage.readings = []
+            }
+
+            foundMessage.readings.push(messageReadData);
+            foundMessage.isRead = messageReadData;
+          }
         }
       }
 
       watch(() => props.order, (value: Order) => {
         communication.value = value?.communication;
 
-      }, { immediate: true })
+      }, {immediate: true})
 
       onMounted(() => {
         if (!toggleDrawerBtn.value) {
@@ -88,7 +109,7 @@
       })
 
       return {
-        toggleDrawer, onNewMessage,
+        toggleDrawer, onNewMessage, onMessageRead,
         toggleDrawerBtn,
         opened,
         communication
