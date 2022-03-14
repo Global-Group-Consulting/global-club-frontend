@@ -12,6 +12,7 @@ export interface Order {
   status: OrderStatusEnum;
   notes: string;
   cancelReason?: string;
+  unreadCount?: string;
   
   _id: string;
   createdAt: Date;
@@ -35,6 +36,7 @@ export interface OrderProduct {
 export interface ReadOrderStatusesDto {
   _id: OrderStatusEnum;
   count: number;
+  unreadCount: number;
 }
 
 export interface UpdateOrderProductDto {
