@@ -16,12 +16,14 @@
           })"></h4>
       </ion-label>
 
-      <ion-label slot="end">
+      <div slot="end" class="d-flex ion-align-items-center">
+        <ion-chip color="danger" class="unreadCounter small"  mode="ios" v-if="order.unreadCount">{{ order.unreadCount }}</ion-chip>
+
         <PageLink :to="{name: 'private.orders.details', params: { id: order._id }}"
                   :btn-props="{icon: true, onlyIcon: true, iconName: 'chevron-right', fill:'outline', size:'small'}">
           {{ $t("sections.orders.btn_got_to_details") }}
         </PageLink>
-      </ion-label>
+      </div>
     </ion-item>
 
     <PrivateProductListItem v-for="(product, i) in order.products" :key="i"

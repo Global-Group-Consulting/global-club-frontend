@@ -21,6 +21,10 @@
             <small v-html="$t('pages.orders.list.lastUpdate', {date: formatLocaleDate(order.updatedAt)})"></small>
           </template>
 
+          <template v-slot:buttons-start v-if="order.unreadCount">
+            <ion-chip color="danger" class="unreadCounter small" mode="ios">{{ order.unreadCount }}</ion-chip>
+          </template>
+
         </AdminListItem>
       </ion-list>
     </PaginatedList>
