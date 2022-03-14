@@ -4,9 +4,11 @@
       <Icon :name="icon" :color="color" size="large"></Icon>
     </ion-thumbnail>
 
-    <ion-label >
+    <ion-label>
       <h2 :style="`color: ${color}`"><strong v-html="value"></strong></h2>
       <h4>{{ formatMovementType(movement.movementType) }}</h4>
+      <small class="ion-text-wrap"
+             v-if="movement.notes !== formatMovementType(movement.movementType)">Dettagli: {{ movement.notes }}</small>
     </ion-label>
 
     <ion-label slot="end">
