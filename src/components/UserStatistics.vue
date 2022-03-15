@@ -102,6 +102,10 @@
           const pack = formatClubPack(curr[0] as PackEnum);
           const value = formatBrites(curr[1]) as string
 
+          if (curr[1] < 1) {
+            return acc;
+          }
+
           // if (curr[0] === PackEnum.NONE && !userIsAdmin.value) {
           //   return acc
           // }
