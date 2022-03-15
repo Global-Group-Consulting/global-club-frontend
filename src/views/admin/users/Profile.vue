@@ -149,7 +149,8 @@
       });
 
       onIonViewDidLeave(async () => {
-        user.value = null
+        user.value = null;
+        profileSections.value = [];
       });
 
       return {
