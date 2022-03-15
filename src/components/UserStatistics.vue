@@ -5,6 +5,7 @@
           :centeredSlides="true"
           :spaceBetween="16"
           :allowTouchMove="true"
+          :simulate-touch="false"
           @init="setControlledSwiper"
           @activeIndexChange="onActiveIndexChange">
     <swiper-slide class="statistics-card-wrapper"
