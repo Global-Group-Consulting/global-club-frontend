@@ -5,6 +5,7 @@
           :centeredSlides="true"
           :spaceBetween="16"
           :allowTouchMove="true"
+          :simulate-touch="false"
           @init="setControlledSwiper"
           @activeIndexChange="onActiveIndexChange">
     <swiper-slide class="statistics-card-wrapper"
@@ -101,6 +102,10 @@
         return Object.entries(totals).reduce((acc, curr) => {
           const pack = formatClubPack(curr[0] as PackEnum);
           const value = formatBrites(curr[1]) as string
+
+          if (curr[1] < 1) {
+            return acc;
+          }
 
           // if (curr[0] === PackEnum.NONE && !userIsAdmin.value) {
           //   return acc

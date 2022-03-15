@@ -21,16 +21,12 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, inject, ref, Ref, watch} from 'vue';
+import {defineComponent, inject, onMounted, ref, Ref, watch} from 'vue';
 import {HttpPlugin} from '@/plugins/HttpPlugin';
 import {Movement} from '@/@types/Movement';
 import {PaginatedResult} from '@/@types/Pagination';
-import {PaginatedResultData, PaginationData} from '@/@entities/pagination.entity';
-import PaginationBar from '@/components/PaginationBar.vue';
 import MovementListItem from '@/components/lists/movements/MovementListItem.vue';
-import NoData from '@/components/NoData.vue';
 import PaginatedList from "@/components/lists/PaginatedList.vue";
-import {bool} from "yup";
 
 export default defineComponent({
   name: "MovementsList",
@@ -64,12 +60,16 @@ export default defineComponent({
       }
 
       fetchData();
-    }, {immediate: true});
+    });
 
     watch(() => props.semesterId, semesterId => {
       const isSemester: boolean = !!semesterId && !!semesterId.match(/^[0-9]{4}_[1,2]{1}$/);
 
       fetchData(1, isSemester ? semesterId : undefined)
+    })
+
+    onMounted(() => {
+      fetchData(1, props.semesterId ? props.semesterId : undefined)
     })
 
     return {
