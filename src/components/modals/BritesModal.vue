@@ -106,7 +106,7 @@
         });
       });
       const clubPackOptions: ComputedRef<SelectOption[]> = computed(() => {
-        const packs = [PackEnum.BASIC, PackEnum.FAST, PackEnum.PREMIUM, PackEnum.NONE];
+        const packs = [PackEnum.BASIC, PackEnum.FAST, PackEnum.PREMIUM, PackEnum.UNSUBSCRIBED];
 
         return packs.map(el => ({
           value: el,
