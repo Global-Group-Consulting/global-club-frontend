@@ -6,7 +6,8 @@
     <ion-list>
       <MovementListItem v-for="movement in data" :key="movement._id"
                         :show-semester="showSemester"
-                        :movement="movement"></MovementListItem>
+                        :movement="movement"
+                        @movement:removed="onMovementRemoved"></MovementListItem>
     </ion-list>
   </PaginatedList>
   <!--  <ion-list v-if="movementsList?.length > 0">
@@ -39,7 +40,7 @@ export default defineComponent({
     semesterId: String,
     showSemester: Boolean
   },
-  setup(props) {
+  setup(props, {emit}) {
     const http = inject<HttpPlugin>('http') as HttpPlugin;
     const movementsList: Ref<Movement[] | null> = ref(null)
     // const paginationData: Ref<PaginationData> = ref(new PaginationData())
@@ -72,9 +73,15 @@ export default defineComponent({
       fetchData(1, props.semesterId ? props.semesterId : undefined)
     })
 
+    function onMovementRemoved() {
+      fetchData(paginatedData.value?.page, props.semesterId ?? undefined);
+      emit("data:fetched")
+    }
+
     return {
       movementsList,
-      paginatedData, onPageChanged
+      paginatedData, onPageChanged,
+      onMovementRemoved
     }
   }
   });

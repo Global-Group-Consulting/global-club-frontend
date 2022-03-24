@@ -36,11 +36,17 @@ export class MovementApis extends BasicApisClass {
     return result?.data;
   }
   
-  static async manualRemove (userId: string, data: CreateManualMovementDto): Promise<Movement | undefined> {
+  static async manualRemove(userId: string, data: CreateManualMovementDto): Promise<Movement | undefined> {
     const result = await this.withLoader<Movement>('delete',
       this.getUrl('/' + userId), {
         data
       });
+    
+    return result?.data;
+  }
+  
+  static async delete(movementId: string): Promise<void> {
+    const result = await this.withLoader<void>('delete', this.getUrl('/' + movementId + "/delete"));
     
     return result?.data;
   }
