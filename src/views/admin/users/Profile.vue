@@ -10,6 +10,7 @@
                   </template>
                 </SimpleToolbar>-->
         <UserStatistics :user-id="userId" :club-pack="user?.clubPack"
+                        ref="userStatistics"
                         @update:activeTab="onActiveTabChange"></UserStatistics>
 
         <ion-row>
@@ -52,7 +53,8 @@
 
           <template v-slot:content_movements>
             <MovementsList :user-id="user?._id" show-semester
-                           :semester-id="activeTab"></MovementsList>
+                           :semester-id="activeTab"
+                           @data:fetched="onMovementsFetched"></MovementsList>
           </template>
 
           <template v-slot:content_orders>
@@ -105,7 +107,8 @@
       TopToolbar
     },
     setup () {
-      const { t } = useI18n();
+      const userStatistics = ref();
+      const {t} = useI18n();
       const route = useRoute();
       const http = inject<HttpPlugin>('http') as HttpPlugin;
       const userId = computed(() => route.params.id)
@@ -139,6 +142,10 @@
         activeTab.value = newTab
       }
 
+      function onMovementsFetched() {
+        userStatistics.value.fetchData()
+      }
+
       onIonViewWillEnter(async () => {
         const apiCalls: any[] = [
           http.api.users.readProfile(route.params.id as string, true)
@@ -159,7 +166,9 @@
         profileSections,
         UserRoleEnum,
         userId, activeTab,
-        onActiveTabChange
+        onActiveTabChange,
+        onMovementsFetched,
+        userStatistics
       }
     }
   });

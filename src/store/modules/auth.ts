@@ -64,6 +64,11 @@ const getters: GetterTree<RootState, RootState> = {
     
     return state.user?.roles.some(role => validAclRoles.includes(role));
   },
+  isSuperAdmin (state: AuthState) {
+    const validAclRoles: string[] = [UserAclRolesEnum.SUPER_ADMIN];
+    
+    return state.user?.roles.some(role => validAclRoles.includes(role));
+  },
   isNormal (state: AuthState) {
     const validAclRoles: string[] = [UserAclRolesEnum.AGENT, UserAclRolesEnum.CLIENT];
     

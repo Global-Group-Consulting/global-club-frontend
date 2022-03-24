@@ -253,7 +253,8 @@
         tabs,
         activeTab,
         data,
-        setControlledSwiper, onActiveIndexChange
+        setControlledSwiper, onActiveIndexChange,
+        fetchData
       }
     }
   });
