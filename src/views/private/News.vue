@@ -1,6 +1,6 @@
 <template>
   <IonPage>
-    <TopToolbar>News & Eeventi</TopToolbar>
+    <TopToolbar>News & Eventi</TopToolbar>
 
     <IonContent>
       <ion-grid fixed>
