@@ -59,7 +59,8 @@ export const forms = {
     "id": "Codice",
     "title": "Titolo",
     "priceUndefined": "Prezzo da definire",
-    "categories": "Categorie"
+    "categories": "Categorie",
+    "packChangeOrder": "Cambio Pack"
   }
   
 }
