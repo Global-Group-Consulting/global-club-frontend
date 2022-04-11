@@ -9,19 +9,23 @@
                         @update:filters="onUpdateFilters">
           <template v-slot:advancedFilters="{filters}">
             <ion-row>
-              <ion-col size="12" sizeMd="6">
+              <ion-col size="12" sizeMd="4">
                 <FormInputAutocomplete v-model="filters['user']"
                                        :async-options-url="$http.api.users.getUsersOptionsUrl()"
                                        :label="$t('forms.filters.user')"
                 >
                 </FormInputAutocomplete>
               </ion-col>
-              <ion-col size="12" sizeMd="6">
+              <ion-col size="12" sizeMd="4">
                 <FormInputV v-model="filters['status']"
                             component="ion-select"
                             clear-input
                             :label="$t('forms.filters.status')"
                             :options="orderStatusOptions"></FormInputV>
+              </ion-col>
+              <ion-col size="12" sizeMd="4">
+                <FormToggleV v-model="filters['packChangeOrder']"
+                             :label="$t('forms.filters.packChangeOrder')"></FormToggleV>
               </ion-col>
             </ion-row>
           </template>
@@ -75,19 +79,23 @@ import AdminOrdersList from '@/components/lists/orders/AdminOrdersList.vue';
 import AdminSearchBar from "@/components/AdminSearchBar.vue";
 import FormInputV from "@/components/forms/FormInputV.vue";
 import {SelectOption} from "@/@types/Form";
-import FormInputAutocomplete from "@/components/forms/FormInputAutocomplete.vue";
+import FormInputAutocomplete from '@/components/forms/FormInputAutocomplete.vue'
+import FormToggleV from '@/components/forms/FormToggleV.vue'
 
 export default defineComponent({
-  name: "OrdersPage",
-  components: {FormInputAutocomplete, FormInputV, AdminSearchBar, AdminOrdersList, Tabs, TopToolbar, IonPage},
-  setup() {
-    const http: HttpPlugin = inject<HttpPlugin>('http') as HttpPlugin;
-    const {t} = useI18n();
+  name: 'OrdersPage',
+  components: {
+    FormToggleV,
+    FormInputAutocomplete, FormInputV, AdminSearchBar, AdminOrdersList, Tabs, TopToolbar, IonPage
+  },
+  setup () {
+    const http: HttpPlugin = inject<HttpPlugin>('http') as HttpPlugin
+    const { t } = useI18n()
     const ordersList: Ref<Order[]> = ref([])
     const paginationData: Ref<Partial<PaginatedResult>> = ref({})
-    const activeTab = ref(OrderStatusEnum.PENDING);
-    const filters = ref({});
-    const refreshAsap = ref(false);
+    const activeTab = ref(OrderStatusEnum.PENDING)
+    const filters = ref({})
+    const refreshAsap = ref(false)
     const hasFilters = computed(() => Object.keys(filters.value).length > 0)
     const tabs: Ref<TabEntry[]> = ref(Object.values(OrderStatusEnum).map(key => {
       return {

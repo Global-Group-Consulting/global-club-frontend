@@ -21,8 +21,14 @@
             <small v-html="$t('pages.orders.list.lastUpdate', {date: formatLocaleDate(order.updatedAt)})"></small>
           </template>
 
-          <template v-slot:buttons-start v-if="order.unreadCount">
-            <ion-chip color="danger" class="unreadCounter small" mode="ios">{{ order.unreadCount }}</ion-chip>
+          <template v-slot:buttons-start>
+            <ion-chip color="warning" class="small ion-text-center" mode="ios"
+                      disabled outline
+                      v-if="order.packChangeOrder">Cambio<br>Pack
+            </ion-chip>
+            <ion-chip color="danger" class="unreadCounter small" mode="ios"
+                      v-if="order.unreadCount">{{ order.unreadCount }}
+            </ion-chip>
           </template>
 
         </AdminListItem>
