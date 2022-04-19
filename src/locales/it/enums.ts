@@ -2,6 +2,7 @@ import { UserRoleEnum } from '@/@enums/user.role.enum';
 import { OrderStatusEnum } from '@/@enums/order.status.enum';
 import { MovementTypeEnum } from '@/@enums/movement.type.enum';
 import { PackEnum } from '@/@enums/pack.enum';
+import { NotificationTypeEnum } from '@/@enums/notification.type.enum'
 
 export const enums = {
   UserRoleEnum: {
@@ -29,5 +30,10 @@ export const enums = {
     [PackEnum.FAST]: "Fast",
     [PackEnum.PREMIUM]: "Premium",
     [PackEnum.UNSUBSCRIBED]: "Non iscritto",
+  },
+  NotificationTypeEnum: {
+    [NotificationTypeEnum.ORDER_UPDATE]: "Stato ordine aggiornato",
+    [NotificationTypeEnum.NEW_MESSAGE]: "Nuovo messaggio",
+    [NotificationTypeEnum.NEW_NEWS]: "Nuova news",
   }
 }

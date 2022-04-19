@@ -29,23 +29,39 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
-  import menuEntries from '@/composables/menuEntries';
-  import Icon from '@/components/Icon.vue';
+import { computed, defineComponent, inject, onMounted } from 'vue'
+import menuEntries, { MenuEntry } from '@/composables/menuEntries'
+import Icon from '@/components/Icon.vue'
+import { storeKey } from '@/store'
+import { useStore } from 'vuex'
+import { HttpPlugin } from '@/plugins/HttpPlugin'
 
-  export default defineComponent({
-    name: "TheMobileToolbar",
-    components: { Icon },
-    setup () {
-      const { onItemClick, mobileEntries } = menuEntries();
-      // const authUser: ComputedRef<User> = computed(() => store.getters['auth/user']);
+export default defineComponent({
+  name: 'TheMobileToolbar',
+  components: { Icon },
+  setup () {
+    const menuEntries1 = menuEntries()
+    const http = inject('http') as HttpPlugin
+    const store = useStore(storeKey)
 
-      return {
-        mobileEntries,
-        onItemClick
-      }
+    function fetchNotificationCounters (interval?: number) {
+      setTimeout(() => {
+        store.dispatch('notifications/fetchCounters', http)
+
+        fetchNotificationCounters()
+      }, interval ?? 10000)
     }
-  });
+
+    onMounted(() => {
+      fetchNotificationCounters(0)
+    })
+
+    return {
+      onItemClick: menuEntries1.onItemClick,
+      mobileEntries: menuEntries1.mobileEntries
+    }
+  }
+})
 </script>
 
 <style scoped>

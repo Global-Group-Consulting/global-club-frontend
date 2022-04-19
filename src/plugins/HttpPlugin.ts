@@ -3,17 +3,18 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { settings } from '@/config/httpPlugin';
 import { merge } from 'lodash';
 import { ProductApis } from '@/plugins/httpCalls/ProductApis';
-import { ProductCategoryApis } from '@/plugins/httpCalls/ProductCategoryApis';
-import { loadingController } from '@ionic/vue';
-import { AlertsPlugin } from '@/plugins/Alerts';
-import { UserApis } from '@/plugins/httpCalls/UserApis';
-import { OrderApis } from '@/plugins/httpCalls/OrderApis';
-import { MovementApis } from '@/plugins/httpCalls/MovementApis';
-import { DashboardApis } from '@/plugins/httpCalls/DashboardApis';
-import { CommunicationApis } from '@/plugins/httpCalls/CommunicationApis';
-import { FileApis } from '@/plugins/httpCalls/FileApis';
-import {NewsApis} from '@/plugins/httpCalls/NewsApis';
-import {LocationApis} from '@/plugins/httpCalls/LocationApis';
+import { ProductCategoryApis } from '@/plugins/httpCalls/ProductCategoryApis'
+import { loadingController } from '@ionic/vue'
+import { AlertsPlugin } from '@/plugins/Alerts'
+import { UserApis } from '@/plugins/httpCalls/UserApis'
+import { OrderApis } from '@/plugins/httpCalls/OrderApis'
+import { MovementApis } from '@/plugins/httpCalls/MovementApis'
+import { DashboardApis } from '@/plugins/httpCalls/DashboardApis'
+import { CommunicationApis } from '@/plugins/httpCalls/CommunicationApis'
+import { FileApis } from '@/plugins/httpCalls/FileApis'
+import { NewsApis } from '@/plugins/httpCalls/NewsApis'
+import { LocationApis } from '@/plugins/httpCalls/LocationApis'
+import { NotificationsApis } from '@/plugins/httpCalls/NotificationsApis'
 
 type RequestsQueue = {
   resolve: (value?: unknown) => void;
@@ -33,6 +34,7 @@ interface ApiModules {
   files: typeof FileApis;
   news: typeof NewsApis;
   locations: typeof LocationApis;
+  notifications: typeof NotificationsApis;
 }
 
 class HttpQueue {
@@ -138,6 +140,7 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
       files: FileApis,
       news: NewsApis,
       locations: LocationApis,
+      notifications: NotificationsApis
     };
     this.queue = new HttpQueue();
     this.loading = new LoadingHandler(this.plugins["$t"]);
