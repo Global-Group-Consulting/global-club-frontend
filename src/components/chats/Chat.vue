@@ -5,6 +5,7 @@
         <ChatMessage v-for="message in communication.messages" :key="message._id"
                      :data="message"
                      :communication="communication"
+                     :highlight="highlight === message._id"
                      @messageRead="$emit('messageRead', $event)"/>
       </div>
 
@@ -21,54 +22,57 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, PropType, watch } from 'vue';
-  import { Communication, CommunicationAnswerDto } from '@/@types/Communication';
-  import ChatMessage from '@/components/chats/ChatMessage.vue';
-  import ChatAnswerModal from '@/components/modals/ChatAnswerModal.vue';
-  import { modalController } from '@ionic/vue';
-  import ClubButton from '@/components/ClubButton.vue';
+import { defineComponent, PropType, watch } from 'vue'
+import { Communication, CommunicationAnswerDto } from '@/@types/Communication'
+import ChatMessage from '@/components/chats/ChatMessage.vue'
+import ChatAnswerModal from '@/components/modals/ChatAnswerModal.vue'
+import { modalController } from '@ionic/vue'
+import ClubButton from '@/components/ClubButton.vue'
 
-  export default defineComponent({
-    name: "Chat",
-    components: {ClubButton, ChatMessage},
-    props: {
-      communication: {
-        type: Object as PropType<Communication>,
-        default: () => ({})
-      }
+export default defineComponent({
+  name: 'Chat',
+  components: { ClubButton, ChatMessage },
+  props: {
+    communication: {
+      type: Object as PropType<Communication>,
+      default: () => ({})
     },
-    emits: ["messageRead", "newMessage"],
-    setup(props, {emit}) {
+    highlight: {
+      type: String
+    }
+  },
+  emits: ['messageRead', 'newMessage'],
+  setup (props, { emit }) {
 
-      watch(() => props.communication, (value) => {
-        console.log(value)
-      }, {
-        deep: true
-      })
+    watch(() => props.communication, (value) => {
+      console.log(value)
+    }, {
+      deep: true
+    })
 
-      async function onAnswerClick() {
-        const modal = await modalController
-            .create({
-              component: ChatAnswerModal,
-              componentProps: {
-                title: 'Nuovo risposta al messaggio',
-                conversation: props.communication
-              },
-            })
+    async function onAnswerClick () {
+      const modal = await modalController
+          .create({
+            component: ChatAnswerModal,
+            componentProps: {
+              title: 'Nuovo risposta al messaggio',
+              conversation: props.communication
+            }
+          })
 
-        await modal.present();
-        const result = await modal.onWillDismiss<CommunicationAnswerDto>();
+      await modal.present()
+      const result = await modal.onWillDismiss<CommunicationAnswerDto>()
 
-        if (result.role === "ok" && result.data) {
-          emit("newMessage", result.data);
-        }
-      }
-
-      return {
-        onAnswerClick
+      if (result.role === 'ok' && result.data) {
+        emit('newMessage', result.data)
       }
     }
-  });
+
+    return {
+      onAnswerClick
+    }
+  }
+})
 </script>
 
 <style scoped>

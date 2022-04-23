@@ -6,6 +6,10 @@ export interface NotificationData {
   app: string;
   type: string;
   platforms: string[];
+  action?: {
+    text: string;
+    link: string;
+  };
   extraData: any;
   receiver: Pick<User, '_id' | 'firstName' | 'lastName' | 'email'>;
 }

@@ -8,6 +8,7 @@
         <Tabs :data="tabs">
           <template v-slot:tabSlide_unread="{isActive, onDataFetched}">
             <NotificationsList :read="false" :visible="isActive"
+                               ref="unreadNotificationsList"
                                :refresh-asap="refreshAsap || mustRefresh.read"
                                show-read-all-btn
                                @dataFetched="onTabDataFetched('read', onDataFetched)"
@@ -40,6 +41,7 @@ export default defineComponent({
   components: { Tabs, NotificationsList, TopToolbar },
   setup () {
     const http = inject('http') as HttpPlugin
+    const unreadNotificationsList = ref<typeof NotificationsList>()
     const store = useStore(storeKey)
     const refreshAsap = ref(false)
     const mustRefresh = ref({
@@ -70,18 +72,13 @@ export default defineComponent({
     function onNotificationUpdated (status: string) {
       mustRefresh.value[status] = true
 
-      store.dispatch('notifications/fetchCounters', http)
+      store.dispatch('notifications/fetchCounters')
     }
 
     onIonViewWillEnter(async () => {
-      refreshAsap.value = true
-
-      // Fetch counters and actual data for the current tab
-      await Promise.all([
-        // fetchCounters(),
-      ])
-
-      refreshAsap.value = false
+      if(!unreadNotificationsList.value?.refreshAsap){
+        unreadNotificationsList.value?.fetchData()
+      }
     })
 
     return {
@@ -89,7 +86,8 @@ export default defineComponent({
       refreshAsap,
       onTabDataFetched,
       onNotificationUpdated,
-      mustRefresh
+      mustRefresh,
+      unreadNotificationsList
     }
   }
 })

@@ -19,7 +19,8 @@
                        :title="item.data.title"
                        :description="item.data.content"
                        :open-link="{}"
-                       :is-button="false">
+                       :is-button="!!item.data.action?.link"
+                       @click="onItemClick(item)">
           <template v-slot:description="{description}">
             <div class="ion-text-wrap" v-html="description"></div>
           </template>
@@ -59,6 +60,7 @@ import ClubButton from '@/components/ClubButton.vue'
 import FormToggleV from '@/components/forms/FormToggleV.vue'
 import { AlertsPlugin } from '@/plugins/Alerts'
 import { NotificationTypeEnum } from '@/@enums/notification.type.enum'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'NotificationsList',
@@ -82,6 +84,7 @@ export default defineComponent({
     showReadAllBtn: Boolean
   },
   setup (props, { emit }) {
+    const router = useRouter()
     const http = inject('http') as HttpPlugin
     const alerts = inject('alerts') as AlertsPlugin
     const { t } = useI18n()
@@ -186,6 +189,27 @@ export default defineComponent({
       event.target.complete()
     }
 
+    async function onItemClick (notification: Notification) {
+      if (!notification.data.action?.link) {
+        return
+      }
+
+      if (!notification['read_at']) {
+        await http.api.notifications.read(notification.id)
+        notification['read_at'] = Date.now().toString()
+
+        const updatedIndex = paginatedData.value?.data.findIndex(n => n.id === notification.id) ?? -1
+
+        if (updatedIndex > -1) {
+          paginatedData.value?.data.splice(updatedIndex, 1)
+        }
+
+        emit('notificationUpdated', notification)
+      }
+
+      await router.push(notification.data.action.link)
+    }
+
     watch(() => props.visible, (value) => {
       if ((!loaded.value && value) || (value && pendingRefresh.value)) {
         fetchData()
@@ -209,8 +233,8 @@ export default defineComponent({
       formatLocaleDate, formatOrderStatus,
       getType, getCreatedAt, getStatus,
       onPageChanged, onManualRefresh,
-      updateStatus,
-      readAll
+      updateStatus, fetchData,
+      readAll, onItemClick
     }
   }
 })

@@ -44,7 +44,7 @@ export default defineComponent({
     const http = inject('http') as HttpPlugin
     const store = useStore(storeKey)
 
-    function fetchNotificationCounters (interval?: number) {
+    /*function fetchNotificationCounters (interval?: number) {
       setTimeout(() => {
         store.dispatch('notifications/fetchCounters', http)
 
@@ -54,7 +54,7 @@ export default defineComponent({
 
     onMounted(() => {
       fetchNotificationCounters(0)
-    })
+    })*/
 
     return {
       onItemClick: menuEntries1.onItemClick,

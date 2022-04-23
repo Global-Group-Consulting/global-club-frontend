@@ -40,12 +40,21 @@ export class NotificationsApis extends BasicApisClass {
     return resp?.data
   }
   
-  static async read (id: string): Promise<void | undefined> {
-    const resp: AxiosResponse<any> | undefined = await this.withLoader('patch', this.getUrl(`/notifications/${id}/read`,
+  static async readByContent (multiReadBy: string): Promise<void | undefined> {
+    const resp: AxiosResponse<any> | undefined = await this.withLoader('patch', this.getUrl(`/notifications/${multiReadBy}/readByContent`,
       {
         'platform': 'app'
       }), {})
     
+    return resp?.data
+  }
+  
+  static async read(id: string): Promise<void | undefined> {
+    const resp: AxiosResponse<any> | undefined = await this.withLoader('patch', this.getUrl(`/notifications/${id}/read`,
+      {
+        'platform': 'app'
+      }), {})
+  
     return resp?.data
   }
   

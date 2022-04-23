@@ -105,7 +105,7 @@ export default [
     },
   },{
     path: "/notifications",
-    component: () => import("@/views/private/Notifications.vue"),
+    component: () => import("@/views/shared/Notifications.vue"),
     name: "notifications.index",
     meta: {
       isPrivate: true,

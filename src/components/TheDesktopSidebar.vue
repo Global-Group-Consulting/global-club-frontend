@@ -41,7 +41,7 @@ export default defineComponent({
     const isLoggedIn = computed(() => store.getters['auth/isLoggedIn'])
     const authUser: ComputedRef<User> = computed(() => store.getters['auth/user'])
 
-    function fetchNotificationCounters (interval?: number) {
+    /*function fetchNotificationCounters (interval?: number) {
       setTimeout(() => {
         store.dispatch('notifications/fetchCounters', http)
 
@@ -51,7 +51,7 @@ export default defineComponent({
 
     onMounted(() => {
       fetchNotificationCounters(0)
-    })
+    })*/
 
     return {
       isLoggedIn, authUser,

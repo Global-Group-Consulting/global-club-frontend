@@ -28,7 +28,8 @@
             {{ item.label }}
 
             <template v-if="item.slot === 'notification-popup' ">
-              <ion-toggle slot="end"></ion-toggle>
+              <ion-toggle slot="end" @ionChange="onToggleChange(item, $event)"
+                          :checked="item.value"></ion-toggle>
             </template>
           </ion-item>
         </ion-list>
@@ -39,17 +40,18 @@
 </template>
 
 <script lang="ts">
-import {computed, ComputedRef, defineComponent, onMounted, ref} from "vue";
-import TopToolbar from '@/components/toolbars/TopToolbar.vue';
-import {useStore} from 'vuex';
-import {storeKey} from '@/store';
-import {formatClubPack} from '@/@utilities/statuses';
-import menuEntries, {MenuEntry} from '@/composables/menuEntries';
-import Icon from '@/components/Icon.vue';
-import {useI18n} from 'vue-i18n';
-import pjson from "@/../package.json";
+import { computed, ComputedRef, defineComponent, onMounted, ref } from 'vue'
+import TopToolbar from '@/components/toolbars/TopToolbar.vue'
+import { useStore } from 'vuex'
+import { storeKey } from '@/store'
+import { formatClubPack } from '@/@utilities/statuses'
+import menuEntries, { MenuEntry } from '@/composables/menuEntries'
+import Icon from '@/components/Icon.vue'
+import { useI18n } from 'vue-i18n'
+import pjson from '@/../package.json'
 
-import {AppVersion} from '@awesome-cordova-plugins/app-version';
+import { AppVersion } from '@awesome-cordova-plugins/app-version'
+import { NotificationTypeEnum } from '@/@enums/notification.type.enum'
 
 interface MenuGroup {
   title: string;
@@ -57,102 +59,119 @@ interface MenuGroup {
 }
 
 export default defineComponent({
-  name: "Product",
+  name: 'Profile',
   components: {
     Icon,
-    TopToolbar,
+    TopToolbar
   },
-  setup() {
-    const store = useStore(storeKey);
+  setup () {
+    const store = useStore(storeKey)
     // const auth = inject("auth") as AuthPlugin;
-    const {t} = useI18n();
+    const { t } = useI18n()
 
-    const userName = computed(() => store.getters['auth/fullName']);
-    const userActivePack = computed(() => formatClubPack(store.getters['auth/user'].clubPack));
-    const userIsAdmin = computed(() => store.getters["auth/isAdmin"]);
-    const {onItemClick, logout} = menuEntries()
-    const appVersion = ref();
+    const userName = computed(() => store.getters['auth/fullName'])
+    const userActivePack = computed(() => formatClubPack(store.getters['auth/user'].clubPack))
+    const userIsAdmin = computed(() => store.getters['auth/isAdmin'])
+    const { onItemClick, logout } = menuEntries()
+    const appVersion = ref()
+
+    const availableNotifications: MenuEntry[] = Object.values(NotificationTypeEnum).map(el => {
+      return {
+        id: 'notification_' + el,
+        label: t(`enums.NotificationTypeEnum.${el}`),
+        slot: 'notification-popup',
+        disabled: true,
+        value: true
+      }
+    })
 
     const listGroups: ComputedRef<MenuGroup[]> = computed(() => [
       {
-        title: "Account",
+        title: 'Account',
         childs: [
           {
-            icon: "user",
-            label: "Dati personali",
-            route: 'private.user',
+            icon: 'user',
+            label: 'Dati personali',
+            route: 'private.user'
           },
           {
-            icon: "chart",
-            label: "I miei ordini",
+            icon: 'chart',
+            label: 'I miei ordini',
             route: 'private.orders.home',
             if: !userIsAdmin.value
           },
           {
-            icon: "wallet",
-            label: t("mainMenu.userPortfolio"),
+            icon: 'wallet',
+            label: t('mainMenu.userPortfolio'),
             route: 'private.wallet',
             if: !userIsAdmin.value
           }, {
-            icon: "wallet",
-            label: t("mainMenu.userPortfolioPremium"),
+            icon: 'wallet',
+            label: t('mainMenu.userPortfolioPremium'),
             route: 'private.walletPremium',
             if: !userIsAdmin.value
           }
         ]
       },
       {
-        title: "News e Notifiche",
+        title: 'News e Notifiche',
         childs: [
           {
-            icon: "calendar",
-            label: "News ed Eventi",
-            route: 'news.index',
+            icon: 'calendar',
+            label: 'News ed Eventi',
+            route: 'news.index'
           },
           {
-            icon: "notification",
-            label: "Notifiche pop-up",
-            disabled: true,
-            slot: "notification-popup"
+            icon: 'notification',
+            label: 'Le mie notifiche',
+            route: 'notifications.index'
           },
-          {
-            icon: "notification",
-            label: "Le mie notifiche",
-            disabled: true,
-          }
+          ...availableNotifications
+          // {
+          //   icon: "notification",
+          //   label: "Notifiche pop-up",
+          //   disabled: true,
+          //   slot: "notification-popup"
+          // },
         ]
       },
       {
-        title: "Altro",
+        title: 'Altro',
         childs: [
           {
-            icon: "message",
-            label: "Contattaci",
+            icon: 'message',
+            label: 'Contattaci',
             disabled: true
           },
           {
-            icon: "privacy",
-            label: "Note Legali",
+            icon: 'privacy',
+            label: 'Note Legali',
             disabled: true
           },
           {
-            icon: "download",
-            label: "Versione: " + appVersion.value,
+            icon: 'download',
+            label: 'Versione: ' + appVersion.value,
             disabled: true
           },
           {
-            icon: "logout",
-            label: "Logout",
+            icon: 'logout',
+            label: 'Logout',
             click: () => logout()
-          },
+          }
         ]
       }
     ])
 
+    function onToggleChange (item: MenuEntry, event: CustomEvent) {
+      const value = event.detail.checked
+
+      console.log(item.id, value)
+    }
+
     onMounted(async () => {
       try {
 
-        appVersion.value = (await AppVersion.getVersionNumber());
+        appVersion.value = (await AppVersion.getVersionNumber())
       } catch (e) {
         appVersion.value = pjson.version
       }
@@ -163,10 +182,11 @@ export default defineComponent({
       userName,
       userActivePack,
       listGroups,
+      onToggleChange,
       onItemClick
     }
   }
-  })
+})
 </script>
 
 <style>

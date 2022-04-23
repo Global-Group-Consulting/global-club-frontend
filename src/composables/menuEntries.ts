@@ -17,6 +17,7 @@ export interface MenuEntry {
   label: string | ((data?: any) => string);
   divider?: boolean;
   icon?: string;
+  id?: string;
   permissions?: AclPermissionsEnum[];
   inMobileTab?: boolean;
   inFooter?: boolean;
@@ -28,6 +29,7 @@ export interface MenuEntry {
   disabled?: boolean;
   slot?: string;
   if?: boolean;
+  value?: boolean;
 }
 
 const genericFooterEntries: MenuEntry[] = [

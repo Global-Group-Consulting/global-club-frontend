@@ -63,7 +63,8 @@
         </ion-row>
 
 
-        <OrderAccordion :order-data="order" @productUpdated="updateOrder"></OrderAccordion>
+        <OrderAccordion :order-data="order" @productUpdated="updateOrder"
+        :message-to-highlight="messageToHighlight"></OrderAccordion>
       </ion-grid>
     </ion-content>
   </IonPage>
@@ -95,6 +96,7 @@ export default defineComponent({
     const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin;
     const route = useRoute()
     const {t} = useI18n()
+    const messageToHighlight = ref('')
     const order: Ref<Order | null> = ref(null)
     const mustStartWorking = computed(() => order.value?.status === OrderStatusEnum.PENDING)
     const mustCompleteWorking = computed(() => order.value?.status === OrderStatusEnum.IN_PROGRESS)
@@ -219,6 +221,11 @@ export default defineComponent({
 
     onIonViewWillEnter(async () => {
       const result = await http.api.orders.read(route.params.id as string);
+      const query = route.query
+
+      if (query.message) {
+        messageToHighlight.value = query.message as string
+      }
 
       order.value = result ?? null
     })
@@ -231,7 +238,8 @@ export default defineComponent({
       actions,
       order, mustStartWorking, mustCompleteWorking, completedWorking,
       formatLocaleDate, formatBrites, formatOrderStatus,
-      formatClubPack, updateOrder, getOrderStatusColor
+      formatClubPack, updateOrder, getOrderStatusColor,
+      messageToHighlight
     }
   }
 });
