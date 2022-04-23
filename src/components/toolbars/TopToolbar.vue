@@ -16,6 +16,15 @@
       <ion-title>
         <slot></slot>
       </ion-title>
+
+      <!--      <div slot="end">
+              <ClubButton version="link"
+                          icon only-icon icon-name="notification"
+                          size="default"
+                          color="primary"
+                          class="me-3"
+              ></ClubButton>
+            </div>-->
     </ion-toolbar>
   </ion-header>
 
@@ -23,17 +32,17 @@
 
 <script lang="ts">
 
-  import { defineComponent } from 'vue';
-  import ClubButton from '@/components/ClubButton.vue';
+import { defineComponent } from 'vue'
+import ClubButton from '@/components/ClubButton.vue'
 
-  export default defineComponent({
-    components: { ClubButton },
-    props: {
-      includeBack: Boolean
-    },
-    setup () {
+export default defineComponent({
+  components: { ClubButton },
+  props: {
+    includeBack: Boolean
+  },
+  setup () {
 
-      return {}
-    }
-  })
+    return {}
+  }
+})
 </script>

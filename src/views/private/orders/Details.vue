@@ -63,47 +63,54 @@
         </ion-list>
       </ion-grid>
 
-      <BottomDrawer :order="order" slot="fixed"></BottomDrawer>
+      <BottomDrawer :order="order" slot="fixed" :message-to-highlight="messageToHighlight"></BottomDrawer>
     </IonContent>
   </IonPage>
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, Ref, ref } from 'vue';
-  import {onIonViewDidLeave, onIonViewWillEnter} from '@ionic/vue';
-  import { useRoute } from 'vue-router';
-  import { HttpPlugin } from '@/plugins/HttpPlugin';
-  import { Order } from '@/@types/Order';
-  import BriteValue from '@/components/BriteValue.vue';
-  import PrivateOrderProductListItem from '@/components/lists/products/PrivateOrderProductListItem.vue';
-  import BottomDrawer from '@/views/private/orders/BottomDrawer.vue';
-  import { formatOrderStatus, getOrderStatusColor } from '@/@utilities/statuses';
-  import {formatLocaleDate} from "@/@utilities/dates";
+import { defineComponent, inject, Ref, ref } from 'vue'
+import { onIonViewDidLeave, onIonViewWillEnter } from '@ionic/vue'
+import { useRoute } from 'vue-router'
+import { HttpPlugin } from '@/plugins/HttpPlugin'
+import { Order } from '@/@types/Order'
+import BriteValue from '@/components/BriteValue.vue'
+import PrivateOrderProductListItem from '@/components/lists/products/PrivateOrderProductListItem.vue'
+import BottomDrawer from '@/views/private/orders/BottomDrawer.vue'
+import { formatOrderStatus, getOrderStatusColor } from '@/@utilities/statuses'
+import { formatLocaleDate } from '@/@utilities/dates'
 
-  export default defineComponent({
-    name: "Details",
-    components: { BottomDrawer, PrivateOrderProductListItem, BriteValue },
-    setup () {
-      const order: Ref<Order | undefined> = ref()
-      const route = useRoute();
-      const http = inject("http") as HttpPlugin;
+export default defineComponent({
+  name: 'Details',
+  components: { BottomDrawer, PrivateOrderProductListItem, BriteValue },
+  setup () {
+    const order: Ref<Order | undefined> = ref()
+    const route = useRoute()
+    const http = inject('http') as HttpPlugin
+    const messageToHighlight = ref('')
 
-      onIonViewWillEnter(async () => {
-        const orderId = route.params["id"] as string;
+    onIonViewWillEnter(async () => {
+      const orderId = route.params['id'] as string
+      const query = route.query
 
-        order.value = await http.api.orders.read(orderId);
-      })
-
-      onIonViewDidLeave(() => {
-        order.value = undefined;
-      })
-
-      return {
-        order,
-        formatOrderStatus, getOrderStatusColor, formatLocaleDate
+      if (query.message) {
+        messageToHighlight.value = query.message as string
       }
+
+      order.value = await http.api.orders.read(orderId)
+    })
+
+    onIonViewDidLeave(() => {
+      order.value = undefined
+    })
+
+    return {
+      order,
+      formatOrderStatus, getOrderStatusColor, formatLocaleDate,
+      messageToHighlight
     }
-  });
+  }
+})
 </script>
 
 <style scoped>

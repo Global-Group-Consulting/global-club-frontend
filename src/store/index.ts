@@ -1,9 +1,10 @@
-import { InjectionKey } from 'vue';
-import { ActionTree, createStore, GetterTree, MutationTree, Store } from 'vuex';
-import AuthModule from './modules/auth';
-import CartModule from './modules/cart';
-import VuexPersistance from '@/plugins/VuexPersistance';
-import FavouritesModule from '@/store/modules/favourites';
+import { InjectionKey } from 'vue'
+import { ActionTree, createStore, GetterTree, MutationTree, Store } from 'vuex'
+import AuthModule from './modules/auth'
+import CartModule from './modules/cart'
+import NotificationsModule from './modules/notifications'
+import VuexPersistance from '@/plugins/VuexPersistance'
+import FavouritesModule from '@/store/modules/favourites'
 
 type GridSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
@@ -11,6 +12,7 @@ type GridSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export interface State {
   auth: typeof AuthModule;
   cart: typeof CartModule;
+  notifications: typeof NotificationsModule;
   gridSize: GridSize;
 }
 
@@ -20,12 +22,12 @@ interface Size {
 }
 
 // define injection key
-export const storeKey: InjectionKey<Store<State>> = Symbol();
+export const storeKey: InjectionKey<Store<State>> = Symbol()
 
 const state = () => ({
   gridSize: {
     value: 0,
-    label: ""
+    label: ''
   },
   screenSize: 0,
   sizes: [
@@ -44,54 +46,54 @@ const state = () => ({
     {
       value: 576,
       label: 'sm'
-    },
+    }
   ]
-});
+})
 
 type RootState = ReturnType<typeof state>
 
 const mutations: MutationTree<RootState> = {
   SET_GRID_SIZE (state, payload: Size) {
-    state.gridSize = payload;
+    state.gridSize = payload
   },
   SET_SCREEN_SIZE (state, payload: number) {
     state.screenSize = payload
   }
-};
+}
 
 const actions: ActionTree<RootState, RootState> = {
   updateGridSize ({ commit, state }, newSize: number) {
-    const size = state.sizes.find(el => el.value <= newSize) ?? state.sizes[state.sizes.length - 1];
-  
+    const size = state.sizes.find(el => el.value <= newSize) ?? state.sizes[state.sizes.length - 1]
+    
     if (!size || state.gridSize.label === size.label) {
-      return;
+      return
     }
-  
-    commit('SET_GRID_SIZE', size);
-    commit('SET_SCREEN_SIZE', newSize);
+    
+    commit('SET_GRID_SIZE', size)
+    commit('SET_SCREEN_SIZE', newSize)
   }
-};
+}
 
 const getters: GetterTree<RootState, RootState> = {
   gridSize (state): GridSize {
-    return state.gridSize ? (state.gridSize.label as GridSize) : 'xs';
+    return state.gridSize ? (state.gridSize.label as GridSize) : 'xs'
   },
   mdAndDown (state): boolean {
-    const minSize = state.sizes.find(el => el.label === "lg") ?? { value: 0 };
+    const minSize = state.sizes.find(el => el.label === 'lg') ?? { value: 0 }
     
-    return state.screenSize < minSize.value;
+    return state.screenSize < minSize.value
   },
   mdAndUp (state): boolean {
-    const minSize = state.sizes.find(el => el.label === "md") ?? { value: 0 };
-  
-    return state.screenSize >= minSize.value;
+    const minSize = state.sizes.find(el => el.label === 'md') ?? { value: 0 }
+    
+    return state.screenSize >= minSize.value
   },
   smAndDown (state): boolean {
-    const minSize = state.sizes.find(el => el.label === "md") ?? { value: 0 };
+    const minSize = state.sizes.find(el => el.label === 'md') ?? { value: 0 }
     
-    return state.screenSize < minSize.value;
-  },
-};
+    return state.screenSize < minSize.value
+  }
+}
 
 export const store = createStore({
   // @ts-ignore
@@ -105,7 +107,9 @@ export const store = createStore({
     // @ts-ignore
     cart: CartModule,
     // @ts-ignore
-    favourites: FavouritesModule
+    favourites: FavouritesModule,
+    // @ts-ignore
+    notifications: NotificationsModule
   },
   plugins: [VuexPersistance()]
-});
+})

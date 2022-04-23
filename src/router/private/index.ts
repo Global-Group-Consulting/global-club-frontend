@@ -103,6 +103,15 @@ export default [
       isAdmin: true,
       title: "News ed Eventi"
     },
+  },{
+    path: "/notifications",
+    component: () => import("@/views/shared/Notifications.vue"),
+    name: "notifications.index",
+    meta: {
+      isPrivate: true,
+      isAdmin: true,
+      title: "Notifiche"
+    },
   },
   /* {
      path: "/components/buttons",
