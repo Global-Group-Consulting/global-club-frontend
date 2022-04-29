@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <TopToolbar>{{ $t("pages.orders.title") }}</TopToolbar>
+    <TopToolbar>{{ $t('pages.orders.title') }}</TopToolbar>
 
     <ion-content>
       <ion-grid fixed>
@@ -24,8 +24,10 @@
                             :options="orderStatusOptions"></FormInputV>
               </ion-col>
               <ion-col size="12" sizeMd="4">
-                <FormToggleV v-model="filters['packChangeOrder']"
-                             :label="$t('forms.filters.packChangeOrder')"></FormToggleV>
+                <FormInputV v-model="filters['prodCategory']"
+                            component="ion-select"
+                            :label="$t('forms.filters.prodCategory')"
+                            :options="availableCategoriesOptions"></FormInputV>
               </ion-col>
             </ion-row>
           </template>
@@ -63,29 +65,29 @@
 </template>
 
 <script lang="ts">
-import {computed, ComputedRef, defineComponent, inject, Ref, ref} from 'vue';
-import {IonPage, onIonViewWillEnter} from '@ionic/vue';
-import {HttpPlugin} from '@/plugins/HttpPlugin';
-import {Order} from '@/@types/Order';
-import {PaginatedResult} from '@/@types/Pagination';
-import {formatLocaleDate} from "@/@utilities/dates"
-import {formatOrderStatus} from "@/@utilities/statuses"
-import {OrderStatusEnum} from '@/@enums/order.status.enum';
-import {useI18n} from 'vue-i18n';
-import {TabEntry} from '@/@types/TabEntry';
-import TopToolbar from '@/components/toolbars/TopToolbar.vue';
-import Tabs from '@/components/tabs/Tabs.vue';
-import AdminOrdersList from '@/components/lists/orders/AdminOrdersList.vue';
-import AdminSearchBar from "@/components/AdminSearchBar.vue";
-import FormInputV from "@/components/forms/FormInputV.vue";
-import {SelectOption} from "@/@types/Form";
+import { computed, ComputedRef, defineComponent, inject, Ref, ref } from 'vue'
+import { IonPage, onIonViewWillEnter } from '@ionic/vue'
+import { HttpPlugin } from '@/plugins/HttpPlugin'
+import { Order } from '@/@types/Order'
+import { PaginatedResult } from '@/@types/Pagination'
+import { formatLocaleDate } from '@/@utilities/dates'
+import { formatOrderStatus } from '@/@utilities/statuses'
+import { OrderStatusEnum } from '@/@enums/order.status.enum'
+import { useI18n } from 'vue-i18n'
+import { TabEntry } from '@/@types/TabEntry'
+import TopToolbar from '@/components/toolbars/TopToolbar.vue'
+import Tabs from '@/components/tabs/Tabs.vue'
+import AdminOrdersList from '@/components/lists/orders/AdminOrdersList.vue'
+import AdminSearchBar from '@/components/AdminSearchBar.vue'
+import FormInputV from '@/components/forms/FormInputV.vue'
+import { SelectOption } from '@/@types/Form'
 import FormInputAutocomplete from '@/components/forms/FormInputAutocomplete.vue'
 import FormToggleV from '@/components/forms/FormToggleV.vue'
+import { ProductCategory } from '@/@types/ProductCategory'
 
 export default defineComponent({
   name: 'OrdersPage',
   components: {
-    FormToggleV,
     FormInputAutocomplete, FormInputV, AdminSearchBar, AdminOrdersList, Tabs, TopToolbar, IonPage
   },
   setup () {
@@ -100,16 +102,34 @@ export default defineComponent({
     const tabs: Ref<TabEntry[]> = ref(Object.values(OrderStatusEnum).map(key => {
       return {
         id: key,
-        text: t("enums.OrderStatusEnum." + key),
+        text: t('enums.OrderStatusEnum.' + key),
         count: 0,
         unreadCount: 0
       }
-    }));
+    }))
+    const availableCategories: Ref<ProductCategory[]> = ref([])
+
+    const availableCategoriesOptions: Ref<SelectOption[]> = computed(() => {
+      const list = availableCategories.value.map(category => {
+        return {
+          text: category.title,
+          value: category._id
+        }
+      })
+
+      return [
+        {
+          text: 'Cambio Pack',
+          value: 'packChange'
+        },
+        ...list
+      ]
+    })
 
     const orderStatusOptions: ComputedRef<SelectOption[]> = computed(() => {
       return Object.keys(OrderStatusEnum).reduce((acc, curr) => {
         acc.push({
-          text: t("enums.OrderStatusEnum." + OrderStatusEnum[curr]),
+          text: t('enums.OrderStatusEnum.' + OrderStatusEnum[curr]),
           value: OrderStatusEnum[curr]
         })
 
@@ -120,7 +140,7 @@ export default defineComponent({
     /**
      * Fetches the counters and store the value in the tabs list
      */
-    async function fetchCounters(filters?: any) {
+    async function fetchCounters (filters?: any) {
       const result = await http.api.orders.readCounters(filters)
 
       result?.forEach(el => {
@@ -133,21 +153,30 @@ export default defineComponent({
       })
     }
 
-    async function onUpdateFilters(newFilters: any) {
+    async function fetchCategories () {
+      const result = await http.api.productCategories.readAllRaw()
+
+      if (result) {
+        availableCategories.value = result
+      }
+    }
+
+    async function onUpdateFilters (newFilters: any) {
       if (JSON.stringify(filters.value) !== JSON.stringify(newFilters)) {
-        filters.value = newFilters;
+        filters.value = newFilters
       }
     }
 
     onIonViewWillEnter(async () => {
-      refreshAsap.value = true;
+      refreshAsap.value = true
 
       // Fetch counters and actual data for the current tab
       await Promise.all([
         fetchCounters(),
+        fetchCategories()
       ])
 
-      refreshAsap.value = false;
+      refreshAsap.value = false
     })
 
     return {
@@ -159,10 +188,11 @@ export default defineComponent({
       OrderStatusEnum, orderStatusOptions,
       onUpdateFilters,
       hasFilters, filters,
-      refreshAsap
+      refreshAsap,
+      availableCategoriesOptions
     }
   }
-});
+})
 </script>
 
 <style scoped>

@@ -60,7 +60,7 @@ export const forms = {
     "title": "Titolo",
     "priceUndefined": "Prezzo da definire",
     "categories": "Categorie",
-    "packChangeOrder": "Cambio Pack"
+    "prodCategory": "Categoria prodotto"
   }
   
 }
