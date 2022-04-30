@@ -24,5 +24,5 @@ export const mainMenu = {
   userFavouritesMobile: 'Preferiti',
   userOrdersMobile: 'Ordini',
   userPortfolioMobile: "Portfolio",
-  userProfileMobile: "Profilo",
+  userProfileMobile: "Il mio Profilo",
 }
