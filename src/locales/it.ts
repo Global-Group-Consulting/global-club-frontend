@@ -28,12 +28,12 @@ export default {
       'btn_delete': "Elimina",
     },
     productCategories: {
-      'title': "Elenco categorie prodotti",
+      'title': "Categorie prodotti",
       'btn_add': 'Aggiungi',
       'btn_open': 'Apri',
     },
     productCategoryDetails: {
-      'title': "Dettagli categoria prodotto",
+      'title': "Dettagli categoria",
       'btn_delete': "Elimina",
     },
   },

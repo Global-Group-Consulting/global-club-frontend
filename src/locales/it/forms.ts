@@ -18,7 +18,8 @@ export const forms = {
     title: "Titolo",
     description: "Descrizione",
     btnCreate: "Salva e aggiungi",
-    btnUpdate: "Salva"
+    btnUpdate: "Salva",
+    parent: "Categoria genitore",
   },
   products: {
     thumbnail: "Immagine copertina",
