@@ -1,35 +1,41 @@
 <template>
-  <ion-item :button="isButton" :detail="isButton">
-    <ion-thumbnail slot="start">
-      <slot name="image">
-        <Image :file-id="image"></Image>
-      </slot>
-    </ion-thumbnail>
+  <page-link :to="openLink" only-container>
+    <template v-slot:default="{href, navigate}">
+      <ion-item :button="isButton" :detail="isButton"
+                :href="href" @click="navigate">
+        <ion-thumbnail slot="start">
+          <slot name="image">
+            <Image :file-id="image"></Image>
+          </slot>
+        </ion-thumbnail>
 
-    <ion-label>
-      <h2>
-        <slot name="title">
-          <span v-html="title"></span>
+        <ion-label>
+          <h2>
+            <slot name="title">
+              <span v-html="title"></span>
+            </slot>
+          </h2>
+          <h4>
+            <slot name="description" v-bind:description="description">
+              <span v-html="description"></span>
+            </slot>
+          </h4>
+          <slot name="extraLabels"></slot>
+        </ion-label>
+
+        <slot name="buttons-start"></slot>
+
+        <slot name="buttons-main">
+          <page-link :to="openLink"
+                     v-if="!isButton"
+                     :btn-props="{ version: 'link', iconName:'chevron-right', icon: true, onlyIcon: true }">
+          </page-link>
         </slot>
-      </h2>
-      <h4>
-        <slot name="description" v-bind:description="description">
-          <span v-html="description"></span>
-        </slot>
-      </h4>
-      <slot name="extraLabels"></slot>
-    </ion-label>
 
-    <slot name="buttons-start"></slot>
-
-    <slot name="buttons-main">
-      <page-link :to="openLink"
-                 :btn-props="{ version: 'link', iconName:'chevron-right', icon: true, onlyIcon: true }">
-      </page-link>
-    </slot>
-
-    <slot name="buttons-end"></slot>
-  </ion-item>
+        <slot name="buttons-end"></slot>
+      </ion-item>
+    </template>
+  </page-link>
 </template>
 
 <script lang="ts">
