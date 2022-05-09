@@ -5,6 +5,7 @@
       :open-link="{ name: (asAdmin ? 'admin.products.details': 'private.products.details'), params: { id: product?._id ?? '' } }"
       :open-link-label="$t('pages.products.btn_open')"
       :image="product?.thumbnail?.id"
+      is-button
   >
     <template v-slot:buttons-start>
       <Tooltip v-if="!product.visible" tooltip="Non visibile publicamente">
