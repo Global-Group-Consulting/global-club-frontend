@@ -44,3 +44,17 @@ ion-item-divider {
     --inner-padding-end: 0 !important;
   }
 }
+
+ion-item {
+  ion-label {
+
+
+    .ion-item-title {
+      font-weight: bold;
+    }
+
+    .ion-item-subtitle {
+      font-weight: normal;
+    }
+  }
+}

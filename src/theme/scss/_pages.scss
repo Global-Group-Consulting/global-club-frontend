@@ -1,3 +1,7 @@
+.ion-page {
+  background-color: #000;
+}
+
 .ion-page #main-content {
   ion-content {
     --background: linear-gradient(180deg, #000000 0%, rgba(39, 39, 39, 0.7) 100%) !important;
@@ -52,7 +56,7 @@
   margin-right: auto;
 }
 
-.clickable-area{
+.clickable-area {
   padding: 6px;
 }
 
@@ -67,8 +71,8 @@ ion-grid {
 }
 
 
-@include mediaQueryUp(md){
-  .app-tabs{
+@include mediaQueryUp(md) {
+  .app-tabs {
     flex-direction: row-reverse !important;
 
   }
