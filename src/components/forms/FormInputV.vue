@@ -10,8 +10,8 @@
                  :clearInput="clearInput"
                  :placeholder="placeholder"
                  :multiple="multiple"
-                 :interface="interface"
-                 :interfaceOptions="interfaceOptions"
+                 :interface="calcInterface"
+                 :interfaceOptions="calcInterfaceOptions"
                  :disabled="component === 'ion-select' ? (readonly || disabled) : disabled"
                  :readonly="readonly"
                  :okText="selectBtnOk || $t('forms.generic.selects.okText')"
@@ -42,77 +42,101 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, ref} from 'vue';
+import { computed, defineComponent, PropType, ref } from 'vue'
+import { useStore } from 'vuex'
+import { storeKey } from '@/store'
 
-  export default defineComponent({
-    name: "FormInputV",
-    props: {
-      label: String,
-      modelValue: [String, Number, Array],
-      interface: String as PropType<"action-sheet" | "alert" | "popover">,
-      interfaceOptions: Object,
-      type: {
-        type: String as PropType<'date' | 'datetime-local' | 'email' | 'month' | 'number' | 'currency' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' | 'week'>,
-        default: "text"
-      },
-      component: {
-        type: String as PropType<'ion-input' | 'ion-textarea' | 'ion-select' | 'ion-toggle'>,
-        default: "ion-input"
-      },
-      // A hint to the browser for which keyboard to displa,
-      inputMode: String as PropType<'decimal' | 'email' | 'none' | 'numeric' | 'search' | 'tel' | 'text' | 'url' | undefined>,
-      // If true, a clear icons will appear in the input when there is a value. Clicking it clears the input,
-      clearInput: Boolean,
-      disabled: Boolean,
-      placeholder: String,
-      options: Object as PropType<{ text: string; value: string }[]>,
-      multiple: Boolean,
-      selectBtnOk: String,
-      selectBtnCancel: String,
-      addSpaceAfter: {
-        type: Boolean,
-        default: true
-      },
-      readonly: Boolean,
-      error: String,
-      message: String
+export default defineComponent({
+  name: 'FormInputV',
+  props: {
+    label: String,
+    modelValue: [String, Number, Array],
+    interface: String as PropType<'action-sheet' | 'alert' | 'popover'>,
+    interfaceOptions: Object,
+    type: {
+      type: String as PropType<'date' | 'datetime-local' | 'email' | 'month' | 'number' | 'currency' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' | 'week'>,
+      default: 'text'
     },
-    setup (props, { emit }) {
-      const componentType = computed(() => {
-        return props.type ?? 'text';
-      });
-      const inFocus = ref(false);
+    component: {
+      type: String as PropType<'ion-input' | 'ion-textarea' | 'ion-select' | 'ion-toggle'>,
+      default: 'ion-input'
+    },
+    // A hint to the browser for which keyboard to displa,
+    inputMode: String as PropType<'decimal' | 'email' | 'none' | 'numeric' | 'search' | 'tel' | 'text' | 'url' | undefined>,
+    // If true, a clear icons will appear in the input when there is a value. Clicking it clears the input,
+    clearInput: Boolean,
+    disabled: Boolean,
+    placeholder: String,
+    options: Object as PropType<{ text: string; value: string }[]>,
+    multiple: Boolean,
+    selectBtnOk: String,
+    selectBtnCancel: String,
+    addSpaceAfter: {
+      type: Boolean,
+      default: true
+    },
+    readonly: Boolean,
+    error: String,
+    message: String
+  },
+  setup (props, { emit }) {
+    const store = useStore(storeKey)
+    const componentType = computed(() => {
+      return props.type ?? 'text'
+    })
+    const inFocus = ref(false)
 
-      const showError = computed(() => props.error && !props.readonly && !props.disabled)
+    const showError = computed(() => props.error && !props.readonly && !props.disabled)
 
-      function onInput (e) {
-        const value = e.target.value;
-
-        if (props.component === "ion-select") {
-          return;
-        }
-
-        emit('update:modelValue', value);
+    const calcInterface = computed(() => {
+      if (props.interface) {
+        return props.interface
       }
 
-      function onChange (e) {
-        const value = e.target.value;
+      return store.getters['smAndDown'] ? 'action-sheet' : 'alert'
+    })
 
-        if (props.component !== "ion-select" && props.modelValue === value) {
-          return;
-        }
+    const calcInterfaceOptions = computed(() => {
+      const cssClass = ['form-input-alert-sheet']
 
-        emit('update:modelValue', value);
+      if (props.interfaceOptions?.cssClass) {
+        cssClass.push(props.interfaceOptions.cssClass)
       }
 
-      return {
-        componentType,
-        showError,
-        onInput, onChange,
-        inFocus
+      return Object.assign({}, props.interfaceOptions, {
+        cssClass: cssClass.join(' ')
+      })
+    })
+
+    function onInput (e) {
+      const value = e.target.value
+
+      if (props.component === 'ion-select') {
+        return
       }
+
+      emit('update:modelValue', value)
     }
-  })
+
+    function onChange (e) {
+      const value = e.target.value
+
+      if (props.component !== 'ion-select' && props.modelValue === value) {
+        return
+      }
+
+      emit('update:modelValue', value)
+    }
+
+    return {
+      componentType,
+      showError,
+      onInput, onChange,
+      inFocus,
+      calcInterface, calcInterfaceOptions
+    }
+  }
+})
 
 </script>
 
