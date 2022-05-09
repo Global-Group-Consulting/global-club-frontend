@@ -47,7 +47,7 @@
                @click.prevent="onCategoryClick(category)">
 
               <div class="product-category-card-img">
-                <Image :file-id="category.thumbnail.id" class="w-100"
+                <Image :file-id="category.thumbnail?.id" class="w-100"
                        aspect-ratio="3/2"/>
               </div>
 
