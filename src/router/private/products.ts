@@ -6,7 +6,7 @@ const meta = {
 export default [
   {
     path: prefix,
-    component: () => import("@/views/private/products/Home.vue"),
+    component: () => import("@/views/private/ProductsByCategory.vue"),
     name: "private.products",
     meta
   },
