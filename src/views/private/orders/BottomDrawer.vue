@@ -1,8 +1,10 @@
 <template>
   <div class="bottom-drawer" :class="{'opened': opened}" v-show="communication">
     <ion-grid fixed class="ion-no-padding">
-      <div @click="toggleDrawer" class="toggle-drawer-btn pt-2 pb-4 py-md-3 " ref="toggleDrawerBtn">
-        <Icon name="dash" size="large"></Icon>
+      <div @click="toggleDrawer" class="toggle-drawer-btn pt-2 pb-4 py-md-3 "
+           ref="toggleDrawerBtn">
+        <Icon :name="opened ? 'chevron-down' : 'chevron-up'" size="large"></Icon>
+        {{ opened ? 'Chiudi' : 'Apri' }} chat
       </div>
 
       <div class="toggle-drawer-content pe-4 ps-5 pb-4"
@@ -78,9 +80,9 @@ export default defineComponent({
 
     watch(() => props.order, (value: Order) => {
       communication.value = value?.communication
-   /*   setTimeout(() => {
-        toggleDrawerContent.value?.scrollTo(0, 1000)
-      }, 1500)*/
+      /*   setTimeout(() => {
+           toggleDrawerContent.value?.scrollTo(0, 1000)
+         }, 1500)*/
     }, { immediate: true })
 
     watch(() => props.messageToHighlight, (value) => {
