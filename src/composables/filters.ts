@@ -1,7 +1,7 @@
-import {SearchFilters} from '@/components/SearchBar.vue';
-import {filter} from "lodash";
-import {LocationQuery} from "vue-router";
-import {useI18n} from "vue-i18n";
+import { SearchFilters } from '@/components/SearchBar.vue'
+import { filter } from 'lodash'
+import { LocationQuery } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 export interface FilterChip {
   label: string;
@@ -10,43 +10,55 @@ export interface FilterChip {
 }
 
 export default () => {
-  const {t, te} = useI18n();
+  const { t, te } = useI18n()
   
-  function prepareFilters(filters: SearchFilters) {
+  /**
+   *
+   * @param filters
+   */
+  function prepareFilters (filters: SearchFilters): any {
+    if (!filters) {
+      return {}
+    }
+    
     return Object.keys(filters).reduce((acc, key) => {
-      const value = filters[key];
+      const value = filters[key]
       
-      if (!value) {
-        return acc;
+      if (key.startsWith('_')) {
+        return acc
       }
       
-      acc[`filter[${key}]`] = value;
+      if ((typeof value === 'string' && !value)) {
+        return acc
+      }
       
-      return acc;
+      acc[`filter[${key}]`] = value
+      
+      return acc
     }, {})
   }
   
-  function parseFilters(filters: LocationQuery): FilterChip[] {
+  function parseFilters (filters: LocationQuery): FilterChip[] {
     return Object.keys(filters).reduce((acc, key) => {
-      const finalKey = key.replaceAll(/(filter\[)|(\])/g, "");
+      const finalKey = key.replaceAll(/(filter\[)|(\])/g, '')
       
       if (filters[key]) {
-        const tString = "forms.filters." + finalKey;
-        let value: any = filters[key];
+        const tString = 'forms.filters.' + finalKey
+        let value: any = filters[key]
         
-        if (value === "true") {
-          value = true;
+        if (value === 'true') {
+          value = true
         }
         
         acc.push({
-          "label": te(tString) ? t(tString) : finalKey,
-          "field": finalKey,
+          'label': te(tString) ? t(tString) : finalKey,
+          'field': finalKey,
           value
-        });
+        })
       }
       
-      return acc;
-    }, [] as FilterChip[]);
+      return acc
+    }, [] as FilterChip[])
   }
   
   return {
