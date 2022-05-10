@@ -29,18 +29,11 @@
           </template>
         </div>
 
-        <Swiper :slidesPerView="2"
-                :centeredSlides="false"
-                :spaceBetween="$store.getters['smAndDown'] ? 8: 16"
-                :allowTouchMove="true"
-                :simulate-touch="false"
-                :scrollbar="{draggable: true }"
-                :mousewheel="true"
-                :modules="[Scrollbar]"
-                @swiper="onSwiper">
-          >
-          <swiper-slide class="statistics-card-wrapper"
-                        v-for="category of activeCategories" :key="category._id"
+        <ion-row class="ion-justify-content-center">
+          <ion-col class="statistics-card-wrapper"
+                   size="12" size-md="6"
+
+                   v-for="category of activeCategories" :key="category._id"
           >
             <a class="product-category-card"
                href="#"
@@ -48,13 +41,39 @@
 
               <div class="product-category-card-img">
                 <Image :file-id="category.thumbnail?.id" class="w-100"
-                       aspect-ratio="3/2"/>
+                       aspect-ratio="3/1"/>
               </div>
 
               <div class="product-category-card-title">{{ category.title }}</div>
             </a>
-          </swiper-slide>
-        </Swiper>
+          </ion-col>
+        </ion-row>
+        <!--        <Swiper :slidesPerView="2"
+                        :centeredSlides="false"
+                        :spaceBetween="$store.getters['smAndDown'] ? 8: 16"
+                        :allowTouchMove="true"
+                        :simulate-touch="false"
+                        :scrollbar="{draggable: true }"
+                        :mousewheel="true"
+                        :modules="[Scrollbar]"
+                        @swiper="onSwiper">
+                  >
+                  <swiper-slide class="statistics-card-wrapper"
+                                v-for="category of activeCategories" :key="category._id"
+                  >
+                    <a class="product-category-card"
+                       href="#"
+                       @click.prevent="onCategoryClick(category)">
+
+                      <div class="product-category-card-img">
+                        <Image :file-id="category.thumbnail?.id" class="w-100"
+                               aspect-ratio="3/2"/>
+                      </div>
+
+                      <div class="product-category-card-title">{{ category.title }}</div>
+                    </a>
+                  </swiper-slide>
+                </Swiper>-->
 
         <!------------------------------------------------------------->
         <!-- Prodotti -->
@@ -104,8 +123,7 @@ export default defineComponent({
     PaginatedList,
     TopToolbar,
     SearchBar,
-    Image, Swiper,
-    SwiperSlide
+    Image
   },
 
   setup () {
@@ -319,6 +337,8 @@ export default defineComponent({
   overflow: hidden;
   position: relative;
   display: inline-block;
+  width: 100%;
+  height: 100%;
 
   .product-category-card-img {
     position: relative;
@@ -331,15 +351,25 @@ export default defineComponent({
     bottom: 0;
     left: 0;
     right: 0;
+    top: 0;
     background-color: rgba(var(--ion-color-secondary-rgb), 0.6);
     backdrop-filter: blur(10px);
     padding: .4rem .4rem;
     color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   @media screen and (max-width: 575.98px) {
     .product-category-card-title {
-      font-size: .8rem;
+      font-size: 1rem;
+    }
+  }
+
+  @media screen and (min-width: 992px) {
+    .product-category-card-title {
+      font-size: 1.3rem;
     }
   }
 }

@@ -3,7 +3,7 @@
     <ion-grid fixed class="ion-no-padding">
       <div @click="toggleDrawer" class="toggle-drawer-btn pt-2 pb-4 py-md-3 "
            ref="toggleDrawerBtn">
-        <Icon :name="opened ? 'chevron-down' : 'chevron-up'" size="large"></Icon>
+        <Icon :name="opened ? 'chevron-down' : 'chevron-up'" style="width: 24px; height: 24px;"></Icon>
         {{ opened ? 'Chiudi' : 'Apri' }} chat
       </div>
 
@@ -47,9 +47,9 @@ export default defineComponent({
     const communication: Ref<Communication | undefined> = ref()
 
     function toggleDrawer () {
-      if (mdAndUp.value) {
+      // if (mdAndUp.value) {
         opened.value = !opened.value
-      }
+      // }
     }
 
     function onNewMessage (data: Communication) {
@@ -91,7 +91,7 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      if (!toggleDrawerBtn.value) {
+      /*if (!toggleDrawerBtn.value) {
         return
       }
 
@@ -101,6 +101,7 @@ export default defineComponent({
         el,
         gestureName: 'my-swipe',
         direction: 'y',
+
         onMove: event => {
           if (mdAndUp.value) {
             return
@@ -119,7 +120,7 @@ export default defineComponent({
       })
 
       // enable the gesture for the item
-      gesture.enable(true)
+      gesture.enable(true)*/
     })
 
     return {
@@ -202,6 +203,9 @@ export default defineComponent({
     flex: 0;
     border-bottom: solid 1px var(--ion-color-secondary-border);
     transition: padding .3s;
+    background-image: linear-gradient(0deg, #AB8E54 0%, #6F592F 99.99%, #AD9C7B 100%);
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
 
     ion-icon {
       width: 50px;

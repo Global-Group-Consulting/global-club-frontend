@@ -42,13 +42,13 @@
 
 
         <ion-row class="mb-4 ion-text-center">
-          <ion-col v-if="order?.notes">
+          <ion-col v-if="order?.notes" size="12" sizeLg="6">
             <div class="static-alert alert-info" v-if="order?.notes">
               <h5 class="mt-0">Note ordine</h5>
               <div v-html="order?.notes" class="notes-container"></div>
             </div>
           </ion-col>
-          <ion-col v-if="order?.cancelReason">
+          <ion-col v-if="order?.cancelReason" size="12" sizeLg="6">
             <div class="static-alert alert-error">
               <h5 class="mt-0">Motivo annullamento</h5>
               <div v-html="order?.cancelReason" class="notes-container"></div>
