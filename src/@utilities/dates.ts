@@ -1,21 +1,21 @@
-export function formatLocaleDate (date: Date) {
+export function formatLocaleDate (date: Date, noTime = false) {
   if (!date) {
-    return ""
+    return ''
   }
   
   return new Intl.DateTimeFormat('it', {
-    dateStyle: "short",
-    timeStyle: "short",
+    dateStyle: 'short',
+    timeStyle: noTime ? undefined : 'short'
   }).format(new Date(date))
 }
 
 export function formatLocaleDateLong (date: Date) {
   if (!date) {
-    return ""
+    return ''
   }
   
   return new Intl.DateTimeFormat('it', {
-    dateStyle: "long",
+    dateStyle: 'long'
     // timeStyle: "long",
   }).format(new Date(date))
 }
