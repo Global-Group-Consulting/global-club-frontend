@@ -192,7 +192,7 @@ const mobileMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
         if (!ev) {
           return
         }
-      
+        
         const popover = await popoverController.create({
           component: MenuDropdownPopover,
           cssClass: 'custom-popover',
@@ -203,11 +203,11 @@ const mobileMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
           event: ev,
           translucent: true
         })
-      
+        
         if (popover.componentProps) {
           popover.componentProps.popover = popover
         }
-      
+        
         await popover.present()
       },
       badge: computed(() => {
@@ -239,7 +239,7 @@ const mobileMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
           route: 'private.profile',
           label: 'userProfileMobile',
           icon: 'user'
-        },
+        }
       ]
     }
   ]
@@ -457,13 +457,13 @@ export default () => {
   
   async function logout () {
     const result = await alerts.ask({
-      header: 'Effettuare il logou?',
+      header: 'Effettuare il logout?',
       message: 'Siete sicuri di voler uscire dall\'applicazione?',
       buttonOkText: 'Si, esci',
       buttonCancelText: 'No, rimani'
     })
     
-    if (result) {
+    if (result.resp) {
       await auth.logout()
     }
   }
@@ -486,4 +486,4 @@ export default () => {
     mobileEntries,
     onItemClick, logout
   }
-}
+};
