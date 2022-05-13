@@ -146,7 +146,7 @@
           buttonOkText: "Si, rimuovi"
         })
 
-        askResult && await store.dispatch("cart/remove", entry.product._id)
+        askResult.resp && await store.dispatch("cart/remove", entry.product._id)
       }
 
       async function submitCart () {
