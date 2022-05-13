@@ -198,7 +198,7 @@ export default defineComponent({
 
   .form-input-wrapper .form-input {
     --background: var(--ion-color-dark);
-    --color: var(--ion-color-light);
+    --color: var(--ion-color-secondary);
   }
 }
 </style>

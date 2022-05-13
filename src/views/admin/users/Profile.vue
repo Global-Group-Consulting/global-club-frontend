@@ -67,7 +67,7 @@
                              :title="$t('sections.orders.last_x_orders', { number: 5 })"></AdminOrdersList>
 
             <div class="ion-text-center">
-              <PageLink :to="{name: 'admin.orders'}" :btn-props="{target: '_blank'}"
+              <PageLink :to="{name: 'admin.orders', query: {'filter[user]': user?.firstName + '+' + user?.lastName}}" :btn-props="{target: '_blank'}"
                         color="primary" version="outline" icon
                         icon-name="link" icon-position="end">
                 {{ $t('sections.orders.show_all_orders') }}
