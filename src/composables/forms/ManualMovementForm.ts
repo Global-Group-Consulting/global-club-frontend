@@ -36,7 +36,7 @@ export class ManualMovementForm extends BasicForm<CreateManualMovementDto> {
         buttonCancelText: 'Annulla'
       });
       
-      if (!response) {
+      if (!response.resp) {
         return;
       }
       
