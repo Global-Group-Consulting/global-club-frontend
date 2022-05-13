@@ -14,10 +14,12 @@ import { AlertsPlugin } from '@/plugins/Alerts'
 export interface MenuEntry {
   route?: string;
   click?: (this: MenuEntry & { auth: AuthPlugin; logout () }, event?: Event, authUser?: User) => void | Promise<void>;
+  
   label: string | ((data?: any) => string);
   divider?: boolean;
   icon?: string;
   id?: string;
+  color?: string;
   permissions?: AclPermissionsEnum[];
   inMobileTab?: boolean;
   inFooter?: boolean;
