@@ -1,6 +1,6 @@
 <template>
   <div class="chat-component">
-    <div v-if="communication.messages && communication.messages.length > 0">
+    <div v-if="communication && communication.messages && communication.messages.length > 0">
       <div class="chat-container">
         <ChatMessage v-for="message in communication.messages" :key="message._id"
                      :data="message"

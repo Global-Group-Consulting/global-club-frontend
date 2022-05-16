@@ -8,14 +8,16 @@
       <h2 :style="`color: ${color}`"><strong v-html="value"></strong></h2>
       <h4>{{ formatMovementType(movement.movementType) }}</h4>
       <small class="ion-text-wrap"
-             v-if="movement.notes !== formatMovementType(movement.movementType)">Dettagli: {{ movement.notes }}</small>
+             v-if="showDetailsLabel">
+        Dettagli: {{ movement.notes }}
+      </small>
     </ion-label>
 
     <ion-label slot="end">
       <div class="d-flex flex-column ion-align-items-end">
         <div class="ion-nowrap">
           <ion-chip :color="movementColor">{{ movementPack }}</ion-chip>
-          <ion-chip class="small" disabled v-if="showSemester">{{ movement.semesterId.replace("_", "-") }}</ion-chip>
+          <ion-chip class="small" disabled v-if="showSemester">{{ movement.semesterId.replace('_', '-') }}</ion-chip>
         </div>
         <small>{{ formatLocaleDate(movement.createdAt) }}</small>
       </div>
@@ -41,21 +43,21 @@
 </template>
 
 <script lang="ts">
-import {computed, ComputedRef, defineComponent, inject, PropType, ref} from 'vue';
-import {Movement} from '@/@types/Movement';
-import {MovementTypeEnum, MovementTypeInList, MovementTypeOutList} from '@/@enums/movement.type.enum';
-import {formatClubPack, formatMovementType} from '@/@utilities/statuses';
-import {formatBrites, formatCurrency} from '@/@utilities/currency';
-import {formatLocaleDate} from '@/@utilities/dates';
-import Icon from "@/components/Icon.vue";
-import ClubButton from "@/components/ClubButton.vue";
-import {AlertsPlugin} from "@/plugins/Alerts";
-import {useI18n} from "vue-i18n";
-import {HttpPlugin} from "@/plugins/HttpPlugin";
+import { computed, ComputedRef, defineComponent, inject, PropType, ref } from 'vue'
+import { Movement } from '@/@types/Movement'
+import { MovementTypeEnum, MovementTypeInList, MovementTypeOutList } from '@/@enums/movement.type.enum'
+import { formatClubPack, formatMovementType } from '@/@utilities/statuses'
+import { formatBrites, formatCurrency } from '@/@utilities/currency'
+import { formatLocaleDate } from '@/@utilities/dates'
+import Icon from '@/components/Icon.vue'
+import ClubButton from '@/components/ClubButton.vue'
+import { AlertsPlugin } from '@/plugins/Alerts'
+import { useI18n } from 'vue-i18n'
+import { HttpPlugin } from '@/plugins/HttpPlugin'
 
 export default defineComponent({
-  name: "MovementListItem",
-  components: {ClubButton, Icon},
+  name: 'MovementListItem',
+  components: { ClubButton, Icon },
   props: {
     movement: {
       type: Object as PropType<Movement>,
@@ -63,17 +65,17 @@ export default defineComponent({
     },
     showSemester: Boolean
   },
-  setup(props, {emit}) {
-    const isOpenRef = ref(false);
-    const event = ref();
-    const alerts = inject("alerts") as AlertsPlugin;
-    const http = inject("http") as HttpPlugin;
-    const {t} = useI18n();
-    const type: ComputedRef<"in" | "out" | null> = computed(() => {
+  setup (props, { emit }) {
+    const isOpenRef = ref(false)
+    const event = ref()
+    const alerts = inject('alerts') as AlertsPlugin
+    const http = inject('http') as HttpPlugin
+    const { t } = useI18n()
+    const type: ComputedRef<'in' | 'out' | null> = computed(() => {
       if (MovementTypeOutList.includes(props.movement.movementType)) {
-        return "out"
+        return 'out'
       } else if (MovementTypeInList.includes(props.movement.movementType)) {
-        return "in"
+        return 'in'
       }
 
       return null
@@ -84,50 +86,58 @@ export default defineComponent({
     })
 
     const color = computed(() => {
-      if (type.value === "out") {
-        return "var(--ion-color-danger)"
+      if (type.value === 'out') {
+        return 'var(--ion-color-danger)'
       } else {
-        return "var(--ion-color-success)"
+        return 'var(--ion-color-success)'
       }
     })
 
     const value = computed(() => {
-      return (type.value === 'in' ? '+' : '-') + " " + formatBrites(props.movement.amountChange)
+      return (type.value === 'in' ? '+' : '-') + ' ' + formatBrites(props.movement.amountChange)
     })
 
     const movementColor = computed(() => {
-      return "primary"
+      return 'primary'
     })
 
     const movementPack = computed(() => {
-      return formatClubPack(props.movement.clubPack) || "Sconosciuto"
+      return formatClubPack(props.movement.clubPack) || 'Sconosciuto'
     })
 
     const isDeletable = computed(() => {
       return [MovementTypeEnum.DEPOSIT_ADDED, MovementTypeEnum.DEPOSIT_REMOVED].includes(props.movement.movementType)
     })
 
-    function setOpen(state: boolean, ev?: Event) {
-      event.value = ev;
-      isOpenRef.value = state;
+    const showDetailsLabel = computed(() => {
+      if (!props.movement.notes) {
+        return false
+      }
+
+      return (props.movement.notes && props.movement.notes !== formatMovementType(props.movement.movementType))
+    })
+
+    function setOpen (state: boolean, ev?: Event) {
+      event.value = ev
+      isOpenRef.value = state
     }
 
-    async function onRemoveMovementClick() {
-      isOpenRef.value = false;
+    async function onRemoveMovementClick () {
+      isOpenRef.value = false
 
       const res = await alerts.ask({
-        header: t("alerts.movements.deleteMovement.title"),
-        message: t("alerts.movements.deleteMovement.message", {
-          type: t("enums.MovementTypeEnum." + props.movement.movementType),
+        header: t('alerts.movements.deleteMovement.title'),
+        message: t('alerts.movements.deleteMovement.message', {
+          type: t('enums.MovementTypeEnum.' + props.movement.movementType),
           amount: value.value,
           color: color.value
         })
       })
 
       if (res.resp) {
-        await http.api.movements.delete(props.movement._id);
+        await http.api.movements.delete(props.movement._id)
 
-        emit("movement:removed")
+        emit('movement:removed')
       }
     }
 
@@ -137,10 +147,11 @@ export default defineComponent({
       formatMovementType,
       formatBrites, formatCurrency, formatLocaleDate,
       isOpenRef, event, setOpen, onRemoveMovementClick,
-      isDeletable
+      isDeletable,
+      showDetailsLabel
     }
   }
-  });
+})
 </script>
 
 
