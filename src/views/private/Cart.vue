@@ -127,7 +127,6 @@ import { MenuEntry } from '@/composables/menuEntries'
 import { useRouter } from 'vue-router'
 import FormRTE from '@/components/forms/FormRTE.vue'
 import Image from '@/components/Image.vue'
-import ProductNoteModal from '@/components/modals/ProductNoteModal.vue'
 
 export default defineComponent({
   components: {
