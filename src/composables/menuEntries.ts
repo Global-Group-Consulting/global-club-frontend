@@ -14,10 +14,12 @@ import { AlertsPlugin } from '@/plugins/Alerts'
 export interface MenuEntry {
   route?: string;
   click?: (this: MenuEntry & { auth: AuthPlugin; logout () }, event?: Event, authUser?: User) => void | Promise<void>;
+  
   label: string | ((data?: any) => string);
   divider?: boolean;
   icon?: string;
   id?: string;
+  color?: string;
   permissions?: AclPermissionsEnum[];
   inMobileTab?: boolean;
   inFooter?: boolean;
@@ -186,18 +188,61 @@ const mobileMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
       })
     },
     {
-      route: 'notifications.index',
-      label: 'notifications',
-      icon: 'notification',
+      label: 'more',
+      icon: 'menu-h',
+      async click (ev?: Event) {
+        if (!ev) {
+          return
+        }
+        
+        const popover = await popoverController.create({
+          component: MenuDropdownPopover,
+          cssClass: 'custom-popover',
+          componentProps: {
+            data: this.children
+            // title: userAuth ? formatUserName(userAuth) : null
+          },
+          event: ev,
+          translucent: true
+        })
+        
+        if (popover.componentProps) {
+          popover.componentProps.popover = popover
+        }
+        
+        await popover.present()
+      },
       badge: computed(() => {
         const store = useStore(storeKey)
         return store.getters['notifications/unread'] > 0 ? store.getters['notifications/unread'] : null
-      })
-    },
-    {
-      route: 'private.profile',
-      label: 'userProfileMobile',
-      icon: 'user'
+      }),
+      children: [
+        {
+          route: 'news.index',
+          label: 'news',
+          icon: 'calendar',
+          permissions: [AclPermissionsEnum.CLUB_NEWS_ALL_READ]
+        },
+        {
+          route: 'notifications.index',
+          label: 'notifications',
+          icon: 'notification',
+          badge: computed(() => {
+            const store = useStore(storeKey)
+            return store.getters['notifications/unread'] > 0 ? store.getters['notifications/unread'] : null
+          })
+        },
+        {
+          route: '',
+          label: '',
+          divider: true
+        },
+        {
+          route: 'private.profile',
+          label: 'userProfileMobile',
+          icon: 'user'
+        }
+      ]
     }
   ]
 }
@@ -414,13 +459,13 @@ export default () => {
   
   async function logout () {
     const result = await alerts.ask({
-      header: 'Effettuare il logou?',
+      header: 'Effettuare il logout?',
       message: 'Siete sicuri di voler uscire dall\'applicazione?',
       buttonOkText: 'Si, esci',
       buttonCancelText: 'No, rimani'
     })
     
-    if (result) {
+    if (result.resp) {
       await auth.logout()
     }
   }
@@ -443,4 +488,4 @@ export default () => {
     mobileEntries,
     onItemClick, logout
   }
-}
+};

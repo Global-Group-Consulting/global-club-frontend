@@ -1,7 +1,15 @@
-import { UserAclRolesEnum } from '@/@enums/user.acl.roles.enum';
-import { UserRoleEnum } from '@/@enums/user.role.enum';
-import { AclPermissionsEnum } from '@/@enums/acl.permissions.enum';
-import { PackEnum } from '@/@enums/pack.enum';
+import { UserAclRolesEnum } from '@/@enums/user.acl.roles.enum'
+import { UserRoleEnum } from '@/@enums/user.role.enum'
+import { AclPermissionsEnum } from '@/@enums/acl.permissions.enum'
+import { PackEnum } from '@/@enums/pack.enum'
+
+export interface ClubPackHistory {
+  cost: number;
+  endsAt: string;
+  orderId: string;
+  pack: PackEnum;
+  startsAt: string;
+}
 
 export interface User {
   activated_at: string;
@@ -19,6 +27,7 @@ export interface User {
   clubCardNumber: string;
   clubPack: PackEnum;
   clubPackChangeOrder: string;
+  clubPackHistory: ClubPackHistory[];
   commissionsAssigned: string[];
   contractBic: string;
   contractDate: string;
@@ -67,16 +76,17 @@ export interface User {
 }
 
 export class UserBasic {
-  _id: string;
-  clubPack: PackEnum;
-  gold: boolean;
-  email: string;
-  firstName: string;
-  lastName: string;
-  referenceAgent: string;
+  _id: string
+  clubPack: PackEnum
+  clubPackHistory: ClubPackHistory[]
+  gold: boolean
+  email: string
+  firstName: string
+  lastName: string
+  referenceAgent: string
   
-  role: UserRoleEnum;
-  roles: string[];
+  role: UserRoleEnum
+  roles: string[]
   
   superAdmin: boolean
 }
@@ -86,6 +96,6 @@ export interface ReadUserGroupsDto {
   count: number;
 }
 
-export type UpdateUserContractDto = Pick<User, "clubCardNumber" | "clubPack">
+export type UpdateUserContractDto = Pick<User, 'clubCardNumber' | 'clubPack'>
 
-export type UpdateUserAnagraphicDto = Pick<User, "firstName" | "lastName" | "email">
+export type UpdateUserAnagraphicDto = Pick<User, 'firstName' | 'lastName' | 'email'>

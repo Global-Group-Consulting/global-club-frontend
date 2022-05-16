@@ -1,7 +1,6 @@
 ion-alert {
   --background: var(--ion-color-secondary) !important;
 
-
   &[class*="sc-ion-alert"] {
     user-select: auto;
   }
@@ -24,7 +23,7 @@ ion-alert {
   }
 
   &.alert-info {
-    background-color: var(--ion-color-light);
+    background-color: var(--ion-color-secondary);
   }
 
   &.alert-error {
@@ -36,6 +35,31 @@ ion-alert {
   }
 }
 
+.form-input-alert-sheet {
+  .action-sheet-container {
+    .action-sheet-group:first-child {
+      background-color: var(--ion-color-secondary);
+
+      .action-sheet- {
+        color: white;
+      }
+
+      .action-sheet-selected {
+        color: var(--ion-color-primary);
+        background-color: var(--ion-color-step-200);
+      }
+    }
+
+    .action-sheet-group-cancel {
+      border-top: 1px solid var(--ion-color-primary);
+      background-color: var(--ion-color-secondary);
+
+      .action-sheet-button {
+        color: var(--ion-color-primary)
+      }
+    }
+  }
+}
 
 @include mediaQueryUp(sm) {
   ion-alert {

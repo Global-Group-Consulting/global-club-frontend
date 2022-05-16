@@ -31,6 +31,7 @@ export interface OrderProduct {
   price: number;
   
   repayment: boolean;
+  notes: string;
 }
 
 export interface ReadOrderStatusesDto {

@@ -103,6 +103,7 @@
                           v-model="productForm.formData.categories.modelValue"
                           :error="productForm.formData.categories.errorMessage"
                           component="ion-select"
+                          :interface-options="{cssClass: 'alert-large'}"
                           :multiple="true"
                           :options="categoryOptionsList"/>
             </ion-col>
@@ -152,7 +153,7 @@
                           :error="productForm.formData['location.province'].errorMessage"
                           @update:modelValue="onProvinceChange"
                           :disabled="provincesList.length === 0"
-                          clear-input />
+                          clear-input/>
             </ion-col>
             <ion-col>
               <FormInputV :label="$t('forms.products.location.city')"
@@ -183,7 +184,7 @@
           <ion-row>
             <ion-col size="4" offset="4">
               <ClubButton type="submit">
-                {{ $t('forms.products.' + (currentProduct ? "btnUpdate" : "btnCreate")) }}
+                {{ $t('forms.products.' + (currentProduct ? 'btnUpdate' : 'btnCreate')) }}
               </ClubButton>
             </ion-col>
           </ion-row>
@@ -194,29 +195,29 @@
 </template>
 
 <script lang="ts">
-import {computed, ComputedRef, defineComponent, inject, nextTick, ref, Ref, watch} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {useRoute, useRouter} from 'vue-router';
-import {Product} from '@/@types/Product';
-import {HttpPlugin} from '@/plugins/HttpPlugin';
-import {AlertsPlugin} from '@/plugins/Alerts';
-import SimpleToolbar from '@/components/toolbars/SimpleToolbar.vue';
-import FormFiles from '@/components/forms/FormFiles.vue';
-import {ProductCategory} from '@/@types/ProductCategory';
-import {Attachment} from '@/@types/Attachment';
-import {onIonViewDidLeave, onIonViewWillEnter} from '@ionic/vue';
-import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue';
-import ClubButton from '@/components/ClubButton.vue';
-import {ProductForm} from '@/composables/forms/ProductForm';
-import FormInputV from '@/components/forms/FormInputV.vue';
-import FormRTE from '@/components/forms/FormRTE.vue';
-import FormToggleV from '@/components/forms/FormToggleV.vue';
-import {formatLocaleDate} from '@/@utilities/dates';
-import {PackEnum} from '@/@enums/pack.enum';
-import TopToolbar from '@/components/toolbars/TopToolbar.vue';
-import {City, Province, Region} from "@/@types/Location";
-import {SelectOption} from "@/@types/Form";
-import {capitalize} from "lodash";
+import { computed, ComputedRef, defineComponent, inject, nextTick, ref, Ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute, useRouter } from 'vue-router'
+import { Product } from '@/@types/Product'
+import { HttpPlugin } from '@/plugins/HttpPlugin'
+import { AlertsPlugin } from '@/plugins/Alerts'
+import SimpleToolbar from '@/components/toolbars/SimpleToolbar.vue'
+import FormFiles from '@/components/forms/FormFiles.vue'
+import { ProductCategory } from '@/@types/ProductCategory'
+import { Attachment } from '@/@types/Attachment'
+import { onIonViewDidLeave, onIonViewWillEnter } from '@ionic/vue'
+import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue'
+import ClubButton from '@/components/ClubButton.vue'
+import { ProductForm } from '@/composables/forms/ProductForm'
+import FormInputV from '@/components/forms/FormInputV.vue'
+import FormRTE from '@/components/forms/FormRTE.vue'
+import FormToggleV from '@/components/forms/FormToggleV.vue'
+import { formatLocaleDate } from '@/@utilities/dates'
+import { PackEnum } from '@/@enums/pack.enum'
+import TopToolbar from '@/components/toolbars/TopToolbar.vue'
+import { City, Province, Region } from '@/@types/Location'
+import { SelectOption } from '@/@types/Form'
+import { capitalize } from 'lodash'
 
 export default defineComponent({
   components: {
@@ -230,25 +231,25 @@ export default defineComponent({
     SimpleToolbar,
     FormFiles
   },
-  setup(props, {emit}) {
-    const {t} = useI18n();
-    const route = useRoute();
-    const router = useRouter();
-    const http = inject<HttpPlugin>('http') as HttpPlugin;
-    const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin;
+  setup (props, { emit }) {
+    const { t } = useI18n()
+    const route = useRoute()
+    const router = useRouter()
+    const http = inject<HttpPlugin>('http') as HttpPlugin
+    const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin
     const colSizes = {
       size: 6
     }
-    const extraData: Ref<any[]> = ref([]);
+    const extraData: Ref<any[]> = ref([])
 
-    const regions: Ref<Region[]> = ref([]);
-    const provinces: Ref<Province[]> = ref([]);
-    const cities: Ref<City[]> = ref([]);
+    const regions: Ref<Region[]> = ref([])
+    const provinces: Ref<Province[]> = ref([])
+    const cities: Ref<City[]> = ref([])
     const currentProduct: Ref<Product & { categories: string[] } | undefined> = ref()
     const categoriesList: Ref<ProductCategory[]> = ref([])
     const categoryOptionsList = computed(() => {
       return categoriesList.value.map(el => ({
-        text: el.title,
+        text: el.title + (el.parent ? ` (${el.parent?.title})` : ''),
         value: el._id
       }))
     })
@@ -257,7 +258,7 @@ export default defineComponent({
       return Object.values(PackEnum).reduce((acc, el) => {
         if (validPacks.includes(el)) {
           acc.push({
-            text: t("enums.PackEnum." + el),
+            text: t('enums.PackEnum.' + el),
             value: el
           })
         }
@@ -269,7 +270,7 @@ export default defineComponent({
     const changePacksOptionsList = computed(() => {
       return [
         {
-          text: t("enums.PackEnum.premium"),
+          text: t('enums.PackEnum.premium'),
           value: PackEnum.PREMIUM
         }
       ]
@@ -307,33 +308,33 @@ export default defineComponent({
 
     const isNew = computed(() => !currentProduct.value?._id)
 
-    productForm.addEventListener("submitCompleted", (e) => {
+    productForm.addEventListener('submitCompleted', (e) => {
       // currentProduct.value = productForm.formatCurrentProduct(e.detail);
-      router.replace({name: "admin.products.details", params: {id: e.detail._id}});
+      router.replace({ name: 'admin.products.details', params: { id: e.detail._id } })
 
-      alerts.toastSuccess("Prodotto creato correttamente!");
+      alerts.toastSuccess('Prodotto creato correttamente!')
     })
 
     /**
      * Delete a single image
      */
-    async function onImageDeleteClick(image: Attachment) {
+    async function onImageDeleteClick (image: Attachment) {
       if (!currentProduct.value) {
-        return;
+        return
       }
 
       const alertResult = await alerts.ask({
         header: t('alerts.products.deleteThumbnail.title'),
-        message: t('alerts.products.deleteThumbnail.message', {imageName: image.fileName}),
+        message: t('alerts.products.deleteThumbnail.message', { imageName: image.fileName }),
         buttonCancelText: t('alerts.products.deleteThumbnail.buttonCancel'),
-        buttonOkText: t('alerts.products.deleteThumbnail.buttonOk'),
-      });
+        buttonOkText: t('alerts.products.deleteThumbnail.buttonOk')
+      })
 
       if (alertResult.resp) {
-        const result = await http.api.products.deleteFile(currentProduct.value._id, image.id);
+        const result = await http.api.products.deleteFile(currentProduct.value._id, image.id)
 
         if (result) {
-          currentProduct.value = productForm.formatCurrentProduct(result);
+          currentProduct.value = productForm.formatCurrentProduct(result)
         }
       }
     }
@@ -341,53 +342,53 @@ export default defineComponent({
     /**
      * Delete the current Product
      */
-    async function onDeleteClick() {
+    async function onDeleteClick () {
       if (!currentProduct.value) {
         return
       }
 
       const alertResult = await alerts.ask({
         header: t('alerts.products.deleteProduct.title'),
-        message: t('alerts.products.deleteProduct.message', {productName: currentProduct.value?.title}),
+        message: t('alerts.products.deleteProduct.message', { productName: currentProduct.value?.title }),
         buttonCancelText: t('alerts.products.deleteProduct.buttonCancel'),
-        buttonOkText: t('alerts.products.deleteProduct.buttonOk'),
-      });
+        buttonOkText: t('alerts.products.deleteProduct.buttonOk')
+      })
 
       if (alertResult.resp) {
-        await http.api.products.deleteProduct(currentProduct.value._id);
+        await http.api.products.deleteProduct(currentProduct.value._id)
 
-        await router.replace({name: "admin.products"})
+        await router.replace({ name: 'admin.products' })
       }
     }
 
-    function addExtraData() {
+    function addExtraData () {
 
       // TODO:: aprire un modale per inz<erire le specifiche del nuovo campo.
       extraData.value.push({})
     }
 
-    function removeExtraData(index: number) {
+    function removeExtraData (index: number) {
       debugger
       extraData.value.splice(index, 1)
     }
 
-    async function onRegionChange(value: string) {
+    async function onRegionChange (value: string) {
       provinces.value = value ? (await http.api.locations.provinces(value) || []) : []
 
-      productForm.formData['location.province'].modelValue = ""
+      productForm.formData['location.province'].modelValue = ''
     }
 
-    async function onProvinceChange(value: string) {
+    async function onProvinceChange (value: string) {
       cities.value = value ? (await http.api.locations.cities(productForm.formData['location.region'].modelValue, value) || []) : []
 
-      productForm.formData['location.city'].modelValue = ""
+      productForm.formData['location.city'].modelValue = ''
     }
 
     watch(() => productForm.formData.priceUndefined.modelValue, (value => {
       if (value) {
         productForm.formData.price.modelValue = 0
       }
-    }), {immediate: true})
+    }), { immediate: true })
 
     watch(() => productForm.formData.packChange.modelValue, (value => {
       if (value) {
@@ -395,47 +396,47 @@ export default defineComponent({
         productForm.formData.visible.modelValue = false
         productForm.formData.priceUndefined.modelValue = true
       }
-    }), {immediate: true})
+    }), { immediate: true })
 
     onIonViewWillEnter(async () => {
       const apiCalls: any[] = [
         http.api.productCategories.readAllRaw(),
-        http.api.locations.regions(),
+        http.api.locations.regions()
       ]
 
       if (route.params.id) {
         apiCalls.push(http.api.products.read(route.params.id as string))
       }
 
-      const results = await Promise.all(apiCalls);
+      const results = await Promise.all(apiCalls)
       //@ts-ignore
-      categoriesList.value = results[0];
-      regions.value = results[1];
+      categoriesList.value = results[0]
+      regions.value = results[1]
       //@ts-ignore
       currentProduct.value = productForm.formatCurrentProduct(results[2])
 
       await nextTick(async () => {
         if (currentProduct.value?.location && currentProduct.value.location.province) {
-          provinces.value = await http.api.locations.provinces(currentProduct.value.location.region) || [];
+          provinces.value = await http.api.locations.provinces(currentProduct.value.location.region) || []
           await nextTick(() => {
             productForm.formData['location.province'].resetField()
           })
         }
 
         if (currentProduct.value?.location && currentProduct.value.location.city) {
-          cities.value = await http.api.locations.cities(currentProduct.value.location.region, currentProduct.value.location.province) || [];
+          cities.value = await http.api.locations.cities(currentProduct.value.location.region, currentProduct.value.location.province) || []
           await nextTick(() => {
             productForm.formData['location.city'].resetField()
           })
         }
-      });
+      })
 
-    });
+    })
 
     onIonViewDidLeave(async () => {
       categoriesList.value = []
       currentProduct.value = undefined
-    });
+    })
 
     return {
       currentProduct, categoriesList, categoryOptionsList, packsOptionsList, changePacksOptionsList,

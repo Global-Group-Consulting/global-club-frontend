@@ -82,7 +82,7 @@
             buttonCancelText: "No, annulla"
           })
 
-          if (result) {
+          if (result.resp) {
             await store.dispatch("favourites/toggle", props.product)
           }
         } else {

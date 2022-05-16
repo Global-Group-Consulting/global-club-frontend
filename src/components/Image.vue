@@ -3,6 +3,7 @@
            :alt="fileName"
            class="img"
            :class="baseClasses"
+           :style="inlineStyles"
   />
 
   <ion-img :src="lazySrc"
@@ -10,64 +11,78 @@
            @ionImgDidLoad="onLazyDidLoaded"
            @ionError="onImgError"
            class="lazy-img" :class="lazyClasses"
-           @click="onClick"/>
+           @click="onClick"
+           :style="inlineStyles"
+  />
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onMounted, Ref, ref} from 'vue';
-import {formatImgUrl} from "@/@utilities/images";
-import {previewFile} from "@/@utilities/files";
+import { computed, defineComponent, onMounted, Ref, ref } from 'vue'
+import { formatImgUrl } from '@/@utilities/images'
+import { previewFile } from '@/@utilities/files'
 
 export default defineComponent({
-  name: "Image",
+  name: 'Image',
   props: {
     fileId: String,
     fileName: {
       type: String,
-      default: "image"
+      default: 'image'
     },
     fallbackLarge: Boolean,
     class: String,
-    canPreview: Boolean
+    canPreview: Boolean,
+    aspectRatio: String
   },
-  setup(props) {
-    const src: Ref<string> = ref(`/assets/img_placeholder${props.fallbackLarge ? '_large' : ''}.png`);
-    const lazySrc: Ref<string> = ref(formatImgUrl(props.fileId));
+  setup (props) {
+    const src: Ref<string> = ref(`/assets/img_placeholder${props.fallbackLarge ? '_large' : ''}.png`)
+    const lazySrc: Ref<string> = ref(formatImgUrl(props.fileId))
     const lazyLoaded = ref(false)
 
-    const lazyClasses = computed(() => getImgClass(true));
-    const baseClasses = computed(() => getImgClass());
+    const lazyClasses = computed(() => getImgClass(true))
+    const baseClasses = computed(() => getImgClass())
 
-    function getImgClass(lazy = false) {
+    const inlineStyles = computed(() => {
+      const toReturn = {}
+
+      if (props.aspectRatio) {
+        toReturn['aspect-ratio'] = props.aspectRatio
+        toReturn['object-fit'] = 'cover'
+      }
+
+      return toReturn
+    })
+
+    function getImgClass (lazy = false) {
       const classList: string[] = []
 
       if (props.class) {
-        classList.push(props.class);
+        classList.push(props.class)
       }
 
       if (!lazy && lazyLoaded.value) {
-        classList.push("hide")
+        classList.push('hide')
       } else if (lazy && lazyLoaded.value) {
-        classList.push("loaded")
+        classList.push('loaded')
       }
 
-      return classList.join(" ");
+      return classList.join(' ')
     }
 
-    function onImgError(e) {
-      e.target.src = `/assets/img_placeholder${props.fallbackLarge ? '_large' : ''}.png`;
+    function onImgError (e) {
+      e.target.src = `/assets/img_placeholder${props.fallbackLarge ? '_large' : ''}.png`
     }
 
-    function onLazyDidLoaded() {
+    function onLazyDidLoaded () {
       lazyLoaded.value = true
     }
 
-    function onClick(e) {
+    function onClick (e) {
       if (!props.canPreview) {
-        return;
+        return
       }
 
-      window.open(lazySrc.value, "_blank")
+      window.open(lazySrc.value, '_blank')
     }
 
     return {
@@ -78,10 +93,11 @@ export default defineComponent({
       baseClasses,
       lazySrc,
       lazyLoaded,
-      onClick
+      onClick,
+      inlineStyles
     }
   }
-});
+})
 </script>
 
 <style scoped lang="scss">

@@ -55,7 +55,7 @@ export class BasicApisClass {
       }
    }
    
-   static prepareFilterParams (filters: Record<string, string>) {
+   static prepareFilterParams (filters: Record<string, string|number>) {
       const toReturn = {}
       
       Object.entries(filters).forEach(entry => {

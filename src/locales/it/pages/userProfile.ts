@@ -4,7 +4,7 @@ export const userProfile = {
   'lbl_email': "Email",
   'lbl_club_pack': "Pacchetto attivo",
   'lbl_role': "Ruolo",
-  'lbl_ref_agent': "Agente di Rif.",
+  'lbl_ref_agent': "Referente",
   'tab_contract': "Contratto",
   'tab_anagraphic': "Anagrafica",
   'tab_movements': "Movimenti",

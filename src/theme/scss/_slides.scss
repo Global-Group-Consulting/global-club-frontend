@@ -1,1 +1,19 @@
 @import '~swiper/swiper';
+@import '~swiper/modules/scrollbar/scrollbar.scss';
+
+.swiper-horizontal {
+
+  .swiper-scrollbar {
+    background-color: rgba(var(--ion-color-secondary-border-rgb), 0.1);
+    transition: background-color .3s !important;
+    height: 10px;
+
+    .swiper-scrollbar-drag {
+      background-color: var(--ion-color-primary);
+    }
+
+    &:hover {
+      background-color: rgba(var(--ion-color-secondary-border-rgb), 0.8);
+    }
+  }
+}
