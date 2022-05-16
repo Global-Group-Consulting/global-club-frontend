@@ -4,7 +4,7 @@
 
     <IonContent>
       <ion-grid fixed>
-        <ion-row class="mb-4" v-if="hasProducts">
+        <ion-row class="mb-4" v-if="hasProducts" style="--ion-grid-column-padding:0">
           <ion-col>
             <h3 class="ion-text-start">Totale provvisorio</h3>
           </ion-col>
@@ -26,7 +26,9 @@
 
               <ion-label>
                 <h2 v-html="entry.product.title"></h2>
+
                 <div class="d-flex ion-align-items-center">
+                  <!-- Quantity section -->
                   <div v-if="entry.product.hasQta" class="d-flex ion-align-items-center">
                     <ClubButton size="small" only-icon icon icon-name="minus"
                                 @click="changeQta(entry, -1)"/>
@@ -38,10 +40,16 @@
 
                   </div>
 
-                  <span :class="{'ms-3': entry.product.hasQta}">
+                  <!-- Price section -->
+                  <div :class="{'ms-3': entry.product.hasQta}">
                     <BriteValue :value="entry.price" v-if="!entry.product.priceUndefined"/>
                     <template v-else>Prezzo da definie</template>
-                  </span>
+                  </div>
+                </div>
+
+                <!-- Custom notes section -->
+                <div v-if="entry.notes" class="ion-text-wrap text-small">
+                  <strong>Note:</strong> <span v-html="entry.notes"></span>
                 </div>
               </ion-label>
 
@@ -79,9 +87,9 @@
 
         <NoData v-else text="Nessun prodotto nel carrello."></NoData>
 
-        <ion-row v-if="hasProducts" class="ion-justify-content-center mt-5">
+        <ion-row v-if="hasProducts" class="ion-justify-content-center mt-5" style="--ion-grid-column-padding:0">
           <ion-col class="ion-text-center" size="12" size-sm="7" size-md="6">
-            <ClubButton size="large" expanded @click="submitCart">
+            <ClubButton size="large" expanded @click="submitCart" class="m-0">
               Procedi all'ordine
             </ClubButton>
           </ion-col>
@@ -95,7 +103,7 @@
 <script lang="ts">
 import {
   ActionSheetButton,
-  actionSheetController,
+  actionSheetController, alertController,
   IonContent,
   IonPage, popoverController
 } from '@ionic/vue'
@@ -157,17 +165,45 @@ export default defineComponent({
         icon: 'edit-square',
         label: 'Aggiungi note',
         click: async (entry) => {
-          const orderProduct = (entry as any)
+          const orderProduct: OrderProduct = (entry as any)
 
-          const popover = await popoverController.create({
-            component: ProductNoteModal,
-            cssClass: 'popover-modal',
-            translucent: true
+          const alert = await alertController.create({
+            header: 'Note prodotto',
+            inputs: [
+              {
+                placeholder: 'Scrivi le tue note',
+                name: 'notes',
+                type: 'textarea',
+                label: 'Note',
+                value: orderProduct.notes,
+                attributes: {
+                  rows: 4
+                }
+              }
+            ],
+            buttons: [
+              {
+                text: 'Annulla',
+                role: 'cancel',
+                handler: () => {
+                  // console.log('Confirm Cancel')
+                }
+              },
+              {
+                text: 'Salva',
+                handler: (inputValues) => {
+                  store.dispatch('cart/updateProductNotes', {
+                    productId: orderProduct.product._id,
+                    notes: inputValues.notes
+                  })
+                }
+              }
+            ]
           })
-          await popover.present()
 
-          /*const { role } = await popover.onDidDismiss();
-          console.log('onDidDismiss resolved with role', role);*/
+          const result = await alert.present()
+
+          console.log(result)
         }
       },
       {
@@ -225,6 +261,10 @@ export default defineComponent({
       await http.api.orders.create(products, orderNotes.value)
       await alerts.toastSuccess('Ordine correttamente inviato!')
       await store.dispatch('cart/clean')
+
+      await router.push({
+        name: 'private.orders.home'
+      })
     }
 
     async function openProductMenu (event: Event, entry: OrderProduct) {

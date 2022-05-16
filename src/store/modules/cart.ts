@@ -53,6 +53,12 @@ const mutations: MutationTree<RootState> = {
   },
   UPDATE_ORDER_NOTES (state, payload: string) {
     state.notes = payload
+  },
+  
+  UPDATE_ORDER_PRODUCT_NOTES (state, payload: { productIndex: number; notes: string }) {
+    const entry = state.products[payload.productIndex]
+  
+    entry.notes = payload.notes
   }
 }
 
@@ -113,6 +119,16 @@ const actions: ActionTree<RootState, RootState> = {
   
   updateNotes ({ commit }, payload: string) {
     commit('UPDATE_ORDER_NOTES', payload)
+  },
+  
+  updateProductNotes ({ commit, state }, payload: { productId: string; notes: string }) {
+    const alreadyExistingIndex: number = state.products.findIndex(el => el.product._id === payload.productId)
+    
+    if (alreadyExistingIndex < 0) {
+      return
+    }
+    
+    commit('UPDATE_ORDER_PRODUCT_NOTES', { notes: payload.notes, productIndex: alreadyExistingIndex })
   },
   
   clean ({ commit }) {

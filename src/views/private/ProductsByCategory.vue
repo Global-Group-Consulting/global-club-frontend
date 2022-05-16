@@ -103,11 +103,10 @@ import { onIonViewWillEnter } from '@ionic/vue'
 import { ProductCategory } from '@/@types/ProductCategory'
 import Image from '@/components/Image.vue'
 import { Scrollbar } from 'swiper'
-import { Swiper, SwiperSlide } from 'swiper/vue/swiper-vue'
 import SearchBar from '@/components/SearchBar.vue'
 import TopToolbar from '@/components/toolbars/TopToolbar.vue'
-import { useStore } from 'vuex'
-import { storeKey } from '@/store'
+// import { useStore } from 'vuex'
+// import { storeKey } from '@/store'
 import { PaginatedResult } from '@/@types/Pagination'
 import PaginatedList from '@/components/lists/PaginatedList.vue'
 import PrivateProductCardItem from '@/components/lists/products/PrivateProductCardItem.vue'
@@ -128,7 +127,7 @@ export default defineComponent({
 
   setup () {
     const categoriesSwiper = ref()
-    const store = useStore(storeKey)
+    // const store = useStore(storeKey)
     const http = inject('http') as HttpPlugin
     const route = useRoute()
     const router = useRouter()
@@ -352,8 +351,9 @@ export default defineComponent({
     left: 0;
     right: 0;
     top: 0;
+    border-radius: 1rem;
     background-color: rgba(var(--ion-color-secondary-rgb), 0.6);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
     padding: .4rem .4rem;
     color: white;
     display: flex;
