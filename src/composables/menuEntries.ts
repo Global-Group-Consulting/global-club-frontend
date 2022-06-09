@@ -13,6 +13,7 @@ import { AlertsPlugin } from '@/plugins/Alerts'
 
 export interface MenuEntry {
   route?: string;
+  externalLink?: boolean;
   click?: (this: MenuEntry & { auth: AuthPlugin; logout () }, event?: Event, authUser?: User) => void | Promise<void>;
   
   label: string | ((data?: any) => string);
@@ -33,6 +34,19 @@ export interface MenuEntry {
   if?: boolean;
   value?: boolean;
 }
+
+const externalLinks: MenuEntry[] = [{
+  route: 'https://globalgroup.consulting/club/video',
+  label: 'external.video',
+  icon: 'link',
+  externalLink: true
+},
+  {
+    route: 'https://globalgroup.consulting/club/menu',
+    label: 'external.menu',
+    icon: 'link',
+    externalLink: true
+  }]
 
 const genericFooterEntries: MenuEntry[] = [
   {
@@ -150,6 +164,12 @@ const mobileMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
           label: '',
           divider: true
         },
+        ...externalLinks,
+        {
+          route: '',
+          label: '',
+          divider: true
+        },
         {
           label: (userAuth) => formatUserName(userAuth),
           icon: 'user',
@@ -218,6 +238,16 @@ const mobileMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
       }),
       children: [
         {
+          route: 'private.orders.home',
+          label: 'userOrders',
+          icon: 'ticket'
+        },
+        {
+          route: '',
+          label: '',
+          divider: true
+        },
+        {
           route: 'news.index',
           label: 'news',
           icon: 'calendar',
@@ -232,6 +262,12 @@ const mobileMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
             return store.getters['notifications/unread'] > 0 ? store.getters['notifications/unread'] : null
           })
         },
+        {
+          route: '',
+          label: '',
+          divider: true
+        },
+        ...externalLinks,
         {
           route: '',
           label: '',
@@ -302,6 +338,12 @@ const desktopMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
         return store.getters['notifications/unread'] > 0 ? store.getters['notifications/unread'] : null
       })
     },
+    {
+      route: '',
+      label: '',
+      divider: true
+    },
+    ...externalLinks,
     ...genericFooterEntries
   ],
   private: [
@@ -374,6 +416,12 @@ const desktopMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
         return store.getters['notifications/unread'] > 0 ? store.getters['notifications/unread'] : null
       })
     },
+    {
+      route: '',
+      label: '',
+      divider: true
+    },
+    ...externalLinks,
     ...genericFooterEntries
   ]
 }

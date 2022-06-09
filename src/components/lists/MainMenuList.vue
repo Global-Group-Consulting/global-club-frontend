@@ -17,6 +17,7 @@
     <ion-item v-else button
               class="main-menu-list-item"
               style="--inner-border-width: 0"
+              v-bind="getHref(entry)"
               :color="$route.name === entry.route ? 'primary' : ''"
               @click="$emit('click', entry, $event)">
 
@@ -35,21 +36,41 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, PropType } from 'vue';
-  import { MenuEntry } from '@/composables/menuEntries';
-  import Icon from '@/components/Icon.vue';
+import { computed, defineComponent, PropType } from 'vue'
+import { MenuEntry } from '@/composables/menuEntries'
+import Icon from '@/components/Icon.vue'
 
-  export default defineComponent({
-    name: "MainMenuList",
-    components: { Icon },
-    props: {
-      entriesList: Array as PropType<MenuEntry[]>,
-      title: {
-        type: String,
+export default defineComponent({
+  name: 'MainMenuList',
+  components: { Icon },
+  props: {
+    entriesList: Array as PropType<MenuEntry[]>,
+    title: {
+      type: String
+    }
+  },
+  emits: ['click'],
+  setup () {
+    function getHref (entry: MenuEntry) {
+      const isFullLink = entry.route?.startsWith('http')
+      const toReturn = {}
+
+      if (isFullLink) {
+        toReturn['href'] = entry.route
       }
-    },
-    emits: ['click']
-  });
+
+      if (entry.externalLink) {
+        toReturn['target'] = '_blank'
+      }
+
+      return toReturn
+    }
+
+    return {
+      getHref
+    }
+  }
+})
 </script>
 
 <style scoped>

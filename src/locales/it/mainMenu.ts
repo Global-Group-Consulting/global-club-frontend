@@ -25,4 +25,9 @@ export const mainMenu = {
   userOrdersMobile: 'Ordini',
   userPortfolioMobile: "Portfolio",
   userProfileMobile: "Il mio Profilo",
+  
+  external: {
+    menu: "Menu Club",
+    video: "Video Club",
+  }
 }
