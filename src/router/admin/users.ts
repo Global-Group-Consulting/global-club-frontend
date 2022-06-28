@@ -1,4 +1,4 @@
-const prefix = "/admin/users";
+const prefix = '/admin/users'
 const meta = {
   isAdmin: true
 }
@@ -6,12 +6,12 @@ const meta = {
 export default [
   {
     path: prefix,
-    component: () => import("@/views/admin/users/Home.vue"),
-    name: "admin.users",
+    component: () => import('@/views/admin/users/Home.vue'),
+    name: 'admin.users',
     meta: {
       ...meta,
-      title: "Utenti"
-    },
+      title: 'Utenti'
+    }
   },
   {
     path: prefix + '/profile/:id',
@@ -19,7 +19,16 @@ export default [
     name: 'admin.users.profile',
     meta: {
       ...meta,
-      title: "Profilo utente"
+      title: 'Profilo utente'
+    }
+  },
+  {
+    path: prefix + '/wallet_fast/:id',
+    component: () => import('@/views/private/WalletFast.vue'),
+    name: 'admin.users.wallet_fast',
+    meta: {
+      ...meta,
+      title: 'Wallet fast'
     }
   },
   {
@@ -28,7 +37,8 @@ export default [
     name: 'admin.users.details',
     meta: {
       ...meta,
-      title: "Dettagli utente"
+      title: 'Dettagli utente'
     }
-  },
+  }
+
 ]

@@ -11,7 +11,8 @@
                 </SimpleToolbar>-->
         <UserStatistics :user-id="userId" :club-pack="user?.clubPack"
                         ref="userStatistics"
-                        @update:activeTab="onActiveTabChange"></UserStatistics>
+                        @update:activeTab="onActiveTabChange"
+                        @update:data="onStatisticsUpdate"></UserStatistics>
 
         <ion-row>
           <ion-col size="12" sizeLg="6" class="pb-0 py-lg-5">
@@ -62,6 +63,7 @@
           <template v-slot:content_movements>
             <MovementsList :user-id="user?._id" show-semester
                            :semester-id="activeTab"
+                           ref="movementsList"
                            @data:fetched="onMovementsFetched"></MovementsList>
           </template>
 
@@ -75,6 +77,17 @@
                         color="primary" version="outline" icon
                         icon-name="link" icon-position="end">
                 {{ $t('sections.orders.show_all_orders') }}
+              </PageLink>
+            </div>
+          </template>
+
+          <template v-slot:content_fastWallet>
+            <div class="ion-text-center">
+              <PageLink :to="{name: 'admin.users.wallet_fast', params: {id: user?._id}}"
+                        :btn-props="{target: '_blank'}"
+                        color="primary" version="outline" icon
+                        icon-name="link" icon-position="end">
+                Vai al Wallet Fast
               </PageLink>
             </div>
           </template>
@@ -118,6 +131,7 @@ export default defineComponent({
   },
   setup () {
     const userStatistics = ref()
+    const movementsList = ref()
     const { t } = useI18n()
     const route = useRoute()
     const http = inject<HttpPlugin>('http') as HttpPlugin
@@ -145,6 +159,11 @@ export default defineComponent({
       {
         id: 'orders',
         text: t('pages.userProfile.tab_orders'),
+        open: false
+      },
+      {
+        id: 'fastWallet',
+        text: 'Wallet Fast',
         open: false
       }
     ])
@@ -186,6 +205,10 @@ export default defineComponent({
       await alerts.info('Tutto ok, l\'importo indicato è disponibile')
     }
 
+    function onStatisticsUpdate () {
+      movementsList.value?.refreshData()
+    }
+
     onIonViewWillEnter(async () => {
       const apiCalls: any[] = [
         http.api.users.readProfile(route.params.id as string, true)
@@ -208,9 +231,11 @@ export default defineComponent({
       userId, activeTab,
       onActiveTabChange,
       onMovementsFetched,
-      userStatistics,
+      onStatisticsUpdate,
+      checkIfHasEnough,
       referenceAgent,
-      checkIfHasEnough
+      userStatistics,
+      movementsList
     }
   }
 })
