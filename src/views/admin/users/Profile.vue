@@ -36,11 +36,14 @@
               </li>
               <li v-if="referenceAgent" class="d-flex ion-align-items-center">
                 {{ $t('pages.userProfile.lbl_ref_agent') }}:
-                <page-link :to="{name: 'admin.users.profile', params: {id: referenceAgent._id}}"
-                           :btn-props="{version:'link', target: '_blank'}"
-                >
+                <a class="ms-1"
+                   :href="$router.resolve({name: 'admin.users.profile', params: {id: referenceAgent._id}}).fullPath"
+                   target="_blank">
                   <strong>{{ referenceAgent.firstName }} {{ referenceAgent.lastName }}</strong>
-                </page-link>
+                </a>
+              </li>
+              <li>
+                <a href="#" @click.prevent="checkIfHasEnough">Controllo a sistema per disponibilità</a>
               </li>
             </ul>
           </ion-col>
@@ -67,7 +70,8 @@
                              :title="$t('sections.orders.last_x_orders', { number: 5 })"></AdminOrdersList>
 
             <div class="ion-text-center">
-              <PageLink :to="{name: 'admin.orders', query: {'filter[user]': user?.firstName + '+' + user?.lastName}}" :btn-props="{target: '_blank'}"
+              <PageLink :to="{name: 'admin.orders', query: {'filter[user]': user?.firstName + '+' + user?.lastName}}"
+                        :btn-props="{target: '_blank'}"
                         color="primary" version="outline" icon
                         icon-name="link" icon-position="end">
                 {{ $t('sections.orders.show_all_orders') }}
@@ -98,6 +102,7 @@ import UserAnagraphicForm from '@/components/forms/sections/UserAnagraphicForm.v
 import AdminOrdersList from '@/components/lists/orders/AdminOrdersList.vue'
 import PageLink from '@/components/PageLink.vue'
 import UserStatistics from '@/components/UserStatistics.vue'
+import { AlertsPlugin } from '@/plugins/Alerts'
 
 export default defineComponent({
   name: 'Profile',
@@ -116,6 +121,7 @@ export default defineComponent({
     const { t } = useI18n()
     const route = useRoute()
     const http = inject<HttpPlugin>('http') as HttpPlugin
+    const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin
     const userId = computed(() => route.params.id)
     const activeTab: Ref<string> = ref('')
     // const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin;
@@ -155,6 +161,31 @@ export default defineComponent({
       userStatistics.value.fetchData()
     }
 
+    async function checkIfHasEnough () {
+      const userId = user.value?._id as string
+
+      const result = await alerts.ask({
+        header: 'Controllo a sistema per disponibilità',
+        message: `E' possibile testare se l'utente potrebbe effettuare un ordine di un certo importo.\nDato che l'algoritmo di verifica è molto complesso,
+         potrebbe essere necessario a volte testarlo. Se si desidera procedere, inserire l'importo desiderato.`,
+        inputs: [
+          {
+            name: 'amount',
+            id: 'amountInput',
+            value: 100,
+            placeholder: 'Importo da testare'
+          }
+        ]
+      })
+
+      if (!result.resp) {
+        return
+      }
+
+      await http.api.movements.checkEnough(userId, result.values.amount)
+      await alerts.info('Tutto ok, l\'importo indicato è disponibile')
+    }
+
     onIonViewWillEnter(async () => {
       const apiCalls: any[] = [
         http.api.users.readProfile(route.params.id as string, true)
@@ -178,7 +209,8 @@ export default defineComponent({
       onActiveTabChange,
       onMovementsFetched,
       userStatistics,
-      referenceAgent
+      referenceAgent,
+      checkIfHasEnough
     }
   }
 })
