@@ -22,36 +22,37 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, inject, onMounted, ref, Ref, watch} from 'vue';
-import {HttpPlugin} from '@/plugins/HttpPlugin';
-import {Movement} from '@/@types/Movement';
-import {PaginatedResult} from '@/@types/Pagination';
-import MovementListItem from '@/components/lists/movements/MovementListItem.vue';
-import PaginatedList from "@/components/lists/PaginatedList.vue";
+import { defineComponent, inject, onMounted, ref, Ref, watch } from 'vue'
+import { HttpPlugin } from '@/plugins/HttpPlugin'
+import { Movement } from '@/@types/Movement'
+import { PaginatedResult } from '@/@types/Pagination'
+import MovementListItem from '@/components/lists/movements/MovementListItem.vue'
+import PaginatedList from '@/components/lists/PaginatedList.vue'
 
 export default defineComponent({
-  name: "MovementsList",
-  components: {PaginatedList, MovementListItem},
+  name: 'MovementsList',
+  components: { PaginatedList, MovementListItem },
   props: {
     userId: {
       type: String,
       required: true
     },
     semesterId: String,
-    showSemester: Boolean
+    showSemester: Boolean,
+    onlyFast: Boolean
   },
-  setup(props, {emit}) {
-    const http = inject<HttpPlugin>('http') as HttpPlugin;
+  setup (props, { emit }) {
+    const http = inject<HttpPlugin>('http') as HttpPlugin
     const movementsList: Ref<Movement[] | null> = ref(null)
     // const paginationData: Ref<PaginationData> = ref(new PaginationData())
-    const paginatedData: Ref<PaginatedResult | undefined> = ref();
+    const paginatedData: Ref<PaginatedResult | undefined> = ref()
 
-    async function fetchData(page = 1, semesterId?: string) {
-      paginatedData.value = await http.api.movements.readAll(props.userId, semesterId, page.toString());
+    async function fetchData (page = 1, semesterId?: string) {
+      paginatedData.value = await http.api.movements.readAll(props.userId, semesterId, page.toString(), props.onlyFast)
     }
 
-    function onPageChanged(page: number) {
-      fetchData(page, props.semesterId);
+    function onPageChanged (page: number) {
+      fetchData(page, props.semesterId)
       // paginatedData.value = await http.api.movements.readAll(props.userId, undefined, page.toString());
     }
 
@@ -60,11 +61,11 @@ export default defineComponent({
         return
       }
 
-      fetchData();
-    });
+      fetchData()
+    })
 
     watch(() => props.semesterId, semesterId => {
-      const isSemester: boolean = !!semesterId && !!semesterId.match(/^[0-9]{4}_[1,2]{1}$/);
+      const isSemester: boolean = !!semesterId && !!semesterId.match(/^[0-9]{4}_[1,2]{1}$/)
 
       fetchData(1, isSemester ? semesterId : undefined)
     })
@@ -73,18 +74,23 @@ export default defineComponent({
       fetchData(1, props.semesterId ? props.semesterId : undefined)
     })
 
-    function onMovementRemoved() {
-      fetchData(paginatedData.value?.page, props.semesterId ?? undefined);
-      emit("data:fetched")
+    function onMovementRemoved () {
+      fetchData(paginatedData.value?.page, props.semesterId ?? undefined)
+      emit('data:fetched')
+    }
+
+    function refreshData () {
+      fetchData(paginatedData.value?.page, props.semesterId ?? undefined)
     }
 
     return {
       movementsList,
       paginatedData, onPageChanged,
-      onMovementRemoved
+      onMovementRemoved,
+      refreshData
     }
   }
-  });
+})
 </script>
 
 <style scoped>
