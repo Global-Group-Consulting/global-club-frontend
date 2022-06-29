@@ -274,6 +274,11 @@ const mobileMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
           divider: true
         },
         {
+          route: 'private.walletFast',
+          label: 'userPortfolioFast',
+          icon: 'wallet'
+        },
+        {
           route: 'private.profile',
           label: 'userProfileMobile',
           icon: 'user'
