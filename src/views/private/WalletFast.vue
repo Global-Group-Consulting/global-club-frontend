@@ -1,6 +1,11 @@
 <template>
   <IonPage>
-    <TopToolbar include-back>Wallet Fast utente {{ formatUserName(user) }}</TopToolbar>
+    <TopToolbar :include-back="!userIsAdmin">
+      <template v-if="userIsAdmin">
+        Wallet Fast utente {{ formatUserName(user) }}
+      </template>
+      <template v-else>Il mio Wallet FAST</template>
+    </TopToolbar>
 
     <IonContent>
       <ion-grid fixed>
@@ -25,25 +30,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onMounted, ref } from 'vue'
+import { computed, defineComponent, inject, onMounted, ref } from 'vue'
 import TopToolbar from '@/components/toolbars/TopToolbar.vue'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { useRoute } from 'vue-router'
 import UserStatistics from '@/components/UserStatistics.vue'
 import MovementsList from '@/components/lists/MovementsList.vue'
 import { formatUserName } from '@/@utilities/fields'
+import { useStore } from 'vuex'
+import { storeKey } from '@/store'
 
 export default defineComponent({
   name: 'WalletPremium',
   components: { MovementsList, UserStatistics, TopToolbar },
   setup () {
     const $route = useRoute()
+    const store = useStore(storeKey)
     const http = inject<HttpPlugin>('http') as HttpPlugin
-    const userId = $route.params.id as string
+    const userId = ($route.params.id ?? store.getters['auth/user'].id) as string
     const user = ref()
     const movementsList = ref()
     const userStatistics = ref()
     const activeTab = ref('')
+    const userIsAdmin = computed(() => store.getters['auth/isAdmin'])
 
     function onActiveTabChange (newTab) {
       activeTab.value = newTab
@@ -53,7 +62,7 @@ export default defineComponent({
       userStatistics.value.fetchData()
     }
 
-    function onStatisticsUpdate() {
+    function onStatisticsUpdate () {
       movementsList.value.refreshData()
     }
 
@@ -68,6 +77,7 @@ export default defineComponent({
       activeTab,
       userStatistics,
       movementsList,
+      userIsAdmin,
       onActiveTabChange,
       onMovementsFetched,
       onStatisticsUpdate,

@@ -29,6 +29,15 @@ export default [
     },
   },
   {
+    path: "/walletFast",
+    component: () => import("@/views/private/WalletFast.vue"),
+    name: "private.walletFast",
+    meta: {
+      isPrivate: true,
+      title: "Wallet Fast"
+    },
+  },
+  {
     path: "/cart",
     component: () => import("@/views/private/Cart.vue"),
     name: "private.cart",
