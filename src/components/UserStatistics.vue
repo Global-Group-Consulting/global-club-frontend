@@ -1,5 +1,9 @@
 <template>
-  <TabsItems class="tabs-chips mb-4" :tabs-list="tabs" v-model="activeTab"></TabsItems>
+  <TabsItems class="tabs-chips mb-4" :tabs-list="tabs" v-model="activeTab">
+    <template v-slot:top-badge="{tab}">
+      <ion-badge color="danger" v-if="tab.expired">Scaduto</ion-badge>
+    </template>
+  </TabsItems>
 
   <Swiper :slidesPerView="'auto'"
           :centeredSlides="true"
@@ -42,7 +46,7 @@ import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { TabEntry } from '@/@types/TabEntry'
 import { Semesters, Statistics } from '@/@types/Statistics'
 import { formatClubPack } from '@/@utilities/statuses'
-import { formatSemesterId } from '@/@utilities/movements'
+import { formatSemesterId, formatSemesterIdAsSemester } from '@/@utilities/movements'
 import TabsItems from '@/components/tabs/TabsItems.vue'
 import { Swiper, SwiperSlide } from 'swiper/vue/swiper-vue'
 import BriteValue from '@/components/BriteValue.vue'
@@ -187,7 +191,8 @@ export default defineComponent({
       data.value?.semesters.forEach(el => {
         toReturn.push({
           id: el.semesterId,
-          text: formatSemesterId(el.semesterId),
+          text: formatSemesterIdAsSemester(el.semesterId),
+          expired: el.expired,
           data: [{
             label: 'Brite utilizzabili',
             value: el.totalUsable
@@ -206,12 +211,12 @@ export default defineComponent({
             {
               label: 'Rimuovi',
               click: () => showBritesModal('remove', activeTab.value),
-              if: auth.hasPermissions(AclPermissionsEnum.BRITES_ALL_WRITE)
+              if: auth.hasPermissions(AclPermissionsEnum.BRITES_ALL_WRITE) && !el.expired
             },
             {
               label: 'Aggiungi',
               click: () => showBritesModal('add', activeTab.value),
-              if: auth.hasPermissions(AclPermissionsEnum.BRITES_ALL_WRITE)
+              if: auth.hasPermissions(AclPermissionsEnum.BRITES_ALL_WRITE) && !el.expired
             }
 
           ].filter(el => el.if ?? true)
