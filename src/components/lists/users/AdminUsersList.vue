@@ -12,6 +12,7 @@
         <AdminListItem v-for="user of data" :key="user._id"
                        :title="getTitle(user)"
                        :description="user.email"
+                       is-button
                        :open-link="{ name:'admin.users.profile', params: { id: user._id } }"
                        :open-link-label="$t('pages.users.btn_open')"
         >

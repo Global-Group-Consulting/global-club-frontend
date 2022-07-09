@@ -221,6 +221,7 @@ export default defineComponent({
     onIonViewDidLeave(async () => {
       user.value = null
       profileSections.value = []
+      userStatistics.value?.resetData()
     })
 
     return {

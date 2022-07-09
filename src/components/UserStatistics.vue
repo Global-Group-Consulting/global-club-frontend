@@ -250,6 +250,11 @@ export default defineComponent({
       emit('update:data', data.value)
     }
 
+    function resetData () {
+      data.value = null
+      emit('update:data', data.value)
+    }
+
     onMounted(async () => {
       await fetchData()
     })
@@ -267,7 +272,8 @@ export default defineComponent({
       activeTab,
       data,
       setControlledSwiper, onActiveIndexChange,
-      fetchData
+      fetchData,
+      resetData
     }
   }
 })
