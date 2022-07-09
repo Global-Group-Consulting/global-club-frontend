@@ -28,3 +28,22 @@ export function formatSemesterId (semesterId: string): string {
   
   return toReturn
 }
+
+export function formatSemesterIdAsSemester (semesterId: string): string {
+  let toReturn = "";
+  
+  if (!semesterId) {
+    return toReturn;
+  }
+  
+  const year = +semesterId.split("_")[0]
+  const smtr = +semesterId.split("_")[1]
+  
+  if (isNaN(year) || isNaN(smtr)) {
+    return toReturn
+  }
+  
+  toReturn = smtr + "° sem. " + year;
+  
+  return toReturn
+}
