@@ -21,6 +21,7 @@ export interface Semesters{
     usableNow: boolean;
     packs: Packs;
     semesterId: string;
+    expired: boolean;
 }
 export interface Packs {
     _none: None;

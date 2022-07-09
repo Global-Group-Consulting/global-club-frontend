@@ -5,5 +5,6 @@ export interface TabEntry {
   unreadCount?: number;
   if?: boolean;
   data?: any;
+  expired?: boolean;
   buttons?: any[];
 }
