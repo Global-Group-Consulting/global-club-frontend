@@ -1,6 +1,7 @@
 module.exports = {
   outputDir: "dist",
-  // devServer: {
+  devServer: {
+    disableHostCheck: true
   //   "public": "dev.globalclub.consulting",
   //   proxy: {
   //     "/api/": {
@@ -8,7 +9,7 @@ module.exports = {
   //       logLevel: "debug",
   //     }
   //   }
-  // },
+  },
   css: {
     loaderOptions: {
       css: {
