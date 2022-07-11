@@ -177,6 +177,10 @@ export default defineComponent({
             // details: calcResTotal()
           },
           ...(data.value?.expirations.reduce((acc, curr) => {
+            if(!curr.usable){
+              return acc
+            }
+
             acc.push({
               label: 'Scadenza: ' + formatLocaleDateLong(new Date(curr.date)),
               value: curr.usable,
