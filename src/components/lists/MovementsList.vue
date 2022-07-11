@@ -39,7 +39,8 @@ export default defineComponent({
     },
     semesterId: String,
     showSemester: Boolean,
-    onlyFast: Boolean
+    onlyFast: Boolean,
+    waitBeforeFetch: Boolean
   },
   setup (props, { emit }) {
     const http = inject<HttpPlugin>('http') as HttpPlugin
@@ -71,7 +72,9 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      fetchData(1, props.semesterId ? props.semesterId : undefined)
+      if (!props.waitBeforeFetch) {
+        fetchData(1, props.semesterId ? props.semesterId : undefined)
+      }
     })
 
     function onMovementRemoved () {
