@@ -1,5 +1,5 @@
 import { installPlugin, PluginTemplate } from '@/plugins/PluginTemplate';
-import { alertController, toastController } from '@ionic/vue';
+import { alertController, AlertInput, toastController } from '@ionic/vue'
 
 interface AlertAskOptions {
   header: string;
@@ -8,7 +8,7 @@ interface AlertAskOptions {
   buttonOkText?: string;
   buttonCancelText?: string;
   backdropDismiss?: boolean;
-  inputs?: any[];
+  inputs?: AlertInput[];
 }
 
 export class AlertAskResponse<T = any> {

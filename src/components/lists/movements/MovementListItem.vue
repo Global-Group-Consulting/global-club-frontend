@@ -22,7 +22,7 @@
         <small>{{ formatLocaleDate(movement.createdAt) }}</small>
       </div>
     </ion-label>
-    <ion-label slot="end" v-if="$store.getters['auth/isSuperAdmin'] && isDeletable">
+    <ion-label slot="end" v-if="$store.getters['auth/isSuperAdmin']">
       <ClubButton only-icon icon version="link" icon-name="menu-v" @click="setOpen(true, $event)"></ClubButton>
       <ion-popover
           :is-open="isOpenRef"
@@ -33,7 +33,10 @@
           @didDismiss="setOpen(false)"
       >
         <ion-list>
-          <ion-item button @click="onRemoveMovementClick">
+          <ion-item button @click="onChangeMovementPackClick">
+            <ion-label>Cambia Pack movimento</ion-label>
+          </ion-item>
+          <ion-item button @click="onRemoveMovementClick" v-if="isDeletable">
             <ion-label>Rimuovi movimento</ion-label>
           </ion-item>
         </ion-list>
@@ -54,6 +57,7 @@ import ClubButton from '@/components/ClubButton.vue'
 import { AlertsPlugin } from '@/plugins/Alerts'
 import { useI18n } from 'vue-i18n'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
+import { PackEnum } from '@/@enums/pack.enum'
 
 export default defineComponent({
   name: 'MovementListItem',
@@ -141,12 +145,48 @@ export default defineComponent({
       }
     }
 
+    async function onChangeMovementPackClick () {
+      isOpenRef.value = false
+
+      const res = await alerts.ask({
+        header: t('alerts.movements.changeMovementPack.title'),
+        message: t('alerts.movements.changeMovementPack.message', {
+          type: t('enums.MovementTypeEnum.' + props.movement.movementType),
+          amount: value.value,
+          color: color.value
+        }),
+        buttonOkText: t('alerts.movements.changeMovementPack.buttonOk'),
+        inputs: Object.values(PackEnum).reduce((acc, pack) => {
+          if (pack === PackEnum.NONE) {
+            return acc
+          }
+
+          acc.push({
+            name: 'clubPack',
+            type: 'radio',
+            label: t('enums.PackEnum.' + pack),
+            value: pack as string,
+            disabled: pack === props.movement.clubPack,
+            checked: pack === props.movement.clubPack
+          })
+
+          return acc
+        }, [] as any[])
+      })
+
+      if (res.resp && res.values !== props.movement.clubPack) {
+        await http.api.movements.changePack(props.movement._id, res.values)
+
+        emit('movement:packChanged')
+      }
+    }
+
     return {
       type, icon, color, value, movementColor,
       movementPack,
       formatMovementType,
       formatBrites, formatCurrency, formatLocaleDate,
-      isOpenRef, event, setOpen, onRemoveMovementClick,
+      isOpenRef, event, setOpen, onRemoveMovementClick, onChangeMovementPackClick,
       isDeletable,
       showDetailsLabel
     }

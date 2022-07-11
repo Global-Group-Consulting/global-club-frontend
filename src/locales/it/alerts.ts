@@ -46,6 +46,12 @@ export const alerts = {
       message: 'Siete sicuri di voler rimuovere il movimento di tipo <strong>{type}</strong> del valore di <strong style="color: {color}; white-space: nowrap">{amount}</strong>? L\'operazione sarà irreversibile e pertanto non sarà possibile ripristinarlo.',
       buttonOk: 'Si, rimuovi',
       buttonCancel: 'Annulla'
+    },
+    changeMovementPack: {
+      title: 'Cambiare pack movimento?',
+      message: 'Siete sicuri di voler cambiare il Pack del movimento di tipo <strong>{type}</strong> del valore di <strong style="color: {color}; white-space: nowrap">{amount}</strong>? Se si, scegliere il nuovo pack da assegnare al movimento.',
+      buttonOk: 'Si, cambia pack',
+      buttonCancel: 'Annulla'
     }
   }
 };

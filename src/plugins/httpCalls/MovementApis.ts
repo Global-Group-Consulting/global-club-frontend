@@ -61,4 +61,12 @@ export class MovementApis extends BasicApisClass {
     
     return result?.data
   }
+  
+  static async changePack (movementId: string, newPack: PackEnum): Promise<void> {
+    const result = await this.withLoader<void>('patch', this.getUrl('/' + movementId + '/changePack'), {
+      newPack
+    })
+    
+    return result?.data
+  }
 }
