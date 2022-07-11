@@ -22,6 +22,7 @@
                        show-semester
                        only-fast
                        ref="movementsList"
+                       wait-before-fetch
                        :semester-id="activeTab"
                        @data:fetched="onMovementsFetched"></MovementsList>
       </ion-grid>
