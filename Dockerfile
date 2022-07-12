@@ -1,6 +1,8 @@
 FROM node:14.18.0-alpine
 
 RUN apk add --no-cache python3 g++ make
+RUN npm install -g @ionic/cli
+
 
 WORKDIR /usr/src/app
 

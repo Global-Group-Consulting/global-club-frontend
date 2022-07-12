@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  frontend:
+    container_name: global-club-frontend-prod
+    build: .
+    volumes:
+      - ./:/usr/src/app
+      - nodemodules:/usr/src/app/node_modules
+    ports:
+      - "3336:3000"
+    environment:
+      - VUE_APP_BASE_URL=https://api.globalgroup.consulting
+      - VUE_APP_FILES_URL=https://files.globalgroup.consulting
+      - VUE_APP_CLIENT_KEY=f6e79e7c8241fcf3
+      - VUE_APP_COMMUNICATIONS_URL=https://news.globalgroup.consulting
+      - PORT=3000
+
+volumes:
+  nodemodules: { }
