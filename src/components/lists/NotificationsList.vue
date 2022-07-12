@@ -14,32 +14,38 @@
                    @pageChanged="onPageChanged"
                    @manualRefresh="onManualRefresh">
       <ion-list>
-        <!-- TODO:: impostare l'immagine in base al tipo di notifica. Se c'è un immagine, mostrare quella -->
-        <AdminListItem v-for="item of data" :key="item.id"
-                       :title="item.data.title"
-                       :description="item.data.content"
-                       :open-link="{}"
-                       :is-button="!!item.data.action?.link"
-                       @click="onItemClick(item)">
-          <template v-slot:description="{description}">
-            <div class="ion-text-wrap" v-html="description"></div>
-          </template>
+        <ion-item :button="item.data.action?.link" :detail="item.data.action?.link"
+                  @click="onItemClick(item)"
+                  v-for="item of data" :key="item.id">
+          <ion-thumbnail slot="start">
+            <Image file-id=""></Image>
+          </ion-thumbnail>
 
-          <template v-slot:extraLabels>
+          <ion-label>
+            <h2>
+              <span v-html="item.data.title"></span>
+            </h2>
+
+            <h4>
+              <slot name="description">
+                <span v-html="item.data.content"></span>
+              </slot>
+            </h4>
+
             <div class="ion-text-wrap text-small">
               <strong class="ion-text-wrap">{{ getType(item) }}</strong>
               <span> - </span>
               <span class="ion-text-wrap">{{ getCreatedAt(item.created_at) }}</span>
             </div>
-          </template>
+          </ion-label>
 
-          <template v-slot:buttons-main>
+          <slot name="buttons-main">
             <div class="d-flex flex-column ion-align-items-center">
               <ion-toggle :checked="item.read_at" @click.prevent.stop="updateStatus(item, $event)"></ion-toggle>
               <small>{{ getStatus(item) }}</small>
             </div>
-          </template>
-        </AdminListItem>
+          </slot>
+        </ion-item>
       </ion-list>
     </PaginatedList>
   </div>
@@ -49,22 +55,19 @@
 import { defineComponent, inject, onMounted, PropType, Ref, ref, watch } from 'vue'
 import { Notification } from '@/@types/Notifications'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
-import { OrderStatusEnum } from '@/@enums/order.status.enum'
-import AdminListItem from '@/components/lists/AdminListItem.vue'
 import { formatLocaleDate } from '@/@utilities/dates'
 import { formatOrderStatus, getOrderStatusColor } from '@/@utilities/statuses'
 import { useI18n } from 'vue-i18n'
 import PaginatedList from '@/components/lists/PaginatedList.vue'
 import { PaginatedResult } from '@/@types/Pagination'
 import ClubButton from '@/components/ClubButton.vue'
-import FormToggleV from '@/components/forms/FormToggleV.vue'
 import { AlertsPlugin } from '@/plugins/Alerts'
-import { NotificationTypeEnum } from '@/@enums/notification.type.enum'
 import { useRouter } from 'vue-router'
+import Image from '@/components/Image.vue'
 
 export default defineComponent({
   name: 'NotificationsList',
-  components: { ClubButton, AdminListItem, PaginatedList },
+  components: { Image, ClubButton, PaginatedList },
   props: {
     title: String,
     read: {
@@ -190,6 +193,7 @@ export default defineComponent({
     }
 
     async function onItemClick (notification: Notification) {
+      debugger
       if (!notification.data.action?.link) {
         return
       }

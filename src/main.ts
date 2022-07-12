@@ -41,7 +41,8 @@ import { alertsPlugin } from '@/plugins/Alerts'
 const app = createApp(App)
   .use(IonicVue, {
     mode: "md",//process.env.NODE_ENV === 'development' ? 'ios' : null,
-    swipeGesture: true
+    swipeGesture: true,
+    swipeBackEnabled: true,
   })
   .use(i18n)
   .use(store, storeKey)
