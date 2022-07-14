@@ -12,5 +12,6 @@ export const orderDetails = {
   "tab_products": "Prodotti (x{qta} = {total})",
   "tab_user": "Utente",
   "price": "Prezzo",
-  "qta": "Quantità"
+  "qta": "Quantità",
+  "repayment": "Rimborso"
 }

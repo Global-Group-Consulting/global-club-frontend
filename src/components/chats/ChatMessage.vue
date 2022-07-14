@@ -145,7 +145,23 @@ export default defineComponent({
 
         if (updates.diff) {
           Object.keys(updates.diff).forEach(key => {
-            toReturn.push(`<li>${t('pages.orderDetails.' + key)}: <strong>${updates.originalData[key]} -> ${updates.diff[key]}</strong></li>`)
+            let oldValue = updates.originalData[key]
+            let newValue = updates.diff[key]
+
+            if (typeof oldValue === 'boolean') {
+              oldValue = oldValue ? 'Si' : 'No'
+            }
+
+            if (typeof newValue === 'boolean') {
+              newValue = newValue ? 'Si' : 'No'
+            }
+
+            if (key === 'price') {
+              newValue = '<i class="gc-icon-brite-logo"></i> ' + newValue
+              oldValue = '<i class="gc-icon-brite-logo"></i> ' + oldValue
+            }
+
+            toReturn.push(`<li>${t('pages.orderDetails.' + key)}: ${oldValue} -> <strong>${newValue}</strong></li>`)
           })
         }
 
