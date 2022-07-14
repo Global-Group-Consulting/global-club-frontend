@@ -15,7 +15,7 @@
           <template v-slot:buttons-start>
             <ClubButton only-icon icon icon-name="edit-square" version="link"
                         v-if="!prod.product.packChange && !orderClosed"
-                        color="secondary" @click="editProduct(prod)"></ClubButton>
+                        color="secondary" @click.stop.prevent="editProduct(prod)"></ClubButton>
           </template>
         </ProductListItem>
       </ion-list>
