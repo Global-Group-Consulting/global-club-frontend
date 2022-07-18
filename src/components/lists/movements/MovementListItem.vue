@@ -34,7 +34,7 @@
       >
         <ion-list>
           <ion-item button @click="onChangeMovementPackClick">
-            <ion-label>Cambia Pack movimento</ion-label>
+            <ion-label>Cambia Pack Movimento</ion-label>
           </ion-item>
           <ion-item button @click="onRemoveMovementClick" v-if="isDeletable">
             <ion-label>Rimuovi movimento</ion-label>
@@ -110,7 +110,7 @@ export default defineComponent({
     })
 
     const isDeletable = computed(() => {
-      return [MovementTypeEnum.DEPOSIT_ADDED, MovementTypeEnum.DEPOSIT_REMOVED].includes(props.movement.movementType)
+      return [MovementTypeEnum.DEPOSIT_ADDED, MovementTypeEnum.DEPOSIT_REMOVED, MovementTypeEnum.DEPOSIT_USED].includes(props.movement.movementType)
     })
 
     const showDetailsLabel = computed(() => {
