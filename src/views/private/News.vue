@@ -10,7 +10,7 @@
             <a :href="news.coverImg" @click="previewFile(news.coverImg, $event)"
                target="_blank">
               <img :src="news.coverImg"
-                   style="width: 100%; max-height: 350px; object-fit: cover; object-position: center"
+                   style="width: 100%; object-fit: contain; object-position: center"
               />
             </a>
 
