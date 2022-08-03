@@ -12,7 +12,9 @@
 
       <AccordionListCollapseContainer :expanded="section.el.open">
         <!-- Creates dynamic slots -->
-        <slot :name="'content_' + section.el.id" :item="section.el" v-if="loadedTabs[section._key]">
+        <slot :name="'content_' + section.el.id"
+              :item="section.el"
+              v-if="loadedTabs[section._key]">
           Content of slot <strong>"content_{{ section.el.id }}"</strong>
         </slot>
       </AccordionListCollapseContainer>
@@ -27,7 +29,7 @@ import Icon from '@/components/Icon.vue'
 import AccordionListCollapseContainer from '@/components/accordions/AccordionListCollapseContainer.vue'
 
 export interface AccordionSection {
-  id: string;
+  id: string | number;
   text: string;
   open: boolean;
   data?: any;
@@ -62,14 +64,15 @@ export default defineComponent({
       }
     }
 
-    watch(props.sections, () => {
+    watch(() => props.sections, () => {
       sectionsList.value.forEach((section) => {
         if (section.el.open) {
           loadedTabs.value[section._key] = true
         }
       })
     }, {
-      immediate: true
+      immediate: true,
+      deep: true
     })
 
     return {

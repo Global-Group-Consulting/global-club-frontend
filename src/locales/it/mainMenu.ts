@@ -26,6 +26,7 @@ export const mainMenu = {
   userOrdersMobile: 'Ordini',
   userPortfolioMobile: "Portfolio",
   userProfileMobile: "Il mio Profilo",
+  faqs: "FAQ - Domande Frequenti",
   
   external: {
     menu: "Menu Club",

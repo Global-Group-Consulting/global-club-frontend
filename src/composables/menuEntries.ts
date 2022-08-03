@@ -160,6 +160,11 @@ const mobileMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
           })
         },
         {
+          route: 'faqs.index',
+          label: 'faqs',
+          icon: 'frequently-asked-questions'
+        },
+        {
           route: '',
           label: '',
           divider: true
@@ -263,6 +268,11 @@ const mobileMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
           })
         },
         {
+          route: 'faqs.index',
+          label: 'faqs',
+          icon: 'frequently-asked-questions'
+        },
+        {
           route: '',
           label: '',
           divider: true
@@ -342,6 +352,11 @@ const desktopMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
         const store = useStore(storeKey)
         return store.getters['notifications/unread'] > 0 ? store.getters['notifications/unread'] : null
       })
+    },
+    {
+      route: 'faqs.index',
+      label: 'faqs',
+      icon: 'frequently-asked-questions'
     },
     {
       route: '',
@@ -425,6 +440,11 @@ const desktopMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
         const store = useStore(storeKey)
         return store.getters['notifications/unread'] > 0 ? store.getters['notifications/unread'] : null
       })
+    },
+    {
+      route: 'faqs.index',
+      label: 'faqs',
+      icon: 'frequently-asked-questions'
     },
     {
       route: '',

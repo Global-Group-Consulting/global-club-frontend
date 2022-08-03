@@ -15,6 +15,7 @@ import { FileApis } from '@/plugins/httpCalls/FileApis'
 import { NewsApis } from '@/plugins/httpCalls/NewsApis'
 import { LocationApis } from '@/plugins/httpCalls/LocationApis'
 import { NotificationsApis } from '@/plugins/httpCalls/NotificationsApis'
+import { FaqsApis } from '@/plugins/httpCalls/FaqsApis'
 
 type RequestsQueue = {
   resolve: (value?: unknown) => void;
@@ -35,6 +36,7 @@ interface ApiModules {
   news: typeof NewsApis;
   locations: typeof LocationApis;
   notifications: typeof NotificationsApis;
+  faqs: typeof FaqsApis;
 }
 
 class HttpQueue {
@@ -140,7 +142,8 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
       files: FileApis,
       news: NewsApis,
       locations: LocationApis,
-      notifications: NotificationsApis
+      notifications: NotificationsApis,
+      faqs: FaqsApis,
     };
     this.queue = new HttpQueue();
     this.loading = new LoadingHandler(this.plugins["$t"]);

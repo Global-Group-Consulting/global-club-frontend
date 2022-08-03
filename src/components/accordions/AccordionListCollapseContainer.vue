@@ -30,7 +30,9 @@ export default defineComponent({
       }
     }
 
-    watch(() => props.expanded, setContainerMinHeight)
+    watch(() => props.expanded, setContainerMinHeight, {
+      immediate: true
+    })
 
     onMounted(() => {
       const resizeObserver = new ResizeObserver(entries => {

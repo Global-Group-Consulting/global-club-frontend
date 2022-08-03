@@ -121,15 +121,15 @@ export default [
       isAdmin: true,
       title: "Notifiche"
     },
+  },{
+    path: "/faqs",
+    component: () => import("@/views/shared/Faq.vue"),
+    name: "faqs.index",
+    meta: {
+      isPrivate: true,
+      isAdmin: true,
+      title: "Domande frequenti"
+    },
   },
-  /* {
-     path: "/components/buttons",
-     component: () => import("@/views/private/components/Buttons.vue"),
-     name: "private.components/buttons",
-     meta: {
-       isPrivate: true,
-       isAdmin: true,
-     },
-   },*/
   ...products
 ] as RouteRecordRaw[]
