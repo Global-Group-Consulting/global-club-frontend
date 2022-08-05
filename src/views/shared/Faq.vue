@@ -11,11 +11,13 @@
 
         ></ion-searchbar>
 
-        <AccordionList :sections="accordionSections">
+        <AccordionList :sections="accordionSections" v-if="accordionSections.length">
           <template v-for="entry in accordionSections" :key="entry.id" #[getSlotName(entry)]>
             <div v-html="entry.data.answer"></div>
           </template>
         </AccordionList>
+        <NoData v-else
+                :text="loading ? 'Sto recuperando le informazioni desiderate...' : 'Al momento non ci sono FAQ disponibili. Visita presto questa sezione per rimanere aggiornato.'"></NoData>
       </ion-grid>
     </IonContent>
   </IonPage>
@@ -28,14 +30,18 @@ import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { onIonViewWillEnter } from '@ionic/vue'
 import AccordionList, { AccordionSection } from '@/components/AccordionList.vue'
 import { Faq } from '@/@types/Faqs'
+import NoData from '@/components/NoData.vue'
+import { AlertsPlugin } from '@/plugins/Alerts'
 
 export default defineComponent({
   name: 'Faq',
-  components: { AccordionList, TopToolbar },
+  components: { NoData, AccordionList, TopToolbar },
   setup () {
     const http = inject('http') as HttpPlugin
+    const alerts = inject('alerts') as AlertsPlugin
     const faqs = ref<Faq[]>([])
     const searchValue = ref('')
+    const loading = ref(true)
 
     /**
      * Must be a ref because i must be able to change the "open" prop.
@@ -87,19 +93,28 @@ export default defineComponent({
           open: !!searchValue.value,
           data: {
             ...faq,
-            answer: highlightText(faq.answer),
+            answer: highlightText(faq.answer)
           }
         } as AccordionSection
       })
     })
 
     onIonViewWillEnter(async () => {
-      faqs.value = await http.api.faqs.read()
+      loading.value = true
+
+      try {
+        faqs.value = await http.api.faqs.read()
+      } catch (e) {
+        console.error(e)
+      } finally {
+        loading.value = false
+      }
     })
 
     return {
       accordionSections,
       getSlotName,
+      loading,
       searchValue
     }
   }
