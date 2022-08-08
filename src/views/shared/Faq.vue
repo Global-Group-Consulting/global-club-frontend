@@ -75,8 +75,13 @@ export default defineComponent({
     }
 
     function highlightText (text: string) {
-      const words = searchValue.value.toLowerCase().trim().split(' ')
+      const searchText = searchValue.value.toLowerCase().trim()
+      const words = searchText.split(' ')
       let finalText = text
+
+      if (!searchText.length) {
+        return text
+      }
 
       words.forEach(word => {
         finalText = finalText.replace(new RegExp(word, 'gi'), `<span class="highlight">${word}</span>`)
@@ -123,6 +128,10 @@ export default defineComponent({
 
 <style scoped lang="scss">
 #faq-search-bar {
-  --border-radius: 15px
+  --border-radius: 15px;
+}
+
+.accordion-list:deep(.accordion-header-text) {
+  white-space: normal;
 }
 </style>
