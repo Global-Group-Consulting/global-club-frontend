@@ -1,6 +1,7 @@
-import { AxiosInstance, AxiosResponse } from 'axios';
-import { LoadingHandler } from '@/plugins/HttpPlugin';
-import { AlertsPlugin } from '@/plugins/Alerts';
+import { AxiosInstance, AxiosResponse } from 'axios'
+import { LoadingHandler } from '@/plugins/HttpPlugin'
+import { AlertsPlugin } from '@/plugins/Alerts'
+import { bool } from 'yup'
 
 export class BasicApisClass {
    static baseUrl = 'api/ext/';
@@ -51,17 +52,17 @@ export class BasicApisClass {
       } else if (error) {
          await this.alerts.error(error);
       
-         throw error
-      }
-   }
-   
-   static prepareFilterParams (filters: Record<string, string|number>) {
-      const toReturn = {}
-      
-      Object.entries(filters).forEach(entry => {
-         toReturn[`filter[${entry[0]}]`] = entry[1]
-      })
-      
-      return toReturn
-   }
+      throw error
+    }
+  }
+  
+  static prepareFilterParams (filters: Record<string, string | number>) {
+    const toReturn = {}
+    
+    Object.entries(filters).forEach(entry => {
+      toReturn[`filter[${entry[0]}]`] = entry[1]
+    })
+    
+    return toReturn
+  }
 }
