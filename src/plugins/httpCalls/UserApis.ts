@@ -1,64 +1,72 @@
-import {BasicApisClass} from '@/plugins/httpCalls/basicApisClass';
-import {ReadUserGroupsDto, UpdateUserAnagraphicDto, UpdateUserContractDto, User, UserBasic} from '@/@types/User';
-import {UserRoleEnum} from '@/@enums/user.role.enum';
-import {PaginatedResult} from '@/@types/Pagination';
+import { BasicApisClass } from '@/plugins/httpCalls/basicApisClass'
+import { ReadUserGroupsDto, UpdateUserAnagraphicDto, UpdateUserContractDto, User, UserBasic } from '@/@types/User'
+import { UserRoleEnum } from '@/@enums/user.role.enum'
+import { PaginatedResult } from '@/@types/Pagination'
 
 export type UserGroup = { id: UserRoleEnum; data: User[] }
 
 export class UserApis extends BasicApisClass {
-  static baseUrl = super.baseUrl + 'club/users';
+  static baseUrl = super.baseUrl + 'club/users'
   
-  static async readAll(group?: UserRoleEnum, page = 1, queryFilters?: any): Promise<PaginatedResult<UserBasic[]> | undefined> {
+  static async readAll (group?: UserRoleEnum, page = 1, queryFilters?: any): Promise<PaginatedResult<UserBasic[]> | undefined> {
     const filters = {}
     
     if (group) {
-      filters["filter[role]"] = group.toString()
-    }
-  
-    if (queryFilters) {
-      Object.assign(filters, queryFilters);
+      filters['filter[role]'] = group.toString()
     }
     
-    const result = await this.withLoader<PaginatedResult<UserBasic[]>>("get", this.getUrl(), {
+    if (queryFilters) {
+      Object.assign(filters, queryFilters)
+    }
+    
+    const result = await this.withLoader<PaginatedResult<UserBasic[]>>('get', this.getUrl(), {
       params: {
-        "sortBy[firstName]": 1,
-        "sortBy[lastName]": 1,
+        'sortBy[firstName]': 1,
+        'sortBy[lastName]': 1,
         ...filters,
         page
       }
-    });
+    })
     
-    return result?.data;
+    return result?.data
   }
   
   static async readGroups (): Promise<ReadUserGroupsDto[] | undefined> {
-    const result = await this.withLoader<ReadUserGroupsDto[]>("get", this.getUrl("/groups"));
+    const result = await this.withLoader<ReadUserGroupsDto[]>('get', this.getUrl('/groups'))
     
-    return result?.data;
+    return result?.data
   }
   
   static async readProfile (id: string, full?: boolean): Promise<UserBasic | undefined> {
     const queryParams = {}
-  
+    
     if (full !== undefined) {
-      queryParams["full"] = full
+      queryParams['full'] = full
     }
-  
-    const result = await this.withLoader<UserBasic>("get", this.getUrl('/' + id, queryParams))
-  
+    
+    const result = await this.withLoader<UserBasic>('get', this.getUrl('/' + id, queryParams))
+    
     return result?.data
   }
   
-  static async update<T>(data: UpdateUserContractDto | UpdateUserAnagraphicDto, id): Promise<T | undefined> {
-    const result = await this.withLoader<T>("patch", this.getUrl('/' + id), data);
+  static async update<T> (data: UpdateUserContractDto | UpdateUserAnagraphicDto, id): Promise<T | undefined> {
+    const result = await this.withLoader<T>('patch', this.getUrl('/' + id), data)
     
-    return result?.data;
+    return result?.data
   }
   
-  static async updatePack(id: string): Promise<User | undefined> {
-    const resp = await this.withLoader<User>("patch", this.getUrl('/' + id + "/pack"));
+  static async updatePack (id: string): Promise<User | undefined> {
+    const resp = await this.withLoader<User>('patch', this.getUrl('/' + id + '/pack'))
     
-    return resp?.data;
+    return resp?.data
+  }
+  
+  static async checkClubCardNum (cardNum: string): Promise<Pick<User, '_id' | 'firstName' | 'lastName' | 'email' | 'clubCardNumber'> | undefined> {
+    const resp = await this.withLoader<Pick<User, '_id' | 'firstName' | 'lastName' | 'email' | 'clubCardNumber'>>('get',false, this.getUrl('/checkCardNum', {
+      cardNum
+    }))
+  
+    return resp?.data
   }
   
   /*
@@ -91,7 +99,7 @@ export class UserApis extends BasicApisClass {
     return result?.data;
   }*/
   
-  static getUsersOptionsUrl(){
-    return this.getUrl("/filterOptionsList")
+  static getUsersOptionsUrl () {
+    return this.getUrl('/filterOptionsList')
   }
 }
