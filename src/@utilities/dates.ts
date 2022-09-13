@@ -9,12 +9,12 @@ export function formatLocaleDate (date: Date, noTime = false) {
   }).format(new Date(date))
 }
 
-export function formatLocaleDateLong (date: Date) {
+export function formatLocaleDateLong (date: Date | string, options?: Intl.DateTimeFormatOptions) {
   if (!date) {
     return ''
   }
   
-  return new Intl.DateTimeFormat('it', {
+  return new Intl.DateTimeFormat('it', options ?? {
     dateStyle: 'long'
     // timeStyle: "long",
   }).format(new Date(date))
