@@ -1,9 +1,9 @@
 export const alerts = {
   generic: {
-    loading: "Operazione in corso...",
+    loading: 'Operazione in corso...',
     error: {
-      title:  "Oops!",
-      message: "Sembra ci sia stato un errore, quindi l'operazione richiesta non è andata a buon fine.<br><br>{errorMessage}"
+      title: 'Oops!',
+      message: 'Sembra ci sia stato un errore, quindi l\'operazione richiesta non è andata a buon fine.<br><br>{errorMessage}'
     }
   },
   productCategories: {
@@ -36,8 +36,8 @@ export const alerts = {
   },
   filesUploader: {
     maxFiles: {
-      title: "Limite file raggiunto",
-      message: "Non è possibile aggiungere ulteriori file in quanto il limite è di {maxFiles}. Rimuovere uno dei file esistenti e riprovare"
+      title: 'Limite file raggiunto',
+      message: 'Non è possibile aggiungere ulteriori file in quanto il limite è di {maxFiles}. Rimuovere uno dei file esistenti e riprovare'
     }
   },
   movements: {
@@ -53,5 +53,17 @@ export const alerts = {
       buttonOk: 'Si, cambia pack',
       buttonCancel: 'Annulla'
     }
+  },
+  wpMovements: {
+    withdrawAll: {
+      title: 'Riscuotere tutto?',
+      message: `La somma degli importi riscuotibili per il mese corrente è di {amount}.<br>
+                  Se si desidera trasferire tale importo a un altro utente, compilare il campo "Codice utente destinatario", altrimenti lasciarlo vuoto.`
+    },
+    withdraw: {
+      title: 'Riscuotere l\'importo disponibile da tutti i semestri?',
+      message: `Indicare l'importo che si desidera riscuotere o trasferire a un altro utente. L'importo massimo è di {amount}.<br>
+                Se si desidera trasferire tale importo a un altro utente, compilare anche il campo "Codice utente destinatario", altrimenti lasciarlo vuoto.`
+    }
   }
-};
+}

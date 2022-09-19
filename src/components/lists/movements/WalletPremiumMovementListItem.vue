@@ -30,7 +30,7 @@
         Riscuoti
       </ClubButton>
 
-      <ClubButton :only-icon="$store.getters['smAndDown']" v-if="hasWithdrawMovements"
+      <ClubButton :only-icon="$store.getters['smAndDown']" v-if="movement.hasWithdrawMovements"
                   :icon="$store.getters['smAndDown']" icon-name="info"
                   version="link"
                   :size="$store.getters['smAndDown'] ? 'default': 'small'"
@@ -67,6 +67,7 @@ export default defineComponent({
     },
     showSemester: Boolean
   },
+  emits: ['withdrawal'],
   setup (props, { emit }) {
     const http = inject<HttpPlugin>('http') as HttpPlugin
     const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin
@@ -75,6 +76,8 @@ export default defineComponent({
     const isPastAndWithdrawn = computed(() => props.movement.withdrawableUntil
         && new Date(props.movement.withdrawableUntil) < new Date()
         && props.movement.withdrawalDate)
+
+    const isWithdrawn = computed(() => !!props.movement.withdrawalDate)
 
     const isPastAndLost = computed(() => props.movement.withdrawableUntil
         && new Date(props.movement.withdrawableUntil) < new Date()
@@ -85,15 +88,13 @@ export default defineComponent({
         && new Date(props.movement.withdrawableFrom) < new Date()
         && !props.movement.withdrawalDate)
 
-    const hasWithdrawMovements = computed(() => props.movement.withdrawalMovements && props.movement.withdrawalMovements.length > 0)
-
     const isFuture = computed(() => props.movement.withdrawableFrom
         && new Date(props.movement.withdrawableFrom) > new Date())
 
     const textColor = computed(() => {
       let color = 'grey'
 
-      if (isPastAndWithdrawn.value) {
+      if (isPastAndWithdrawn.value || isWithdrawn.value) {
         color = 'var(--ion-color-primary-dark)'
       } else if (isPastAndLost.value) {
         color = 'grey'
@@ -109,7 +110,7 @@ export default defineComponent({
     const icon = computed(() => {
       let icon = 'timeline-start'
 
-      if (isPastAndWithdrawn.value) {
+      if (isPastAndWithdrawn.value  || isWithdrawn.value) {
         icon = 'timeline-past'
       } else if (isPastAndLost.value) {
         icon = 'timeline-lost'
@@ -210,14 +211,15 @@ export default defineComponent({
 
       if (result.resp) {
         const value = result.values.amount
-        debugger
 
         if (value > props.movement.incomeAmount || value < 1) {
           await alerts.toastError('Importo non valido')
           return
         }
 
-        await http.api.walletPremium.withdraw(props.movement._id, value)
+        const updatedMovement = await http.api.walletPremium.withdraw(props.movement._id, value)
+
+        emit('withdrawal', updatedMovement)
       }
     }
 
@@ -225,12 +227,12 @@ export default defineComponent({
       const modal = await modalController.create({
         component: WPWithdrawMovementsModal,
         componentProps: {
-          title: 'New Title',
-          content: 'prova'
+          title: 'Dettaglio movimenti di riscossione',
+          movementId: props.movement._id
         },
         mode: 'ios',
         swipeToClose: true,
-        // open the modal as a card only on iOs
+        // open the modal as a card only on iOS
         presentingElement: document.querySelector('.app-tabs') as HTMLElement
       })
       return modal.present()
@@ -240,7 +242,6 @@ export default defineComponent({
       textColor,
       icon,
       isWithdrawable,
-      hasWithdrawMovements,
       formatBrites,
       formatLocaleDateLong,
       currDate,

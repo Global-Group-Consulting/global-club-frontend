@@ -62,6 +62,7 @@ import BritesModal from '@/components/modals/BritesModal.vue'
 import { useStore } from 'vuex'
 import { storeKey } from '@/store'
 import { WalletPremiumStatisticEntry } from '@/@types/Wallet Premium/WalletPremiumStatisticEntry'
+import { useWithdrawal } from '@/composables/walletPremium/withdrawal'
 
 export default defineComponent({
   name: 'WalletPremiumStatistics',
@@ -76,25 +77,28 @@ export default defineComponent({
     clubPack: String as PropType<PackEnum>,
     onlyFast: Boolean
   },
-  emits: ['update:data', 'update:activeTab'],
+  emits: ['update:data', 'update:activeTab', 'withdraw:all', 'withdraw:semester'],
   setup (props, { emit }) {
     const store = useStore(storeKey)
     const http = inject('http') as HttpPlugin
     const auth = inject('auth') as AuthPlugin
     const data: Ref<WalletPremiumStatisticEntry[] | null> = ref(null)
     const activeTab = ref('resoconto')
+    const withdrawal = useWithdrawal()
     let swiperInstance: SwiperInstance
 
     const userIsAdmin = computed(() => store.getters['auth/isAdmin'])
 
     const tabs: ComputedRef<TabEntry[]> = computed(() => {
+      const withdrawable = data.value?.reduce((acc, curr) => acc + curr.withdrawable, 0) || 0
+
       const toReturn: TabEntry[] = [{
         id: 'resoconto',
         text: 'Resoconto',
         data: [
           {
             label: 'Totale da riscuotere',
-            value: data.value?.reduce((acc, curr) => acc + curr.withdrawable, 0) || 0,
+            value: withdrawable,
             details: 'questo mese'
           },
           {
@@ -111,7 +115,10 @@ export default defineComponent({
         buttons: [
           {
             label: 'Riscuoti tutto',
-            // click: () => showBritesModal('remove', activeTab.value),
+            click: () => withdrawal.onWithdrawAllClick(withdrawable, data.value?.reduce((acc, curr) => {
+              acc.push(curr.semesterDetails.id)
+              return acc
+            }, [] as string[]) || []),
             if: (data.value?.reduce((acc, curr) => acc + curr.withdrawable, 0) || 0) > 0
           }
         ].filter(el => el.if ?? true)
@@ -138,7 +145,7 @@ export default defineComponent({
           buttons: [
             {
               label: 'Riscuoti',
-              // click: () => showBritesModal('remove', activeTab.value),
+              click: () => withdrawal.onWithdrawClick(el.semesterDetails.id, el.withdrawable),
               if: el.withdrawable > 0
             }
           ].filter(el => el.if ?? true)

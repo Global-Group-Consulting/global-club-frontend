@@ -14,7 +14,7 @@
           <ion-label>Movimenti {{ getMovementYear(movement) }}</ion-label>
         </ion-list-header>
 
-        <WalletPremiumMovementListItem :movement="movement"></WalletPremiumMovementListItem>
+        <WalletPremiumMovementListItem :movement="movement" @withdrawal="onWithdrawal"></WalletPremiumMovementListItem>
       </template>
     </ion-list>
 
@@ -91,6 +91,18 @@ export default defineComponent({
       }
     }
 
+    function onWithdrawal (movement: WalletPremiumMovement) {
+      if (!semesterDetails.value?.movements) {
+        return
+      }
+
+      const index = semesterDetails.value.movements.findIndex(m => m._id === movement._id)
+
+      if (index >= 0) {
+        semesterDetails.value.movements[index] = movement
+      }
+    }
+
     // each time the semesterId changes, fetch data
     watch(() => props.semesterId, semesterId => {
       // Avoid triggering fetch if semesterId is not set or is "resoconto"
@@ -105,7 +117,8 @@ export default defineComponent({
       movements,
       formatSemesterIdAsSemester,
       getMovementYear,
-      showYearHeader
+      showYearHeader,
+      onWithdrawal
     }
   }
 })
