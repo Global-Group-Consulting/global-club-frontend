@@ -12,6 +12,7 @@ export interface WalletPremiumMovement {
   referenceUsableUntil: string;
   updated_at: string;
   created_at: string;
+  hasWithdrawMovements: boolean;
   
   // only for "monthly_income" movements
   incomeAmount?: number;

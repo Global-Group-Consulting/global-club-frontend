@@ -8,6 +8,6 @@ export interface WalletPremiumStatisticEntry {
   withdrawable: number;
   noMoreWithdrawable: number;
   remainingToWithdraw: number;
-  movements: null | WalletPremiumMovement[];
+  movements: null | Omit<WalletPremiumMovement, 'withdrawalMovements'>[];
   semesterDetails: SemesterDetail;
 }
