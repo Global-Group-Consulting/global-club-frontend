@@ -6,6 +6,8 @@ import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { AlertInput } from '@ionic/vue'
 import { useI18n } from 'vue-i18n'
 import { WalletPremiumMovement } from '@/@types/Wallet Premium/WalletPremiumMovement'
+import { useStore } from 'vuex'
+import { storeKey } from '@/store'
 
 // Create the eventTarget as a Singleton
 const events = new EventTarget()
@@ -13,6 +15,7 @@ const events = new EventTarget()
 export function useWithdrawal () {
   const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin
   const http = inject<HttpPlugin>('http') as HttpPlugin
+  const store = useStore(storeKey)
   const { t } = useI18n()
   
   /**
@@ -59,6 +62,11 @@ export function useWithdrawal () {
     
     // only if the user provided a card number
     if (cardNum.length) {
+      if (cardNum === store.getters['auth/user'].clubCardNumber) {
+        alerts.toastError('E\' necessario indicare un codice utente diverso dal proprio').then()
+        return false
+      }
+      
       // Must check if the cardNum is valid
       http.api.users.checkClubCardNum(cardNum)
         .then(async user => {
@@ -137,6 +145,12 @@ export function useWithdrawal () {
    * @return Promise<WalletPremiumMovement[] | void>
    */
   async function onWithdrawAllClick (amount: number, semesters: string[]): Promise<WalletPremiumMovement[] | void> {
+    if (!store.getters['auth/hasPackPremium']) {
+      await alerts.updateToPremium()
+      
+      return
+    }
+    
     const answer = await askForWithdrawAll(amount)
     
     if (!semesters.length) {
@@ -144,7 +158,7 @@ export function useWithdrawal () {
     }
     
     if (answer.resp) {
-      const updatedMovements = await http.api.walletPremium.withdrawBySemester(amount, semesters)
+      const updatedMovements = await http.api.walletPremium.withdrawBySemester(amount, semesters, answer.values.userCardNum)
       
       // dispatch the event
       events.dispatchEvent(new CustomEvent('withdrawn:all', {
@@ -164,12 +178,18 @@ export function useWithdrawal () {
    * @return Promise<WalletPremiumMovement[] | void>
    */
   async function onWithdrawClick (semester: string, amount: number): Promise<WalletPremiumMovement[] | void> {
+    if (!store.getters['auth/hasPackPremium']) {
+      await alerts.updateToPremium()
+      
+      return
+    }
+    
     const answer = await askForWithdraw(amount)
     
     if (answer.resp) {
       const value = answer.values.amount
       
-      const updatedMovements = await http.api.walletPremium.withdrawBySemester(value, [semester])
+      const updatedMovements = await http.api.walletPremium.withdrawBySemester(value, [semester], answer.values.userCardNum)
       
       // dispatch the event
       events.dispatchEvent(new CustomEvent('withdrawn:semester', {
