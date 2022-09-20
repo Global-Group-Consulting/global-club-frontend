@@ -115,6 +115,12 @@ export default defineComponent({
             label: t('mainMenu.userPortfolioFast'),
             route: 'private.walletFast',
             if: !userIsAdmin.value
+          },
+          {
+            icon: 'wallet',
+            label: t('mainMenu.userPortfolioPremium'),
+            route: 'private.walletPremium',
+            if: !userIsAdmin.value
           }
         ]
       },
