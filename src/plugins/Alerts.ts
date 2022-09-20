@@ -1,5 +1,6 @@
 import { installPlugin, PluginTemplate } from '@/plugins/PluginTemplate'
 import { alertController, AlertInput, toastController } from '@ionic/vue'
+import { useUpdateToPremium } from '@/composables/updateToPremium'
 
 interface AlertAskOptions {
   header: string;
@@ -144,6 +145,21 @@ export class AlertsPlugin extends PluginTemplate<void> {
     return role === 'ok'
   }
   
+  async updateToPremium (_message?: string, _title?: string) {
+    const message = _message || 'Gentile utente, per poter utilizzare questa funzionalità è necessario aggiornare il proprio account a Premium!<br><br>Seleziona "Aggiorna ora" per procedere con l\'aggiornamento.'
+    const title = _title || 'Aggiorna a Premium!'
+    
+    const resp = await this.ask({
+      header: title,
+      message,
+      buttonOkText: 'Aggiorna ora'
+    })
+    
+    if (resp.resp) {
+      this.plugins.$router.push('/dashboard?updateToPremium=true')
+    }
+  }
+  
   async toast (message: string, color?: string) {
     const toast = await toastController
       .create({
@@ -169,7 +185,6 @@ export class AlertsPlugin extends PluginTemplate<void> {
   async toastError (message: string) {
     return this.toast(message, 'danger')
   }
-  
   
 }
 

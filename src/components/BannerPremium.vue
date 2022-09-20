@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { computed, ComputedRef, defineComponent, inject, ref } from 'vue'
+import { computed, ComputedRef, defineComponent, inject, onMounted, onUpdated, ref } from 'vue'
 import { useStore } from 'vuex'
 import { storeKey } from '@/store'
 import { User } from '@/@types/User'
@@ -29,17 +29,18 @@ import { AlertsPlugin } from '@/plugins/Alerts'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
 import PageLink from '@/components/PageLink.vue'
 import ClubButton from '@/components/ClubButton.vue'
+import { useUpdateToPremium } from '@/composables/updateToPremium'
+import { onIonViewDidEnter, onIonViewWillEnter } from '@ionic/vue'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'BannerPremium',
   components: { ClubButton, PageLink },
   setup () {
     const store = useStore(storeKey)
-    const alerts = inject('alerts') as AlertsPlugin
-    const http = inject('http') as HttpPlugin
-    const authUser: ComputedRef<User> = computed(
-        () => store.getters['auth/user']
-    )
+    const route = useRoute()
+    const updatePack = useUpdateToPremium()
+    const authUser: ComputedRef<User> = computed(() => store.getters['auth/user'])
     const mustShow = computed(() => authUser.value.clubPackChangeOrder
         || (!userIsPremium.value && !authUser.value.clubPackChangeOrder))
 
@@ -47,28 +48,28 @@ export default defineComponent({
       return authUser.value.clubPack === PackEnum.PREMIUM
     })
 
-    async function changePack () {
-      const answer = await alerts.ask({
-        header: 'Passa a premium!',
-        message: 'Gentile utente, state per richiedere il passaggio al Pack Premium. Se desiderate continuare, vi preghiamo di cliccare su \'OK\'.'
-      })
+    /* async function changePack () {
+       const answer = await alerts.ask({
+         header: 'Passa a premium!',
+         message: 'Gentile utente, state per richiedere il passaggio al Pack Premium. Se desiderate continuare, vi preghiamo di cliccare su \'OK\'.'
+       })
 
-      if (!answer.resp) {
-        return
-      }
+       if (!answer.resp) {
+         return
+       }
 
-      const result = await http.api.users.updatePack(store.getters['auth/user']._id)
+       const result = await http.api.users.updatePack(store.getters['auth/user']._id)
 
-      if (result) {
-        await store.dispatch('auth/updateUser', {
-          clubPackChangeOrder: result.clubPackChangeOrder
-        })
-      }
-    }
+       if (result) {
+         await store.dispatch('auth/updateUser', {
+           clubPackChangeOrder: result.clubPackChangeOrder
+         })
+       }
+     }*/
 
     return {
       authUser, userIsPremium,
-      changePack,
+      changePack: updatePack.changePack,
       mustShow
     }
   }

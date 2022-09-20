@@ -11,7 +11,9 @@
           <ion-col size="12" sizeMd="6">
             <ion-text color="medium" class="ion-text-left">
               <h6 class="my-0">Bentornat{{ authUser.gender === 'f' ? 'a' : 'o' }},</h6>
-              <h4 class="my-0">{{ $store.getters['auth/fullName'] }}</h4>
+              <h4 class="my-0">{{ $store.getters['auth/fullName'] }}
+                <small v-if="authUser.clubCardNumber">({{ authUser.clubCardNumber }})</small>
+              </h4>
             </ion-text>
           </ion-col>
 
@@ -52,7 +54,7 @@ import SearchBar from '@/components/SearchBar.vue'
 import PrivateOrdersList from '@/components/lists/orders/PrivateOrdersList.vue'
 import LogoToolbar from '@/components/toolbars/LogoToolbar.vue'
 import UserStatistics from '@/components/UserStatistics.vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import Filters from '@/composables/filters'
 import { PackEnum } from '@/@enums/pack.enum'
 import ClubButton from '@/components/ClubButton.vue'
@@ -61,6 +63,8 @@ import { HttpPlugin } from '@/plugins/HttpPlugin'
 import PageLink from '@/components/PageLink.vue'
 import BannerPremium from '@/components/BannerPremium.vue'
 import { formatLocaleDate } from '@/@utilities/dates'
+import { onIonViewDidEnter, onIonViewWillEnter } from '@ionic/vue'
+import { useUpdateToPremium } from '@/composables/updateToPremium'
 
 export default defineComponent({
   name: 'Dashboard',
@@ -68,8 +72,8 @@ export default defineComponent({
   setup () {
     const store = useStore(storeKey)
     const router = useRouter()
-    const alerts = inject('alerts') as AlertsPlugin
-    const http = inject('http') as HttpPlugin
+    const route = useRoute()
+    const updatePack = useUpdateToPremium()
     const authUser: ComputedRef<User> = computed(
         () => store.getters['auth/user']
     )
@@ -103,24 +107,11 @@ export default defineComponent({
       router.push({ name: 'private.products', query: filtersComposable.prepareFilters(filters) })
     }
 
-    async function changePack () {
-      const answer = await alerts.ask({
-        header: 'Passa a premium!',
-        message: 'Gentile utente, state per richiedere il passaggio al Pack Premium. Se desiderate continuare, vi preghiamo di cliccare su \'OK\'.'
-      })
-
-      if (!answer.resp) {
-        return
+    onIonViewWillEnter(() => {
+      if (route.query.updateToPremium) {
+        updatePack.changePack()
       }
-
-      const result = await http.api.users.updatePack(store.getters['auth/user']._id)
-
-      if (result) {
-        await store.dispatch('auth/updateUser', {
-          clubPackChangeOrder: result.clubPackChangeOrder
-        })
-      }
-    }
+    })
 
     return {
       authUser,
@@ -128,7 +119,6 @@ export default defineComponent({
       pendingStatuses, userIsPremium,
       clubPackExpiration,
       onSearchUpdate,
-      changePack
     }
   }
 })
