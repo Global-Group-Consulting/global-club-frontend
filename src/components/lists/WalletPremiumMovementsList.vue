@@ -14,7 +14,7 @@
           <ion-label>Movimenti {{ getMovementYear(movement) }}</ion-label>
         </ion-list-header>
 
-        <WalletPremiumMovementListItem :movement="movement" @withdrawal="onWithdrawal"></WalletPremiumMovementListItem>
+        <WalletPremiumMovementListItem :movement="movement"></WalletPremiumMovementListItem>
       </template>
     </ion-list>
 
@@ -31,6 +31,7 @@ import WalletPremiumMovementListItem from '@/components/lists/movements/WalletPr
 import { formatSemesterIdAsSemester } from '@/@utilities/movements'
 import { WalletPremiumMovement } from '@/@types/Wallet Premium/WalletPremiumMovement'
 import NoData from '@/components/NoData.vue'
+import { useWithdrawal } from '@/composables/walletPremium/withdrawal'
 
 export default defineComponent({
   name: 'WalletPremiumMovementsList',
@@ -42,15 +43,24 @@ export default defineComponent({
   setup (props) {
     const semesterDetails: Ref<WalletPremiumStatisticEntry | null> = ref(null)
     const http = inject<HttpPlugin>('http') as HttpPlugin
+    const withdrawal = useWithdrawal()
 
+    // List of movements of a semester
     const movements: ComputedRef<WalletPremiumMovement[]> = computed(() => {
       if (semesterDetails.value && semesterDetails.value?.movements) {
         return semesterDetails.value.movements
       }
+
       return []
     })
 
-    function getMovementYear (movement: WalletPremiumMovement) {
+    /**
+     * Given a movement, returns the year of the movement
+     *
+     * @param {WalletPremiumMovement} movement
+     * @returns {number|null}
+     */
+    function getMovementYear (movement: WalletPremiumMovement): number | null {
       if (!movement || !movement.withdrawableFrom) {
         if (movement) {
           const date = new Date(movement.referenceUsableUntil)
@@ -58,13 +68,20 @@ export default defineComponent({
 
           return date.getFullYear()
         }
+
         return null
       }
 
       return new Date(movement.withdrawableFrom).getFullYear()
     }
 
-    function showYearHeader (i) {
+    /**
+     * Given an index, returns true if the year of the movement at that index is different from the previous one
+     *
+     * @param {number} i
+     * @returns {boolean}
+     */
+    function showYearHeader (i): boolean {
       if (movements.value.length === 0) {
         return false
       }
@@ -91,17 +108,35 @@ export default defineComponent({
       }
     }
 
-    function onWithdrawal (movement: WalletPremiumMovement) {
-      if (!semesterDetails.value?.movements) {
-        return
-      }
+    /**
+     * Refresh the given movements
+     *
+     * @param {WalletPremiumMovement[]} _movements
+     */
+    function refreshSingleMovements (_movements: WalletPremiumMovement[]) {
+      _movements.forEach(movement => {
+        if (!semesterDetails.value?.movements) {
+          return
+        }
 
-      const index = semesterDetails.value.movements.findIndex(m => m._id === movement._id)
+        // Find the index of the changed movement
+        const index = semesterDetails.value.movements.findIndex(m => m._id === movement._id)
 
-      if (index >= 0) {
-        semesterDetails.value.movements[index] = movement
-      }
+        if (index >= 0) {
+          semesterDetails.value.movements[index] = movement
+        }
+      })
     }
+
+    // After a withdrawal is completed, refresh the movements
+    withdrawal.afterWithdraw((updatedMovements) => {
+      refreshSingleMovements(updatedMovements)
+    })
+
+    // After a withdrawal is completed, refresh the movements
+    withdrawal.afterWithdrawAll((updatedMovements) => {
+      refreshSingleMovements(updatedMovements)
+    })
 
     // each time the semesterId changes, fetch data
     watch(() => props.semesterId, semesterId => {
@@ -115,10 +150,8 @@ export default defineComponent({
 
     return {
       movements,
-      formatSemesterIdAsSemester,
       getMovementYear,
-      showYearHeader,
-      onWithdrawal
+      showYearHeader
     }
   }
 })

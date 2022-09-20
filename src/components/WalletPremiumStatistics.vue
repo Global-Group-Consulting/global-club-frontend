@@ -44,21 +44,14 @@
 import { computed, ComputedRef, defineComponent, inject, onMounted, PropType, Ref, ref, watch } from 'vue'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { TabEntry } from '@/@types/TabEntry'
-import { Semesters, Statistics } from '@/@types/Statistics'
-import { formatClubPack } from '@/@utilities/statuses'
 import { formatSemesterId, formatSemesterIdAsSemester } from '@/@utilities/movements'
 import TabsItems from '@/components/tabs/TabsItems.vue'
 import { Swiper, SwiperSlide } from 'swiper/vue/swiper-vue'
 import BriteValue from '@/components/BriteValue.vue'
 import { Swiper as SwiperInstance } from 'swiper'
-import { formatLocaleDateLong } from '@/@utilities/dates'
-import { formatBrites } from '@/@utilities/currency'
 import { PackEnum } from '@/@enums/pack.enum'
 import { AuthPlugin } from '@/plugins/AuthPlugin'
-import { AclPermissionsEnum } from '@/@enums/acl.permissions.enum'
 import ClubButton from '@/components/ClubButton.vue'
-import { modalController } from '@ionic/vue'
-import BritesModal from '@/components/modals/BritesModal.vue'
 import { useStore } from 'vuex'
 import { storeKey } from '@/store'
 import { WalletPremiumStatisticEntry } from '@/@types/Wallet Premium/WalletPremiumStatisticEntry'
@@ -77,7 +70,7 @@ export default defineComponent({
     clubPack: String as PropType<PackEnum>,
     onlyFast: Boolean
   },
-  emits: ['update:data', 'update:activeTab', 'withdraw:all', 'withdraw:semester'],
+  emits: ['update:data', 'update:activeTab', 'withdrawn:all', 'withdrawn:semester'],
   setup (props, { emit }) {
     const store = useStore(storeKey)
     const http = inject('http') as HttpPlugin
@@ -97,12 +90,12 @@ export default defineComponent({
         text: 'Resoconto',
         data: [
           {
-            label: 'Totale da riscuotere',
+            label: 'Totale da sbloccare',
             value: withdrawable,
             details: 'questo mese'
           },
           {
-            label: 'Totale riscosso',
+            label: 'Totale sbloccato',
             value: data.value?.reduce((acc, curr) => acc + curr.withdrawn, 0) || 0,
             details: 'questo mese'
           },
@@ -114,7 +107,7 @@ export default defineComponent({
         ],
         buttons: [
           {
-            label: 'Riscuoti tutto',
+            label: 'Sblocca tutto',
             click: () => withdrawal.onWithdrawAllClick(withdrawable, data.value?.reduce((acc, curr) => {
               acc.push(curr.semesterDetails.id)
               return acc
@@ -130,11 +123,11 @@ export default defineComponent({
           text: formatSemesterIdAsSemester(el.semesterDetails.id),
           expired: false,
           data: [{
-            label: 'Brite da riscuotere',
+            label: 'Brite da sbloccare',
             value: el.withdrawable,
             details: 'questo mese'
           }, {
-            label: 'Brite riscossi',
+            label: 'Brite sbloccati',
             value: el.withdrawn,
             details: 'questo mese'
           }, {
@@ -144,7 +137,7 @@ export default defineComponent({
           }],
           buttons: [
             {
-              label: 'Riscuoti',
+              label: 'Sblocca',
               click: () => withdrawal.onWithdrawClick(el.semesterDetails.id, el.withdrawable),
               if: el.withdrawable > 0
             }
@@ -177,6 +170,16 @@ export default defineComponent({
       data.value = null
       emit('update:data', data.value)
     }
+
+    withdrawal.afterWithdraw((updatedMovements) => {
+      fetchData()
+      emit('withdrawn:semester', updatedMovements)
+    })
+
+    withdrawal.afterWithdrawAll((updatedMovements) => {
+      fetchData()
+      emit('withdrawn:all', updatedMovements)
+    })
 
     onMounted(async () => {
       await fetchData()

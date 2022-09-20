@@ -56,14 +56,14 @@ export const alerts = {
   },
   wpMovements: {
     withdrawAll: {
-      title: 'Riscuotere tutto?',
-      message: `La somma degli importi riscuotibili per il mese corrente è di {amount}.<br>
-                  Se si desidera trasferire tale importo a un altro utente, compilare il campo "Codice utente destinatario", altrimenti lasciarlo vuoto.`
+      title: 'Sbloccare l\'importo disponibile da tutti i semestri?',
+      message: `La somma degli importi sbloccabili per il mese corrente è di <strong>{amount}</strong>.<br>
+                  Se si desidera trasferire tale importo a un altro utente, compilare il campo <em>"Codice utente destinatario"</em>, altrimenti lasciarlo vuoto.`
     },
     withdraw: {
-      title: 'Riscuotere l\'importo disponibile da tutti i semestri?',
-      message: `Indicare l'importo che si desidera riscuotere o trasferire a un altro utente. L'importo massimo è di {amount}.<br>
-                Se si desidera trasferire tale importo a un altro utente, compilare anche il campo "Codice utente destinatario", altrimenti lasciarlo vuoto.`
+      title: 'Sbloccare l\'importo per il mese corrente?',
+      message: `Indicare l'importo che si desidera sbloccare o trasferire a un altro utente. L'importo massimo è di <strong>{amount}</strong>.<br>
+                Se si desidera trasferire tale importo a un altro utente, compilare anche il campo <em>"Codice utente destinatario"</em>, altrimenti lasciarlo vuoto.`
     }
   }
 }

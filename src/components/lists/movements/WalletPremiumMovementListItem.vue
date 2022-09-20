@@ -13,7 +13,7 @@
       </small>
 
       <template v-if="movement.withdrawableFrom">
-        <div>{{ currDate }}</div>
+        <div>{{ withdrawableFrom }}</div>
         <small v-if="isWithdrawable && movement.withdrawableUntil">
           Sbloccabile entro il
           {{ formatLocaleDateLong(movement.withdrawableUntil) }}</small>
@@ -27,7 +27,7 @@
                   :size="$store.getters['smAndDown'] ? 'default': 'small'"
                   title="Riscuoti"
                   @click="onWithdrawalClick">
-        Riscuoti
+        Sblocca
       </ClubButton>
 
       <ClubButton :only-icon="$store.getters['smAndDown']" v-if="movement.hasWithdrawMovements"
@@ -56,6 +56,7 @@ import BriteValue from '@/components/BriteValue.vue'
 import { WalletPremiumMovementEnum } from '@/@enums/wallet.premium.movement.enum'
 import { modalController } from '@ionic/vue'
 import WPWithdrawMovementsModal from '../../modals/WPWithdrawMovementsModal.vue'
+import { useWithdrawal } from '@/composables/walletPremium/withdrawal'
 
 export default defineComponent({
   name: 'WalletPremiumMovementListItem',
@@ -67,30 +68,33 @@ export default defineComponent({
     },
     showSemester: Boolean
   },
-  emits: ['withdrawal'],
-  setup (props, { emit }) {
-    const http = inject<HttpPlugin>('http') as HttpPlugin
-    const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin
+  setup (props) {
+    const withdrawal = useWithdrawal()
 
-    // const mdAndDown = computed(() => store.getters['mdAndDown'])
+    // indicates if the movement is past but has been withdrawn
     const isPastAndWithdrawn = computed(() => props.movement.withdrawableUntil
         && new Date(props.movement.withdrawableUntil) < new Date()
         && props.movement.withdrawalDate)
 
-    const isWithdrawn = computed(() => !!props.movement.withdrawalDate)
-
+    // indicates if the movement is past and can no more be withdrawn
     const isPastAndLost = computed(() => props.movement.withdrawableUntil
         && new Date(props.movement.withdrawableUntil) < new Date()
         && !props.movement.withdrawalDate)
 
+    // indicates if the movement has been withdrawn regardless of the date
+    const isWithdrawn = computed(() => !!props.movement.withdrawalDate)
+
+    // indicates if the movement is currently withdrawable based on the date
     const isWithdrawable = computed(() => props.movement.withdrawableFrom && props.movement.withdrawableUntil
         && new Date(props.movement.withdrawableUntil) > new Date()
         && new Date(props.movement.withdrawableFrom) < new Date()
         && !props.movement.withdrawalDate)
 
+    // indicates if the movement will be withdrawable in the future
     const isFuture = computed(() => props.movement.withdrawableFrom
         && new Date(props.movement.withdrawableFrom) > new Date())
 
+    // return the text color to be used
     const textColor = computed(() => {
       let color = 'grey'
 
@@ -107,10 +111,11 @@ export default defineComponent({
       return color
     })
 
+    // return the icon to be used
     const icon = computed(() => {
       let icon = 'timeline-start'
 
-      if (isPastAndWithdrawn.value  || isWithdrawn.value) {
+      if (isPastAndWithdrawn.value || isWithdrawn.value) {
         icon = 'timeline-past'
       } else if (isPastAndLost.value) {
         icon = 'timeline-lost'
@@ -123,7 +128,8 @@ export default defineComponent({
       return icon
     })
 
-    const currDate = computed(() => {
+    // return the withdrawableFrom date formatted
+    const withdrawableFrom = computed(() => {
       if (!props.movement.withdrawableFrom) return ''
 
       const finalDate = formatLocaleDateLong(new Date(props.movement.withdrawableFrom), {
@@ -136,98 +142,23 @@ export default defineComponent({
       return finalDate.join(' ')
     })
 
+    /**
+     * When the user clicks on the withdrawal button, trigger the withdrawal
+     */
     async function onWithdrawalClick () {
-      if (!props.movement.incomeAmount) return
+      if (!props.movement.withdrawalRemaining) return
 
-      const result = await alerts.ask({
-            header: 'Quanto si desidera riscuotere?',
-            message: `Indicare l'importo che si desidera riscuotere o trasferire ad un altro utente. L'importo massimo è di ${formatBrites(props.movement.incomeAmount)}.
-                  <br>
-                  Se si desidera trasferire tale importo ad un altro utente, compilare anche il campo "Codice utente destinatario", altrimenti lasciarlo vuoto.`,
-            inputs: [
-              {
-                type: 'number',
-                min: 0,
-                name: 'amount',
-                max: props.movement.withdrawalRemaining,
-                label: 'Importo da riscuotere',
-                placeholder: 'Importo da riscuotere',
-                attributes: {
-                  step: '5'
-                },
-                value: Math.round(props.movement.withdrawalRemaining ?? 0)
-              },
-              {
-                type: 'text',
-                name: 'userCardNum',
-                label: 'Codice utente destinatario',
-                placeholder: 'Codice utente destinatario',
-                value: '000XXX000',
-                handler: (input) => {
-                  console.log(input)
-                }
-              }
-            ]
-          },
-          {
-            buttons: {
-              confirm: (data, alert) => {
-                const cardNum = data.userCardNum.trim()
-
-                // only if the user provided a card number
-                if (cardNum.length) {
-                  // Must check if the cardNum is valid
-                  http.api.users.checkClubCardNum(cardNum)
-                      .then(async user => {
-
-                        // ask if the user is sure to transfer the amount to the user
-                        const confirm = await alerts.ask({
-                          header: 'Eseguire un trasferimento?',
-                          message: `Sei sicuro di voler trasferire <strong>${formatBrites(data.amount)}</strong> a <strong>${user?.firstName} ${user?.lastName}</strong>?
-                                    Se non lo si desidera, premere "Annulla" e svuotare il campo "Codice utente destinatario".`,
-                          buttonOkText: 'Si, Trasferisci'
-                        })
-
-                        if (confirm.resp) {
-                          alert.dismiss({
-                            values: data
-                          }, 'ok')
-                        }
-                      })
-                      .catch(err => {
-                        if (err.response && (err.response.status === 404 || err.response.status === 400)) {
-                          alerts.error('Il codice utente inserito non è valido')
-                        } else {
-                          alerts.error(err)
-                        }
-                      })
-
-                  // prevent the closing of the modal
-                  return false
-                }
-              }
-            }
-          })
-
-      if (result.resp) {
-        const value = result.values.amount
-
-        if (value > props.movement.incomeAmount || value < 1) {
-          await alerts.toastError('Importo non valido')
-          return
-        }
-
-        const updatedMovement = await http.api.walletPremium.withdraw(props.movement._id, value)
-
-        emit('withdrawal', updatedMovement)
-      }
+      await withdrawal.onWithdrawClick(props.movement.semester, props.movement.withdrawalRemaining)
     }
 
+    /**
+     * When the user clicks on the movements button, show the withdrawal movements list of the current movement
+     */
     async function showMovementsList () {
       const modal = await modalController.create({
         component: WPWithdrawMovementsModal,
         componentProps: {
-          title: 'Dettaglio movimenti di riscossione',
+          title: 'Dettaglio movimenti di sblocco',
           movementId: props.movement._id
         },
         mode: 'ios',
@@ -244,7 +175,7 @@ export default defineComponent({
       isWithdrawable,
       formatBrites,
       formatLocaleDateLong,
-      currDate,
+      withdrawableFrom,
       onWithdrawalClick,
       showMovementsList,
       WalletPremiumMovementEnum

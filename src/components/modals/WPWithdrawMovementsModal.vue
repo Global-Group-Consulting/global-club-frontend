@@ -9,22 +9,16 @@
   </ion-header>
   <ion-content class="ion-padding modal-content">
     <div class="mb-5 ion-text-start">
-      <!--    <ion-row class="mb-4">-->
-      <!--      <ion-col >-->
-      <h5>Totale disponibile:
+      <h5>Totale accumulato:
         <BriteValue :value="movement?.incomeAmount ?? 0" class="font-bold"></BriteValue>
       </h5>
-      <h5>Totale riscosso:
-        <BriteValue :value="(movement?.incomeAmount ?? 0) - (movement?.withdrawalRemaining || 0)" class="font-bold"></BriteValue>
+      <h5>Totale sbloccato:
+        <BriteValue :value="(movement?.incomeAmount ?? 0) - (movement?.withdrawalRemaining || 0)"
+                    class="font-bold"></BriteValue>
       </h5>
       <h5>Totale rimanente:
         <BriteValue :value="movement?.withdrawalRemaining ?? 0" class="font-bold"></BriteValue>
       </h5>
-      <!--      </ion-col>-->
-      <!--      <ion-col>-->
-      <!--        -->
-      <!--      </ion-col>-->
-      <!--    </ion-row>-->
     </div>
 
     <ion-list>

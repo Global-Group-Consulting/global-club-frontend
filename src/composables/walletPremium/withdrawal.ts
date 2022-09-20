@@ -2,111 +2,22 @@ import { formatBrites } from '@/@utilities/currency'
 import { inject } from 'vue'
 import { AlertsPlugin } from '@/plugins/Alerts'
 import { Movement } from '@/@types/Movement'
-import { WalletPremiumMovement } from '@/@types/Wallet Premium/WalletPremiumMovement'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { AlertInput } from '@ionic/vue'
 import { useI18n } from 'vue-i18n'
+import { WalletPremiumMovement } from '@/@types/Wallet Premium/WalletPremiumMovement'
 
-export default () => {
-  
-  /*
-  
-  function askForWithdrawalTransfer () {
-  
-  }
-  
-  async function as () {
-    
-    const result = await alerts.ask({
-        header: 'Quanto si desidera riscuotere?',
-        message: `Indicare l'importo che si desidera riscuotere o trasferire ad un altro utente. L'importo massimo è di ${formatBrites(props.movement.incomeAmount)}.
-                  <br>
-                  Se si desidera trasferire tale importo ad un altro utente, compilare anche il campo "Codice utente destinatario", altrimenti lasciarlo vuoto.`,
-        inputs: [
-          {
-            type: 'number',
-            min: 0,
-            name: 'amount',
-            max: props.movement.withdrawalRemaining,
-            label: 'Importo da riscuotere',
-            placeholder: 'Importo da riscuotere',
-            attributes: {
-              step: '5'
-            },
-            value: Math.round(props.movement.withdrawalRemaining ?? 0)
-          },
-          {
-            type: 'text',
-            name: 'userCardNum',
-            label: 'Codice utente destinatario',
-            placeholder: 'Codice utente destinatario',
-            value: '000XXX000',
-            handler: (input) => {
-              console.log(input)
-            }
-          }
-        ]
-      },
-      {
-        buttons: {
-          confirm: (data, alert) => {
-            const cardNum = data.userCardNum.trim()
-            
-            // only if the user provided a card number
-            if (cardNum.length) {
-              // Must check if the cardNum is valid
-              http.api.users.checkClubCardNum(cardNum)
-                .then(async user => {
-                  
-                  // ask if the user is sure to transfer the amount to the user
-                  const confirm = await alerts.ask({
-                    header: 'Eseguire un trasferimento?',
-                    message: `Sei sicuro di voler trasferire <strong>${formatBrites(data.amount)}</strong> a <strong>${user?.firstName} ${user?.lastName}</strong>?
-                                    Se non lo si desidera, premere "Annulla" e svuotare il campo "Codice utente destinatario".`,
-                    buttonOkText: 'Si, Trasferisci'
-                  })
-                  
-                  if (confirm.resp) {
-                    alert.dismiss({
-                      values: data
-                    }, 'ok')
-                  }
-                })
-                .catch(err => {
-                  if (err.response && (err.response.status === 404 || err.response.status === 400)) {
-                    alerts.error('Il codice utente inserito non è valido')
-                  } else {
-                    alerts.error(err)
-                  }
-                })
-              
-              // prevent the closing of the modal
-              return false
-            }
-          }
-        }
-      })
-    
-    if (result.resp) {
-      const value = result.values.amount
-      
-      if (value > props.movement.incomeAmount || value < 1) {
-        await alerts.toastError('Importo non valido')
-        return
-      }
-      
-      const updatedMovement = await http.api.walletPremium.withdraw(props.movement._id, value)
-      
-      emit('withdrawal', updatedMovement)
-    }
-  }*/
-}
+// Create the eventTarget as a Singleton
+const events = new EventTarget()
 
 export function useWithdrawal () {
   const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin
   const http = inject<HttpPlugin>('http') as HttpPlugin
   const { t } = useI18n()
   
+  /**
+   * list of available alert inputs
+   */
   const alertInputs: Record<string, AlertInput> = {
     'amount': {
       type: 'number',
@@ -127,6 +38,14 @@ export function useWithdrawal () {
     }
   }
   
+  /**
+   * When trying to transfer money to another user, this function will be called and will check if
+   * the provided clubCardNum is valid (after making an api call) and will ask the user to confirm the transfer
+   *
+   * @param {number} amount
+   * @param {any} data
+   * @param {HTMLIonAlertElement>} alert
+   */
   function confirmTransferToUser (amount, data, alert: HTMLIonAlertElement) {
     const cardNum = data.userCardNum.trim()
     
@@ -171,6 +90,11 @@ export function useWithdrawal () {
     }
   }
   
+  /**
+   * Ask the user to confirm the withdrawal
+   *
+   * @param {number} amount
+   */
   async function askForWithdraw (amount: number) {
     return alerts.ask({
         header: t('alerts.wpMovements.withdraw.title'),
@@ -187,6 +111,10 @@ export function useWithdrawal () {
       })
   }
   
+  /**
+   * Ask the user to confirm the withdrawal All
+   * @param amount
+   */
   async function askForWithdrawAll (amount: number) {
     return alerts.ask({
         header: t('alerts.wpMovements.withdrawAll.title'),
@@ -200,7 +128,15 @@ export function useWithdrawal () {
       })
   }
   
-  async function onWithdrawAllClick (amount: number, semesters: string[]) {
+  /**
+   * When the user click on the withdrawalAll button, this function will ask the user to confirm the withdrawal and
+   * based on its response, it will make an api call to the server
+   *
+   * @param {number} amount
+   * @param {string[]} semesters
+   * @return Promise<WalletPremiumMovement[] | void>
+   */
+  async function onWithdrawAllClick (amount: number, semesters: string[]): Promise<WalletPremiumMovement[] | void> {
     const answer = await askForWithdrawAll(amount)
     
     if (!semesters.length) {
@@ -208,23 +144,64 @@ export function useWithdrawal () {
     }
     
     if (answer.resp) {
-      const updatedMovement = await http.api.walletPremium.withdrawBySemester(amount, semesters)
+      const updatedMovements = await http.api.walletPremium.withdrawBySemester(amount, semesters)
+      
+      // dispatch the event
+      events.dispatchEvent(new CustomEvent('withdrawn:all', {
+        detail: updatedMovements
+      }))
+      
+      return updatedMovements
     }
   }
   
-  async function onWithdrawClick (semester: string, amount: number) {
+  /**
+   * When the user click on the withdrawalAll button, this function will ask the user to confirm the withdrawal and
+   * based on its response, it will make an api call to the server
+   *
+   * @param {string} semester
+   * @param {number} amount
+   * @return Promise<WalletPremiumMovement[] | void>
+   */
+  async function onWithdrawClick (semester: string, amount: number): Promise<WalletPremiumMovement[] | void> {
     const answer = await askForWithdraw(amount)
     
     if (answer.resp) {
       const value = answer.values.amount
       
-      const updatedMovement = await http.api.walletPremium.withdrawBySemester(value, semester)
+      const updatedMovements = await http.api.walletPremium.withdrawBySemester(value, [semester])
       
+      // dispatch the event
+      events.dispatchEvent(new CustomEvent('withdrawn:semester', {
+        detail: updatedMovements
+      }))
+      
+      return updatedMovements
     }
+  }
+  
+  /**
+   * Allow for adding an event listener to the 'withdrawn:semester' event
+   *
+   * @param callback
+   */
+  function afterWithdraw (callback: (updatedMovements: WalletPremiumMovement[]) => any) {
+    events.addEventListener('withdrawn:semester', (e) => callback((e as CustomEvent).detail))
+  }
+  
+  /**
+   * Allow for adding an event listener to the 'withdrawn:all' event
+   *
+   * @param callback
+   */
+  function afterWithdrawAll (callback: (updatedMovements: WalletPremiumMovement[]) => any) {
+    events.addEventListener('withdrawn:all', (e) => callback((e as CustomEvent).detail))
   }
   
   return {
     onWithdrawAllClick,
-    onWithdrawClick
+    onWithdrawClick,
+    afterWithdraw,
+    afterWithdrawAll
   }
 }

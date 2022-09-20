@@ -11,7 +11,8 @@
       <ion-grid fixed>
         <WalletPremiumStatistics :user-id="userId"
                                  @update:activeTab="onActiveTabChange"
-                                 @update:data="onStatisticsUpdate"></WalletPremiumStatistics>
+                                 @update:data="onStatisticsUpdate"
+        ></WalletPremiumStatistics>
 
         <div class="py-3"></div>
 
@@ -26,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, onMounted, ref } from 'vue'
+import { computed, defineComponent, inject, onMounted, Ref, ref } from 'vue'
 import TopToolbar from '@/components/toolbars/TopToolbar.vue'
 import NoData from '@/components/NoData.vue'
 import { useRoute } from 'vue-router'
@@ -36,6 +37,7 @@ import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { formatUserName } from '@/@utilities/fields'
 import WalletPremiumStatistics from '@/components/WalletPremiumStatistics.vue'
 import WalletPremiumMovementsList from '@/components/lists/WalletPremiumMovementsList.vue'
+import { WalletPremiumMovement } from '@/@types/Wallet Premium/WalletPremiumMovement'
 
 export default defineComponent({
   name: 'WalletPremium',
@@ -46,7 +48,7 @@ export default defineComponent({
     const http = inject<HttpPlugin>('http') as HttpPlugin
     const userId = ($route.params.id ?? store.getters['auth/user'].id) as string
     const user = ref()
-    const movementsList = ref()
+    const movementsList: Ref<typeof WalletPremiumMovementsList | undefined> = ref()
     const userStatistics = ref()
     const activeTab = ref('')
     const userIsAdmin = computed(() => store.getters['auth/isAdmin'])
@@ -77,7 +79,7 @@ export default defineComponent({
       formatUserName,
       onActiveTabChange,
       onMovementsFetched,
-      onStatisticsUpdate
+      onStatisticsUpdate,
     }
   }
 })
