@@ -27,9 +27,9 @@
           <div>
             <BriteValue :value="withdrawMovement.amountChange"/>
           </div>
-          <div>{{ t('enums.MovementTypeEnum.' + withdrawMovement.movementType) }}</div>
+          <div>{{ movementType(withdrawMovement) }}</div>
 
-          <div><small class="ion-text-wrap">{{ withdrawMovement.notes }}</small></div>
+          <div><small class="ion-text-wrap">{{ notes(withdrawMovement) }}</small></div>
 
           <div>
             {{ formatLocaleDate(withdrawMovement.createdAt) }}
@@ -41,13 +41,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onMounted, Ref, ref } from 'vue'
+import { computed, defineComponent, inject, onMounted, Ref, ref } from 'vue'
 import { modalController } from '@ionic/vue'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { WalletPremiumMovement } from '@/@types/Wallet Premium/WalletPremiumMovement'
 import BriteValue from '@/components/BriteValue.vue'
 import { formatLocaleDate } from '@/@utilities/dates'
 import { useI18n } from 'vue-i18n'
+import { MovementTypeEnum } from '@/@enums/movement.type.enum'
 
 export default defineComponent({
   name: 'WPWithdrawMovementsModal',
@@ -67,8 +68,16 @@ export default defineComponent({
     const http = inject<HttpPlugin>('http') as HttpPlugin
     const movement: Ref<WalletPremiumMovement | undefined> = ref()
 
+    function movementType (withdrawMovement) {
+      return t('enums.MovementTypeEnum.' + withdrawMovement.movementType + '_self')
+    }
+
     function dismissModal () {
       modalController.dismiss()
+    }
+
+    function notes(withdrawMovement){
+      return withdrawMovement.notes;
     }
 
     onMounted(() => {
@@ -82,7 +91,9 @@ export default defineComponent({
       t,
       dismissModal,
       movement,
-      formatLocaleDate
+      movementType,
+      formatLocaleDate,
+      notes
     }
   }
 })
