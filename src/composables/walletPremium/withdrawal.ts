@@ -159,6 +159,8 @@ export function useWithdrawal () {
     
     if (answer.resp) {
       const updatedMovements = await http.api.walletPremium.withdrawBySemester(amount, semesters, answer.values.userCardNum)
+  
+      alerts.toastSuccess(t('alerts.wpMovements.withdraw.success')).then()
       
       // dispatch the event
       events.dispatchEvent(new CustomEvent('withdrawn:all', {
@@ -190,6 +192,8 @@ export function useWithdrawal () {
       const value = answer.values.amount
       
       const updatedMovements = await http.api.walletPremium.withdrawBySemester(value, [semester], answer.values.userCardNum)
+      
+      alerts.toastSuccess(t('alerts.wpMovements.withdraw.success')).then()
       
       // dispatch the event
       events.dispatchEvent(new CustomEvent('withdrawn:semester', {
