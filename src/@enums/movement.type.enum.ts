@@ -28,5 +28,7 @@ export const MovementTypeOutList = [
 ]
 export const MovementTypeInList = [
   MovementTypeEnum.DEPOSIT_ADDED,
-  MovementTypeEnum.INTEREST_RECAPITALIZED
+  MovementTypeEnum.INTEREST_RECAPITALIZED,
+  MovementTypeEnum.DEPOSIT_RECEIVED_WP,
+  MovementTypeEnum.DEPOSIT_UNLOCKED_WP,
 ]
