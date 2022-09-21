@@ -24,8 +24,10 @@ export const enums = {
     [MovementTypeEnum.DEPOSIT_REMOVED]: 'Storno',
     [MovementTypeEnum.DEPOSIT_TRANSFERRED]: 'Trasferimento',
     [MovementTypeEnum.INTEREST_RECAPITALIZED]: 'Ricapitalizzazione',
-    [MovementTypeEnum.DEPOSIT_RECEIVED_WP]: 'Ricevuto da altro utente',
-    [MovementTypeEnum.DEPOSIT_UNLOCKED_WP]: 'Sblocco da Wallet Premium'
+    [MovementTypeEnum.DEPOSIT_RECEIVED_WP]: 'Trasferimento da altro utente',
+    [MovementTypeEnum.DEPOSIT_RECEIVED_WP + '_self']: 'Trasferimento verso altro utente',
+    [MovementTypeEnum.DEPOSIT_UNLOCKED_WP]: 'Sblocco da Wallet Premium',
+    [MovementTypeEnum.DEPOSIT_UNLOCKED_WP + '_self']: 'Sblocco'
   },
   PackEnum: {
     [PackEnum.NONE]: 'Sconosciuto',
