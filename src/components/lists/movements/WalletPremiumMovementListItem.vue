@@ -148,6 +148,8 @@ export default defineComponent({
     async function onWithdrawalClick () {
       if (!props.movement.withdrawalRemaining) return
 
+      withdrawal.setUserId(props.movement.userId)
+
       await withdrawal.onWithdrawClick(props.movement.semester, props.movement.withdrawalRemaining)
     }
 

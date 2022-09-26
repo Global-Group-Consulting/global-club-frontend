@@ -34,11 +34,12 @@ export class WalletPremiumApis extends BasicApisClass {
     return result?.data
   }
   
-  static async withdrawBySemester (amount: number, semesters: string[], clubCardNumber?: string): Promise<WalletPremiumMovement[] | undefined> {
+  static async withdrawBySemester (amount: number, semesters: string[], clubCardNumber?: string, userId?: string): Promise<WalletPremiumMovement[] | undefined> {
     const result = await this.withLoader<WalletPremiumMovement[]>('post', this.getUrl('/withdraw-by-semester'), {
       amount,
       semesters,
-      userCardNum: clubCardNumber
+      userCardNum: clubCardNumber,
+      userId
     })
     
     return result?.data

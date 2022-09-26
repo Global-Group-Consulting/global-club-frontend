@@ -157,6 +157,8 @@ export default defineComponent({
     }
 
     async function fetchData () {
+      withdrawal.setUserId(props.userId as string)
+
       const result = await http.api.walletPremium.getStatistics(props.userId as string)
 
       if (result) {

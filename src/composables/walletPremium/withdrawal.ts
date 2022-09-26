@@ -1,5 +1,5 @@
 import { formatBrites } from '@/@utilities/currency'
-import { inject } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { AlertsPlugin } from '@/plugins/Alerts'
 import { Movement } from '@/@types/Movement'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
@@ -17,6 +17,9 @@ export function useWithdrawal () {
   const http = inject<HttpPlugin>('http') as HttpPlugin
   const store = useStore(storeKey)
   const { t } = useI18n()
+  const userId = ref('')
+  
+  const setUserId = (_userId: string) => userId.value = _userId
   
   /**
    * list of available alert inputs
@@ -49,7 +52,7 @@ export function useWithdrawal () {
    * @param {any} data
    * @param {HTMLIonAlertElement>} alert
    */
-  function confirmTransferToUser (amount, data, alert: HTMLIonAlertElement) {
+  function confirmTransferToUser (amount: number, data: any, alert: HTMLIonAlertElement) {
     const cardNum = data.userCardNum.trim()
     
     if (data.amount !== undefined) {
@@ -58,6 +61,8 @@ export function useWithdrawal () {
         alerts.toastError('Importo non valido in quanto deve essere compreso tra 1 e ' + amount).then()
         return false
       }
+    } else {
+      data.amount = amount
     }
     
     // only if the user provided a card number
@@ -158,8 +163,8 @@ export function useWithdrawal () {
     }
     
     if (answer.resp) {
-      const updatedMovements = await http.api.walletPremium.withdrawBySemester(amount, semesters, answer.values.userCardNum)
-  
+      const updatedMovements = await http.api.walletPremium.withdrawBySemester(amount, semesters, answer.values.userCardNum, userId.value)
+      
       alerts.toastSuccess(t('alerts.wpMovements.withdraw.success')).then()
       
       // dispatch the event
@@ -191,7 +196,7 @@ export function useWithdrawal () {
     if (answer.resp) {
       const value = answer.values.amount
       
-      const updatedMovements = await http.api.walletPremium.withdrawBySemester(value, [semester], answer.values.userCardNum)
+      const updatedMovements = await http.api.walletPremium.withdrawBySemester(value, [semester], answer.values.userCardNum, userId.value)
       
       alerts.toastSuccess(t('alerts.wpMovements.withdraw.success')).then()
       
@@ -226,6 +231,7 @@ export function useWithdrawal () {
     onWithdrawAllClick,
     onWithdrawClick,
     afterWithdraw,
-    afterWithdrawAll
+    afterWithdrawAll,
+    setUserId
   }
 }

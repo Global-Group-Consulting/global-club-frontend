@@ -101,6 +101,7 @@ export default defineComponent({
         return
       }
 
+      withdrawal.setUserId(props.userId)
       const resp = await http.api.walletPremium.getMovements(props.userId, props.semesterId)
 
       if (resp) {
