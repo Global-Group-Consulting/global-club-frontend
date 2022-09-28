@@ -8,7 +8,6 @@
                        placeholder="Cosa vuoi sapere?"
                        :show-cancel-button="searchValue ? 'always' : 'never'"
                        v-model="searchValue"
-
         ></ion-searchbar>
 
         <AccordionList :sections="accordionSections" v-if="accordionSections.length">
@@ -74,9 +73,27 @@ export default defineComponent({
       return 'content_' + entry.id
     }
 
+    function stripTags (text: string) {
+      let toReturn = text
+      const tags = ['font']
+      const styles = ['color', 'font-family', 'background-color']
+      const stripTagsRegex = new RegExp(`<(/|)(${tags.join('|')})[^>]*>`, 'gi')
+      const stripInlineStylesRegex = new RegExp(`(${styles.join('|')}):.*?;`, 'gi')
+
+      toReturn = toReturn.replaceAll(stripTagsRegex, '')
+      toReturn = toReturn.replaceAll(stripInlineStylesRegex, '')
+
+      return toReturn
+    }
+
     function highlightText (text: string) {
-      const words = searchValue.value.toLowerCase().trim().split(' ')
+      const searchText = searchValue.value.toLowerCase().trim()
+      const words = searchText.split(' ')
       let finalText = text
+
+      if (!searchText.length) {
+        return text
+      }
 
       words.forEach(word => {
         finalText = finalText.replace(new RegExp(word, 'gi'), `<span class="highlight">${word}</span>`)
@@ -89,11 +106,11 @@ export default defineComponent({
       accordionSections.value = filteredFaqs.value.map((faq) => {
         return {
           id: faq.id,
-          text: highlightText(faq.question),
+          text: stripTags(highlightText(faq.question)),
           open: !!searchValue.value,
           data: {
             ...faq,
-            answer: highlightText(faq.answer)
+            answer: stripTags(highlightText(faq.answer))
           }
         } as AccordionSection
       })
@@ -123,6 +140,10 @@ export default defineComponent({
 
 <style scoped lang="scss">
 #faq-search-bar {
-  --border-radius: 15px
+  --border-radius: 15px;
+}
+
+.accordion-list:deep(.accordion-header-text) {
+  white-space: normal;
 }
 </style>
