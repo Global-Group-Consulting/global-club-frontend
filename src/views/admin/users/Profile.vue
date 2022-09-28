@@ -63,8 +63,6 @@
                 </a>
               </li>
             </ul>
-
-            {{user}}
           </ion-col>
         </ion-row>
 
