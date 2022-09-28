@@ -36,7 +36,7 @@
           <ion-col size="12" sizeLg="6" class="pt-0 py-lg-5 mb-5 mb-lg-0">
             <ul class="ion-text-left my-0 list-simple">
 
-              <li v-if="referenceAgent" class="d-flex ion-align-items-center">
+              <li v-if="referenceAgent?._id" class="d-flex ion-align-items-center">
                 {{ $t('pages.userProfile.lbl_ref_agent') }}:
                 <a class="ms-1"
                    :href="$router.resolve({name: 'admin.users.profile', params: {id: referenceAgent._id}}).fullPath"
@@ -63,6 +63,8 @@
                 </a>
               </li>
             </ul>
+
+            {{user}}
           </ion-col>
         </ion-row>
 
