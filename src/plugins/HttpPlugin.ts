@@ -1,8 +1,8 @@
-import { installPlugin, PluginTemplate } from '@/plugins/PluginTemplate';
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
-import { settings } from '@/config/httpPlugin';
-import { merge } from 'lodash';
-import { ProductApis } from '@/plugins/httpCalls/ProductApis';
+import { installPlugin, PluginTemplate } from '@/plugins/PluginTemplate'
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
+import { settings } from '@/config/httpPlugin'
+import { merge } from 'lodash'
+import { ProductApis } from '@/plugins/httpCalls/ProductApis'
 import { ProductCategoryApis } from '@/plugins/httpCalls/ProductCategoryApis'
 import { loadingController } from '@ionic/vue'
 import { AlertsPlugin } from '@/plugins/Alerts'
@@ -16,6 +16,7 @@ import { NewsApis } from '@/plugins/httpCalls/NewsApis'
 import { LocationApis } from '@/plugins/httpCalls/LocationApis'
 import { NotificationsApis } from '@/plugins/httpCalls/NotificationsApis'
 import { FaqsApis } from '@/plugins/httpCalls/FaqsApis'
+import { WalletPremiumApis } from '@/plugins/httpCalls/WalletPremiumApis'
 
 type RequestsQueue = {
   resolve: (value?: unknown) => void;
@@ -37,13 +38,14 @@ interface ApiModules {
   locations: typeof LocationApis;
   notifications: typeof NotificationsApis;
   faqs: typeof FaqsApis;
+  walletPremium: typeof WalletPremiumApis;
 }
 
 class HttpQueue {
-  private queue: RequestsQueue = [];
+  private queue: RequestsQueue = []
   
   add (callToQueue: { resolve: any; reject: any }) {
-    this.queue.push(callToQueue);
+    this.queue.push(callToQueue)
   }
   
   /**
@@ -52,10 +54,10 @@ class HttpQueue {
    */
   resolve (token?: Token) {
     this.queue.forEach((p) => {
-      p.resolve(token);
-    });
+      p.resolve(token)
+    })
     
-    this.queue = [];
+    this.queue = []
   }
   
   /**
@@ -81,9 +83,9 @@ export class LoadingHandler {
     const loadingInstance = await loadingController
       .create({
         // cssClass: 'my-custom-class',
-        message: this.t("alerts.generic.loading"),
-        duration: timeout,
-      });
+        message: this.t('alerts.generic.loading'),
+        duration: timeout
+      })
     
     const index = Object.keys(this.instances).length
     
@@ -97,11 +99,11 @@ export class LoadingHandler {
   async show (timeout?: number) {
     const loadingInstance = await this.createInstance(timeout)
     
-    return await loadingInstance.present();
+    return await loadingInstance.present()
   }
   
   async hide () {
-    const index = Object.keys(this.instances)[0];
+    const index = Object.keys(this.instances)[0]
     const loadingInstance = this.instances[index]
     
     if (!loadingInstance) {
@@ -112,25 +114,25 @@ export class LoadingHandler {
     // so if there are other pending instances, will detect the right index
     delete this.instances[index]
     
-    await loadingInstance.dismiss();
+    await loadingInstance.dismiss()
   }
   
   private onDidDismiss () {
-    console.log("onDidDismiss")
+    // console.log('onDidDismiss')
   }
 }
 
 export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
-  private axiosInstance!: AxiosInstance; // & { withLoader<T> (method: string, ...args: any[]): Promise<T> };
-  private queue!: HttpQueue;
-  protected options!: HttpPluginOptions;
-  protected test = 'asdad';
-  public loading!: LoadingHandler;
-  protected alerts!: AlertsPlugin;
-  public api!: ApiModules;
+  private axiosInstance!: AxiosInstance // & { withLoader<T> (method: string, ...args: any[]): Promise<T> };
+  private queue!: HttpQueue
+  protected options!: HttpPluginOptions
+  protected test = 'asdad'
+  public loading!: LoadingHandler
+  protected alerts!: AlertsPlugin
+  public api!: ApiModules
   
   protected onInit (options: HttpPluginOptions) {
-    this.setAxiosDefaults();
+    this.setAxiosDefaults()
     this.api = {
       products: ProductApis,
       productCategories: ProductCategoryApis,
@@ -144,22 +146,23 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
       locations: LocationApis,
       notifications: NotificationsApis,
       faqs: FaqsApis,
-    };
-    this.queue = new HttpQueue();
-    this.loading = new LoadingHandler(this.plugins["$t"]);
-    this.alerts = this.plugins["$alerts"];
-  
-    axios.defaults.headers["Client-Key"] = process.env.VUE_APP_CLIENT_KEY;
-  
+      walletPremium: WalletPremiumApis
+    }
+    this.queue = new HttpQueue()
+    this.loading = new LoadingHandler(this.plugins['$t'])
+    this.alerts = this.plugins['$alerts']
+    
+    axios.defaults.headers['Client-Key'] = process.env.VUE_APP_CLIENT_KEY
+    
     // init an instance of axios
-    this.axiosInstance = axios.create(options.axiosInstanceDefault);
-  
+    this.axiosInstance = axios.create(options.axiosInstanceDefault)
+    
     // add request interceptor
-    this.axiosInstance.interceptors.request.use((request: any) => this.requestInterceptor(request));
+    this.axiosInstance.interceptors.request.use((request: any) => this.requestInterceptor(request))
     this.axiosInstance.interceptors.response.use((resp) => resp,
-      (response: any) => this.responseErrorInterceptor(response));
-  
-    this.includeModules();
+      (response: any) => this.responseErrorInterceptor(response))
+    
+    this.includeModules()
   }
   
   /**
@@ -171,11 +174,11 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
   private async includeModules () {
     for (const entry of Object.entries(this.api)) {
       // const name = entry[0];
-      const classToInit = entry[1];
-  
-      classToInit.axiosInstance = this.axiosInstance;
-      classToInit.loading = this.loading;
-      classToInit.alerts = this.alerts;
+      const classToInit = entry[1]
+      
+      classToInit.axiosInstance = this.axiosInstance
+      classToInit.loading = this.loading
+      classToInit.alerts = this.alerts
     }
   }
   
@@ -186,10 +189,10 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
   //****************************************************************************
   
   // expose axios methods
-  public get = this.axiosInstance.get;
-  public post = this.axiosInstance.post;
+  public get = this.axiosInstance.get
+  public post = this.axiosInstance.post
   
-  public rawRequest = axios.request;
+  public rawRequest = axios.request
   
   //****************************************************************************
   //
@@ -198,18 +201,18 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
   //****************************************************************************
   
   private get auth () {
-    return this.plugins.$auth;
+    return this.plugins.$auth
   }
   
   private setAxiosDefaults () {
     // merge global axios defaults
     if (this.options.axiosDefault) {
-      merge(axios.defaults, this.options.axiosDefault);
+      merge(axios.defaults, this.options.axiosDefault)
     }
   }
   
   protected createFormDataElement (data: object) {
-    const formDataToSend = new FormData();
+    const formDataToSend = new FormData()
     
     for (const key in data) {
       const elValue = data[key]
@@ -217,20 +220,20 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
       if (elValue instanceof Array) {
         elValue.forEach(el => {
           if (elValue !== undefined) {
-            formDataToSend.append(key + "[]", el);
+            formDataToSend.append(key + '[]', el)
           }
         })
-      } else if (elValue && elValue.constructor.name === "Object") {
+      } else if (elValue && elValue.constructor.name === 'Object') {
         Object.keys(elValue).forEach(subKey => {
-          const value = elValue[subKey];
-    
+          const value = elValue[subKey]
+          
           if (value !== undefined) {
-            formDataToSend.append(key + `[${subKey}]`, value);
+            formDataToSend.append(key + `[${subKey}]`, value)
           }
         })
       } else {
         if (elValue !== undefined) {
-          formDataToSend.append(key, data[key]);
+          formDataToSend.append(key, data[key])
         }
       }
     }
@@ -239,17 +242,17 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
   }
   
   protected async requestInterceptor (requestConfig: AxiosRequestConfig): Promise<AxiosRequestConfig> {
-    const tokens = await this.auth.getTokens();
-    let accessToken = tokens?.authToken;
+    const tokens = await this.auth.getTokens()
+    let accessToken = tokens?.authToken
     
     // If the user is sending a data to the server, check if there area files.
     // If so, convert data to FormData()
     if (requestConfig.data) {
-      let containFiles = false;
+      let containFiles = false
       
       for (const entry of Object.values(requestConfig.data)) {
-        if ((entry instanceof Array && entry[0] && entry[0].constructor.name === "File")
-          || (entry && (entry as any).constructor.name === "File")) {
+        if ((entry instanceof Array && entry[0] && entry[0].constructor.name === 'File')
+          || (entry && (entry as any).constructor.name === 'File')) {
           containFiles = true
         }
       }
@@ -261,7 +264,7 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
     
     // check if exists a refresh token and a token
     if (!tokens) {
-      return requestConfig;
+      return requestConfig
     }
     
     // check if is already refreshing token
@@ -285,30 +288,30 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
       //this.queue.decline(error)
       throw new Error(`Unable to refresh access token for request due to token refresh error: ${error.message}`)
     }
-  
+    
     // add token to headers
     if (accessToken) {
       requestConfig.headers[this.options.authHeader] = `${this.options.authHeaderPrefix}${accessToken}`
     }
-  
+    
     return requestConfig
   }
   
   protected async responseErrorInterceptor (error: AxiosError): Promise<AxiosError> {
     let errorName
     // const errorStatus = error.response?.status
-  
-    if (typeof error.response?.data === "string") {
-      errorName = "Error"
+    
+    if (typeof error.response?.data === 'string') {
+      errorName = 'Error'
     } else {
       errorName = error.response?.data?.name || error.response?.data?.error.name
     }
-  
-    if (errorName === "TokenExpiredException") {
+    
+    if (errorName === 'TokenExpiredException') {
       await this.auth.logout(true)
     }
-  
-    return Promise.reject(error);
+    
+    return Promise.reject(error)
   }
 }
 
@@ -326,8 +329,8 @@ export interface HttpPluginOptions {
   links: Record<string, string>;
 }
 
-export const httpPlugin = installPlugin<HttpPluginOptions>("http", HttpPlugin, {
-  authHeader: "Authorization",
-  authHeaderPrefix: "Bearer ",
+export const httpPlugin = installPlugin<HttpPluginOptions>('http', HttpPlugin, {
+  authHeader: 'Authorization',
+  authHeaderPrefix: 'Bearer ',
   ...settings
 } as HttpPluginOptions)

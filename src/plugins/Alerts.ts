@@ -1,5 +1,6 @@
-import { installPlugin, PluginTemplate } from '@/plugins/PluginTemplate';
+import { installPlugin, PluginTemplate } from '@/plugins/PluginTemplate'
 import { alertController, AlertInput, toastController } from '@ionic/vue'
+import { useUpdateToPremium } from '@/composables/updateToPremium'
 
 interface AlertAskOptions {
   header: string;
@@ -11,9 +12,16 @@ interface AlertAskOptions {
   inputs?: AlertInput[];
 }
 
+interface AlertAskEvents {
+  buttons: {
+    confirm?: (value: any, alert: HTMLIonAlertElement) => boolean | void;
+    cancel?: (value: any, alert: HTMLIonAlertElement) => boolean | void;
+  };
+}
+
 export class AlertAskResponse<T = any> {
-  resp!: boolean;
-  values!: T | null;
+  resp!: boolean
+  values!: T | null
 }
 
 interface AlertErrorOptions {
@@ -23,31 +31,33 @@ interface AlertErrorOptions {
 export class AlertsPlugin extends PluginTemplate<void> {
   private defaultOptions: Partial<AlertAskOptions> = {
     backdropDismiss: false
-  };
+  }
   
   private defaultOkButton = {
     text: 'Ok',
-    role: 'ok',
-  };
+    role: 'ok'
+  }
   
   private defaultCancelButton = {
     text: 'Annulla',
-    role: 'cancel',
-  };
-  
-  protected onInit (): void {
-    console.log('alerts init');
+    role: 'cancel'
   }
   
-  async ask<T = any>(options: AlertAskOptions): Promise<AlertAskResponse<T>> {
+  protected onInit (): void {
+    console.log('alerts init')
+  }
+  
+  async ask<T = any> (options: AlertAskOptions, events: AlertAskEvents | null = null): Promise<AlertAskResponse<T>> {
     const buttons = [
       Object.assign({}, this.defaultCancelButton, {
-        text: options.buttonCancelText ?? "Annulla"
+        text: options.buttonCancelText ?? 'Annulla',
+        handler: onCancelClick
       }),
       Object.assign({}, this.defaultOkButton, {
-        text: options.buttonOkText ?? "Ok"
+        text: options.buttonOkText ?? 'Ok',
+        handler: onConfirmClick
       })
-    ];
+    ]
     
     const alert = await alertController.create(
       Object.assign({}, this.defaultOptions, {
@@ -56,14 +66,32 @@ export class AlertsPlugin extends PluginTemplate<void> {
         inputs: options.inputs,
         buttons
       })
-    );
+    )
     
-    await alert.present();
-    const answer = await alert.onDidDismiss();
+    function onCancelClick (data) {
+      if (events?.buttons.cancel) {
+        return events.buttons.cancel(data, alert)
+      }
+    }
+    
+    function onConfirmClick (data) {
+      if (events?.buttons.confirm) {
+        return events.buttons.confirm(data, alert)
+      }
+    }
+    
+    if (events) {
+      Object.keys(events).forEach((key) => {
+        // alert.addEventListener(key, events[key])
+      })
+    }
+    
+    await alert.present()
+    const answer = await alert.onDidDismiss()
     const toReturn: AlertAskResponse = {
       resp: answer.role === 'ok',
       values: null
-    };
+    }
     
     if (answer.data.values) {
       toReturn.values = answer.data.values
@@ -75,32 +103,32 @@ export class AlertsPlugin extends PluginTemplate<void> {
   async error (error?: any) {
     const buttons = [
       this.defaultOkButton
-    ];
-  
-    const errorMessage = error.response?.data?.message || error.response?.data?.error?.message || error.message
-  
+    ]
+    
+    const errorMessage = error.response?.data?.message || error.response?.data?.error?.message || error.message || error
+    
     // @ts-ignore
-    const t = this.plugins.$t;
-  
+    const t = this.plugins.$t
+    
     const alert = await alertController.create(
       Object.assign({}, this.defaultOptions, {
         header: t('alerts.generic.error.title'),
         message: t('alerts.generic.error.message', { errorMessage }),
         buttons
       })
-    );
-  
-    await alert.present();
-  
-    const { role } = await alert.onDidDismiss();
-  
-    return role === 'ok';
+    )
+    
+    await alert.present()
+    
+    const { role } = await alert.onDidDismiss()
+    
+    return role === 'ok'
   }
   
   async info (message: string, title?: string) {
     const buttons = [
       this.defaultOkButton
-    ];
+    ]
     
     const alert = await alertController.create(
       Object.assign({}, this.defaultOptions, {
@@ -108,13 +136,28 @@ export class AlertsPlugin extends PluginTemplate<void> {
         message,
         buttons
       })
-    );
+    )
+    
+    await alert.present()
+    
+    const { role } = await alert.onDidDismiss()
+    
+    return role === 'ok'
+  }
   
-    await alert.present();
-  
-    const { role } = await alert.onDidDismiss();
-  
-    return role === 'ok';
+  async updateToPremium (_message?: string, _title?: string) {
+    const message = _message || 'Gentile utente, per poter utilizzare questa funzionalità è necessario aggiornare il proprio account a Premium!<br><br>Seleziona "Aggiorna ora" per procedere con l\'aggiornamento.'
+    const title = _title || 'Aggiorna a Premium!'
+    
+    const resp = await this.ask({
+      header: title,
+      message,
+      buttonOkText: 'Aggiorna ora'
+    })
+    
+    if (resp.resp) {
+      this.plugins.$router.push('/dashboard?updateToPremium=true')
+    }
   }
   
   async toast (message: string, color?: string) {
@@ -126,22 +169,23 @@ export class AlertsPlugin extends PluginTemplate<void> {
         color,
         buttons: [
           {
-            icon: "close",
-            role: 'cancel',
+            icon: 'close',
+            role: 'cancel'
           }
         ]
       })
     
-    await toast.present();
+    await toast.present()
   }
   
   async toastSuccess (message: string) {
-    return this.toast(message, "success")
+    return this.toast(message, 'success')
   }
   
   async toastError (message: string) {
-    return this.toast(message, "danger")
+    return this.toast(message, 'danger')
   }
+  
 }
 
-export const alertsPlugin = installPlugin<void>('alerts', AlertsPlugin);
+export const alertsPlugin = installPlugin<void>('alerts', AlertsPlugin)

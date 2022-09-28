@@ -28,13 +28,14 @@
               <li>
                 {{ $t('pages.userProfile.lbl_club_pack') }}: <strong>{{ formatClubPack(user?.clubPack) }}</strong>
               </li>
+              <li>
+                {{ $t('pages.userProfile.lbl_role') }}: <strong>{{ formatUserRole(user?.role) }}</strong>
+              </li>
             </ul>
           </ion-col>
           <ion-col size="12" sizeLg="6" class="pt-0 py-lg-5 mb-5 mb-lg-0">
             <ul class="ion-text-left my-0 list-simple">
-              <li>
-                {{ $t('pages.userProfile.lbl_role') }}: <strong>{{ formatUserRole(user?.role) }}</strong>
-              </li>
+
               <li v-if="referenceAgent" class="d-flex ion-align-items-center">
                 {{ $t('pages.userProfile.lbl_ref_agent') }}:
                 <a class="ms-1"
@@ -45,6 +46,21 @@
               </li>
               <li>
                 <a href="#" @click.prevent="checkIfHasEnough">Controllo a sistema per disponibilità</a>
+              </li>
+
+              <li v-if="user?._id">
+                <a class="ms-1"
+                   :href="$router.resolve({name: 'admin.users.wallet_fast', params: {id: user?._id}}).fullPath"
+                   target="_blank">
+                  {{ $t('pages.userProfile.lbl_goto_wallet_fast') }}
+                </a>
+              </li>
+              <li v-if="user?._id">
+                <a class="ms-1"
+                   :href="$router.resolve({name: 'admin.users.wallet_premium', params: {id: user?._id}}).fullPath"
+                   target="_blank">
+                  {{ $t('pages.userProfile.lbl_goto_wallet_premium') }}
+                </a>
               </li>
             </ul>
           </ion-col>
@@ -77,17 +93,6 @@
                         color="primary" version="outline" icon
                         icon-name="link" icon-position="end">
                 {{ $t('sections.orders.show_all_orders') }}
-              </PageLink>
-            </div>
-          </template>
-
-          <template v-slot:content_fastWallet>
-            <div class="ion-text-center">
-              <PageLink :to="{name: 'admin.users.wallet_fast', params: {id: user?._id}}"
-                        :btn-props="{target: '_blank'}"
-                        color="primary" version="outline" icon
-                        icon-name="link" icon-position="end">
-                Vai al Wallet Fast
               </PageLink>
             </div>
           </template>
@@ -159,11 +164,6 @@ export default defineComponent({
       {
         id: 'orders',
         text: t('pages.userProfile.tab_orders'),
-        open: false
-      },
-      {
-        id: 'fastWallet',
-        text: 'Wallet Fast',
         open: false
       }
     ])

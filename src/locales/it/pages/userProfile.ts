@@ -5,6 +5,8 @@ export const userProfile = {
   'lbl_club_pack': "Pacchetto attivo",
   'lbl_role': "Ruolo",
   'lbl_ref_agent': "Referente",
+  'lbl_goto_wallet_fast': "Vai al Wallet Fast",
+  'lbl_goto_wallet_premium': "Vai al Wallet Premium",
   'tab_contract': "Contratto",
   'tab_anagraphic': "Anagrafica",
   'tab_movements': "Movimenti",

@@ -28,7 +28,16 @@ export default [
     name: 'admin.users.wallet_fast',
     meta: {
       ...meta,
-      title: 'Wallet fast'
+      title: 'Wallet Fast'
+    }
+  },
+  {
+    path: prefix + '/wallet_premium/:id',
+    component: () => import('@/views/private/WalletPremium.vue'),
+    name: 'admin.users.wallet_premium',
+    meta: {
+      ...meta,
+      title: 'Wallet Premium'
     }
   },
   {

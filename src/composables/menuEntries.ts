@@ -36,7 +36,7 @@ export interface MenuEntry {
 }
 
 const externalLinks: MenuEntry[] = [{
-  route: 'https://globalgroup.consulting/club/video',
+  route: 'https://globalclub.it/video/',
   label: 'external.video',
   icon: 'link',
   externalLink: true
@@ -289,6 +289,11 @@ const mobileMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
           icon: 'wallet'
         },
         {
+          route: 'private.walletPremium',
+          label: 'userPortfolioPremium',
+          icon: 'wallet'
+        },
+        {
           route: 'private.profile',
           label: 'userProfileMobile',
           icon: 'user'
@@ -411,14 +416,14 @@ const desktopMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
       label: 'userPortfolio',
       icon: 'wallet'
     },
-    /*{
-      route: 'private.walletPremium',
-      label: 'userPortfolioPremium',
-      icon: 'wallet',
-    },*/
     {
       route: 'private.walletFast',
       label: 'userPortfolioFast',
+      icon: 'wallet'
+    },
+    {
+      route: 'private.walletPremium',
+      label: 'userPortfolioPremium',
       icon: 'wallet'
     },
     {
