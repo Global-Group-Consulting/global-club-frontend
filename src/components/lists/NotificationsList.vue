@@ -193,7 +193,6 @@ export default defineComponent({
     }
 
     async function onItemClick (notification: Notification) {
-      debugger
       if (!notification.data.action?.link) {
         return
       }
