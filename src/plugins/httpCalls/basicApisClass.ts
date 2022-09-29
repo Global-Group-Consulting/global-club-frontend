@@ -27,7 +27,7 @@ export class BasicApisClass {
     return this.baseUrl + endpoint + (queryParams ? '?' + urlParams.join('&') : '')
   }
   
-  private static async makeAxiosCall (method, ...args) {
+  public static async makeAxiosCall (method: string, withLoader: boolean, ...args) {
     let result
     let error
     
@@ -38,13 +38,17 @@ export class BasicApisClass {
     }
     
     try {
-      await this.loading.show()
+      if (withLoader) {
+        await this.loading.show()
+      }
       result = await this.axiosInstance[method](...args)
     } catch (er) {
       console.error(er)
       error = er
     } finally {
-      await this.loading.hide()
+      if (withLoader) {
+        await this.loading.hide()
+      }
     }
     
     if (result) {
@@ -72,7 +76,7 @@ export class BasicApisClass {
     }
     
     try {
-      return await this.makeAxiosCall(method, ...args)
+      return await this.makeAxiosCall(method, true, ...args)
     } catch (error) {
       if (showErrorAlert) {
         await this.alerts.error(error)
@@ -80,37 +84,11 @@ export class BasicApisClass {
       
       throw error
     }
-    /*let result
-    let error
-    
-    if (method === 'delete' && args.length > 1 && !args[1].data) {
-      console.error('[HTTP_PLUGIN] - Seems that you\'re trying to send extra data in a \'DELETE\' request.\n'
-        + 'To accomplish this, you must use AxiosRequestConfig object as the second argument instead on the provided object.\n'
-        + 'Ex:', { data: { filesToDelete: ['as6sad86a87d6'] } })
-    }
-    
-    try {
-      await this.loading.show()
-      result = await this.axiosInstance[method](...args)
-    } catch (er) {
-      console.error(er)
-      error = er
-    } finally {
-      await this.loading.hide()
-    }
-    
-    if (result) {
-      return result
-    } else if (error) {
-      await this.alerts.error(error)
-      
-      throw error
-    }*/
   }
   
   static async callAndWait<T> (method, showErrorAlert = true, ...args): Promise<AxiosResponse<T> | undefined> {
     try {
-      return await this.makeAxiosCall(method, args)
+      return await this.makeAxiosCall(method, true, args)
     } catch (error) {
       if (showErrorAlert) {
         await this.alerts.error(error)
