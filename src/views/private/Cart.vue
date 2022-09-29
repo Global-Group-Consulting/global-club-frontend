@@ -246,7 +246,7 @@ export default defineComponent({
 
       const askResult = await alerts.ask({
         header: 'Inviare l\'ordine?',
-        message: `Siete sicuri ti voler inviare il corrente ordine per un totale di <strong>${formatBrites(totalPrice)}</strong>?`,
+        message: `Siete sicuri ti voler procedere con l'invio dell'ordine corrente?`,
         buttonOkText: 'Si, invia'
       })
 
