@@ -83,7 +83,7 @@ export default defineComponent({
       /*   setTimeout(() => {
            toggleDrawerContent.value?.scrollTo(0, 1000)
          }, 1500)*/
-    }, { immediate: true })
+    }, { immediate: true, deep: true })
 
     watch(() => props.messageToHighlight, (value) => {
       opened.value = true

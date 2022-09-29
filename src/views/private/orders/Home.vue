@@ -32,9 +32,12 @@ export default defineComponent({
     const updateAsap = ref(false)
 
     onIonViewWillEnter(() => {
-      if (route.query.refreshPending) {
-        updateAsap.value = true
-      }
+      // if (route.query.refreshPending) {
+
+      // force update each time the page is loaded to avoid problems when cancelling an order
+      updateAsap.value = true
+
+      // }
     })
 
     return {

@@ -262,7 +262,8 @@ export default defineComponent({
       await store.dispatch('cart/clean')
 
       await router.push({
-        name: 'private.orders.home'
+        name: 'private.orders.home',
+        query: { refreshPending: 'true' }
       })
     }
 
