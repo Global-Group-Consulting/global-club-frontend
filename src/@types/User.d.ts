@@ -4,11 +4,13 @@ import { AclPermissionsEnum } from '@/@enums/acl.permissions.enum'
 import { PackEnum } from '@/@enums/pack.enum'
 
 export interface ClubPackHistory {
-  cost: number;
-  endsAt: string;
-  orderId: string;
+  cost?: number;
+  endsAt?: string;
+  orderId?: string;
   pack: PackEnum;
-  startsAt: string;
+  startsAt?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface User {
@@ -96,6 +98,9 @@ export interface ReadUserGroupsDto {
   count: number;
 }
 
-export type UpdateUserContractDto = Pick<User, 'clubCardNumber' | 'clubPack'>
+export type UpdateUserContractDto = Pick<User, 'clubCardNumber' | 'clubPack'> & {
+  clubPackStartAt: string;
+  clubPackEndAt: string;
+}
 
 export type UpdateUserAnagraphicDto = Pick<User, 'firstName' | 'lastName' | 'email'>

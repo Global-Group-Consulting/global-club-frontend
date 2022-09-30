@@ -119,10 +119,15 @@ export default defineComponent({
     }
 
     function onChange (e) {
-      const value = e.target.value
+      let value = e.target.value
 
       if (props.component !== 'ion-select' && props.modelValue === value) {
         return
+      }
+
+      // set value to null if empty string to avoid validation error
+      if (props.type === 'date' && value === '') {
+        value = null
       }
 
       emit('update:modelValue', value)

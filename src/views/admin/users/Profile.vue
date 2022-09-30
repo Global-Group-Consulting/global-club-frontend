@@ -26,13 +26,19 @@
                 {{ $t('pages.userProfile.lbl_email') }}: <strong>{{ user?.email }}</strong>
               </li>
               <li>
-                {{ $t('pages.userProfile.lbl_club_pack') }}: <strong>{{ formatClubPack(user?.clubPack) }}</strong>
+                {{ $t('pages.userProfile.lbl_club_pack') }}:
+                <a href="#" class="d-inline-flex ion-align-items-center" title="Apri dettagli"
+                   @click.prevent="openClubPackDetails">
+                  <strong>{{ formatClubPack(user?.clubPack) }}</strong>
+                  <Icon name="info" class="ms-2"></Icon>
+                </a>
               </li>
               <li>
                 {{ $t('pages.userProfile.lbl_role') }}: <strong>{{ formatUserRole(user?.role) }}</strong>
               </li>
             </ul>
           </ion-col>
+
           <ion-col size="12" sizeLg="6" class="pt-0 py-lg-5 mb-5 mb-lg-0">
             <ul class="ion-text-left my-0 list-simple">
 
@@ -107,7 +113,7 @@ import { computed, defineComponent, inject, ref, Ref } from 'vue'
 import TopToolbar from '@/components/toolbars/TopToolbar.vue'
 import { formatUserName } from '@/@utilities/fields'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { onIonViewDidLeave, onIonViewWillEnter } from '@ionic/vue'
 import { User, UserBasic } from '@/@types/User'
@@ -121,10 +127,13 @@ import AdminOrdersList from '@/components/lists/orders/AdminOrdersList.vue'
 import PageLink from '@/components/PageLink.vue'
 import UserStatistics from '@/components/UserStatistics.vue'
 import { AlertsPlugin } from '@/plugins/Alerts'
+import Icon from '@/components/Icon.vue'
+import { formatLocaleDate } from '@/@utilities/dates'
 
 export default defineComponent({
   name: 'Profile',
   components: {
+    Icon,
     UserStatistics,
     PageLink,
     AdminOrdersList,
@@ -139,6 +148,7 @@ export default defineComponent({
     const movementsList = ref()
     const { t } = useI18n()
     const route = useRoute()
+    const router = useRouter()
     const http = inject<HttpPlugin>('http') as HttpPlugin
     const alerts = inject<AlertsPlugin>('alerts') as AlertsPlugin
     const userId = computed(() => route.params.id)
@@ -209,6 +219,36 @@ export default defineComponent({
       movementsList.value?.refreshData()
     }
 
+    function openClubPackDetails () {
+      let detailsHtml = `Nessuna informazione disponibile.`
+
+      if (user.value?.clubPackHistory?.length) {
+        detailsHtml = `<ion-list lines="full">`
+        detailsHtml = user.value?.clubPackHistory.map((item) => {
+          const routeLink = item.orderId ? router.resolve({
+            name: 'admin.orders.details',
+            params: { id: item.orderId }
+          }).href : null
+
+          return `<ion-item class="" lines="full" ${routeLink ? `href="${routeLink}"` : ''} target="_blank">
+                    <ion-label>
+                      <div class="fs-3">Pack <strong>${t('enums.PackEnum.' + item.pack)}</strong>:</div>
+                      <div class="mb-1">Ordine cambio: ${item.orderId ? `<span class="color-primary">${item.orderId}</span>` : '-'}</div>
+
+                      <div>Data inizio: ${item.startsAt ? formatLocaleDate(new Date(item.startsAt)) : '-'}</div>
+                      <div class="mb-1">Data scadenza: ${item.endsAt ? formatLocaleDate(new Date(item.endsAt)) : '-'}</div>
+
+                      <div>Data cambio: ${item.createdAt ? formatLocaleDate(new Date(item.createdAt)) : '-'}</div>
+                      <div>Data ultima modifica: ${item.updatedAt ? formatLocaleDate(new Date(item.updatedAt)) : '-'}</div>
+                    </ion-label>
+                  </ion-item>`
+        }).join('')
+        detailsHtml += `</ion-list>`
+      }
+
+      alerts.info(detailsHtml, 'Dettaglio cambi pack')
+    }
+
     onIonViewWillEnter(async () => {
       const apiCalls: any[] = [
         http.api.users.readProfile(route.params.id as string, true)
@@ -234,6 +274,7 @@ export default defineComponent({
       onMovementsFetched,
       onStatisticsUpdate,
       checkIfHasEnough,
+      openClubPackDetails,
       referenceAgent,
       userStatistics,
       movementsList
