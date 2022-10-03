@@ -96,7 +96,7 @@ export default defineComponent({
         return null
       }
 
-      if (lastChange.pack === PackEnum.PREMIUM && userIsPremium.value) {
+      if (lastChange.pack === PackEnum.PREMIUM && userIsPremium.value && lastChange.endsAt) {
         return formatLocaleDate(new Date(lastChange.endsAt), true)
       }
 
