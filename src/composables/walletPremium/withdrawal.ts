@@ -150,7 +150,7 @@ export function useWithdrawal () {
    * @return Promise<WalletPremiumMovement[] | void>
    */
   async function onWithdrawAllClick (amount: number, semesters: string[]): Promise<WalletPremiumMovement[] | void> {
-    if (!store.getters['auth/hasPackPremium'] || !store.getters['auth/isAdmin']) {
+    if (!store.getters['auth/hasPackPremium'] && !store.getters['auth/isAdmin']) {
       await alerts.updateToPremium()
       
       return
@@ -185,7 +185,7 @@ export function useWithdrawal () {
    * @return Promise<WalletPremiumMovement[] | void>
    */
   async function onWithdrawClick (semester: string, amount: number): Promise<WalletPremiumMovement[] | void> {
-    if (!store.getters['auth/hasPackPremium'] || !store.getters['auth/isAdmin']) {
+    if (!store.getters['auth/hasPackPremium'] && !store.getters['auth/isAdmin']) {
       await alerts.updateToPremium()
       
       return
