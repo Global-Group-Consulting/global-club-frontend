@@ -38,8 +38,8 @@ export function useWithdrawal () {
     'clubCardNum': {
       type: 'text',
       name: 'userCardNum',
-      label: 'Codice utente destinatario',
-      placeholder: 'Codice utente destinatario',
+      label: 'Numero tessera destinatario',
+      placeholder: 'Numero tessera destinatario',
       value: ''
     }
   }
@@ -80,7 +80,7 @@ export function useWithdrawal () {
           const confirm = await alerts.ask({
             header: 'Eseguire un trasferimento?',
             message: `Sei sicuro di voler trasferire <strong>${formatBrites(data.amount)}</strong> a <strong>${user?.firstName} ${user?.lastName}</strong>?
-                                    Se non lo si desidera, premere "Annulla" e svuotare il campo "Codice utente destinatario".`,
+                                    Se non lo si desidera, premere "Annulla" e svuotare il campo "Numero tessera destinatario".`,
             buttonOkText: 'Si, Trasferisci'
           })
           

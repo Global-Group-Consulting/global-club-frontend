@@ -27,6 +27,10 @@ ion-modal {
       &::part(background):before {
         display: none;
       }
+
+      .form-input {
+        --background: #29292b;
+      }
     }
 
     .modal-footer {
@@ -34,7 +38,10 @@ ion-modal {
       padding: $spacer;
       box-shadow: 0 0 50px rgba(var(--ion-color-primary-rgb), .15);
     }
+  }
 
+  &.modal-small {
+    --height: 400px;
   }
 }
 
