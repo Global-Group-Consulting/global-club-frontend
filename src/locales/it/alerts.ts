@@ -58,8 +58,7 @@ export const alerts = {
     withdrawAll: {
       title: 'Sbloccare l\'importo disponibile da tutti i semestri?',
       message: `La somma degli importi sbloccabili per il mese corrente è di <strong>{amount}</strong>.<br>
-                  Scegliere <strong>Sblocca</strong> se si desidera ricevere l'importo nel suo wallet personale,
-                  altrimenti scegliere <strong>Trasferisci</strong> per spostare tale importo sul wallet di un altro utente.`,
+                  Se si desidera trasferire tale importo a un altro utente, compilare anche il campo <em>"Numero tessera destinatario"</em>, altrimenti lasciarlo vuoto.`,
       success: 'Sblocco avvenuto con successo'
     },
     withdraw: {
