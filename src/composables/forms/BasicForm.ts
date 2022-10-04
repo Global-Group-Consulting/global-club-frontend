@@ -1,13 +1,13 @@
-import { FormContext, InvalidSubmissionContext, useField, useForm } from 'vee-validate';
-import { computed, inject, reactive, ref, Ref, UnwrapRef, watch } from 'vue';
-import { HttpPlugin } from '@/plugins/HttpPlugin';
-import { AlertsPlugin } from '@/plugins/Alerts';
-import { Composer, useI18n } from 'vue-i18n';
-import { UpdateUserContractDto } from '@/@types/User';
-import { MixedSchema } from 'yup/lib/mixed';
-import { ArraySchema, BooleanSchema, DateSchema, NumberSchema, ObjectSchema } from 'yup';
-import StringSchema from 'yup/lib/string';
-import {get} from "lodash";
+import { FormContext, InvalidSubmissionContext, useField, useForm } from 'vee-validate'
+import { computed, ComputedRef, inject, reactive, ref, Ref, UnwrapRef, watch } from 'vue'
+import { HttpPlugin } from '@/plugins/HttpPlugin'
+import { AlertsPlugin } from '@/plugins/Alerts'
+import { Composer, useI18n } from 'vue-i18n'
+import { UpdateUserContractDto } from '@/@types/User'
+import { MixedSchema } from 'yup/lib/mixed'
+import { ArraySchema, BooleanSchema, DateSchema, NumberSchema, ObjectSchema } from 'yup'
+import StringSchema from 'yup/lib/string'
+import { get } from 'lodash'
 
 export type FormFields<T = any> = Record<keyof T, FormField>;
 
@@ -24,7 +24,8 @@ export interface FormField {
   modelValue: Ref;
   initialValue: Ref;
   errorMessage: Ref<string | undefined>;
-  resetField();
+  
+  resetField ();
 }
 
 export interface FormSettings<T = any> {
@@ -34,40 +35,40 @@ export interface FormSettings<T = any> {
   i18nKeyTransformer?: (key: string) => string;
 }
 
-type BasicFormEventType = "submitCompleted";
+type BasicFormEventType = 'submitCompleted';
 
 export declare interface BasicForm<T> {
-  addEventListener (type: "submitCompleted", callback: ((evt: BasicFormEvent<T>) => void) | null, options?: AddEventListenerOptions | boolean): void;
+  addEventListener (type: 'submitCompleted', callback: ((evt: BasicFormEvent<T>) => void) | null, options?: AddEventListenerOptions | boolean): void;
 }
 
 class BasicFormEvent<T> extends CustomEvent<T> {
   constructor (type: BasicFormEventType, eventInitDict?: (CustomEventInit<T> | undefined)) {
-    super(type, eventInitDict);
+    super(type, eventInitDict)
   }
 }
 
 export abstract class BasicForm<T> extends EventTarget {
-  protected abstract schema: Record<string, any>
-  private formFields: FormFields = {};
+  protected abstract schema: Record<string, any> | ComputedRef<Record<string, any>>
+  private formFields: FormFields = {}
   private initialData: Ref<Record<string, any> | null> = ref({})
   protected form !: FormContext<any>
-  protected apiCalls!: HttpPlugin;
-  protected alerts!: AlertsPlugin;
-  protected i18n!: Composer;
+  protected apiCalls!: HttpPlugin
+  protected alerts!: AlertsPlugin
+  protected i18n!: Composer
   protected cbOnSubmitSuccess: null | ((data: T | undefined) => void) = null
-  public onSubmit: any = null;
+  public onSubmit: any = null
   public onEditClick = (newVal: any) => {
-    this.isEditing.value = (newVal && typeof newVal === 'boolean') ? newVal : !this.isEditing.value;
+    this.isEditing.value = (newVal && typeof newVal === 'boolean') ? newVal : !this.isEditing.value
     
     if (!this.isEditing.value) {
       this.resetForm()
     }
   }
-  private isEditing = ref(false);
+  private isEditing = ref(false)
   
   protected constructor (private settings: FormSettings<T>) {
-    super();
-  
+    super()
+    
     if (settings.dataToWatch) {
       // when data changes, update initial data.
       watch(settings.dataToWatch,
@@ -75,14 +76,22 @@ export abstract class BasicForm<T> extends EventTarget {
         { deep: true }
       )
     }
+    
+    this.apiCalls = inject('http') as HttpPlugin
+    this.alerts = inject('alerts') as AlertsPlugin
+    this.i18n = useI18n()
+  }
   
-    this.apiCalls = inject("http") as HttpPlugin;
-    this.alerts = inject("alerts") as AlertsPlugin;
-    this.i18n = useI18n();
+  public getSchema (onlyValue = true) {
+    if (this.schema.constructor.name === "ComputedRefImpl" && onlyValue) {
+      return this.schema["value"]
+    }
+    
+    return this.schema
   }
   
   public addEventListener (type, callback, options?): void {
-    return super.addEventListener(type, callback, options);
+    return super.addEventListener(type, callback, options)
   }
   
   /**
@@ -98,66 +107,66 @@ export abstract class BasicForm<T> extends EventTarget {
   }
   
   public get formData (): UnwrapRef<FormFields<T>> {
-    return reactive<any>(this.formFields);
+    return reactive<any>(this.formFields)
   }
   
   protected get formErrors () {
     return Object.entries(this.form.errors.value).map(er => {
-      const key: string = er[0];
-      const msg: string | undefined = er[1];
+      const key: string = er[0]
+      const msg: string | undefined = er[1]
       const toReturn: string[] = []
       
       if (this.settings.i18nRoot) {
-        const keyText = this.settings.i18nKeyTransformer ? this.settings.i18nKeyTransformer(key) : key;
+        const keyText = this.settings.i18nKeyTransformer ? this.settings.i18nKeyTransformer(key) : key
         
-        toReturn.push(this.i18n.t(this.settings.i18nRoot + "." + keyText));
+        toReturn.push(this.i18n.t(this.settings.i18nRoot + '.' + keyText))
       }
       
-      (msg && toReturn.push(msg));
+      (msg && toReturn.push(msg))
       
-      return toReturn.join(": ");
+      return toReturn.join(': ')
     })
   }
   
   protected createFormFields (initialData?: () => T) {
     // First set the initial data
-    this.updateInitialFormData(initialData ? initialData() : {});
-
+    this.updateInitialFormData(initialData ? initialData() : {})
+    
     // Creates the VeeValidate form by setting the validation schema and
     // initialValues
     this.form = useForm({
       validationSchema: this.schema,
       initialValues: this.initialData
-    });
-  
+    })
+    
     // Define the onSubmit method
     // that will be used to bind on the form submit event
     this.onSubmit = this.form.handleSubmit<Promise<T>>((values) => this.handleSubmitValid(values),
       (invalidSubmissionContext: InvalidSubmissionContext) => this.onHandleSubmitInvalid(invalidSubmissionContext))
-  
-    const keys = Object.keys(this.schema).reduce((acc, curr) => {
-      const newKey: string = curr;
     
-      if (this.schema[curr] instanceof ObjectSchema) {
-        Object.keys(this.schema[curr].fields).forEach(subKey => {
-          acc.push(newKey + "." + subKey);
+    const keys = Object.keys(this.getSchema()).reduce((acc, curr) => {
+      const newKey: string = curr
+      
+      if (this.getSchema()[curr] instanceof ObjectSchema) {
+        Object.keys(this.getSchema()[curr].fields).forEach(subKey => {
+          acc.push(newKey + '.' + subKey)
         })
       } else {
-        acc.push(newKey);
+        acc.push(newKey)
       }
-    
+      
       return acc
     }, [] as string[])
-  
+    
     this.formFields = keys.reduce<FormFields>((acc, key) => {
-      const validation = get(this.schema, key);
-    
-      const {value, errorMessage, resetField} = useField<any>(key, validation, {})
-    
+      const validation = get(this.getSchema(), key)
+      
+      const { value, errorMessage, resetField } = useField<any>(key, validation, {})
+      
       if (this.initialData.value?.hasOwnProperty(key)) {
         value.value = this.initialData.value[key]
       }
-    
+      
       acc[key] = {
         modelValue: value,
         errorMessage,
@@ -171,28 +180,28 @@ export abstract class BasicForm<T> extends EventTarget {
   
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected onHandleSubmitInvalid (invalidSubmissionContext: InvalidSubmissionContext) {
-    return this.alerts.toastError(this.formErrors.join("<br>"));
+    return this.alerts.toastError(this.formErrors.join('<br>'))
   }
   
   protected afterValidSubmit (result?: T) {
     const initialData = this.settings.dataToWatch ? (this.settings.dataToWatch() ?? {}) : {}
-    const dataToEmit = Object.assign({}, initialData, result || {});
-  
+    const dataToEmit = Object.assign({}, initialData, result || {})
+    
     // merges new data with initial data. This because new data does not contain
     // all the user data, but only the necessary data.
-    this.updateInitialFormData<UpdateUserContractDto>(result || {});
-  
+    this.updateInitialFormData<UpdateUserContractDto>(result || {})
+    
     if (this.settings.emit) {
-      this.settings.emit("update:modelValue", dataToEmit);
+      this.settings.emit('update:modelValue', dataToEmit)
     }
-  
-    this.dispatch("submitCompleted", result)
-  
+    
+    this.dispatch('submitCompleted', result)
+    
     if (this.cbOnSubmitSuccess) {
       this.cbOnSubmitSuccess(result)
     }
-  
-    this.onEditClick(false);
+    
+    this.onEditClick(false)
   }
   
   protected dispatch (event: BasicFormEventType, data: any) {
@@ -204,11 +213,11 @@ export abstract class BasicForm<T> extends EventTarget {
   }
   
   public updateInitialFormData<T> (data?: Partial<Record<keyof T, any>>) {
-    if (!this.schema || !data) {
+    if (!this.getSchema() || !data) {
       return
     }
     
-    Object.keys(this.schema).forEach(key => {
+    Object.keys(this.getSchema()).forEach(key => {
       if (!this.initialData.value) {
         this.initialData.value = {}
       }
@@ -217,7 +226,7 @@ export abstract class BasicForm<T> extends EventTarget {
     })
     
     if (this.form) {
-      this.form.resetForm();
+      this.form.resetForm()
     }
   }
   

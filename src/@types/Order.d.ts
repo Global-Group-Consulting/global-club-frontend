@@ -12,6 +12,7 @@ export interface Order {
   status: OrderStatusEnum;
   notes: string;
   cancelReason?: string;
+  cancelledByUser?: boolean;
   unreadCount?: string;
   
   _id: string;

@@ -49,6 +49,7 @@ import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { Waypoint } from 'vue-waypoint'
 import { WaypointState } from '@/@types/WaypointState'
 import { useRoute } from 'vue-router'
+import { OrderStatusEnum } from '@/@enums/order.status.enum'
 
 export default defineComponent({
   name: 'ChatMessage',
@@ -118,7 +119,7 @@ export default defineComponent({
       }
 
       if (typeOfOrderStatusChange.value) {
-        return 'Ordine ' + formatOrderStatus(props.data.data?.orderStatus)
+        return 'Ordine ' + formatOrderStatus(props.data.data?.orderStatus) + (props.data.data?.cancelledByUser ? ' dall\'utente' : '')
       }
 
       if (senderIsUser.value) {
@@ -180,6 +181,10 @@ export default defineComponent({
         toReturn.push('</ul>')
 
         return toReturn.join('')
+      }
+
+      if (props.data.type === MessageTypeEnum.ORDER_STATUS_UPDATE && props.data.data?.orderStatus === OrderStatusEnum.CANCELLED) {
+        // would be nice to show the reason for the cancellation
       }
 
       return ''

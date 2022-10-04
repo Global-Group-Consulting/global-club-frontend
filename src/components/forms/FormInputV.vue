@@ -6,7 +6,7 @@
       <component :is="component"
                  ref="inputComponent"
                  :type="componentType"
-                 :value="modelValue"
+                 :value="computedModelValue"
                  :clearInput="clearInput"
                  :placeholder="placeholder"
                  :multiple="multiple"
@@ -108,6 +108,19 @@ export default defineComponent({
       })
     })
 
+    const computedModelValue = computed({
+      get () {
+        if (props.type === 'date') {
+          return props.modelValue ? props.modelValue.toString().split('T')[0] : ''
+        }
+
+        return props.modelValue
+      },
+      set (value) {
+        emit('update:modelValue', value)
+      }
+    })
+
     function onInput (e) {
       const value = e.target.value
 
@@ -119,10 +132,15 @@ export default defineComponent({
     }
 
     function onChange (e) {
-      const value = e.target.value
+      let value = e.target.value
 
       if (props.component !== 'ion-select' && props.modelValue === value) {
         return
+      }
+
+      // set value to null if empty string to avoid validation error
+      if (props.type === 'date' && value === '') {
+        value = null
       }
 
       emit('update:modelValue', value)
@@ -133,6 +151,7 @@ export default defineComponent({
       showError,
       onInput, onChange,
       inFocus,
+      computedModelValue,
       calcInterface, calcInterfaceOptions
     }
   }

@@ -1,6 +1,7 @@
 export const orderDetails = {
   "title": "Dettagli ordine #{number}",
   "btn_cancel": "Rifiuta",
+  "btn_user_cancel": "Annulla",
   "btn_approve": "Approva",
   "btn_start_working": "Prendi in carico",
   "order_status": "Stato ordine",

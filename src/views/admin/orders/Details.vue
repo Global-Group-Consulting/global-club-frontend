@@ -18,7 +18,8 @@
             <ul class="ion-text-left my-0 list-simple">
               <li>
                 {{ $t("pages.orderDetails.order_status") }}: <strong
-                  :style="'color:' + getOrderStatusColor(order?.status)">{{ formatOrderStatus(order?.status) }}</strong>
+                  :style="'color:' + getOrderStatusColor(order?.status)">{{ formatOrderStatus(order?.status) }}
+                <span v-if="order?.cancelledByUser"> dall'utente</span></strong>
               </li>
               <li>
                 {{ $t("pages.orderDetails.order_amount") }}: <strong v-html="formatBrites(order?.amount)"></strong>

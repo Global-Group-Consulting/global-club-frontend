@@ -17,7 +17,9 @@
       "webpack-env",
       "jest",
       "lodash",
-      "yup"
+      "yup",
+      "@vuelidate/validators",
+      "@vuelidate/core"
     ],
     "paths": {
       "@/*": [

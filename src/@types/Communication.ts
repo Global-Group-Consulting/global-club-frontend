@@ -43,6 +43,7 @@ export interface Message {
       };
     }[];
     packChange?: any;
+    cancelledByUser?: boolean;
   };
   readings: MessageRead[];
   isRead: MessageRead;
