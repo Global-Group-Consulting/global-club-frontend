@@ -48,7 +48,7 @@ export class OrderApis extends BasicApisClass {
     const queryParams = {
       'filter[status]': statuses,
       'sortBy[createdAt]': -1,
-      'perPage': 10,
+      'perPage': 10
     }
     
     if (page) {
@@ -62,7 +62,7 @@ export class OrderApis extends BasicApisClass {
   }
   
   static async readCounters (filters?: any) {
-    const result = await this.withLoader<ReadOrderStatusesDto[]>('get', this.getUrl('/statuses', filters))
+    const result = await this.makeAxiosCall<ReadOrderStatusesDto[]>('get', false, this.getUrl('/statuses', filters))
     
     return result?.data
   }

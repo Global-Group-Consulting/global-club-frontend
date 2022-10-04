@@ -27,7 +27,7 @@ export class BasicApisClass {
     return this.baseUrl + endpoint + (queryParams ? '?' + urlParams.join('&') : '')
   }
   
-  public static async makeAxiosCall (method: string, withLoader: boolean, ...args) {
+  public static async makeAxiosCall<T> (method: string, withLoader: boolean, ...args) {
     let result
     let error
     
@@ -76,7 +76,7 @@ export class BasicApisClass {
     }
     
     try {
-      return await this.makeAxiosCall(method, true, ...args)
+      return await this.makeAxiosCall<T>(method, true, ...args)
     } catch (error) {
       if (showErrorAlert) {
         await this.alerts.error(error)
