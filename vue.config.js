@@ -1,13 +1,14 @@
 module.exports = {
   outputDir: "dist",
   devServer: {
-    "public": "dev.globalclub.consulting",
-    proxy: {
-      "/api/": {
-        target: process.env.VUE_APP_BASE_URL,
-        logLevel: "debug",
-      }
-    }
+    disableHostCheck: true
+  //   "public": "dev.globalclub.consulting",
+  //   proxy: {
+  //     "/api/": {
+  //       target: process.env.VUE_APP_BASE_URL,
+  //       logLevel: "debug",
+  //     }
+  //   }
   },
   css: {
     loaderOptions: {

@@ -29,6 +29,15 @@ export default [
     },
   },
   {
+    path: "/walletFast",
+    component: () => import("@/views/private/WalletFast.vue"),
+    name: "private.walletFast",
+    meta: {
+      isPrivate: true,
+      title: "Wallet Fast"
+    },
+  },
+  {
     path: "/cart",
     component: () => import("@/views/private/Cart.vue"),
     name: "private.cart",
@@ -103,15 +112,24 @@ export default [
       isAdmin: true,
       title: "News ed Eventi"
     },
+  },{
+    path: "/notifications",
+    component: () => import("@/views/shared/Notifications.vue"),
+    name: "notifications.index",
+    meta: {
+      isPrivate: true,
+      isAdmin: true,
+      title: "Notifiche"
+    },
+  },{
+    path: "/faqs",
+    component: () => import("@/views/shared/Faq.vue"),
+    name: "faqs.index",
+    meta: {
+      isPrivate: true,
+      isAdmin: true,
+      title: "Domande frequenti"
+    },
   },
-  /* {
-     path: "/components/buttons",
-     component: () => import("@/views/private/components/Buttons.vue"),
-     name: "private.components/buttons",
-     meta: {
-       isPrivate: true,
-       isAdmin: true,
-     },
-   },*/
   ...products
 ] as RouteRecordRaw[]

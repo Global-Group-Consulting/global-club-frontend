@@ -5,9 +5,10 @@ ion-modal {
 
   .modal-wrapper {
     --box-shadow: 0 0 200px 20px rgba(var(--ion-color-primary-rgb), .2);
+    --background: var(--ion-color-secondary) !important;
 
     @include mediaQueryUp("md") {
-      --border-radius: 20px
+      --border-radius: 16px
     }
 
     .modal-header {
@@ -21,10 +22,14 @@ ion-modal {
     }
 
     .modal-content {
-      //--background: var(--ion-color-secondary) !important;
+      --background: var(--ion-color-secondary) !important;
 
       &::part(background):before {
         display: none;
+      }
+
+      .form-input {
+        --background: #29292b;
       }
     }
 
@@ -33,7 +38,10 @@ ion-modal {
       padding: $spacer;
       box-shadow: 0 0 50px rgba(var(--ion-color-primary-rgb), .15);
     }
+  }
 
+  &.modal-small {
+    --height: 400px;
   }
 }
 

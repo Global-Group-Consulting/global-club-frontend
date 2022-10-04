@@ -1,36 +1,103 @@
-import { BasicForm, FormSettings, YupSchema } from '@/composables/forms/BasicForm';
-import { UpdateUserContractDto, User } from '@/@types/User';
-import * as yup from "yup";
-import { PackEnum } from '@/@enums/pack.enum';
-import { FormContext } from 'vee-validate';
-import { snakeCase } from 'lodash';
+import { computed, inject, Ref, ref, watch } from 'vue'
+import { PackEnum } from '@/@enums/pack.enum'
+import useVuelidate from '@vuelidate/core'
+import validators from '@/composables/validators'
 
-export class UserContractForm extends BasicForm<UpdateUserContractDto> {
-  protected schema: Partial<Record<keyof User, YupSchema>> = {};
-  protected form!: FormContext<UpdateUserContractDto>
-  private readonly userId: string | null = null;
-  
-  constructor (settings: FormSettings) {
-    super(Object.assign({
-      i18nRoot: "forms.userContract",
-      i18nKeyTransformer: snakeCase
-    }, settings));
-  
-    this.schema = {
-      clubCardNumber: yup.string().min(5),
-      clubPack: yup.string().required().oneOf(Object.values(PackEnum))
+export function useUserContractForm (data) {
+  const editing = ref(false)
+  const formData = ref(parseIncomingData(data))
+  const rules = computed(() => ({
+    clubCardNumber: { minLength: validators.minLength(5) },
+    clubPack: { required: validators.required, oneOf: validators.oneOf(Object.values(PackEnum)) },
+    clubPackStartAt: { minDate: validators.minDate('2021-01-01'), maxDate: validators.maxDate(new Date().toISOString()) },
+    clubPackEndAt: {
+      // requiredIf: validators.requiredIf(() => !!formData.value.clubPackStartAt),
+      minDate: validators.minDate(formData.value.clubPackStartAt)
     }
+  }))
   
-    this.userId = settings.dataToWatch ? settings.dataToWatch()._id : null;
-    this.createFormFields(settings.dataToWatch);
+  const $v = useVuelidate(rules, formData)
+  
+  let handleSubmitFn: () => Promise<void>
+  
+  function parseIncomingData (data) {
+    if (data.constructor.name === 'ComputedRefImpl') {
+      return { ...data.value }
+    }
+    return { ...data }
   }
   
-  async handleSubmitValid (values: UpdateUserContractDto) {
-    const result = await this.apiCalls.api.users.update<UpdateUserContractDto>(values, this.userId);
+  function registerOnSubmit (fn: () => Promise<void>) {
+    handleSubmitFn = fn
+  }
+  
+  function getError (field): string | undefined {
+    if (!field || !(field in $v.value)) {
+      return
+    }
     
-    if (result) {
-      this.afterValidSubmit(result);
+    const errors = $v.value[field].$errors
+    
+    if (errors.length) {
+      return errors[0].$message
+    }
+    
+    return
+  }
+  
+  function getFormData () {
+    return formData.value
+  }
+  
+  function toggleEditMode (status: boolean) {
+    editing.value = (status && typeof status === 'boolean') ? status : !editing.value
+    
+    if (!editing.value) {
+      $v.value.$reset()
+      formData.value = parseIncomingData(data)
     }
   }
   
+  async function onSubmit () {
+    const isValid = await $v.value.$validate()
+    
+    if (!isValid) {
+      return
+    }
+    
+    await handleSubmitFn()
+  }
+  
+  watch(() => formData.value.clubPackStartAt, (value) => {
+    if (!value) {
+      return
+    }
+    
+    const date = new Date(value)
+    date.setFullYear(date.getFullYear() + 1)
+    
+    if (!formData.value.clubPackEndAt || $v.value.clubPackEndAt.$dirty) {
+      formData.value.clubPackEndAt = date.toISOString()
+    }
+  }, {
+    immediate: true,
+    deep: true
+  })
+  
+  watch(() => data, (value) => {
+    formData.value = parseIncomingData(value)
+  }, {
+    immediate: true,
+    deep: true
+  })
+  
+  return {
+    $v,
+    editing,
+    getError,
+    getFormData,
+    registerOnSubmit,
+    toggleEditMode,
+    onSubmit
+  }
 }

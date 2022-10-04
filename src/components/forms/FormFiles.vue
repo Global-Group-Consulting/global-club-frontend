@@ -12,7 +12,8 @@
       <template v-if="images && images.length > 0">
         <ion-col v-for="image of images" :key="image.id">
           <ion-thumbnail>
-            <Image :file-id="image.id" :file-name="image.fileName"></Image>
+            <Image :file-id="image.id" :file-name="image.fileName" can-preview
+            ></Image>
 
             <ClubButton color="danger" version="outline" icon-name="close"
                         icon only-icon size="small"

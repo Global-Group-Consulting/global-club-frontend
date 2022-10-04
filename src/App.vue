@@ -16,39 +16,42 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, onMounted } from 'vue';
-  import { useRoute } from 'vue-router';
-  import { useStore } from 'vuex';
-  import { storeKey } from '@/store';
-  import TheDesktopSidebar from './components/TheDesktopSidebar.vue';
-  import TheMobileToolbar from '@/components/TheMobileToolbar.vue';
+import { computed, defineComponent, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
+import { storeKey } from '@/store'
+import TheDesktopSidebar from './components/TheDesktopSidebar.vue'
+import TheMobileToolbar from '@/components/TheMobileToolbar.vue'
 
-  export default defineComponent({
-    name: 'App',
-    components: { TheMobileToolbar, TheDesktopSidebar },
-    setup () {
-      const store = useStore(storeKey);
-      const route = useRoute();
-      const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
+export default defineComponent({
+  name: 'App',
+  components: { TheMobileToolbar, TheDesktopSidebar },
+  setup () {
+    const store = useStore(storeKey)
+    const route = useRoute()
+    const isLoggedIn = computed(() => store.getters['auth/isLoggedIn'])
 
-      function updateStoreGridSize (e: Event) {
-        const target = e.target as Window;
+    function updateStoreGridSize (e: Event) {
+      const target = e.target as Window
 
-        store.dispatch('updateGridSize', target.innerWidth);
-      }
-
-      window.addEventListener('resize', updateStoreGridSize);
-      window.addEventListener('orientationchange', updateStoreGridSize);
-
-      onMounted(() => {
-        window.dispatchEvent(new CustomEvent('resize'));
-      });
-
-      return {
-        isLoggedIn,
-        isSelected: (url: string) => (url === route.path ? 'selected' : ''),
-      };
+      store.dispatch('updateGridSize', target.innerWidth)
     }
-});
+
+    window.addEventListener('resize', updateStoreGridSize)
+    window.addEventListener('orientationchange', updateStoreGridSize)
+
+    onMounted(() => {
+      window.dispatchEvent(new CustomEvent('resize'))
+
+      store.dispatch('notifications/fetchCounters')
+      store.dispatch('notifications/autoFetch')
+    })
+
+    return {
+      isLoggedIn,
+      isSelected: (url: string) => (url === route.path ? 'selected' : '')
+    }
+  }
+})
 </script>
 

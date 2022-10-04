@@ -9,7 +9,7 @@
                     pager
                     :options="slideOpts">
           <ion-slide v-for="image of product.images" :key="image.id">
-            <Image :file-id="image.id" :file-name="image.fileName" fallback-large/>
+            <Image class="full-width" :file-id="image.id" :file-name="image.fileName" fallback-large/>
           </ion-slide>
         </ion-slides>
       </div>
@@ -18,6 +18,15 @@
         <ion-row>
           <ion-col>
             <h1 class="titolo-prodotto">{{ product?.title }}</h1>
+
+            <div class="mb-2">
+              <PageLink v-for="(category) of product?.categories" :key="category._id"
+                        :to="{name: 'private.products', query: {'filter[categories]': category._id}}"
+                        :btn-props="{version: 'outline', size:'small'}">
+                {{ category.title }}
+              </PageLink>
+            </div>
+
             <div class="prezzo-prodotto">
               <BriteValue :value="product?.price"></BriteValue>
             </div>
@@ -47,116 +56,120 @@
 </template>
 
 <script lang="ts">
-  import { computed, ComputedRef, defineComponent, inject, Ref, ref } from "vue";
-  import { onIonViewDidEnter, onIonViewDidLeave } from '@ionic/vue';
-  import { useRoute, useRouter } from 'vue-router';
-  import {useStore} from 'vuex';
-  import {storeKey} from '@/store';
-  import BriteValue from '@/components/BriteValue.vue';
-  import ClubButton from '@/components/ClubButton.vue';
-  import TopToolbar from '@/components/toolbars/TopToolbar.vue';
-  import Tabs from '@/components/tabs/Tabs.vue';
-  import {formatImgUrl} from '@/@utilities/images';
-  import {HttpPlugin} from '@/plugins/HttpPlugin';
-  import {AlertsPlugin} from '@/plugins/Alerts';
-  import {Product} from '@/@types/Product';
-  import {TabEntry} from '@/@types/TabEntry';
-  import Image from "@/components/Image.vue";
+import { computed, ComputedRef, defineComponent, inject, Ref, ref } from 'vue'
+import { onIonViewDidEnter, onIonViewDidLeave } from '@ionic/vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { storeKey } from '@/store'
+import BriteValue from '@/components/BriteValue.vue'
+import ClubButton from '@/components/ClubButton.vue'
+import TopToolbar from '@/components/toolbars/TopToolbar.vue'
+import Tabs from '@/components/tabs/Tabs.vue'
+import { formatImgUrl } from '@/@utilities/images'
+import { HttpPlugin } from '@/plugins/HttpPlugin'
+import { AlertsPlugin } from '@/plugins/Alerts'
+import { Product } from '@/@types/Product'
+import { TabEntry } from '@/@types/TabEntry'
+import Image from '@/components/Image.vue'
+import PageLink from '@/components/PageLink.vue'
 
-  export default defineComponent({
-    name: "Details",
-    components: {
-      Image,
-      Tabs,
-      BriteValue,
-      TopToolbar,
-      ClubButton
-    },
-    setup () {
-      const route = useRoute();
-      const router = useRouter();
-      const store = useStore(storeKey);
-      const http = inject("http") as HttpPlugin;
-      const alerts = inject("alerts") as AlertsPlugin;
-      const product: Ref<Product | undefined> = ref()
-      const tabs: Ref<typeof Tabs | null> = ref(null)
-      const category = ref('descrizione')
-      const tabsItems: ComputedRef<TabEntry[]> = computed(() => [{
-            id: "description",
-            text: "Descrizione",
-          }, {
-            id: "conditions",
-            text: "Condizioni",
-            if: !!product.value?.conditions
-          }].filter(el => el.if ?? true)
-      )
-      const slideOpts = {
-        initialSlide: 0,
-        speed: 400,
-      };
-      const scrollPercent = ref(0)
+export default defineComponent({
+  name: 'Details',
+  components: {
+    PageLink,
+    Image,
+    Tabs,
+    BriteValue,
+    TopToolbar,
+    ClubButton
+  },
+  setup () {
+    const route = useRoute()
+    const router = useRouter()
+    const store = useStore(storeKey)
+    const http = inject('http') as HttpPlugin
+    const alerts = inject('alerts') as AlertsPlugin
+    const product: Ref<Product | undefined> = ref()
+    const tabs: Ref<typeof Tabs | null> = ref(null)
+    const category = ref('descrizione')
+    const tabsItems: ComputedRef<TabEntry[]> = computed(() => [{
+          id: 'description',
+          text: 'Descrizione'
+        }, {
+          id: 'conditions',
+          text: 'Condizioni',
+          if: !!product.value?.conditions
+        }].filter(el => el.if ?? true)
+    )
+    const slideOpts = {
+      initialSlide: 0,
+      speed: 400
+    }
+    const scrollPercent = ref(0)
 
-      const brightness = computed(() => {
-        const value = 1 - scrollPercent.value / 100;
+    const brightness = computed(() => {
+      const value = 1 - scrollPercent.value / 100
 
-        if (value < 0.5) {
-          return .5
-        }
-        return value
-      })
-
-      function onScrollEnd () {
-        tabs.value?.updateSlider()
+      if (value < 0.5) {
+        return .5
       }
+      return value
+    })
 
-      function onScroll (e: Event & { detail: { scrollTop: number }; currentTarget: HTMLElement }) {
-        const scrollHeight = (e.currentTarget.shadowRoot?.querySelector("main")?.scrollHeight ?? 0) - e.currentTarget.offsetHeight;
-        scrollPercent.value = e.detail.scrollTop * 100 / scrollHeight;
-      }
+    function onScrollEnd () {
+      tabs.value?.updateSlider()
+    }
 
-      onIonViewDidEnter(async () => {
-        // only fetch data if the params contain an id
-        if (route.params.id) {
-          try {
-            const productDetails = await http.api.products.read(route.params.id as string)
+    function onScroll (e: Event & { detail: { scrollTop: number }; currentTarget: HTMLElement }) {
+      const scrollHeight = (e.currentTarget.shadowRoot?.querySelector('main')?.scrollHeight ?? 0) - e.currentTarget.offsetHeight
+      scrollPercent.value = e.detail.scrollTop * 100 / scrollHeight
+    }
 
-            product.value = productDetails
+    onIonViewDidEnter(async () => {
+      // only fetch data if the params contain an id
+      if (route.params.id) {
+        try {
+          const productDetails = await http.api.products.read(route.params.id as string)
 
-            tabs.value?.updateSlider()
-          } catch (er: any) {
-            if (er?.response.status === 404) {
-              await router.back()
-            }
+          product.value = productDetails
+
+          tabs.value?.updateSlider()
+        } catch (er: any) {
+          if (er?.response.status === 404) {
+            await router.back()
           }
         }
-      })
-
-      onIonViewDidLeave(async () => {
-        product.value = undefined;
-        category.value = "descrizione";
-      })
-
-      const addToCart = async () => {
-        await store.dispatch("cart/add", product.value)
-
-        await alerts.toastSuccess("Prodotto aggiunto al carrello.")
       }
+    })
 
-      return {
-        category,
-        product,
-        slideOpts,
-        formatImgUrl,
-        addToCart, onScrollEnd, onScroll,
-        tabsItems, tabs,
-        scrollPercent, brightness,
-      }
+    onIonViewDidLeave(async () => {
+      product.value = undefined
+      category.value = 'descrizione'
+    })
+
+    const addToCart = async () => {
+      await store.dispatch('cart/add', product.value)
+
+      await alerts.toastSuccess('Prodotto aggiunto al carrello.')
     }
-  })
+
+    return {
+      category,
+      product,
+      slideOpts,
+      formatImgUrl,
+      addToCart, onScrollEnd, onScroll,
+      tabsItems, tabs,
+      scrollPercent, brightness
+    }
+  }
+})
 </script>
 
 <style lang="scss" scoped>
-  $slider-height: 60vh;
+$slider-height: 60vh;
+
+:deep {
 
   .product-toolbar {
     &::after {
@@ -179,7 +192,8 @@
       right: 0;
       z-index: 1;
     }
-    ion-img {
+
+    ion-img.full-width {
       height: 100%;
       width: 100%;
       object-fit: cover;
@@ -192,5 +206,6 @@
       //background: var(--secondary-bg-gradient);
     }
   }
+}
 
 </style>

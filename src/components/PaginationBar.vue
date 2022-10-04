@@ -1,5 +1,5 @@
 <template>
-  <ion-grid v-if="paginationData.totalPages > 1">
+  <ion-grid v-if="paginationData.totalPages > 1" class="ion-text-center">
     <ion-button @click="prevPage" :disabled="!canGoBack" shape="round" size="small">
       <Icon name="chevron-left" slot="icon-only"></Icon>
     </ion-button>
@@ -7,12 +7,6 @@
     <ion-button disabled color="transparent" style="color: white">
       {{ paginationData.page }} / {{ paginationData.totalPages }}
     </ion-button>
-
-    <!--
-      <ion-button shape="round" v-for="(page, i) in pagesList" :key="i">
-          {{ page }}
-      </ion-button>
-    -->
 
     <ion-button @click="nextPage" :disabled="!canGoForward" shape="round" size="small">
       <Icon name="chevron-right" slot="icon-only"></Icon>
@@ -53,40 +47,21 @@
       const canGoBack = computed(() => page.value > 1);
       const canGoForward = computed(() => page.value < props.paginationData.totalPages);
 
-      /* const pagesList = computed(() => {
-         const pagesEmptyArray = Array(props.paginationData?.totalPages).fill(0);
-         const startFrom = page.value - 1;
-         const firstPages = pagesEmptyArray.slice(startFrom, startFrom + props.beforeNumPages).map((fakeNum, i) => i + 1 + startFrom)
-         const lastPages = pagesEmptyArray.slice(pagesEmptyArray.length - props.afterNumPages).map((fakeNum, i) => (pagesEmptyArray.length - props.afterNumPages) + (i + 1))
-
-         const toReturn: (string | number)[] = []
-
-         if (startFrom > 1) {
-           toReturn.push("...")
-         }
-
-         toReturn.push(...firstPages)
-
-         if (props.paginationData.totalPages - props.afterNumPages > page.value) {
-           toReturn.push("...")
-         }
-
-         toReturn.push(...lastPages)
-
-         return toReturn
-       })*/
-
       async function nextPage () {
         page.value++
       }
 
-      async function prevPage () {
+      async function prevPage() {
         page.value--
       }
 
       watch(page, async () => {
         emit("pageChanged", page.value)
       })
+
+      watch(() => props.paginationData, (value: Omit<PaginatedResult, "data"> | undefined) => {
+        page.value = value?.page ?? 1
+      }, {deep: true})
 
       return {
         canGoBack, canGoForward,

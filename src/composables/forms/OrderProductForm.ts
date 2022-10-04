@@ -17,6 +17,7 @@ export class OrderProductForm extends BasicForm<UpdateOrderProductDto> {
     this.schema = {
       qta: yup.number().required().min(1),
       price: yup.number().required(),
+      repayment: yup.boolean()
     }
     
     this.productId = settings.dataToWatch ? settings.dataToWatch().product._id : null;

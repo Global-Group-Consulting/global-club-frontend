@@ -10,75 +10,77 @@
         <Icon class="accordion-header-icon" name="chevron-down"></Icon>
       </ion-button>
 
-      <div class="accordion-collapse-container">
-        <div class="accordion-collapse-content">
-          <!-- Creates dynamic slots -->
-          <slot :name="'content_' + section.el.id" :item="section.el" v-if="loadedTabs[section._key]">
-            Content of slot <strong>"content_{{ section.el.id }}"</strong>
-          </slot>
-        </div>
-      </div>
+      <AccordionListCollapseContainer :expanded="section.el.open">
+        <!-- Creates dynamic slots -->
+        <slot :name="'content_' + section.el.id"
+              :item="section.el"
+              v-if="loadedTabs[section._key]">
+          Content of slot <strong>"content_{{ section.el.id }}"</strong>
+        </slot>
+      </AccordionListCollapseContainer>
 
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  import { computed, ComputedRef, defineComponent, PropType, ref, watch } from 'vue';
-  import Icon from '@/components/Icon.vue';
+import { computed, ComputedRef, defineComponent, PropType, ref, watch } from 'vue'
+import Icon from '@/components/Icon.vue'
+import AccordionListCollapseContainer from '@/components/accordions/AccordionListCollapseContainer.vue'
 
-  export interface AccordionSection {
-    id: string;
-    text: string;
-    open: boolean;
-    data?: any;
-  }
+export interface AccordionSection {
+  id: string | number;
+  text: string;
+  open: boolean;
+  data?: any;
+}
 
-  export default defineComponent({
-    name: "AccordionList",
-    components: { Icon },
-    props: {
-      sections: {
-        type: Object as PropType<AccordionSection[]>,
-        required: true
-      }
-    },
-    setup (props) {
-      const loadedTabs = ref({})
+export default defineComponent({
+  name: 'AccordionList',
+  components: { AccordionListCollapseContainer, Icon },
+  props: {
+    sections: {
+      type: Object as PropType<AccordionSection[]>,
+      required: true
+    }
+  },
+  setup (props) {
+    const loadedTabs = ref({})
 
-      const sectionsList: ComputedRef<{ _key: string; el: AccordionSection }[]> = computed(() => {
-        return props.sections.map((el, i) => {
-          return {
-            el,
-            _key: el.id + '_' + i
-          }
-        })
-      })
-
-      function onToggleOpenClick (section: AccordionSection, tabId: string) {
-        section.open = !section.open
-
-        if (!loadedTabs.value[tabId] && section.open) {
-          loadedTabs.value[tabId] = true
+    const sectionsList: ComputedRef<{ _key: string; el: AccordionSection }[]> = computed(() => {
+      return props.sections.map((el, i) => {
+        return {
+          el,
+          _key: el.id + '_' + i
         }
-      }
-
-      watch(props.sections, () => {
-        sectionsList.value.forEach((section) => {
-          if (section.el.open) {
-            loadedTabs.value[section._key] = true
-          }
-        })
-      }, {
-        immediate: true
       })
+    })
 
-      return {
-        onToggleOpenClick,
-        loadedTabs,
-        sectionsList
+    function onToggleOpenClick (section: AccordionSection, tabId: string) {
+      section.open = !section.open
+
+      if (!loadedTabs.value[tabId] && section.open) {
+        loadedTabs.value[tabId] = true
       }
     }
-  });
+
+    watch(() => props.sections, () => {
+      sectionsList.value.forEach((section) => {
+        if (section.el.open) {
+          loadedTabs.value[section._key] = true
+        }
+      })
+    }, {
+      immediate: true,
+      deep: true
+    })
+
+    return {
+      onToggleOpenClick,
+      loadedTabs,
+      sectionsList
+    }
+  }
+})
 </script>
 

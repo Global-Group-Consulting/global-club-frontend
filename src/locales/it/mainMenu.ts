@@ -14,6 +14,8 @@ export const mainMenu = {
   userProfile: "Il mio profilo",
   userPortfolio: "Wallet Brite",
   userPortfolioPremium: "Wallet Premium",
+  userPortfolioFast: "Wallet Fast",
+  notifications: "Notifiche",
   
   homeMobile: 'Home',
   usersMobile: 'Utenti',
@@ -23,5 +25,11 @@ export const mainMenu = {
   userFavouritesMobile: 'Preferiti',
   userOrdersMobile: 'Ordini',
   userPortfolioMobile: "Portfolio",
-  userProfileMobile: "Profilo",
+  userProfileMobile: "Il mio Profilo",
+  faqs: "FAQ - Domande Frequenti",
+  
+  external: {
+    menu: "Menu Club",
+    video: "Video Club",
+  }
 }

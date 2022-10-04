@@ -6,6 +6,8 @@ export const userContract = {
   "title_contract_club": "Contratto Club",
   "club_card_number": "N° tessera club",
   "club_pack": "Pacchetto attivo",
+  "club_pack_start_at": "Data attivazione Pack",
+  "club_pack_end_at": "Data scadenza Pack",
   "global_contract_number": "N° contratto Global",
   "global_contract_date": "Data stipula contratto",
   "global_contract_percent": "Percentuale assegnata",

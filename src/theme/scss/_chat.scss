@@ -30,6 +30,9 @@
     position: relative;
     padding-left: var(--msg-padding-left);
     padding-bottom: $spacer;
+    border: 1px dashed transparent;
+    border-radius: 10px;
+    transition: border 1s ease-in-out;
 
     &:before {
       content: "";
@@ -63,12 +66,22 @@
       --title-color: var(--ion-color-primary)
     }
 
+    &.unread {
+      --dot-primary-color: red;
+      --dot-bg-color: red;
+      --title-color: red
+    }
+
     &.status-change{
       --title-color: #4ead5b;
 
       .chat-message-title{
         font-style: italic;
       }
+    }
+
+    &.highlight{
+      border: 1px dashed #4caf50;
     }
 
     .status-index {

@@ -16,6 +16,7 @@ export interface Communication {
   receivers: UserBasic[];
   watchers: UserBasic[];
   
+  hasUnreadMessages: boolean;
   _id: string;
   createdAt: string;
   updatedAt: string;
@@ -41,11 +42,25 @@ export interface Message {
         title: string;
       };
     }[];
+    packChange?: any;
+    cancelledByUser?: boolean;
   };
+  readings: MessageRead[];
+  isRead: MessageRead;
   
   _id: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface MessageRead {
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MessageReadResult extends MessageRead {
+  messageId: string;
 }
 
 export interface CommunicationAnswerDto {

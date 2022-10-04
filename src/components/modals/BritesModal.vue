@@ -30,6 +30,7 @@
                       :interface-options="{cssClass: 'alert-large'}"
                       v-model.number="form.formData.clubPack.modelValue"
                       :error="form.formData.clubPack.errorMessage"
+                      :readonly="onlyFast"
           ></FormInputV>
         </ion-col>
 
@@ -76,7 +77,8 @@
         type: String as PropType<'add' | 'remove'>
       },
       clubPack: String as PropType<PackEnum>,
-      semesterId: String
+      semesterId: String,
+      onlyFast: Boolean
     },
     setup (props) {
       const { t } = useI18n();
@@ -106,7 +108,7 @@
         });
       });
       const clubPackOptions: ComputedRef<SelectOption[]> = computed(() => {
-        const packs = [PackEnum.BASIC, PackEnum.FAST, PackEnum.PREMIUM];
+        const packs = [PackEnum.BASIC, PackEnum.FAST, PackEnum.PREMIUM, PackEnum.UNSUBSCRIBED];
 
         return packs.map(el => ({
           value: el,

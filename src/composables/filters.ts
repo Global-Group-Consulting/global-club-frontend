@@ -1,15 +1,68 @@
-import { SearchFilters } from '@/views/shared/SearchBar.vue';
+import { SearchFilters } from '@/components/SearchBar.vue'
+import { filter } from 'lodash'
+import { LocationQuery } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+
+export interface FilterChip {
+  label: string;
+  field: string;
+  value: string | string[] | boolean | number;
+}
 
 export default () => {
-  function prepareFilters (filters: SearchFilters) {
+  const { t, te } = useI18n()
+  
+  /**
+   *
+   * @param filters
+   */
+  function prepareFilters (filters: SearchFilters): any {
+    if (!filters) {
+      return {}
+    }
+    
     return Object.keys(filters).reduce((acc, key) => {
-      acc[`filter[${key}]`] = filters[key];
+      const value = filters[key]
       
-      return acc;
+      if (key.startsWith('_')) {
+        return acc
+      }
+      
+      if ((typeof value === 'string' && !value)) {
+        return acc
+      }
+      
+      acc[`filter[${key}]`] = value
+      
+      return acc
     }, {})
   }
   
+  function parseFilters (filters: LocationQuery): FilterChip[] {
+    return Object.keys(filters).reduce((acc, key) => {
+      const finalKey = key.replaceAll(/(filter\[)|(\])/g, '')
+      
+      if (filters[key]) {
+        const tString = 'forms.filters.' + finalKey
+        let value: any = filters[key]
+        
+        if (value === 'true') {
+          value = true
+        }
+        
+        acc.push({
+          'label': te(tString) ? t(tString) : finalKey,
+          'field': finalKey,
+          value
+        })
+      }
+      
+      return acc
+    }, [] as FilterChip[])
+  }
+  
   return {
-    prepareFilters
+    prepareFilters,
+    parseFilters
   }
 }

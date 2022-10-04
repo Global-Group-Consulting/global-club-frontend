@@ -1,10 +1,10 @@
 <template>
   <div :class="{'ion-margin-bottom': addSpaceAfter}" class="form-input-wrapper">
-    <ion-item :class="{'is-readonly': readonly, 'is-disabled': disabled}"
+    <ion-item :class="{'is-readonly': readonly, 'is-disabled': disabled, 'dense': dense}"
               class="form-input"
               @click.stop.prevent="toggle()"
     >
-      <ion-label>{{ label }}</ion-label>
+      <ion-label v-if="label">{{ label }}</ion-label>
       <ion-toggle ref="inputComponent"
                   :checked="modelValue"
                   :value="true"
@@ -42,7 +42,8 @@
       },
       readonly: Boolean,
       error: String,
-      message: String
+      message: String,
+      dense: Boolean
     },
     setup (props, { emit }) {
       const showError = computed(() => props.error && !props.readonly && !props.disabled)

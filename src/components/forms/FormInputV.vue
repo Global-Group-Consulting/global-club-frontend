@@ -6,18 +6,20 @@
       <component :is="component"
                  ref="inputComponent"
                  :type="componentType"
-                 :value="modelValue"
+                 :value="computedModelValue"
                  :clearInput="clearInput"
                  :placeholder="placeholder"
                  :multiple="multiple"
-                 :interface="interface"
-                 :interfaceOptions="interfaceOptions"
+                 :interface="calcInterface"
+                 :interfaceOptions="calcInterfaceOptions"
                  :disabled="component === 'ion-select' ? (readonly || disabled) : disabled"
                  :readonly="readonly"
                  :okText="selectBtnOk || $t('forms.generic.selects.okText')"
                  :cancelText="selectBtnCancel || $t('forms.generic.selects.cancelText')"
                  @ionInput="onInput($event)"
                  @ionChange="onChange($event)"
+                 @ionFocus="inFocus = true"
+                 @ionBlur="inFocus = false"
       >
         <template v-if="component === 'ion-select'">
           <template v-if="clearInput">
@@ -32,81 +34,128 @@
       </component>
     </ion-item>
 
+    <slot name="after" v-bind:inFocus="inFocus"></slot>
+
     <small v-if="showError" class="form-input-error">{{ error }}</small>
     <small v-if="message && !showError" class="form-input-message">{{ message }}</small>
   </div>
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType, ref } from 'vue'
+import { useStore } from 'vuex'
+import { storeKey } from '@/store'
 
-  export default defineComponent({
-    name: "FormInputV",
-    props: {
-      label: String,
-      modelValue: [String, Number, Array],
-      interface: String as PropType<"action-sheet" | "alert" | "popover">,
-      interfaceOptions: Object,
-      type: {
-        type: String as PropType<'date' | 'datetime-local' | 'email' | 'month' | 'number' | 'currency' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' | 'week'>,
-        default: "text"
-      },
-      component: {
-        type: String as PropType<'ion-input' | 'ion-textarea' | 'ion-select' | 'ion-toggle'>,
-        default: "ion-input"
-      },
-      // A hint to the browser for which keyboard to displa,
-      inputMode: String as PropType<'decimal' | 'email' | 'none' | 'numeric' | 'search' | 'tel' | 'text' | 'url' | undefined>,
-      // If true, a clear icons will appear in the input when there is a value. Clicking it clears the input,
-      clearInput: Boolean,
-      disabled: Boolean,
-      placeholder: String,
-      options: Object as PropType<{ text: string; value: string }[]>,
-      multiple: Boolean,
-      selectBtnOk: String,
-      selectBtnCancel: String,
-      addSpaceAfter: {
-        type: Boolean,
-        default: true
-      },
-      readonly: Boolean,
-      error: String,
-      message: String
+export default defineComponent({
+  name: 'FormInputV',
+  props: {
+    label: String,
+    modelValue: [String, Number, Array],
+    interface: String as PropType<'action-sheet' | 'alert' | 'popover'>,
+    interfaceOptions: Object,
+    type: {
+      type: String as PropType<'date' | 'datetime-local' | 'email' | 'month' | 'number' | 'currency' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' | 'week'>,
+      default: 'text'
     },
-    setup (props, { emit }) {
-      const componentType = computed(() => {
-        return props.type ?? 'text';
-      });
+    component: {
+      type: String as PropType<'ion-input' | 'ion-textarea' | 'ion-select' | 'ion-toggle'>,
+      default: 'ion-input'
+    },
+    // A hint to the browser for which keyboard to displa,
+    inputMode: String as PropType<'decimal' | 'email' | 'none' | 'numeric' | 'search' | 'tel' | 'text' | 'url' | undefined>,
+    // If true, a clear icons will appear in the input when there is a value. Clicking it clears the input,
+    clearInput: Boolean,
+    disabled: Boolean,
+    placeholder: String,
+    options: Object as PropType<{ text: string; value: string }[]>,
+    multiple: Boolean,
+    selectBtnOk: String,
+    selectBtnCancel: String,
+    addSpaceAfter: {
+      type: Boolean,
+      default: true
+    },
+    readonly: Boolean,
+    error: String,
+    message: String
+  },
+  setup (props, { emit }) {
+    const store = useStore(storeKey)
+    const componentType = computed(() => {
+      return props.type ?? 'text'
+    })
+    const inFocus = ref(false)
 
-      const showError = computed(() => props.error && !props.readonly && !props.disabled)
+    const showError = computed(() => props.error && !props.readonly && !props.disabled)
 
-      function onInput (e) {
-        const value = e.target.value;
+    const calcInterface = computed(() => {
+      if (props.interface) {
+        return props.interface
+      }
 
-        if (props.component === "ion-select") {
-          return;
+      return store.getters['smAndDown'] ? 'action-sheet' : 'alert'
+    })
+
+    const calcInterfaceOptions = computed(() => {
+      const cssClass = ['form-input-alert-sheet']
+
+      if (props.interfaceOptions?.cssClass) {
+        cssClass.push(props.interfaceOptions.cssClass)
+      }
+
+      return Object.assign({}, props.interfaceOptions, {
+        cssClass: cssClass.join(' ')
+      })
+    })
+
+    const computedModelValue = computed({
+      get () {
+        if (props.type === 'date') {
+          return props.modelValue ? props.modelValue.toString().split('T')[0] : ''
         }
 
-        emit('update:modelValue', value);
+        return props.modelValue
+      },
+      set (value) {
+        emit('update:modelValue', value)
+      }
+    })
+
+    function onInput (e) {
+      const value = e.target.value
+
+      if (props.component === 'ion-select') {
+        return
       }
 
-      function onChange (e) {
-        const value = e.target.value;
-
-        if (props.component !== "ion-select" && props.modelValue === value) {
-          return;
-        }
-
-        emit('update:modelValue', value);
-      }
-
-      return {
-        componentType,
-        showError,
-        onInput, onChange
-      }
+      emit('update:modelValue', value)
     }
-  })
+
+    function onChange (e) {
+      let value = e.target.value
+
+      if (props.component !== 'ion-select' && props.modelValue === value) {
+        return
+      }
+
+      // set value to null if empty string to avoid validation error
+      if (props.type === 'date' && value === '') {
+        value = null
+      }
+
+      emit('update:modelValue', value)
+    }
+
+    return {
+      componentType,
+      showError,
+      onInput, onChange,
+      inFocus,
+      computedModelValue,
+      calcInterface, calcInterfaceOptions
+    }
+  }
+})
 
 </script>
 

@@ -1,0 +1,13 @@
+ion-chip {
+  &.small {
+    padding: 6px 8px;
+    font-size: 12px;
+    height: auto;
+  }
+
+  &.unreadCounter {
+    pointer-events: none;
+    background: var(--ion-color-danger, #eb445a) !important;
+    color: #1c1c1d;
+  }
+}
