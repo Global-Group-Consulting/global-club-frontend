@@ -6,7 +6,7 @@
       <component :is="component"
                  ref="inputComponent"
                  :type="componentType"
-                 :value="modelValue"
+                 :value="computedModelValue"
                  :clearInput="clearInput"
                  :placeholder="placeholder"
                  :multiple="multiple"
@@ -108,6 +108,19 @@ export default defineComponent({
       })
     })
 
+    const computedModelValue = computed({
+      get () {
+        if (props.type === 'date') {
+          return props.modelValue ? props.modelValue.toString().split('T')[0] : ''
+        }
+
+        return props.modelValue
+      },
+      set (value) {
+        emit('update:modelValue', value)
+      }
+    })
+
     function onInput (e) {
       const value = e.target.value
 
@@ -138,6 +151,7 @@ export default defineComponent({
       showError,
       onInput, onChange,
       inFocus,
+      computedModelValue,
       calcInterface, calcInterfaceOptions
     }
   }
