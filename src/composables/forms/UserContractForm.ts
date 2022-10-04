@@ -1,4 +1,4 @@
-import { computed, inject, Ref, ref, watch } from 'vue'
+import { computed, inject, isRef, Ref, ref, watch } from 'vue'
 import { PackEnum } from '@/@enums/pack.enum'
 import useVuelidate from '@vuelidate/core'
 import validators from '@/composables/validators'
@@ -21,7 +21,7 @@ export function useUserContractForm (data) {
   let handleSubmitFn: () => Promise<void>
   
   function parseIncomingData (data) {
-    if (data.constructor.name === 'ComputedRefImpl') {
+    if (data.constructor.name === 'ComputedRefImpl' || isRef(data)) {
       return { ...data.value }
     }
     return { ...data }
