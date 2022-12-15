@@ -54,13 +54,13 @@
                 <a href="#" @click.prevent="checkIfHasEnough">Controllo a sistema per disponibilità</a>
               </li>
 
-              <li v-if="user?._id">
+              <!-- <li v-if="user?._id">
                 <a class="ms-1"
                    :href="$router.resolve({name: 'admin.users.wallet_fast', params: {id: user?._id}}).fullPath"
                    target="_blank">
                   {{ $t('pages.userProfile.lbl_goto_wallet_fast') }}
                 </a>
-              </li>
+              </li>-->
               <li v-if="user?._id">
                 <a class="ms-1"
                    :href="$router.resolve({name: 'admin.users.wallet_premium', params: {id: user?._id}}).fullPath"

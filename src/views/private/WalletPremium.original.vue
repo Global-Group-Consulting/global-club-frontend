@@ -8,8 +8,19 @@
     </TopToolbar>
 
     <IonContent>
-      <ion-grid fixed class="overflow-auto">
-        <WalletPremiumChipsTable :user-id="userId"></WalletPremiumChipsTable>
+      <ion-grid fixed>
+        <WalletPremiumStatistics :user-id="userId"
+                                 @update:activeTab="onActiveTabChange"
+                                 @update:data="onStatisticsUpdate"
+        ></WalletPremiumStatistics>
+
+        <div class="py-3"></div>
+
+        <WalletPremiumMovementsList :user-id="userId"
+                                    :semester-id="activeTab"
+                                    ref="movementsList"
+                                    wait-before-fetch
+                                    @data:fetched="onMovementsFetched"></WalletPremiumMovementsList>
       </ion-grid>
     </IonContent>
   </IonPage>
@@ -18,17 +29,19 @@
 <script lang="ts">
 import { computed, defineComponent, inject, onMounted, Ref, ref } from 'vue'
 import TopToolbar from '@/components/toolbars/TopToolbar.vue'
+import NoData from '@/components/NoData.vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { storeKey } from '@/store'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { formatUserName } from '@/@utilities/fields'
+import WalletPremiumStatistics from '@/components/WalletPremiumStatistics.vue'
 import WalletPremiumMovementsList from '@/components/lists/WalletPremiumMovementsList.vue'
-import WalletPremiumChipsTable from '@/components/lists/WalletPremiumChipsTable.vue'
+import { WalletPremiumMovement } from '@/@types/Wallet Premium/WalletPremiumMovement'
 
 export default defineComponent({
   name: 'WalletPremium',
-  components: { WalletPremiumChipsTable, TopToolbar },
+  components: { WalletPremiumMovementsList, WalletPremiumStatistics, TopToolbar },
   setup () {
     const $route = useRoute()
     const store = useStore(storeKey)
@@ -66,7 +79,7 @@ export default defineComponent({
       formatUserName,
       onActiveTabChange,
       onMovementsFetched,
-      onStatisticsUpdate
+      onStatisticsUpdate,
     }
   }
 })

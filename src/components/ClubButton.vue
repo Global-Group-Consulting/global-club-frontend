@@ -1,7 +1,7 @@
 <template>
   <ion-button :fill="fill" shape="round" :size="size" :expand="expand"
-              :color="color" :type="type">
-    <icon :slot="iconSlot" :name="iconName" v-if="icon"></icon>
+              :color="color" :type="type" >
+    <icon :slot="iconSlot" :name="iconName" v-if="icon" :size="iconSize"></icon>
 
     <slot v-if="!onlyIcon"></slot>
   </ion-button>
@@ -31,6 +31,10 @@ export default defineComponent({
     iconPosition: {
       type: String as PropType<'start' | 'end'>,
       default: 'start'
+    },
+    iconSize: {
+      type: String as PropType<'small' | 'large'>,
+      default: ''
     },
     iconName: {
       type: String,
