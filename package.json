@@ -1,6 +1,6 @@
 {
   "name": "global-club",
-  "version": "2.2.15",
+  "version": "2.2.17",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode development",
@@ -39,6 +39,8 @@
     "@tiptap/starter-kit": "^2.0.0-beta.142",
     "@tiptap/vue-3": "^2.0.0-beta.81",
     "@types/jsonwebtoken": "^8.5.5",
+    "@types/luxon": "^3.1.0",
+    "@types/yup": "^0.32.0",
     "@vuelidate/core": "^2.0.0",
     "@vuelidate/validators": "^2.0.0",
     "axios": "^0.21.1",
@@ -55,6 +57,7 @@
     "js-file-downloader": "^1.1.24",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
+    "luxon": "^3.1.1",
     "swiper": "^7.4.1",
     "tslib": "^2.3.1",
     "vee-validate": "^4.5.6",
