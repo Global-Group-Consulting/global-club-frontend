@@ -283,11 +283,11 @@ const mobileMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
           label: '',
           divider: true
         },
-        {
+        /*{
           route: 'private.walletFast',
           label: 'userPortfolioFast',
           icon: 'wallet'
-        },
+        },*/
         {
           route: 'private.walletPremium',
           label: 'userPortfolioPremium',
@@ -416,11 +416,11 @@ const desktopMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
       label: 'userPortfolio',
       icon: 'wallet'
     },
-    {
+    /*{
       route: 'private.walletFast',
       label: 'userPortfolioFast',
       icon: 'wallet'
-    },
+    },*/
     {
       route: 'private.walletPremium',
       label: 'userPortfolioPremium',
