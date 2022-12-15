@@ -1,4 +1,4 @@
-interface WalletPremium {
+export interface WalletPremium {
   usableFrom: string;
   usableUntil: string;
   byMonthUsability: [{

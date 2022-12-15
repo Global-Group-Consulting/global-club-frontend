@@ -8,6 +8,7 @@ services:
       - nodemodules:/usr/src/app/node_modules
     ports:
       - "3336:3000"
+      - "3000:3000"
     environment:
       - VUE_APP_BASE_URL=http://local.api.globalgroup.consulting
       - VUE_APP_CLIENT_KEY=LXM6DBJP4xz26TB

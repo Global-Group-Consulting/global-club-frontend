@@ -1,13 +1,14 @@
 import { formatBrites } from '@/@utilities/currency'
-import { computed, inject, ref } from 'vue'
+import { inject, nextTick, ref } from 'vue'
 import { AlertsPlugin } from '@/plugins/Alerts'
-import { Movement } from '@/@types/Movement'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
-import { AlertInput } from '@ionic/vue'
+import { AlertInput, modalController, popoverController } from '@ionic/vue'
 import { useI18n } from 'vue-i18n'
 import { WalletPremiumMovement } from '@/@types/Wallet Premium/WalletPremiumMovement'
 import { useStore } from 'vuex'
 import { storeKey } from '@/store'
+import WPWithdrawModal from '@/components/modals/WPWithdrawModal.vue'
+import { User } from '@/@types/User'
 
 // Create the eventTarget as a Singleton
 const events = new EventTarget()
@@ -104,24 +105,122 @@ export function useWithdrawal () {
   }
   
   /**
+   * When trying to transfer money to another user, this function will be called and will check if
+   * the provided clubCardNum is valid (after making an api call) and will ask the user to confirm the transfer
+   *
+   * @param {number} amount
+   * @param {any} data
+   * @param {HTMLIonAlertElement>} [alert]
+   */
+  async function confirmTransferIntention (amount: number, data: any) {
+    const cardNum = data.userCardNum.trim()
+    
+    if (data.amount !== undefined) {
+      // Validate the amount
+      if (data.amount > amount || data.amount < 1) {
+        alerts.toastError('Importo non valido in quanto deve essere compreso tra 1 e ' + amount).then()
+        return false
+      }
+    } else {
+      data.amount = amount
+    }
+    
+    // only if the user provided a card number
+    if (cardNum.length) {
+      if (cardNum === store.getters['auth/user'].clubCardNumber) {
+        alerts.toastError('E\' necessario indicare un codice utente diverso dal proprio').then()
+        return false
+      }
+      
+      try {
+        console.log('trying to check the card number')
+        
+        // Must check if the cardNum is valid
+        const user = await http.api.users.checkClubCardNum(cardNum)
+        
+        // ask if the user is sure to transfer the amount to the user
+        const confirm = await alerts.ask({
+          header: 'Eseguire un trasferimento?',
+          message: `Sei sicuro di voler trasferire <strong>${formatBrites(data.amount)}</strong> a <strong>${user?.firstName} ${user?.lastName}</strong>?
+                                    Se non lo si desidera, premere "Annulla" e svuotare il campo "Numero tessera destinatario".`,
+          buttonOkText: 'Si, Trasferisci'
+        })
+        
+        if (confirm.resp) {
+          return true
+        }
+        
+      } catch (err: any) {
+        console.log('got an error', err)
+        
+        if (err.response && (err.response.status === 404 || err.response.status === 400)) {
+          alerts.toastError('Il codice utente inserito non è valido').then()
+        } else {
+          alerts.error(err).then()
+        }
+      }
+      
+      return false
+    } else {
+      return true
+    }
+  }
+  
+  async function checkClubCardNum (cardNum: string) {
+    if (cardNum === store.getters['auth/user'].clubCardNumber) {
+      alerts.toastError('E\' necessario indicare un codice utente diverso dal proprio').then()
+      return false
+    }
+    
+    try {
+      console.log('trying to check the card number')
+      
+      // Must check if the cardNum is valid
+      return await http.api.users.checkClubCardNum(cardNum)
+    } catch (err: any) {
+      console.log('got an error', err)
+      
+      if (err.response && (err.response.status === 404 || err.response.status === 400)) {
+        alerts.toastError('Il codice utente inserito non è valido').then()
+      } else {
+        alerts.error(err).then()
+      }
+    }
+  }
+  
+  /**
    * Ask the user to confirm the withdrawal
    *
    * @param {number} amount
    */
-  async function askForWithdraw (amount: number) {
-    return alerts.ask({
-        header: t('alerts.wpMovements.withdraw.title'),
-        message: t('alerts.wpMovements.withdraw.message', { amount: formatBrites(amount) }),
-        inputs: [Object.assign({
-          max: amount,
-          value: Math.round(amount ?? 0)
-        }, alertInputs.amount), alertInputs.clubCardNum]
-      },
-      {
-        buttons: {
-          confirm: (...args) => confirmTransferToUser(amount, ...args)
-        }
-      })
+  async function askForWithdraw (amount: number): Promise<{ resp: boolean; values: null | { amount: number; destinationUser: Partial<User> } }> {
+    try {
+      // First must close all popovers used by tooltips,
+      // otherwise will throw an error when trying to open the alert
+      await popoverController.dismiss()
+    } catch (e) {
+      //
+    }
+    
+    const modal = await modalController.create({
+      component: WPWithdrawModal,
+      cssClass: 'modal-small',
+      id: 'withdraw-modal',
+      componentProps: {
+        title: t('alerts.wpMovements.withdraw.title'),
+        amount
+      }
+    })
+    
+    await modal.present()
+    const res = await modal.onDidDismiss()
+    
+    if (res.role === 'ok') {
+      return { resp: true, values: res.data }
+    } else {
+      return { resp: false, values: null }
+    }
+    
   }
   
   /**
@@ -180,11 +279,11 @@ export function useWithdrawal () {
    * When the user click on the withdrawalAll button, this function will ask the user to confirm the withdrawal and
    * based on its response, it will make an api call to the server
    *
-   * @param {string} semester
    * @param {number} amount
-   * @return Promise<WalletPremiumMovement[] | void>
+   * @param {string} movementId
+   * @return Promise<WalletPremiumMovement | void>
    */
-  async function onWithdrawClick (semester: string, amount: number): Promise<WalletPremiumMovement[] | void> {
+  async function onWithdrawClick (amount: number, movementId: string): Promise<WalletPremiumMovement | void> {
     if (!store.getters['auth/hasPackPremium'] && !store.getters['auth/isAdmin']) {
       await alerts.updateToPremium()
       
@@ -194,18 +293,20 @@ export function useWithdrawal () {
     const answer = await askForWithdraw(amount)
     
     if (answer.resp) {
-      const value = answer.values.amount
+      return nextTick(async () => {
+        
+        const updatedMovements = await http.api.walletPremium.withdraw(movementId, amount, answer.values?.destinationUser?.clubCardNumber)
+        
+        alerts.toastSuccess(t('alerts.wpMovements.withdraw.success')).then()
+        
+        // dispatch the event
+        events.dispatchEvent(new CustomEvent('withdrawn:semester', {
+          detail: updatedMovements
+        }))
+        
+        return updatedMovements
+      })
       
-      const updatedMovements = await http.api.walletPremium.withdrawBySemester(value, [semester], answer.values.userCardNum, userId.value)
-      
-      alerts.toastSuccess(t('alerts.wpMovements.withdraw.success')).then()
-      
-      // dispatch the event
-      events.dispatchEvent(new CustomEvent('withdrawn:semester', {
-        detail: updatedMovements
-      }))
-      
-      return updatedMovements
     }
   }
   
@@ -232,6 +333,7 @@ export function useWithdrawal () {
     onWithdrawClick,
     afterWithdraw,
     afterWithdrawAll,
-    setUserId
+    setUserId,
+    checkClubCardNum
   }
 }
