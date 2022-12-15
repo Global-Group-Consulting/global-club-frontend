@@ -14,6 +14,8 @@
     </tr>
     </tbody>
   </table>
+
+  <NoData v-if="!tableData.length"></NoData>
 </template>
 
 <script lang="ts">
@@ -27,10 +29,11 @@ import { WalletPremiumUserSummary } from '@/@types/Wallet Premium/WalletPremiumU
 import { WalletPremiumMovement } from '@/@types/Wallet Premium/WalletPremiumMovement'
 import { formatLocaleDate } from '@/@utilities/dates'
 import { useWithdrawal } from '@/composables/walletPremium/withdrawal'
+import NoData from '@/components/NoData.vue'
 
 export default defineComponent({
   name: 'WalletPremiumChipsTable',
-  components: { WalletPremiumChip },
+  components: { NoData, WalletPremiumChip },
   props: {
     userId: String
   },
