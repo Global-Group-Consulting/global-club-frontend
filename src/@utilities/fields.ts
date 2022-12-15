@@ -8,7 +8,7 @@ export function formatUserName (user: UserBasic | User) {
     return "..."
   }
   
-  return user.firstName + " " + user.lastName;
+  return (user.firstName + " " + user.lastName).trim();
 }
 
 /**

@@ -502,7 +502,7 @@ export default () => {
       if (typeof label === 'function') {
         label = label(userAuth.value)
       } else if (label) {
-        label = t('mainMenu.' + label)
+        label = t('mainMenu.' + label, {clubCardNumber: userAuth.value?.clubCardNumber})
       }
       
       if (children) {

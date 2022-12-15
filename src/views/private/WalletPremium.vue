@@ -2,9 +2,9 @@
   <IonPage>
     <TopToolbar :include-back="!userIsAdmin">
       <template v-if="userIsAdmin">
-        Wallet Premium utente {{ formatUserName(user) }}
+        Wallet N° {{ user?.clubCardNumber }} ({{ formatUserName(user) }})
       </template>
-      <template v-else>Il mio Wallet Premium</template>
+      <template v-else>Wallet N° {{ user?.clubCardNumber }}</template>
     </TopToolbar>
 
     <IonContent>
@@ -25,6 +25,7 @@ import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { formatUserName } from '@/@utilities/fields'
 import WalletPremiumMovementsList from '@/components/lists/WalletPremiumMovementsList.vue'
 import WalletPremiumChipsTable from '@/components/lists/WalletPremiumChipsTable.vue'
+import { UserBasic } from '@/@types/User'
 
 export default defineComponent({
   name: 'WalletPremium',
@@ -34,7 +35,7 @@ export default defineComponent({
     const store = useStore(storeKey)
     const http = inject<HttpPlugin>('http') as HttpPlugin
     const userId = ($route.params.id ?? store.getters['auth/user'].id) as string
-    const user = ref()
+    const user: Ref<UserBasic | undefined> = ref()
     const movementsList: Ref<typeof WalletPremiumMovementsList | undefined> = ref()
     const userStatistics = ref()
     const activeTab = ref('')

@@ -87,6 +87,8 @@ export class UserBasic {
   lastName: string
   referenceAgent: string
   
+  clubCardNumber: string
+  
   role: UserRoleEnum
   roles: string[]
   

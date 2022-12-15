@@ -65,7 +65,7 @@
                 <a class="ms-1"
                    :href="$router.resolve({name: 'admin.users.wallet_premium', params: {id: user?._id}}).fullPath"
                    target="_blank">
-                  {{ $t('pages.userProfile.lbl_goto_wallet_premium') }}
+                  {{ $t('pages.userProfile.lbl_goto_wallet_premium', {clubCardNumber: user?.clubCardNumber}) }}
                 </a>
               </li>
             </ul>

@@ -107,7 +107,7 @@ export default defineComponent({
             if: !userIsAdmin.value
           }, {
             icon: 'wallet',
-            label: t('mainMenu.userPortfolioPremium'),
+            label: t('mainMenu.userPortfolioPremium', { clubCardNumber: store.getters['auth/user'].clubCardNumber }),
             route: 'private.walletPremium',
             if: false && !userIsAdmin.value
           }, /*{
@@ -118,7 +118,7 @@ export default defineComponent({
           },*/
           {
             icon: 'wallet',
-            label: t('mainMenu.userPortfolioPremium'),
+            label: t('mainMenu.userPortfolioPremium', { clubCardNumber: store.getters['auth/user'].clubCardNumber }),
             route: 'private.walletPremium',
             if: !userIsAdmin.value
           }
