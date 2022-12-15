@@ -13,7 +13,7 @@ export const mainMenu = {
   userOrders: 'I miei ordini',
   userProfile: "Il mio profilo",
   userPortfolio: "Wallet Brite",
-  userPortfolioPremium: "Wallet Premium",
+  userPortfolioPremium: "Wallet N° {clubCardNumber}",
   userPortfolioFast: "Wallet Fast",
   notifications: "Notifiche",
   
