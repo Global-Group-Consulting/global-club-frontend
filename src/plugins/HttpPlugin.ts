@@ -99,7 +99,9 @@ export class LoadingHandler {
   async show (timeout?: number) {
     const loadingInstance = await this.createInstance(timeout)
     
-    return await loadingInstance.present()
+    loadingInstance.present().then()
+    
+    return
   }
   
   async hide () {

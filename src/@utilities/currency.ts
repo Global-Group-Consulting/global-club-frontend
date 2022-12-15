@@ -1,37 +1,41 @@
-export function formatCurrency(value: number, currencyStart = false) {
+export function formatCurrency (value: number, currencyStart = false) {
   if (value === undefined) {
     return null
   }
   
-  const toReturn = [new Intl.NumberFormat("it-IT", {
+  const toReturn = [new Intl.NumberFormat('it-IT', {
     // style: 'decimal',
     // currency: "EUR",
-  }).format(value)];
+  }).format(value)]
   
   if (currencyStart) {
-    toReturn.unshift("€")
+    toReturn.unshift('€')
   } else {
-    toReturn.push("€")
+    toReturn.push('€')
   }
   
-  return toReturn.join(" ");
+  return toReturn.join(' ')
 }
 
-export function formatBrites (value: number, currPosition: "start" | "end" = "start") {
+export function formatBrites (value: number, currPosition: 'start' | 'end' = 'start', onlyNumber = false) {
   if (value === undefined) {
     return null
   }
-  const formattedValue = new Intl.NumberFormat("it-IT", {
+  const formattedValue = new Intl.NumberFormat('it-IT', {
     maximumFractionDigits: 0
   }).format(value)
-  const icon = "<i class='gc-icon-brite-logo'></i>";
+  const icon = '<i class=\'gc-icon-brite-logo\'></i>'
   const toReturn: string[] = [formattedValue]
   
-  if (currPosition === "end") {
+  if (onlyNumber) {
+    return formattedValue
+  }
+  
+  if (currPosition === 'end') {
     toReturn.push(icon)
   } else {
     toReturn.unshift(icon)
   }
   
-  return "<span class='ion-text-nowrap'>" + toReturn.join(" ") + "</span>"
+  return '<span class=\'ion-text-nowrap\'>' + toReturn.join(' ') + '</span>'
 }

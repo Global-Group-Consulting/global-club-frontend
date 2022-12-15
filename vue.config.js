@@ -1,6 +1,7 @@
 module.exports = {
   outputDir: "dist",
   devServer: {
+    public: 'local.private.globalclub.it',
     disableHostCheck: true
   //   "public": "dev.globalclub.consulting",
   //   proxy: {

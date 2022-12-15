@@ -29,7 +29,6 @@
 
               !! funzionalità cambio tipo contratto-->
 
-
       </ion-grid>
 
     </IonContent>
