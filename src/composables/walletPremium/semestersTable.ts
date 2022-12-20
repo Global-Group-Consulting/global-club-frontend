@@ -51,7 +51,9 @@ import { formatLocaleDate } from '../../@utilities/dates'
 
 export function generateTableData (data) {
   const toReturn: any = {}
-  const semesters: any = Object.keys(data)
+  const semesters: string[] = Object.keys(data).sort((a, b) => {
+    return a.localeCompare(b)
+  })
   
   const totalRows = 24 + ((semesters.length - 1) * 6)
   const totalCols = semesters.length + 1
