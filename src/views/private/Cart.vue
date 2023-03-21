@@ -10,7 +10,8 @@
           </ion-col>
           <ion-col>
             <h3 class="ion-text-end">
-              <BriteValue :value="cartTotal"></BriteValue>
+              <BriteValue :value="cartTotal" v-if="cartTotal"></BriteValue>
+              <template v-else>Da definire</template>
             </h3>
           </ion-col>
         </ion-row>
