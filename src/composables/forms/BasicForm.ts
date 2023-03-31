@@ -8,6 +8,7 @@ import { MixedSchema } from 'yup/lib/mixed'
 import { ArraySchema, BooleanSchema, DateSchema, NumberSchema, ObjectSchema } from 'yup'
 import StringSchema from 'yup/lib/string'
 import { get } from 'lodash'
+import * as yup from 'yup'
 
 export type FormFields<T = any> = Record<keyof T, FormField>;
 
@@ -56,6 +57,7 @@ export abstract class BasicForm<T> extends EventTarget {
   protected alerts!: AlertsPlugin
   protected i18n!: Composer
   protected cbOnSubmitSuccess: null | ((data: T | undefined) => void) = null
+  protected wrapSchema = false
   public onSubmit: any = null
   public onEditClick = (newVal: any) => {
     this.isEditing.value = (newVal && typeof newVal === 'boolean') ? newVal : !this.isEditing.value
@@ -135,7 +137,8 @@ export abstract class BasicForm<T> extends EventTarget {
     // Creates the VeeValidate form by setting the validation schema and
     // initialValues
     this.form = useForm({
-      validationSchema: this.schema,
+      // @ts-ignore
+      validationSchema: this.wrapSchema ? yup.object().shape(this.schema) : this.schema,
       initialValues: this.initialData
     })
     
