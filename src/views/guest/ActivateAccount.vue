@@ -90,7 +90,7 @@ export default defineComponent({
   components: { TheFooterButton, FormInputV, PageLink, Icon },
   setup () {
     const auth = inject('auth') as AuthPlugin
-    const emailSent = ref(true)
+    const emailSent = ref(false)
     const colSize = {
       sizeLg: '6',
       sizeMd: '7',
