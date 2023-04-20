@@ -15,5 +15,23 @@ export default [{
   ...products,
   ...productCategories,
   ...users,
-  ...orders
+  ...orders,
+  {
+    path: "/admin/news",
+    component: () => import("@/views/admin/News.vue"),
+    name: "admin.news.index",
+    meta: {
+      isAdmin: true,
+      title: "News ed Eventi"
+    },
+  },
+  {
+    path: "/admin/events/:id",
+    component: () => import("@/views/admin/events/Show.vue"),
+    name: "admin.events.show",
+    meta: {
+      isAdmin: true,
+      title: "Dettagli evento"
+    },
+  }
 ] as RouteRecordRaw[]

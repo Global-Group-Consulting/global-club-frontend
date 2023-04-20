@@ -1,90 +1,120 @@
 <template>
-  <FormInputV :model-value="modelValue"
+  <FormInputV v-model="value"
               :label="label"
               class="form-input-autocomplete-wrapper"
-              @ionInput="onInput($event)"
-              @ionChange="onChange($event)"
-              @ionFocus="onFocus"
               @ionBlur="onBlur"
+              @ionFocus="onFocus"
               ref="input"
+              :error="error"
   >
   </FormInputV>
 
-  <datalist id="autocomplete_list">
+  <datalist id="autocomplete_list" @change="onChange">
     <option v-for="(option, i) in listOptions" :key="i"
-            :value="option"></option>
+            :data-value=" asyncOptionsValueKey ? option[asyncOptionsValueKey] : null"
+            :value="asyncOptionsLabelKey ? option[asyncOptionsLabelKey] : option">
+      <!--      {{ asyncOptionsValueKey ? option[asyncOptionsValueKey] : null }}-->
+    </option>
   </datalist>
 </template>
 
 <script lang="ts">
-import {defineComponent, inject, nextTick, onMounted, PropType, Ref, ref, watch} from 'vue';
-import FormInputV from "@/components/forms/FormInputV.vue";
-import {HttpPlugin} from "@/plugins/HttpPlugin";
+import { computed, defineComponent, inject, nextTick, onMounted, PropType, Ref, ref, watch } from 'vue'
+import FormInputV from '@/components/forms/FormInputV.vue'
+import { HttpPlugin } from '@/plugins/HttpPlugin'
 
 export default defineComponent({
-  name: "FormInputAutocomplete",
-  components: {FormInputV},
+  name: 'FormInputAutocomplete',
+  components: { FormInputV },
   props: {
     modelValue: [String, Number],
     label: String,
     asyncOptions: Boolean,
     asyncOptionsUrl: String,
+    asyncFilterKey: {
+      type: String,
+      default: 'value'
+    },
+    asyncOptionsValueKey: String,
+    asyncOptionsLabelKey: String,
+    asyncOptionsEmitKey: String,
+    asyncModelValue: [String, Number],
     options: {
       type: Array as PropType<string[]>,
       default: () => []
-    }
+    },
+    error: String
   },
   setup(props, {emit}) {
-    const isOpen = ref(false);
-    const http = inject("http") as HttpPlugin;
-    let fetchDelay: any = null;
+    const isOpen = ref(false)
+    const http = inject('http') as HttpPlugin
+    const value: Ref<any> = ref(props.modelValue)
+    let fetchDelay: any = null
 
-    const listOptions: Ref<string[]> = ref([]);
+    const listOptions: Ref<string[]> = ref([])
 
-    async function onInput(e) {
-      const value = e.target.value.trim();
+    async function onInput (value) {
+      emit('update:modelValue', value)
+      emitSelectedOption(value)
+    }
 
-      emit('update:modelValue', value);
+    function onChange (e) {
+      const value = e.target.value
 
+      emit('update:modelValue', value)
+    }
+
+    function onFocus (e) {
+      e.target.lastChild.setAttribute('list', 'autocomplete_list')
+    }
+
+    function onBlur (e) {
+      // console.log(e)
+    }
+
+    async function fetchAsyncData () {
       if (props.asyncOptionsUrl) {
         if (fetchDelay) {
           clearTimeout(fetchDelay)
         }
 
-        if (!value || value.length <= 2) {
-          listOptions.value = [];
+        if (!value.value || value.value.length <= 2) {
+          listOptions.value = []
 
           return
         }
 
         fetchDelay = setTimeout(async () => {
-          const result = await http.get(props.asyncOptionsUrl as string, {params: {"value": value}});
+          const result = await http.get(props.asyncOptionsUrl as string, { params: { [props.asyncFilterKey]: value.value } })
 
-          listOptions.value = result.data;
+          listOptions.value = result.data
         }, 200)
       }
     }
 
-    function onChange(e) {
-      const value = e.target.value;
+    function emitSelectedOption (value) {
+      const selectedOption = listOptions.value.find(option => {
+        return (props.asyncOptionsLabelKey ? option[props.asyncOptionsLabelKey] : option) === value
+      })
 
-      emit('update:modelValue', value);
-    }
+      emit('update:selectedOption', selectedOption)
 
-    function onFocus(e) {
-      e.target.lastChild.setAttribute("list", "autocomplete_list");
-    }
-
-    function onBlur(e) {
-      console.log(e)
+      emit('update:asyncModelValue', selectedOption ? (props.asyncOptionsEmitKey ? selectedOption[props.asyncOptionsEmitKey] : selectedOption) : null)
     }
 
     watch(() => props.options, value => {
-      listOptions.value = value ?? [];
-    }, {immediate: true, deep: true})
+      listOptions.value = value ?? []
+    }, { immediate: true, deep: true })
+
+    watch(() => value.value, value => {
+      onInput(value)
+
+      fetchAsyncData()
+    })
 
     return {
       isOpen, listOptions,
+      value,
       onFocus, onBlur, onInput, onChange
     }
   }

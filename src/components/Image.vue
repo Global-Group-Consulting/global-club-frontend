@@ -32,11 +32,12 @@ export default defineComponent({
     fallbackLarge: Boolean,
     class: String,
     canPreview: Boolean,
-    aspectRatio: String
+    aspectRatio: String,
+    source: String
   },
   setup (props) {
     const src: Ref<string> = ref(`/assets/img_placeholder${props.fallbackLarge ? '_large' : ''}.png`)
-    const lazySrc: Ref<string> = ref(formatImgUrl(props.fileId))
+    const lazySrc: Ref<string> = computed(() => props.source ?? formatImgUrl(props.fileId))
     const lazyLoaded = ref(false)
 
     const lazyClasses = computed(() => getImgClass(true))
