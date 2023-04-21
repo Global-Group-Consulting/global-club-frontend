@@ -1,14 +1,16 @@
-import { FormContext, InvalidSubmissionContext, useField, useForm } from 'vee-validate'
+import { configure, FormContext, InvalidSubmissionContext, useField, useForm } from 'vee-validate'
 import { computed, ComputedRef, inject, reactive, ref, Ref, UnwrapRef, watch } from 'vue'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { AlertsPlugin } from '@/plugins/Alerts'
 import { Composer, useI18n } from 'vue-i18n'
 import { UpdateUserContractDto } from '@/@types/User'
 import { MixedSchema } from 'yup/lib/mixed'
-import { ArraySchema, BooleanSchema, DateSchema, NumberSchema, ObjectSchema } from 'yup'
+import { ArraySchema, BooleanSchema, DateSchema, NumberSchema, ObjectSchema, setLocale } from 'yup'
 import StringSchema from 'yup/lib/string'
 import { get } from 'lodash'
 import * as yup from 'yup'
+// @ts-ignore
+import { it } from 'yup-locales'
 
 export type FormFields<T = any> = Record<keyof T, FormField>;
 
@@ -70,6 +72,9 @@ export abstract class BasicForm<T> extends EventTarget {
   
   protected constructor (private settings: FormSettings<T>) {
     super()
+    
+    // Set yup locale
+    setLocale(it)
     
     if (settings.dataToWatch) {
       // when data changes, update initial data.
@@ -138,8 +143,8 @@ export abstract class BasicForm<T> extends EventTarget {
     // initialValues
     this.form = useForm({
       // @ts-ignore
-      validationSchema: this.wrapSchema ? yup.object().shape(this.schema) : this.schema,
-      initialValues: this.initialData
+      validationSchema: yup.object().shape(this.schema),
+      initialValues: this.initialData,
     })
     
     // Define the onSubmit method

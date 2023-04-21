@@ -41,6 +41,7 @@
     "@types/jsonwebtoken": "^8.5.5",
     "@types/luxon": "^3.1.0",
     "@types/yup": "^0.32.0",
+    "@vee-validate/i18n": "^4.8.6",
     "@vuelidate/core": "^2.0.0",
     "@vuelidate/validators": "^2.0.0",
     "axios": "^0.21.1",
@@ -67,7 +68,8 @@
     "vue-router": "^4.0.0-0",
     "vue-waypoint": "^4.2.1",
     "vuex": "^4.0.2",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "yup-locales": "^1.2.12"
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.14.5",

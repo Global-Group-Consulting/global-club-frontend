@@ -2,7 +2,7 @@
   <page-link :to="openLink" only-container>
     <template v-slot:default="{href, navigate}">
       <ion-item :button="isButton" :detail="isButton"
-                :href="href" @click="navigate">
+                :href="href" @click.prevent="() => {navigate(); $emit('click');}">
         <ion-thumbnail slot="start">
           <slot name="image">
             <Image :file-id="image"></Image>
@@ -59,6 +59,7 @@ export default defineComponent({
     openLinkLabel: String,
     isButton: Boolean
   },
+  emits: ['click'],
   setup () {
     return {
       formatImgUrl

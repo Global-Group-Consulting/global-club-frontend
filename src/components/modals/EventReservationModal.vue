@@ -5,8 +5,36 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding modal-content">
+    <div class="static-alert alert-info" v-if="showStatusAlert">
+      Prenotazione <strong>{{ $t('enums.EventReservationStatus.' + reservation?.status + '_passato') }}</strong> in data
+      <strong>{{ formatLocaleDate(new Date(reservation?.statusUpdatedAt)) }}</strong>
+    </div>
+
+    <div class="mb-3 border-bottom">
+      <club-button version="outline" color="warning" @click="updateStatus('pending' as EventReservationStatus)"
+                   v-if="canPending">
+        Rimetti in attesa
+      </club-button>
+      <club-button version="outline" color="success" @click="updateStatus('accepted' as EventReservationStatus)"
+                   v-if="canAccept">
+        Approva
+      </club-button>
+      <club-button version="outline" color="danger" @click="updateStatus('rejected' as EventReservationStatus)"
+                   v-if="canReject">
+        Rifiuta
+      </club-button>
+
+    </div>
+
+
     <Form @submit="reservationForm.onSubmit">
-      <FormInputAutocomplete v-model:asyncModelValue="reservationForm.formData.userId.modelValue"
+      <template v-if="reservation">
+        <form-input :label="$t('forms.filters.user')"
+                    :model-value="reservation?.user.firstName + ' ' + reservation?.user.lastName"
+                    readonly></form-input>
+      </template>
+
+      <FormInputAutocomplete v-else v-model:asyncModelValue="reservationForm.formData.userId.modelValue"
                              :async-options-url="$http.api.users.getUsersListOptionsUrl()"
                              async-filter-key="name"
                              async-options-value-key="value"
@@ -16,42 +44,54 @@
                              :error="reservationForm.formData.userId.errorMessage"></FormInputAutocomplete>
 
       <fieldset v-for="(companion, i) in reservationForm.formData.companions.modelValue" :key="'companion_' + i">
-        <legend>Accompagnatore #{{ i + 1 }} <a class="ms-2" href="#" @click="removeCompanion(i)">Rimuovi</a></legend>
+        <legend>Accompagnatore #{{ i + 1 }} <a class="ms-2" href="#" @click.prevent="removeCompanion(i)"
+                                               v-if="!readonly">Rimuovi</a>
+        </legend>
         <!--        <p class="text-danger">{{ reservationForm.formData.companions.errorMessage }}</p>-->
 
-        <FormInputV v-model="companion.firstName" label="Nome"></FormInputV>
-        <FormInputV v-model="companion.lastName" label="Cognome"></FormInputV>
+        <FormInputV v-model="companion.firstName" label="Nome" :readonly="readonly"></FormInputV>
+        <FormInputV v-model="companion.lastName" label="Cognome" :readonly="readonly"></FormInputV>
         <!--        <FormInputV v-model="companion.age" label="Età"></FormInputV>-->
       </fieldset>
 
-      <club-button version="link" @click="addCompanion">Aggiungi accompagnatore</club-button>
+      <club-button version="link" @click="addCompanion"
+                   v-if="!readonly">Aggiungi accompagnatore
+      </club-button>
 
     </Form>
   </ion-content>
 
   <ion-footer class="modal-footer">
     <ClubButton version="outline" @click="onCancelClick">
-      {{ cancelText }}
+      {{ readonly ? 'Chiudi' : cancelText }}
     </ClubButton>
 
-    <ClubButton @click="reservationForm.onSubmit">
+    <ClubButton @click="reservationForm.onSubmit" v-if="!readonly">
       {{ okText }}
     </ClubButton>
   </ion-footer>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, Ref, ref } from 'vue'
+import { computed, defineComponent, inject, PropType, Ref, ref } from 'vue'
+import { modalController } from '@ionic/vue'
 import ClubButton from '@/components/ClubButton.vue'
 import FormInputV from '@/components/forms/FormInputV.vue'
-import FormToggleV from '@/components/forms/FormToggleV.vue'
-import { modalController } from '@ionic/vue'
-import { EventReservationForm } from '@/composables/forms/EventReservationForm'
 import FormInputAutocomplete from '@/components/forms/FormInputAutocomplete.vue'
+import { EventReservationForm } from '@/composables/forms/EventReservationForm'
+import { GlobalEventReservation } from '@/@types/GlobalEvent'
+import FormInput from '@/components/forms/FormInput.vue'
+import { HttpPlugin } from '@/plugins/HttpPlugin'
+import { EventReservationStatus } from '@/@enums/event.reservation.status'
+import { AlertsPlugin } from '@/plugins/Alerts'
+import { formatLocaleDate } from '../../@utilities/dates'
+import { useI18n } from 'vue-i18n'
+import { upperFirst } from 'lodash'
 
 export default defineComponent({
   name: 'reservationModal',
-  components: { FormInputV, FormInputAutocomplete, ClubButton },
+  methods: { formatLocaleDate },
+  components: { FormInput, FormInputV, FormInputAutocomplete, ClubButton },
   props: {
     title: String,
     okText: {
@@ -65,18 +105,41 @@ export default defineComponent({
     eventId: {
       type: String,
       required: true
+    },
+    reservation: {
+      type: Object as PropType<GlobalEventReservation>
     }
   },
   setup (props) {
-
-    const reservationForm = new EventReservationForm({
-      dataToWatch: () => props.eventId
-    }, props.eventId)
-
+    const http = inject('http') as HttpPlugin
+    const alerts = inject('alerts') as AlertsPlugin
+    const i18n = useI18n()
+    const reservationForm = new EventReservationForm({}, props.eventId, props.reservation?._id)
     const companions: Ref<any[]> = ref([])
 
-    reservationForm.updateInitialFormData({
-      companions: []
+    const readonly = computed(() => props.reservation && props.reservation?.status !== EventReservationStatus.PENDING)
+    const canAccept = computed(() => props.reservation && props.reservation?.status !== EventReservationStatus.ACCEPTED)
+    const canReject = computed(() => props.reservation && props.reservation?.status !== EventReservationStatus.REJECTED)
+    const canPending = computed(() => props.reservation && props.reservation?.status !== EventReservationStatus.PENDING)
+    const showStatusAlert = computed(() => props.reservation && props.reservation?.statusUpdatedAt)
+
+    if (!props.reservation) {
+      reservationForm.updateInitialFormData({
+        companions: []
+      })
+    } else {
+      reservationForm.updateInitialFormData({
+        // Manually assign values to avoid reactivity issues
+        userId: props.reservation.userId,
+        companions: [
+          ...props.reservation.companions
+        ],
+        reservationId: props.reservation._id
+      })
+    }
+
+    reservationForm.addEventListener('submitCompleted', function () {
+      modalController.dismiss(null, 'ok')
     })
 
     function onCancelClick () {
@@ -95,12 +158,37 @@ export default defineComponent({
       reservationForm.formData.companions.modelValue.splice(index, 1)
     }
 
+    async function updateStatus (status: EventReservationStatus) {
+      if (!props.reservation) {
+        return
+      }
+
+      const resp = await alerts.ask({
+        header: upperFirst(i18n.t('enums.EventReservationStatus.' + status + '_infinito') + '?'),
+        message: `Sei sicuro di voler ${i18n.t('enums.EventReservationStatus.' + status + '_infinito')} la prenotazione?`,
+        buttonOkText: 'Si, ' + (i18n.t('enums.EventReservationStatus.' + status + '_azione'))
+      })
+
+      if (resp.resp) {
+        await http.api.events.reservations.updateStatus(props.eventId, props.reservation?._id, status)
+
+        await modalController.dismiss(null, 'ok')
+      }
+    }
+
     return {
       reservationForm,
       companions,
+      EventReservationStatus,
+      readonly,
+      canAccept,
+      canReject,
+      canPending,
+      showStatusAlert,
       onCancelClick,
       addCompanion,
-      removeCompanion
+      removeCompanion,
+      updateStatus
     }
   }
 })

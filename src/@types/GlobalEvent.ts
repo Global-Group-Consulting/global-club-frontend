@@ -6,6 +6,7 @@ export interface GlobalEvent {
   coverImgUrl: string;
   startAt: string;
   seats: number;
+  reservedSeats: number;
 }
 
 export interface GlobalEventReservation {
@@ -14,7 +15,10 @@ export interface GlobalEventReservation {
   userId: string;
   user?: any;
   status: 'pending' | 'accepted' | 'rejected';
-  users: any[];
+  statusUpdatedAt: string;
+  companions: { firstName: string; lastName: string }[];
+  created_at: string;
+  updated_at: string;
 }
 
 export interface UpsertEventReservationDto {
