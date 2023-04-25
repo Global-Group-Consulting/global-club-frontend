@@ -33,6 +33,8 @@ export function useFileHandler () {
       } finally {
         await http.loading.hide()
       }
+    }else{
+      window.open(fileUrl, '_blank')
     }
     
     // otherwise don't to anything so that the browser will open the file

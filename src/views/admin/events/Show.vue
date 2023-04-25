@@ -46,7 +46,7 @@
                 {{ event?.content }}
               </li>
               <li>Data evento: <strong>{{ startDate }}</strong></li>
-              <li>Posti disponibili: <strong>{{ event?.seats - event?.reservedSeats }}</strong>/<strong>{{
+              <li>Posti disponibili: <strong>{{ event?.remainingSeats }}</strong>/<strong>{{
                   event?.seats
                 }}</strong></li>
             </ul>
@@ -183,14 +183,12 @@ export default defineComponent({
 
       const counters = await http.api.events.reservations.counters(eventId)
 
+      if (event.value) {
+        event.value.remainingSeats = counters.remainingSeats
+      }
+
       tabs.value.forEach(tab => {
-        const counter = counters[tab.id] ?? null
-
-        if (tab.id === EventReservationStatus.ACCEPTED && event.value) {
-          event.value.reservedSeats = counter
-        }
-
-        tab.count = counter
+        tab.count = counters[tab.id] ?? null
       })
     }
 

@@ -8,6 +8,14 @@
     <div class="static-alert alert-info" v-if="showStatusAlert">
       Prenotazione <strong>{{ $t('enums.EventReservationStatus.' + reservation?.status + '_passato') }}</strong> in data
       <strong>{{ formatLocaleDate(new Date(reservation?.statusUpdatedAt)) }}</strong>
+
+      <br>
+
+      <club-button version="solid" color="success" @click="downloadPass"
+                   class="mb-4"
+                   v-if="canDownloadPass" icon-name="download" icon>
+        Scarica Pass
+      </club-button>
     </div>
 
     <div class="mb-3 border-bottom">
@@ -23,9 +31,7 @@
                    v-if="canReject">
         Rifiuta
       </club-button>
-
     </div>
-
 
     <Form @submit="reservationForm.onSubmit">
       <template v-if="reservation">
@@ -87,6 +93,7 @@ import { AlertsPlugin } from '@/plugins/Alerts'
 import { formatLocaleDate } from '../../@utilities/dates'
 import { useI18n } from 'vue-i18n'
 import { upperFirst } from 'lodash'
+import { useFileHandler } from '@/composables/fileHandler'
 
 export default defineComponent({
   name: 'reservationModal',
@@ -116,12 +123,14 @@ export default defineComponent({
     const i18n = useI18n()
     const reservationForm = new EventReservationForm({}, props.eventId, props.reservation?._id)
     const companions: Ref<any[]> = ref([])
+    const fileHandler = useFileHandler()
 
     const readonly = computed(() => props.reservation && props.reservation?.status !== EventReservationStatus.PENDING)
     const canAccept = computed(() => props.reservation && props.reservation?.status !== EventReservationStatus.ACCEPTED)
     const canReject = computed(() => props.reservation && props.reservation?.status !== EventReservationStatus.REJECTED)
     const canPending = computed(() => props.reservation && props.reservation?.status !== EventReservationStatus.PENDING)
     const showStatusAlert = computed(() => props.reservation && props.reservation?.statusUpdatedAt)
+    const canDownloadPass = computed(() => props.reservation && props.reservation?.status === EventReservationStatus.ACCEPTED)
 
     if (!props.reservation) {
       reservationForm.updateInitialFormData({
@@ -138,7 +147,11 @@ export default defineComponent({
       })
     }
 
-    reservationForm.addEventListener('submitCompleted', function () {
+    reservationForm.addEventListener('submitCompleted', function (res, noClose) {
+      if (!noClose) {
+        return
+      }
+
       modalController.dismiss(null, 'ok')
     })
 
@@ -163,6 +176,14 @@ export default defineComponent({
         return
       }
 
+      if (reservationForm.isDirty) {
+        const res = await reservationForm.saveWithoutClose()
+
+        if (!res) {
+          return
+        }
+      }
+
       const resp = await alerts.ask({
         header: upperFirst(i18n.t('enums.EventReservationStatus.' + status + '_infinito') + '?'),
         message: `Sei sicuro di voler ${i18n.t('enums.EventReservationStatus.' + status + '_infinito')} la prenotazione?`,
@@ -170,10 +191,18 @@ export default defineComponent({
       })
 
       if (resp.resp) {
-        await http.api.events.reservations.updateStatus(props.eventId, props.reservation?._id, status)
-
-        await modalController.dismiss(null, 'ok')
+        try {
+          await http.api.events.reservations.updateStatus(props.eventId, props.reservation?._id, status)
+          await modalController.dismiss(null, 'ok')
+        } catch (e) {
+          console.log(e)
+        }
       }
+    }
+
+    function downloadPass () {
+      console.log(`http://local.news.globalgroup.consulting/events/${props.eventId}/reservations/${props.reservation?._id}/pass`)
+      fileHandler.openInNewTab(`http://local.news.globalgroup.consulting/events/${props.eventId}/reservations/${props.reservation?._id}/pass`)
     }
 
     return {
@@ -188,7 +217,9 @@ export default defineComponent({
       onCancelClick,
       addCompanion,
       removeCompanion,
-      updateStatus
+      updateStatus,
+      canDownloadPass,
+      downloadPass
     }
   }
 })

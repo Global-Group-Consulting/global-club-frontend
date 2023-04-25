@@ -6,7 +6,7 @@ export interface GlobalEvent {
   coverImgUrl: string;
   startAt: string;
   seats: number;
-  reservedSeats: number;
+  remainingSeats: number;
 }
 
 export interface GlobalEventReservation {
@@ -19,6 +19,7 @@ export interface GlobalEventReservation {
   companions: { firstName: string; lastName: string }[];
   created_at: string;
   updated_at: string;
+  passUrl?: string;
 }
 
 export interface UpsertEventReservationDto {

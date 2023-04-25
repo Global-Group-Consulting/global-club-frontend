@@ -58,7 +58,7 @@ export abstract class BasicForm<T> extends EventTarget {
   protected apiCalls!: HttpPlugin
   protected alerts!: AlertsPlugin
   protected i18n!: Composer
-  protected cbOnSubmitSuccess: null | ((data: T | undefined) => void) = null
+  protected cbOnSubmitSuccess: null | ((data: T | undefined, ...args) => void) = null
   protected wrapSchema = false
   public onSubmit: any = null
   public onEditClick = (newVal: any) => {
@@ -191,7 +191,7 @@ export abstract class BasicForm<T> extends EventTarget {
     return this.alerts.toastError(this.formErrors.join('<br>'))
   }
   
-  protected afterValidSubmit (result?: T) {
+  protected afterValidSubmit (result?: T, ...args) {
     const initialData = this.settings.dataToWatch ? (this.settings.dataToWatch() ?? {}) : {}
     const dataToEmit = Object.assign({}, initialData, result || {})
     
@@ -206,7 +206,7 @@ export abstract class BasicForm<T> extends EventTarget {
     this.dispatch('submitCompleted', result)
     
     if (this.cbOnSubmitSuccess) {
-      this.cbOnSubmitSuccess(result)
+      this.cbOnSubmitSuccess(result, ...args)
     }
     
     this.onEditClick(false)
@@ -240,6 +240,10 @@ export abstract class BasicForm<T> extends EventTarget {
   
   public resetForm () {
     this.form.resetForm()
+  }
+  
+  public get isDirty() {
+    return this.form.meta.value.dirty
   }
 }
 

@@ -8,6 +8,7 @@ export class EventReservationForm extends BasicForm<UpsertEventReservationDto> {
   protected form!: FormContext<UpsertEventReservationDto>
   private readonly eventId!: string
   private readonly reservationId!: string | null
+  private noClose = false
   
   constructor (settings: FormSettings, eventId: string, reservationId?: string) {
     super(Object.assign({
@@ -60,8 +61,21 @@ export class EventReservationForm extends BasicForm<UpsertEventReservationDto> {
     
     const answerResult = await this.apiCalls.api.events.reservations.upsert(this.eventId, values)
     
-    this.afterValidSubmit(answerResult as any)
+    this.afterValidSubmit(answerResult as any, this.noClose)
     
   }
   
+  async saveWithoutClose () {
+    this.noClose = true
+    
+    await this.onSubmit()
+    
+    this.noClose = false
+    
+    if (this.formErrors.length) {
+      return false
+    }
+    
+    return true
+  }
 }
