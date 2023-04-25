@@ -90,7 +90,8 @@ export default defineComponent({
      */
     const clubPackExpiration = computed(() => {
       const history = authUser.value.clubPackHistory ?? []
-      const lastChange = history[history.length - 1] ?? null
+      // Changes are ordered by date, so the first one is the last one
+      const lastChange = history[0] ?? null
 
       if (!lastChange) {
         return null

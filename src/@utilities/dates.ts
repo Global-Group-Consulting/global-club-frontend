@@ -3,6 +3,10 @@ export function formatLocaleDate (date: Date, noTime = false) {
     return ''
   }
   
+  if (date.toString() === 'Invalid Date') {
+    return ''
+  }
+  
   return new Intl.DateTimeFormat('it', {
     dateStyle: 'short',
     timeStyle: noTime ? undefined : 'short'

@@ -9,8 +9,20 @@
   display: inline-flex !important;
 }
 
+.d-inline-block {
+  display: inline-block !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
 .flex-column {
   flex-direction: column !important;
+}
+
+.flex-grow-1 {
+  flex-grow: 1 !important;
 }
 
 .overflow-hidden {
