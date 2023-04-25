@@ -43,7 +43,7 @@
                 </h1>
               </li>
               <li v-if="event?.content" class="text-large mb-3">
-                {{ event?.content }}
+                {{ formatters.truncate(event?.content, 120) }}
               </li>
               <li>Data: <strong>{{ startDate }}</strong></li>
               <li>Luogo: <strong>{{ event?.city }} - {{ event?.place }}</strong></li>

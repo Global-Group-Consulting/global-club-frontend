@@ -15,8 +15,8 @@
         </template>
 
         <template v-slot:description="{description}">
-          <span v-html="description"></span>
-          <div>{{ formatLocaleDate(new Date(event.startAt)) }}</div>
+          <span>{{ formatters.truncate(description, 120)}}</span>
+          <div>{{ formatters.formatLocaleDate(new Date(event.startAt)) }}</div>
         </template>
       </AdminListItem>
     </ion-list>
@@ -31,8 +31,8 @@ import { HttpPlugin } from '@/plugins/HttpPlugin'
 import NoData from '@/components/NoData.vue'
 import AdminListItem from '@/components/lists/AdminListItem.vue'
 import Image from '@/components/Image.vue'
-import { formatLocaleDate } from '@/@utilities/dates'
 import { GlobalEvent } from '@/@types/GlobalEvent'
+import { useFormatters } from '@/composables/formatters'
 
 
 export default defineComponent({
@@ -40,6 +40,7 @@ export default defineComponent({
   components: { Image, AdminListItem, NoData },
   setup (props, { emit }) {
     useDataFetcher(fetchData)
+    const formatters = useFormatters()
 
     const http = inject('http') as HttpPlugin
     const events: Ref<GlobalEvent[]> = ref([])
@@ -52,7 +53,7 @@ export default defineComponent({
 
     return {
       events,
-      formatLocaleDate
+      formatters
     }
   }
 })
