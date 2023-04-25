@@ -13,8 +13,8 @@
 
       <club-button version="solid" color="success" @click="downloadPass"
                    class="mb-4"
-                   v-if="canDownloadPass" icon-name="download" icon>
-        Scarica Pass
+                   v-if="canDownloadPass" icon-name="link" icon>
+        Mostra Pass
       </club-button>
     </div>
 
