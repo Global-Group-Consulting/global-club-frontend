@@ -26,6 +26,14 @@ export default [
     }
   },
   {
+    path: '/auth/activate',
+    component: () => import('@/views/guest/ActivateAccount.vue'),
+    name: 'public.activateAccount',
+    meta: {
+      guest: true
+    }
+  },
+  {
     path: '/finder',
     name: "public.finder",
     component: () => import('@/views/shared/Finder.vue')

@@ -88,6 +88,19 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
     
   }
   
+  public async manualLogin (data: any) {
+    await this.storeToken({
+      authToken: data[this.options.tokenKey],
+      refreshToken: data[this.options.refreshTokenKey]
+    })
+  
+    await this.fetchUser()
+  
+    await this.loading.hide()
+  
+    await this.plugins.$router.replace('/dashboard')
+  }
+  
   public async logout (forceRedirect = false) {
     const logged = await this.store.getters['auth/isLoggedIn']
     const url = await this.plugins.$router.resolve({ name: 'public.login' })
@@ -110,12 +123,26 @@ export class AuthPlugin extends PluginTemplate<AuthPluginOptions> {
   
   public async forgotPassword (email: string) {
     await this.loading.show()
-    
+  
     try {
       await this.http.rawRequest({
         method: 'POST',
         url: this.options.forgotUrl,
         data: { email }
+      })
+    } finally {
+      await this.loading.hide()
+    }
+  }
+  
+  public async activateAccount (data) {
+    await this.loading.show()
+    
+    try {
+      await this.http.rawRequest({
+        method: 'POST',
+        url: this.options.activateUrl,
+        data
       })
     } finally {
       await this.loading.hide()
@@ -335,6 +362,7 @@ export interface AuthPluginOptions {
   loginUrl: string;
   logoutUrl: string;
   forgotUrl: string;
+  activateUrl: string;
   userUrl: string;
   refreshTokenUrl: string;
   tokenKey: string;

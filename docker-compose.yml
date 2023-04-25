@@ -12,8 +12,8 @@ services:
     environment:
       - VUE_APP_BASE_URL=http://local.api.globalgroup.consulting
       - VUE_APP_CLIENT_KEY=LXM6DBJP4xz26TB
-      - VUE_APP_FILES_URL=https://files.globalgroup.consulting
-      - VUE_APP_COMMUNICATIONS_URL=https://news.globalgroup.consulting
+      - VUE_APP_FILES_URL=http://local.files.globalgroup.consulting
+      - VUE_APP_COMMUNICATIONS_URL=http://local.news.globalgroup.consulting
       - PORT=3000
 
 volumes:

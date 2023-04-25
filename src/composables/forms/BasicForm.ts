@@ -1,13 +1,16 @@
-import { FormContext, InvalidSubmissionContext, useField, useForm } from 'vee-validate'
+import { configure, FormContext, InvalidSubmissionContext, useField, useForm } from 'vee-validate'
 import { computed, ComputedRef, inject, reactive, ref, Ref, UnwrapRef, watch } from 'vue'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { AlertsPlugin } from '@/plugins/Alerts'
 import { Composer, useI18n } from 'vue-i18n'
 import { UpdateUserContractDto } from '@/@types/User'
 import { MixedSchema } from 'yup/lib/mixed'
-import { ArraySchema, BooleanSchema, DateSchema, NumberSchema, ObjectSchema } from 'yup'
+import { ArraySchema, BooleanSchema, DateSchema, NumberSchema, ObjectSchema, setLocale } from 'yup'
 import StringSchema from 'yup/lib/string'
 import { get } from 'lodash'
+import * as yup from 'yup'
+// @ts-ignore
+import { it } from 'yup-locales'
 
 export type FormFields<T = any> = Record<keyof T, FormField>;
 
@@ -55,7 +58,8 @@ export abstract class BasicForm<T> extends EventTarget {
   protected apiCalls!: HttpPlugin
   protected alerts!: AlertsPlugin
   protected i18n!: Composer
-  protected cbOnSubmitSuccess: null | ((data: T | undefined) => void) = null
+  protected cbOnSubmitSuccess: null | ((data: T | undefined, ...args) => void) = null
+  protected wrapSchema = false
   public onSubmit: any = null
   public onEditClick = (newVal: any) => {
     this.isEditing.value = (newVal && typeof newVal === 'boolean') ? newVal : !this.isEditing.value
@@ -68,6 +72,9 @@ export abstract class BasicForm<T> extends EventTarget {
   
   protected constructor (private settings: FormSettings<T>) {
     super()
+    
+    // Set yup locale
+    setLocale(it)
     
     if (settings.dataToWatch) {
       // when data changes, update initial data.
@@ -135,8 +142,9 @@ export abstract class BasicForm<T> extends EventTarget {
     // Creates the VeeValidate form by setting the validation schema and
     // initialValues
     this.form = useForm({
-      validationSchema: this.schema,
-      initialValues: this.initialData
+      // @ts-ignore
+      validationSchema: yup.object().shape(this.schema),
+      initialValues: this.initialData,
     })
     
     // Define the onSubmit method
@@ -183,7 +191,7 @@ export abstract class BasicForm<T> extends EventTarget {
     return this.alerts.toastError(this.formErrors.join('<br>'))
   }
   
-  protected afterValidSubmit (result?: T) {
+  protected afterValidSubmit (result?: T, ...args) {
     const initialData = this.settings.dataToWatch ? (this.settings.dataToWatch() ?? {}) : {}
     const dataToEmit = Object.assign({}, initialData, result || {})
     
@@ -198,7 +206,7 @@ export abstract class BasicForm<T> extends EventTarget {
     this.dispatch('submitCompleted', result)
     
     if (this.cbOnSubmitSuccess) {
-      this.cbOnSubmitSuccess(result)
+      this.cbOnSubmitSuccess(result, ...args)
     }
     
     this.onEditClick(false)
@@ -232,6 +240,10 @@ export abstract class BasicForm<T> extends EventTarget {
   
   public resetForm () {
     this.form.resetForm()
+  }
+  
+  public get isDirty() {
+    return this.form.meta.value.dirty
   }
 }
 

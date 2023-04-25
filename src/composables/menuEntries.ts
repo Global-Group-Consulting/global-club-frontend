@@ -145,7 +145,7 @@ const mobileMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
           permissions: [AclPermissionsEnum.CLUB_PRODUCTS_CAT_ALL_READ]
         },
         {
-          route: 'news.index',
+          route: 'admin.news.index',
           label: 'news',
           icon: 'calendar',
           permissions: [AclPermissionsEnum.CLUB_NEWS_ALL_READ]
@@ -345,7 +345,7 @@ const desktopMenuEntries: Record<'admin' | 'private', MenuEntry[]> = {
       divider: true
     },
     {
-      route: 'news.index',
+      route: 'admin.news.index',
       label: 'news',
       icon: 'calendar',
       permissions: [AclPermissionsEnum.CLUB_NEWS_ALL_READ]

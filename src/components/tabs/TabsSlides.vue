@@ -4,7 +4,7 @@
     <SwiperSlide v-for="tab of tabsList" :key="tab.id" class="tabs-slide" v-slot="{isActive}">
       <div class="ion-padding-vertical">
         <slot :name="'tabSlide_' + tab.id" :tab="tab" :isActive="isActive" :onDataFetched="onDataFetched">
-          please overwrite this tab by creating a template fort the
+          please overwrite this tab by creating a template for the
           <br>
           <code>v-slot:tabSlide_{{ tab.id }}</code>
         </slot>
