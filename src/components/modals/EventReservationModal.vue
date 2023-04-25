@@ -201,8 +201,7 @@ export default defineComponent({
     }
 
     function downloadPass () {
-      console.log(`http://local.news.globalgroup.consulting/events/${props.eventId}/reservations/${props.reservation?._id}/pass`)
-      fileHandler.openInNewTab(`http://local.news.globalgroup.consulting/events/${props.eventId}/reservations/${props.reservation?._id}/pass`)
+      fileHandler.openInNewTab(process.env.VUE_APP_COMMUNICATIONS_URL + `/events/${props.eventId}/reservations/${props.reservation?._id}/pass`)
     }
 
     return {
