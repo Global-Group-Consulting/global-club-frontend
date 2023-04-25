@@ -42,10 +42,11 @@
                   {{ event?.title }}
                 </h1>
               </li>
-              <li v-if="event?.content">
+              <li v-if="event?.content" class="text-large mb-3">
                 {{ event?.content }}
               </li>
-              <li>Data evento: <strong>{{ startDate }}</strong></li>
+              <li>Data: <strong>{{ startDate }}</strong></li>
+              <li>Luogo: <strong>{{ event?.city }} - {{ event?.place }}</strong></li>
               <li>Posti disponibili: <strong>{{ event?.remainingSeats }}</strong>/<strong>{{
                   event?.seats
                 }}</strong></li>
@@ -146,7 +147,7 @@ export default defineComponent({
       return [{
         icon: '',
         text: 'Aggiungi prenotazione',
-        if: true,
+        if: event.value?.bookable,
         async click () {
           const modal = await modalController
               .create({

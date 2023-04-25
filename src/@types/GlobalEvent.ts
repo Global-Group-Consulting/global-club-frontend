@@ -7,6 +7,10 @@ export interface GlobalEvent {
   startAt: string;
   seats: number;
   remainingSeats: number;
+  active: boolean;
+  bookable: boolean;
+  city: string;
+  place: string;
 }
 
 export interface GlobalEventReservation {
