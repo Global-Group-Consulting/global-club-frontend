@@ -5,16 +5,22 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding modal-content">
-    <div class="static-alert alert-info" v-if="showStatusAlert">
+    <div class="static-alert alert-warning  mb-4" v-if="showStatusAlert">
       Prenotazione <strong>{{ $t('enums.EventReservationStatus.' + reservation?.status + '_passato') }}</strong> in data
       <strong>{{ formatLocaleDate(new Date(reservation?.statusUpdatedAt)) }}</strong>
 
-      <br>
+      <div class="py-2"></div>
 
       <club-button version="solid" color="success" @click="downloadPass"
-                   class="mb-4"
+                   class="mb-2" size="small"
                    v-if="canDownloadPass" icon-name="link" icon>
         Mostra Pass
+      </club-button>
+      <club-button version="outline" @click="sendPassNotification"
+                   class="mb-2" size="small"
+                   color="light"
+                   v-if="canSendPassNotification" icon-name="message" icon>
+        Invia per email
       </club-button>
     </div>
 
@@ -133,6 +139,7 @@ export default defineComponent({
     const canPending = computed(() => props.reservation && props.reservation?.status !== EventReservationStatus.PENDING)
     const showStatusAlert = computed(() => props.reservation && props.reservation?.statusUpdatedAt)
     const canDownloadPass = computed(() => props.reservation && props.reservation?.status === EventReservationStatus.ACCEPTED)
+    const canSendPassNotification = computed(() => props.reservation && props.reservation?.status === EventReservationStatus.ACCEPTED && props.reservation.passUrl)
 
     if (!props.reservation) {
       reservationForm.updateInitialFormData({
@@ -209,6 +216,20 @@ export default defineComponent({
       fileHandler.openInNewTab(process.env.VUE_APP_COMMUNICATIONS_URL + `/events/${props.eventId}/reservations/${props.reservation?._id}/pass`)
     }
 
+    async function sendPassNotification () {
+      if (!props.reservation) {
+        return
+      }
+
+      try {
+        await http.api.events.reservations.sendPassNotification(props.eventId, props.reservation?._id)
+
+        await alerts.toastSuccess('Notifica inviata con successo!')
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
     return {
       reservationForm,
       companions,
@@ -223,7 +244,9 @@ export default defineComponent({
       removeCompanion,
       updateStatus,
       canDownloadPass,
-      downloadPass
+      canSendPassNotification,
+      downloadPass,
+      sendPassNotification
     }
   }
 })

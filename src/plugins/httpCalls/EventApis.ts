@@ -41,6 +41,11 @@ export class EventApis extends BasicApisClass {
       const resp: AxiosResponse<any> | undefined = await this.makeAxiosCall('get',false,  this.getUrl(`/events/${eventId}/reservations/counters`))
       
       return resp?.data
-    }
+    },
+    sendPassNotification: async (eventId: string, reservationId: string): Promise<GlobalEventReservation> => {
+      const resp: AxiosResponse<any> | undefined = await this.withLoader('post', this.getUrl(`/events/${eventId}/reservations/${reservationId}/statusNotify`))
+      
+      return resp?.data
+    },
   }
 }
