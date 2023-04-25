@@ -4,6 +4,7 @@ import { MovementTypeEnum } from '@/@enums/movement.type.enum'
 import { PackEnum } from '@/@enums/pack.enum'
 import { NotificationTypeEnum } from '@/@enums/notification.type.enum'
 import { WalletPremiumMovementEnum } from '@/@enums/wallet.premium.movement.enum'
+import { EventReservationStatus } from '@/@enums/event.reservation.status'
 
 export const enums = {
   UserRoleEnum: {
@@ -44,5 +45,20 @@ export const enums = {
   WalletPremiumMovementEnum: {
     [WalletPremiumMovementEnum.INITIAL_DEPOSIT]: 'Deposito iniziale',
     [WalletPremiumMovementEnum.MONTHLY_INCOME]: 'Interesse maturato'
+  },
+  EventReservationStatus: {
+    [EventReservationStatus.PENDING]: 'In attesa',
+    [EventReservationStatus.PENDING + '_infinito']: 'mettere In Attesa',
+    [EventReservationStatus.PENDING + '_azione']: 'metti In Attesa',
+    [EventReservationStatus.PENDING + '_passato']: 'rimessa In Attesa',
+    [EventReservationStatus.ACCEPTED]: 'Approvata',
+    [EventReservationStatus.ACCEPTED + '_infinito']: 'Approvare',
+    [EventReservationStatus.ACCEPTED + '_azione']: 'Approva',
+    [EventReservationStatus.ACCEPTED + '_passato']: 'Approvata',
+    [EventReservationStatus.REJECTED]: 'Rifiutata',
+    [EventReservationStatus.REJECTED + '_infinito']: 'Rifiutare',
+    [EventReservationStatus.REJECTED + '_azione']: 'Rifiuta',
+    [EventReservationStatus.REJECTED + '_passato']: 'Rifiutata'
+    
   }
 }

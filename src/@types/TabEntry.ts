@@ -1,3 +1,5 @@
+import { bool } from 'yup'
+
 export interface TabEntry {
   id: string;
   text: string;
@@ -7,4 +9,5 @@ export interface TabEntry {
   data?: any;
   expired?: boolean;
   buttons?: any[];
+  reloadAsap?: boolean;
 }

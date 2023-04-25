@@ -13,6 +13,7 @@ import { DashboardApis } from '@/plugins/httpCalls/DashboardApis'
 import { CommunicationApis } from '@/plugins/httpCalls/CommunicationApis'
 import { FileApis } from '@/plugins/httpCalls/FileApis'
 import { NewsApis } from '@/plugins/httpCalls/NewsApis'
+import { EventApis } from '@/plugins/httpCalls/EventApis'
 import { LocationApis } from '@/plugins/httpCalls/LocationApis'
 import { NotificationsApis } from '@/plugins/httpCalls/NotificationsApis'
 import { FaqsApis } from '@/plugins/httpCalls/FaqsApis'
@@ -35,6 +36,7 @@ interface ApiModules {
   communications: typeof CommunicationApis;
   files: typeof FileApis;
   news: typeof NewsApis;
+  events: typeof EventApis;
   locations: typeof LocationApis;
   notifications: typeof NotificationsApis;
   faqs: typeof FaqsApis;
@@ -145,6 +147,7 @@ export class HttpPlugin extends PluginTemplate<HttpPluginOptions> {
       communications: CommunicationApis,
       files: FileApis,
       news: NewsApis,
+      events: EventApis,
       locations: LocationApis,
       notifications: NotificationsApis,
       faqs: FaqsApis,

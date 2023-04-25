@@ -102,4 +102,8 @@ export class UserApis extends BasicApisClass {
   static getUsersOptionsUrl () {
     return this.getUrl('/filterOptionsList')
   }
+  
+  static getUsersListOptionsUrl () {
+    return 'api/selectOptions/users'
+  }
 }
