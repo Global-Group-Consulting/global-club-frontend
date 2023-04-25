@@ -125,6 +125,8 @@ export default defineComponent({
     const companions: Ref<any[]> = ref([])
     const fileHandler = useFileHandler()
 
+    const doNotCloseModal = ref(false)
+
     const readonly = computed(() => props.reservation && props.reservation?.status !== EventReservationStatus.PENDING)
     const canAccept = computed(() => props.reservation && props.reservation?.status !== EventReservationStatus.ACCEPTED)
     const canReject = computed(() => props.reservation && props.reservation?.status !== EventReservationStatus.REJECTED)
@@ -147,8 +149,8 @@ export default defineComponent({
       })
     }
 
-    reservationForm.addEventListener('submitCompleted', function (res, noClose) {
-      if (!noClose) {
+    reservationForm.addEventListener('submitCompleted', function () {
+      if (doNotCloseModal.value) {
         return
       }
 
@@ -177,7 +179,10 @@ export default defineComponent({
       }
 
       if (reservationForm.isDirty) {
+        doNotCloseModal.value = true
         const res = await reservationForm.saveWithoutClose()
+
+        doNotCloseModal.value = false
 
         if (!res) {
           return
