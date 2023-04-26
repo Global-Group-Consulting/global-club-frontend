@@ -51,7 +51,7 @@ class BasicFormEvent<T> extends CustomEvent<T> {
 }
 
 export abstract class BasicForm<T> extends EventTarget {
-  protected abstract schema: Record<string, any> | ComputedRef<Record<string, any>>
+  protected abstract schema: Record<string, any> | ComputedRef<Record<string, any>> | any
   private formFields: FormFields = {}
   private initialData: Ref<Record<string, any> | null> = ref({})
   protected form !: FormContext<any>
@@ -139,13 +139,15 @@ export abstract class BasicForm<T> extends EventTarget {
     // First set the initial data
     this.updateInitialFormData(initialData ? initialData() : {})
     
+    const formOptions = { initialValues: this.initialData }
+    
+    if (this.wrapSchema) {
+      formOptions['validationSchema'] = yup.object(this.schema)
+    }
+    
     // Creates the VeeValidate form by setting the validation schema and
     // initialValues
-    this.form = useForm({
-      // @ts-ignore
-      validationSchema: yup.object().shape(this.schema),
-      initialValues: this.initialData,
-    })
+    this.form = useForm(formOptions)
     
     // Define the onSubmit method
     // that will be used to bind on the form submit event
@@ -169,7 +171,7 @@ export abstract class BasicForm<T> extends EventTarget {
     this.formFields = keys.reduce<FormFields>((acc, key) => {
       const validation = get(this.getSchema(), key)
       
-      const { value, errorMessage, resetField } = useField<any>(key, validation, {})
+      const { value, errorMessage, resetField } = useField<any>(key, validation)
       
       if (this.initialData.value?.hasOwnProperty(key)) {
         value.value = this.initialData.value[key]

@@ -16,8 +16,8 @@ export class ChatMessageForm extends BasicForm<CommunicationAnswerDto> {
     }, settings));
     
     this.schema = {
-      message: yup.string().required().min(5).strip(),
-      attachments: yup.array(),
+      message: yup.string().required().min(5).strip().label("Messaggio"),
+      attachments: yup.array().label("Allegato"),
     }
     
     this.communicationId = settings.dataToWatch ? settings.dataToWatch()._id : null;

@@ -9,6 +9,7 @@ export class EventReservationForm extends BasicForm<UpsertEventReservationDto> {
   private readonly eventId!: string
   private readonly reservationId!: string | null
   private noClose = false
+  protected wrapSchema = true
   
   constructor (settings: FormSettings, eventId: string, reservationId?: string) {
     super(Object.assign({
