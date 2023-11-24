@@ -1,8 +1,9 @@
 <template>
-  <paginated-list :paginated-data="reservations">
-    <template v-slot="item">
-      <ion-list v-if="reservations">
-        <AdminListItem v-for="reservation of item.data" :key="reservation._id"
+  <PaginatedList :paginated-data="reservations" :visible="true"
+                 v-slot:default="{data}"
+                 @pageChanged="onPageChanged">
+    <ion-list>
+      <AdminListItem v-for="reservation of data" :key="reservation._id"
                        :title="reservation.user.firstName + ' ' + reservation.user.lastName"
                        :description="getDescription(reservation)"
                        :open-link="{}"
@@ -14,24 +15,19 @@
 
         </AdminListItem>
       </ion-list>
-
-    </template>
-  </paginated-list>
+  </PaginatedList>
 
 </template>
 
 <script lang="ts">
 import { defineComponent, inject, Ref, ref, unref, watch } from 'vue'
-import NoData from '@/components/NoData.vue'
 import AdminListItem from '@/components/lists/AdminListItem.vue'
-import useDataFetcher from '@/composables/dataFetcher'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { GlobalEventReservation, UpsertEventReservationDto } from '@/@types/GlobalEvent'
 import { PaginatedResult } from '@/@types/Pagination'
 import PaginatedList from '@/components/lists/PaginatedList.vue'
 import { modalController } from '@ionic/vue'
 import EventReservationModal from '@/components/modals/EventReservationModal.vue'
-import PageLink from '@/components/PageLink.vue'
 
 export default defineComponent({
   name: 'EventReservationsList',
@@ -52,12 +48,12 @@ export default defineComponent({
     const reservations: Ref<PaginatedResult<GlobalEventReservation[]> | undefined> = ref()
     const pendingReload = ref(false)
 
-    async function fetchData () {
+    async function fetchData (newPage?: number) {
       if (!props.eventId) {
         return
       }
 
-      reservations.value = await http.api.events.reservations.readAll(props.eventId, props.status)
+      reservations.value = await http.api.events.reservations.readAll(props.eventId, props.status, newPage)
 
       emit('update:data', reservations.value)
     }
@@ -94,6 +90,10 @@ export default defineComponent({
       }
     }
 
+    function onPageChanged (newPage: number) {
+      fetchData(newPage)
+    }
+
     watch(() => props.isActive, (value) => {
       if (value) {
         pendingReload.value = true
@@ -122,7 +122,8 @@ export default defineComponent({
       reservations,
       pendingReload,
       getDescription,
-      openReservation
+      openReservation,
+      onPageChanged
     }
   }
 })

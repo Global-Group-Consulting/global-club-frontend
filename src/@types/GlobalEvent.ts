@@ -11,6 +11,7 @@ export interface GlobalEvent {
   bookable: boolean;
   city: string;
   place: string;
+  isPast: boolean
 }
 
 export interface GlobalEventReservation {

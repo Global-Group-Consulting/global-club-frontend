@@ -18,6 +18,12 @@
           <span>{{ formatters.truncate(description, 120)}}</span>
           <div>{{ formatters.formatLocaleDate(new Date(event.startAt)) }}</div>
         </template>
+
+        <template v-slot:buttons-start>
+          <ion-chip color="danger" v-if="event.isPast" disabled>
+            <ion-label>Evento Passato</ion-label>
+          </ion-chip>
+        </template>
       </AdminListItem>
     </ion-list>
 

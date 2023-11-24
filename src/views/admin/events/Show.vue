@@ -147,7 +147,7 @@ export default defineComponent({
       return [{
         icon: '',
         text: 'Aggiungi prenotazione',
-        if: event.value?.bookable,
+        if: event.value && !event.value?.isPast,
         async click () {
           const modal = await modalController
               .create({
@@ -166,7 +166,7 @@ export default defineComponent({
             activeTabEntry.value.reloadAsap = true
           }
         }
-      }].filter(el => el.if ?? true)
+      }].filter(el => el.if)
     })
 
     async function fetchEvent () {

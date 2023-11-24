@@ -21,6 +21,16 @@ export class PaginatedResultData {
       }
     }
     
+    // devo mappare i dati della paginazione in caso di paginazione laravel
+    if (data['current_page']) {
+      this.fields.page = data['current_page']
+      this.fields.perPage = data['per_page']
+      this.fields.totalPages = data['last_page']
+      this.fields.totalItems = data['total']
+      // this.fields.sortBy = [];
+      // this.fields.order = PaginationOrderEnum.ASC;
+    }
+    
     Object.assign(this.fields, data);
   }
   

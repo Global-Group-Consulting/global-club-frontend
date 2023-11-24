@@ -1,15 +1,15 @@
 <template>
   <div v-if="paginatedResultData?.data.length > 0">
-    <ion-refresher slot="fixed" @ionRefresh="$emit('manualRefresh',$event)"
+    <ion-refresher slot="fixed"
+                   @ionRefresh="$emit('manualRefresh',$event)"
                    v-if="visible">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
 
     <slot :data="paginatedResultData?.data">
-
     </slot>
 
-    <PaginationBar :pagination-data="paginatedResultData?.paginationData"
+    <PaginationBar :pagination-data="paginatedResultData?.paginationData as any"
                    @pageChanged="$emit('pageChanged', $event)"></PaginationBar>
   </div>
 
