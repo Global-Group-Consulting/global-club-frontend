@@ -81,6 +81,7 @@ export default defineComponent({
   },
   setup (props, { emit }) {
     const store = useStore(storeKey)
+    const inputComponent = ref()
     const componentType = computed(() => {
       return props.type ?? 'text'
     })
@@ -146,13 +147,19 @@ export default defineComponent({
       emit('update:modelValue', value)
     }
 
+    async function getInputElement(){
+      return inputComponent.value.$el.getInputElement();
+    }
+
     return {
       componentType,
       showError,
       onInput, onChange,
       inFocus,
       computedModelValue,
-      calcInterface, calcInterfaceOptions
+      calcInterface, calcInterfaceOptions,
+      getInputElement,
+      inputComponent
     }
   }
 })

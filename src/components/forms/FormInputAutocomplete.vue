@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, nextTick, onMounted, PropType, Ref, ref, watch } from 'vue'
+import { defineComponent, inject, PropType, Ref, ref, watch } from 'vue'
 import FormInputV from '@/components/forms/FormInputV.vue'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
 
@@ -49,6 +49,7 @@ export default defineComponent({
     const isOpen = ref(false)
     const http = inject('http') as HttpPlugin
     const value: Ref<any> = ref(props.modelValue)
+    const input = ref<typeof FormInputV>()
     let fetchDelay: any = null
 
     const listOptions: Ref<string[]> = ref([])
@@ -64,8 +65,18 @@ export default defineComponent({
       emit('update:modelValue', value)
     }
 
-    function onFocus (e) {
-      e.target.lastChild.setAttribute('list', 'autocomplete_list')
+    function onFocus () {
+      // inputEl.value.setAttribute('list', 'autocomplete_list')
+
+      // inputEl.value.setFocus()
+      // setTimeout(() => {
+      //   const keyboardEvent = new KeyboardEvent('keyup')
+      //
+      //   // input.dispatchEvent(new CustomEvent('click'))
+      //   input.showPicker()
+      //   // input.dispatchEvent(keyboardEvent)
+      // }, 100)*/
+
     }
 
     function onBlur (e) {
@@ -78,16 +89,20 @@ export default defineComponent({
           clearTimeout(fetchDelay)
         }
 
-        if (!value.value || value.value.length <= 2) {
+        if (!value.value || value.value.replaceAll(' ', '').length <= 2) {
           listOptions.value = []
 
           return
         }
 
         fetchDelay = setTimeout(async () => {
-          const result = await http.get(props.asyncOptionsUrl as string, { params: { [props.asyncFilterKey]: value.value } })
+          try {
+            const result = await http.get(props.asyncOptionsUrl as string, { params: { [props.asyncFilterKey]: value.value } })
 
-          listOptions.value = result.data
+            listOptions.value = result.data
+          } catch (e) {
+            // do nothing
+          }
         }, 200)
       }
     }
@@ -112,8 +127,17 @@ export default defineComponent({
       fetchAsyncData()
     })
 
+    // Set datalist to input on internal input element
+    watch(() => input.value, async (input) => {
+      if (input) {
+        const el = await input.getInputElement()
+        el.setAttribute('list', 'autocomplete_list')
+      }
+    })
+
     return {
       isOpen, listOptions,
+      input,
       value,
       onFocus, onBlur, onInput, onChange
     }
