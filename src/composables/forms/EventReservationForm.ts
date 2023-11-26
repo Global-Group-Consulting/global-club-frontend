@@ -17,11 +17,28 @@ export class EventReservationForm extends BasicForm<UpsertEventReservationDto> {
     }, settings))
     
     this.schema = {
-      userId: yup.mixed().required().label('"Utente"'),
+      userId: yup.mixed().when('guestUser', {
+        is: (value: string) => !value,
+        then: yup.mixed().required()
+      }).label('"Utente"'),
+      userName: yup.string().when('guestUser', {
+        is: (value: string) => value,
+        then: yup.string().required()
+      }).label('"Utente Ospite"'),
+      guestUser: yup.boolean().default(false).label('"Ospite"'),
+      email: yup.string().when('guestUser', {
+        is: (value: string) => value,
+        then: yup.string().email().required()
+      }).label('"Email"'),
+      referenceAgent: yup.mixed().when('guestUser', {
+        is: (value: string) => value,
+        then: yup.mixed().required()
+      }).label('"Agente di riferimento"'),
       companions: yup.array(
         yup.object().shape({
           firstName: yup.string().required().label('"Nome"'),
-          lastName: yup.string().required().label('"Cognome"')
+          lastName: yup.string().required().label('"Cognome"'),
+          email: yup.string().email().required().label('"Email"')
         })
       ).nullable()
     }

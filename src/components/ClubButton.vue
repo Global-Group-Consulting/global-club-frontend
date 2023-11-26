@@ -1,6 +1,6 @@
 <template>
   <ion-button :fill="fill" shape="round" :size="size" :expand="expand"
-              :color="color" :type="type" >
+              :color="color" :type="type" v-bind="$attrs">
     <icon :slot="iconSlot" :name="iconName" v-if="icon" :size="iconSize"></icon>
 
     <slot v-if="!onlyIcon"></slot>

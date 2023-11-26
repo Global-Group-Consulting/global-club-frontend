@@ -46,5 +46,15 @@ ion-modal {
   &.modal-small {
     --max-height: 400px;
   }
+  
+  &.modal-large {
+    
+    @include mediaQueryUp("md") {
+      --max-height: 700px;
+      --max-width:  800px;
+      --width:      100%;
+      --height:     100%;
+    }
+  }
 }
 

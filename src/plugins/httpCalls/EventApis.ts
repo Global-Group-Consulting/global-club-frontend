@@ -43,8 +43,8 @@ export class EventApis extends BasicApisClass {
       
       return resp?.data
     },
-    sendPassNotification: async (eventId: string, reservationId: string): Promise<GlobalEventReservation> => {
-      const resp: AxiosResponse<any> | undefined = await this.withLoader('post', this.getUrl(`/events/${eventId}/reservations/${reservationId}/statusNotify`))
+    sendPassNotification: async (eventId: string, reservationId: string, passCode: string): Promise<GlobalEventReservation> => {
+      const resp: AxiosResponse<any> | undefined = await this.withLoader('post', this.getUrl(`/events/${eventId}/reservations/${reservationId}/statusNotify/${passCode}`))
       
       return resp?.data
     },

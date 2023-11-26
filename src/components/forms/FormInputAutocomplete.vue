@@ -9,7 +9,12 @@
   >
   </FormInputV>
 
-  <datalist id="autocomplete_list" @change="onChange">
+  <div class="mb-3 ion-text-left" v-if="value && allowNewValues">
+    <small v-if="isNew">Utente ospite: {{ value }}</small>
+    <small v-else>Id utente: {{ asyncModelValue }}</small>
+  </div>
+
+  <datalist :id="listId" @change="onChange">
     <option v-for="(option, i) in listOptions" :key="i"
             :data-value=" asyncOptionsValueKey ? option[asyncOptionsValueKey] : null"
             :value="asyncOptionsLabelKey ? option[asyncOptionsLabelKey] : option">
@@ -39,6 +44,7 @@ export default defineComponent({
     asyncOptionsLabelKey: String,
     asyncOptionsEmitKey: String,
     asyncModelValue: [String, Number],
+    allowNewValues: Boolean,
     options: {
       type: Array as PropType<string[]>,
       default: () => []
@@ -50,7 +56,10 @@ export default defineComponent({
     const http = inject('http') as HttpPlugin
     const value: Ref<any> = ref(props.modelValue)
     const input = ref<typeof FormInputV>()
+    const isNew = ref(false)
     let fetchDelay: any = null
+
+    const listId = 'autocomplete_list_' + Math.random().toString(36).substring(2, 9)
 
     const listOptions: Ref<string[]> = ref([])
 
@@ -112,9 +121,18 @@ export default defineComponent({
         return (props.asyncOptionsLabelKey ? option[props.asyncOptionsLabelKey] : option) === value
       })
 
-      emit('update:selectedOption', selectedOption)
+      let valueToEmit = null
+      isNew.value = false
 
-      emit('update:asyncModelValue', selectedOption ? (props.asyncOptionsEmitKey ? selectedOption[props.asyncOptionsEmitKey] : selectedOption) : null)
+      if (selectedOption) {
+        valueToEmit = props.asyncOptionsEmitKey ? selectedOption[props.asyncOptionsEmitKey] : selectedOption
+      } else if (props.allowNewValues){
+        isNew.value = true
+        valueToEmit = value
+      }
+
+      emit('update:selectedOption', valueToEmit)
+      emit('update:asyncModelValue', valueToEmit)
     }
 
     watch(() => props.options, value => {
@@ -131,14 +149,17 @@ export default defineComponent({
     watch(() => input.value, async (input) => {
       if (input) {
         const el = await input.getInputElement()
-        el.setAttribute('list', 'autocomplete_list')
+        el.setAttribute('list', listId)
       }
     })
 
     return {
-      isOpen, listOptions,
+      listId,
+      isOpen,
+      listOptions,
       input,
       value,
+      isNew,
       onFocus, onBlur, onInput, onChange
     }
   }

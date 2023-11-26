@@ -106,4 +106,8 @@ export class UserApis extends BasicApisClass {
   static getUsersListOptionsUrl () {
     return 'api/selectOptions/users'
   }
+  
+  static getAgentsListOptionsUrl () {
+    return 'api/selectOptions/agents'
+  }
 }

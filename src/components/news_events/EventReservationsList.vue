@@ -4,7 +4,7 @@
                  @pageChanged="onPageChanged">
     <ion-list>
       <AdminListItem v-for="reservation of data" :key="reservation._id"
-                       :title="reservation.user.firstName + ' ' + reservation.user.lastName"
+                       :title="reservation.user?.firstName + ' ' + reservation.user?.lastName"
                        :description="getDescription(reservation)"
                        :open-link="{}"
                        @click="openReservation(reservation)"
@@ -74,6 +74,7 @@ export default defineComponent({
       const modal = await modalController
           .create({
             component: EventReservationModal,
+            cssClass: 'modal-large',
             componentProps: {
               title: 'Modifica prenotazione',
               eventId: props.eventId,

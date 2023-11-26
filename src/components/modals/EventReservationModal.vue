@@ -9,19 +9,37 @@
       Prenotazione <strong>{{ $t('enums.EventReservationStatus.' + reservation?.status + '_passato') }}</strong> in data
       <strong>{{ formatLocaleDate(new Date(reservation?.statusUpdatedAt)) }}</strong>
 
-      <div class="py-2"></div>
+      <ion-list class="bg-transparent" style="--ion-item-background: transparent"
+                v-if="reservation?.status === 'accepted'">
+        <ion-item v-for="pass of passes" :key="pass.passUrl"
+                  :href="pass.passUrl" target="_blank">
+          <ion-label class="ion-text-wrap">
+            <h2>{{ pass.firstName }} {{ pass.lastName }}
+              <ion-badge color="warning" v-if="pass.isCompanion"><small>Ospite</small></ion-badge>
+            </h2>
+          </ion-label>
 
-      <club-button version="solid" color="success" @click="downloadPass"
-                   class="mb-2" size="small"
-                   v-if="canDownloadPass" icon-name="link" icon>
-        Mostra Pass
-      </club-button>
-      <club-button version="outline" @click="sendPassNotification"
-                   class="mb-2" size="small"
-                   color="light"
-                   v-if="canSendPassNotification" icon-name="message" icon>
-        Invia per email
-      </club-button>
+          <club-button version="outline" @click.prevent="sendPassNotification(pass.passCode)"
+                       class="mb-2" size="small"
+                       color="light"
+                       style="--padding-start: 1rem; --padding-end: 1rem;"
+                       v-if="canSendPassNotification" icon-name="message" icon>
+            Reinvia
+          </club-button>
+        </ion-item>
+      </ion-list>
+
+      <!--      <club-button version="solid" color="success" @click="downloadPass"
+                         class="mb-2" size="small"
+                         v-if="canDownloadPass" icon-name="link" icon>
+              Mostra Pass
+            </club-button>
+            <club-button version="outline" @click="sendPassNotification"
+                         class="mb-2" size="small"
+                         color="light"
+                         v-if="canSendPassNotification" icon-name="message" icon>
+              Invia per email
+            </club-button>-->
     </div>
 
     <div class="mb-3 border-bottom">
@@ -42,26 +60,65 @@
     <Form @submit="reservationForm.onSubmit">
       <template v-if="reservation">
         <form-input :label="$t('forms.filters.user')"
-                    :model-value="reservation?.user.firstName + ' ' + reservation?.user.lastName"
+                    :model-value="reservation?.user?.firstName + ' ' + reservation?.user?.lastName"
                     readonly></form-input>
       </template>
 
-      <FormInputAutocomplete v-else v-model:asyncModelValue="reservationForm.formData.userId.modelValue"
-                             :async-options-url="$http.api.users.getUsersListOptionsUrl()"
-                             async-filter-key="name"
-                             async-options-value-key="value"
-                             async-options-label-key="text"
-                             async-options-emit-key="value"
-                             :label="$t('forms.filters.user')"></FormInputAutocomplete>
+      <template v-else>
+        <FormInputAutocomplete v-model:asyncModelValue="reservationForm.formData.userId.modelValue"
+                               :async-options-url="$http.api.users.getUsersListOptionsUrl()"
+                               async-filter-key="name"
+                               async-options-value-key="value"
+                               async-options-label-key="text"
+                               async-options-emit-key="value"
+                               :label="$t('forms.filters.user')"></FormInputAutocomplete>
 
-      <fieldset v-for="(companion, i) in reservationForm.formData.companions.modelValue" :key="'companion_' + i">
+        <!-- Semplifico il meccanismo e questa parte non server... per ora... -->
+        <!--        <FormInputV label="Utente Ospite"
+                            v-if="reservationForm.formData.guestUser.modelValue"
+                            v-model:model-value="reservationForm.formData.userName.modelValue"
+                            :error="reservationForm.formData.userName.errorMessage"></FormInputV>
+
+                <FormToggleV label="L'utente è un ospite"
+                             v-model:model-value="reservationForm.formData.guestUser.modelValue"></FormToggleV>
+
+                <template v-if="reservationForm.formData.guestUser.modelValue">
+
+                  <FormInputV label="Email"
+                              v-model:model-value="reservationForm.formData.email.modelValue"
+                              :error="reservationForm.formData.email.errorMessage"></FormInputV>
+                  <FormInputAutocomplete label="Agente di riferimento"
+                                         v-model:async-model-value="reservationForm.formData.referenceAgent.modelValue"
+                                         :async-options-url="$http.api.users.getAgentsListOptionsUrl()"
+                                         async-filter-key="name"
+                                         async-options-value-key="value"
+                                         async-options-label-key="text"
+                                         async-options-emit-key="value"
+                                         :error="reservationForm.formData.referenceAgent.errorMessage"
+                  ></FormInputAutocomplete>
+                </template>-->
+      </template>
+
+      <fieldset v-for="(companion, i) in reservationForm.formData.companions.modelValue" :key="'companion_' + i"
+                class="my-4">
         <legend>Accompagnatore #{{ i + 1 }} <a class="ms-2" href="#" @click.prevent="removeCompanion(i)"
                                                v-if="!readonly">Rimuovi</a>
         </legend>
         <!--        <p class="text-danger">{{ reservationForm.formData.companions.errorMessage }}</p>-->
 
-        <FormInputV v-model="companion.firstName" label="Nome" :readonly="readonly"></FormInputV>
-        <FormInputV v-model="companion.lastName" label="Cognome" :readonly="readonly"></FormInputV>
+        <ion-grid padding="0" style="--ion-grid-padding: 0">
+          <ion-row style="--ion-grid-column-padding: 8px; margin: 0 -8px">
+            <ion-col>
+              <FormInputV v-model="companion.firstName" label="Nome" :readonly="readonly"></FormInputV>
+            </ion-col>
+            <ion-col>
+              <FormInputV v-model="companion.lastName" label="Cognome" :readonly="readonly"></FormInputV>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <FormInputV v-model="companion.email" label="Email" :readonly="readonly"
+                    message="Email accompagnatore dove gli verrà inviato il pass per l'accesso"></FormInputV>
         <!--        <FormInputV v-model="companion.age" label="Età"></FormInputV>-->
       </fieldset>
 
@@ -90,15 +147,16 @@ import ClubButton from '@/components/ClubButton.vue'
 import FormInputV from '@/components/forms/FormInputV.vue'
 import FormInputAutocomplete from '@/components/forms/FormInputAutocomplete.vue'
 import { EventReservationForm } from '@/composables/forms/EventReservationForm'
-import { GlobalEventReservation } from '@/@types/GlobalEvent'
+import { EventPass, GlobalEventReservation } from '@/@types/GlobalEvent'
 import FormInput from '@/components/forms/FormInput.vue'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { EventReservationStatus } from '@/@enums/event.reservation.status'
 import { AlertsPlugin } from '@/plugins/Alerts'
 import { formatLocaleDate } from '../../@utilities/dates'
 import { useI18n } from 'vue-i18n'
-import { upperFirst } from 'lodash'
+import { pick, upperFirst } from 'lodash'
 import { useFileHandler } from '@/composables/fileHandler'
+import FormToggleV from '@/components/forms/FormToggleV.vue'
 
 export default defineComponent({
   name: 'reservationModal',
@@ -163,6 +221,30 @@ export default defineComponent({
       modalController.dismiss(null, 'ok')
     })
 
+    const passes = computed<EventPass[]>(() => {
+      if (!props.reservation) {
+        return []
+      }
+
+      const toReturn: EventPass[] = [{
+        firstName: props.reservation.user.firstName,
+        lastName: props.reservation.user.lastName,
+        email: props.reservation.user.email,
+        passUrl: props.reservation.passUrl,
+        passCode: props.reservation.passCode,
+        passQr: props.reservation.passQr
+      }]
+
+      props.reservation.companions.forEach(companion => {
+        toReturn.push({
+          ...companion,
+          isCompanion: true
+        })
+      })
+
+      return toReturn
+    })
+
     function onCancelClick () {
       modalController.dismiss()
     }
@@ -175,7 +257,7 @@ export default defineComponent({
       })
     }
 
-    function removeCompanion (index: number) {
+    function removeCompanion (index: string | number) {
       reservationForm.formData.companions.modelValue.splice(index, 1)
     }
 
@@ -205,6 +287,7 @@ export default defineComponent({
         try {
           await http.api.events.reservations.updateStatus(props.eventId, props.reservation?._id, status)
           await modalController.dismiss(null, 'ok')
+          await alerts.toastSuccess('Prenotazione approvata e pass inviati per email!')
         } catch (e) {
           console.log(e)
         }
@@ -215,13 +298,13 @@ export default defineComponent({
       fileHandler.openInNewTab(process.env.VUE_APP_COMMUNICATIONS_URL + `/events/${props.eventId}/reservations/${props.reservation?._id}/pass`)
     }
 
-    async function sendPassNotification () {
-      if (!props.reservation) {
+    async function sendPassNotification (passCode?: string) {
+      if (!props.reservation || !passCode) {
         return
       }
 
       try {
-        await http.api.events.reservations.sendPassNotification(props.eventId, props.reservation?._id)
+        await http.api.events.reservations.sendPassNotification(props.eventId, props.reservation?._id, passCode)
 
         await alerts.toastSuccess('Notifica inviata con successo!')
       } catch (e) {
@@ -245,7 +328,8 @@ export default defineComponent({
       canDownloadPass,
       canSendPassNotification,
       downloadPass,
-      sendPassNotification
+      sendPassNotification,
+      passes
     }
   }
 })
