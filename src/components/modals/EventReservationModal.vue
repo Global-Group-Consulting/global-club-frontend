@@ -52,8 +52,7 @@
                              async-options-value-key="value"
                              async-options-label-key="text"
                              async-options-emit-key="value"
-                             :label="$t('forms.filters.user')"
-                             :error="reservationForm.formData.userId.errorMessage"></FormInputAutocomplete>
+                             :label="$t('forms.filters.user')"></FormInputAutocomplete>
 
       <fieldset v-for="(companion, i) in reservationForm.formData.companions.modelValue" :key="'companion_' + i">
         <legend>Accompagnatore #{{ i + 1 }} <a class="ms-2" href="#" @click.prevent="removeCompanion(i)"
