@@ -75,6 +75,11 @@ const getters: GetterTree<RootState, RootState> = {
     
     return state.user?.roles.some(role => validAclRoles.includes(role))
   },
+  isAgent (state: AuthState) {
+    const validAclRoles: string[] = [UserAclRolesEnum.AGENT]
+    
+    return state.user?.roles.some(role => validAclRoles.includes(role))
+  },
   hasPackPremium (state: AuthState) {
     return state.user?.clubPack === PackEnum.PREMIUM
   }

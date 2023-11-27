@@ -25,6 +25,10 @@ ion-alert {
   &.alert-info {
     background-color: var(--ion-color-secondary);
   }
+  
+  &.alert-info-bordered {
+    border: 1px solid var(--ion-color-primary);
+  }
 
   &.alert-error {
     background-color: rgb(255 73 97 / 25%);

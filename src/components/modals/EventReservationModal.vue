@@ -42,7 +42,11 @@
             </club-button>-->
     </div>
 
-    <div class="mb-3 border-bottom">
+    <div class="static-alert alert-warning  mb-4" v-else-if="reservation">
+      Prenotazione in attesa di approvazione...
+    </div>
+
+    <div class="mb-3 border-bottom" v-if="$store.getters['auth/isAdmin']">
       <club-button version="outline" color="warning" @click="updateStatus('pending' as EventReservationStatus)"
                    v-if="canPending">
         Rimetti in attesa
@@ -71,7 +75,8 @@
                                async-options-value-key="value"
                                async-options-label-key="text"
                                async-options-emit-key="value"
-                               :label="$t('forms.filters.user')"></FormInputAutocomplete>
+                               :label="$t('forms.filters.user')"
+                               v-if="!user"></FormInputAutocomplete>
 
         <!-- Semplifico il meccanismo e questa parte non server... per ora... -->
         <!--        <FormInputV label="Utente Ospite"
@@ -126,6 +131,12 @@
                    v-if="!readonly">Aggiungi accompagnatore
       </club-button>
 
+      <div class="static-alert alert-info-bordered  my-4" v-if="!readonly && !reservationForm.formData.companions.modelValue.length">
+        E' possibile aggiungere degli accompagnatori per questa prenotazione.
+        Premere il pulsante "Aggiungi accompagnatore" ed inserire nome, cognome ed una email valida dove verrà inviato
+        il pass per l'accesso.
+      </div>
+
     </Form>
   </ion-content>
 
@@ -141,7 +152,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, PropType, Ref, ref } from 'vue'
+import { computed, defineComponent, inject, onMounted, PropType, Ref, ref } from 'vue'
 import { modalController } from '@ionic/vue'
 import ClubButton from '@/components/ClubButton.vue'
 import FormInputV from '@/components/forms/FormInputV.vue'
@@ -154,9 +165,8 @@ import { EventReservationStatus } from '@/@enums/event.reservation.status'
 import { AlertsPlugin } from '@/plugins/Alerts'
 import { formatLocaleDate } from '../../@utilities/dates'
 import { useI18n } from 'vue-i18n'
-import { pick, upperFirst } from 'lodash'
+import { upperFirst } from 'lodash'
 import { useFileHandler } from '@/composables/fileHandler'
-import FormToggleV from '@/components/forms/FormToggleV.vue'
 
 export default defineComponent({
   name: 'reservationModal',
@@ -175,6 +185,9 @@ export default defineComponent({
     eventId: {
       type: String,
       required: true
+    },
+    user: {
+      type: Object as PropType<{ firstName: string; lastName: string; _id: string }>
     },
     reservation: {
       type: Object as PropType<GlobalEventReservation>
@@ -311,6 +324,12 @@ export default defineComponent({
         console.log(e)
       }
     }
+
+    onMounted(() => {
+      if (props.user) {
+        reservationForm.formData.userId.modelValue = props.user._id
+      }
+    })
 
     return {
       reservationForm,

@@ -20,10 +20,12 @@ export class EventApis extends BasicApisClass {
   }
   
   static reservations = {
-    readAll: async (eventId: string, status: string, page = 1): Promise<PaginatedResult<GlobalEventReservation[]>> => {
-      const resp: AxiosResponse<any> | undefined = await this.withLoader('get', this.getUrl(`/events/${eventId}/reservations`, {
-        status,
-        page
+    readAll: async (payload: any): Promise<PaginatedResult<GlobalEventReservation[]>> => {
+      const resp: AxiosResponse<any> | undefined = await this.withLoader('get', this.getUrl(`/events/${payload.eventId}/reservations`, {
+        page: payload.page || 1,
+        userId: payload.userId || null,
+        status: payload.status || null,
+        referenceAgent: payload.referenceAgent || null,
       }))
       
       return resp?.data

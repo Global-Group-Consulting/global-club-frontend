@@ -1,6 +1,6 @@
 <template>
   <Swiper v-bind="slideOpts" ref="slides"
-          @init="setControlledSwiper">
+          @init="setControlledSwiper" auto-height>
     <SwiperSlide v-for="tab of tabsList" :key="tab.id" class="tabs-slide" v-slot="{isActive}">
       <div class="ion-padding-vertical">
         <slot :name="'tabSlide_' + tab.id" :tab="tab" :isActive="isActive" :onDataFetched="onDataFetched">

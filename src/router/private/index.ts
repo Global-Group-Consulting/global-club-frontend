@@ -112,7 +112,17 @@ export default [
       isAdmin: true,
       title: "News ed Eventi"
     },
-  },{
+  },
+  {
+    path: "/events/:id",
+    component: () => import("@/views/private/events/Show.vue"),
+    name: "events.show",
+    meta: {
+      isPrivate: true,
+      title: "Dettagli evento"
+    },
+  },
+  {
     path: "/notifications",
     component: () => import("@/views/shared/Notifications.vue"),
     name: "notifications.index",

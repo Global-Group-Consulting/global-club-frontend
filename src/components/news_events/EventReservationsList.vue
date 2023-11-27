@@ -13,6 +13,12 @@
             <Icon name="user"></Icon>
           </template>
 
+        <template v-slot:buttons-start>
+          <ion-badge :color="getStatusBadgeColor(reservation)" disabled>
+            {{ $t('enums.EventReservationStatus.' + reservation?.status) }}
+          </ion-badge>
+        </template>
+
         </AdminListItem>
       </ion-list>
   </PaginatedList>
@@ -20,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, Ref, ref, unref, watch } from 'vue'
+import { computed, defineComponent, inject, Ref, ref, unref, watch } from 'vue'
 import AdminListItem from '@/components/lists/AdminListItem.vue'
 import { HttpPlugin } from '@/plugins/HttpPlugin'
 import { GlobalEventReservation, UpsertEventReservationDto } from '@/@types/GlobalEvent'
@@ -28,6 +34,7 @@ import { PaginatedResult } from '@/@types/Pagination'
 import PaginatedList from '@/components/lists/PaginatedList.vue'
 import { modalController } from '@ionic/vue'
 import EventReservationModal from '@/components/modals/EventReservationModal.vue'
+import { EventReservationStatus } from '@/@enums/event.reservation.status'
 
 export default defineComponent({
   name: 'EventReservationsList',
@@ -37,8 +44,13 @@ export default defineComponent({
       type: String
     },
     status: {
-      type: String,
-      required: true
+      type: String
+    },
+    userId: {
+      type: String
+    },
+    referenceAgent: {
+      type: String
     },
     reloadAsap: Boolean,
     isActive: Boolean
@@ -48,12 +60,31 @@ export default defineComponent({
     const reservations: Ref<PaginatedResult<GlobalEventReservation[]> | undefined> = ref()
     const pendingReload = ref(false)
 
+    function getStatusBadgeColor (reservation: any) {
+      switch (reservation?.status) {
+        case EventReservationStatus.ACCEPTED:
+          return 'success'
+        case EventReservationStatus.PENDING:
+          return 'warning'
+        case EventReservationStatus.REJECTED:
+          return 'danger'
+        default:
+          return ''
+      }
+    }
+
     async function fetchData (newPage?: number) {
       if (!props.eventId) {
         return
       }
 
-      reservations.value = await http.api.events.reservations.readAll(props.eventId, props.status, newPage)
+      reservations.value = await http.api.events.reservations.readAll({
+        eventId: props.eventId,
+        page: newPage,
+        status: props.status,
+        userId: props.userId,
+        referenceAgent: props.referenceAgent
+      })
 
       emit('update:data', reservations.value)
     }
@@ -122,6 +153,7 @@ export default defineComponent({
     return {
       reservations,
       pendingReload,
+      getStatusBadgeColor,
       getDescription,
       openReservation,
       onPageChanged

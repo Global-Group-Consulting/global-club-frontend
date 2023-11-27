@@ -8,7 +8,7 @@
                      :title="event.title"
                      :description="event.content"
                      image="ad"
-                     :open-link="{name: 'admin.events.show', params: {id: event._id}}"
+                     :open-link="{name:  ($store.getters['auth/isAdmin'] ? 'admin.' : '') + 'events.show', params: {id: event._id}}"
       >
         <template v-slot:image>
           <Image :source="event.coverImgUrl"></Image>
