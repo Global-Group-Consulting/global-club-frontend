@@ -14,9 +14,9 @@
           </template>
 
         <template v-slot:buttons-start>
-          <ion-badge :color="getStatusBadgeColor(reservation)" disabled>
+          <ion-chip :color="getStatusBadgeColor(reservation)" disabled>
             {{ $t('enums.EventReservationStatus.' + reservation?.status) }}
-          </ion-badge>
+          </ion-chip>
         </template>
 
         </AdminListItem>

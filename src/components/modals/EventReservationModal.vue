@@ -5,60 +5,63 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding modal-content">
-    <div class="static-alert alert-warning  mb-4" v-if="showStatusAlert">
-      Prenotazione <strong>{{ $t('enums.EventReservationStatus.' + reservation?.status + '_passato') }}</strong> in data
-      <strong>{{ formatLocaleDate(new Date(reservation?.statusUpdatedAt)) }}</strong>
+    <div class="static-alert alert-warning  mb-5" v-if="reservation">
+      <div v-if="showStatusAlert">
+        <div class="mb-3">
+          Prenotazione <strong>{{ $t('enums.EventReservationStatus.' + reservation?.status + '_passato') }}</strong> in
+          data <strong>{{ formatLocaleDate(new Date(reservation?.statusUpdatedAt)) }}</strong>
+        </div>
 
-      <ion-list class="bg-transparent" style="--ion-item-background: transparent"
-                v-if="reservation?.status === 'accepted'">
-        <ion-item v-for="pass of passes" :key="pass.passUrl"
-                  :href="pass.passUrl" target="_blank">
-          <ion-label class="ion-text-wrap">
-            <h2>{{ pass.firstName }} {{ pass.lastName }}
-              <ion-badge color="warning" v-if="pass.isCompanion"><small>Ospite</small></ion-badge>
-            </h2>
-          </ion-label>
+        <ion-list class="bg-transparent" style="--ion-item-background: transparent"
+                  v-if="reservation?.status === 'accepted'">
+          <ion-item v-for="pass of passes" :key="pass.passUrl"
+                    :href="pass.passUrl" target="_blank">
+            <ion-label class="ion-text-wrap">
+              <h2>{{ pass.firstName }} {{ pass.lastName }}
+                <ion-badge color="warning" v-if="pass.isCompanion"><small>Ospite</small></ion-badge>
+              </h2>
+            </ion-label>
 
-          <club-button version="outline" @click.prevent="sendPassNotification(pass.passCode)"
-                       class="mb-2" size="small"
-                       color="light"
-                       style="--padding-start: 1rem; --padding-end: 1rem;"
-                       v-if="canSendPassNotification" icon-name="message" icon>
-            Reinvia
-          </club-button>
-        </ion-item>
-      </ion-list>
-
-      <!--      <club-button version="solid" color="success" @click="downloadPass"
-                         class="mb-2" size="small"
-                         v-if="canDownloadPass" icon-name="link" icon>
-              Mostra Pass
-            </club-button>
-            <club-button version="outline" @click="sendPassNotification"
+            <club-button version="outline" @click.prevent="sendPassNotification(pass.passCode)"
                          class="mb-2" size="small"
                          color="light"
+                         style="--padding-start: 1rem; --padding-end: 1rem;"
                          v-if="canSendPassNotification" icon-name="message" icon>
-              Invia per email
-            </club-button>-->
-    </div>
+              Reinvia
+            </club-button>
+          </ion-item>
+        </ion-list>
 
-    <div class="static-alert alert-warning  mb-4" v-else-if="reservation">
-      Prenotazione in attesa di approvazione...
-    </div>
+        <!--      <club-button version="solid" color="success" @click="downloadPass"
+                           class="mb-2" size="small"
+                           v-if="canDownloadPass" icon-name="link" icon>
+                Mostra Pass
+              </club-button>
+              <club-button version="outline" @click="sendPassNotification"
+                           class="mb-2" size="small"
+                           color="light"
+                           v-if="canSendPassNotification" icon-name="message" icon>
+                Invia per email
+              </club-button>-->
+      </div>
+      <div v-else-if="reservation">
+        Prenotazione in attesa di approvazione...
+      </div>
 
-    <div class="mb-3 border-bottom" v-if="$store.getters['auth/isAdmin']">
-      <club-button version="outline" color="warning" @click="updateStatus('pending' as EventReservationStatus)"
-                   v-if="canPending">
-        Rimetti in attesa
-      </club-button>
-      <club-button version="outline" color="success" @click="updateStatus('accepted' as EventReservationStatus)"
-                   v-if="canAccept">
-        Approva
-      </club-button>
-      <club-button version="outline" color="danger" @click="updateStatus('rejected' as EventReservationStatus)"
-                   v-if="canReject">
-        Rifiuta
-      </club-button>
+      <div class="mt-3 mb-3 border-bottom" v-if="$store.getters['auth/isAdmin']">
+        <club-button version="outline" color="warning" @click="updateStatus('pending' as EventReservationStatus)"
+                     v-if="canPending">
+          Rimetti in attesa
+        </club-button>
+        <club-button version="outline" color="success" @click="updateStatus('accepted' as EventReservationStatus)"
+                     v-if="canAccept">
+          Approva
+        </club-button>
+        <club-button version="outline" color="danger" @click="updateStatus('rejected' as EventReservationStatus)"
+                     v-if="canReject">
+          Rifiuta
+        </club-button>
+      </div>
     </div>
 
     <Form @submit="reservationForm.onSubmit">
@@ -127,11 +130,11 @@
         <!--        <FormInputV v-model="companion.age" label="Età"></FormInputV>-->
       </fieldset>
 
-      <club-button version="link" @click="addCompanion"
+      <club-button version="outline" color="primary" @click="addCompanion"
                    v-if="!readonly">Aggiungi accompagnatore
       </club-button>
 
-      <div class="static-alert alert-info-bordered  my-4" v-if="!readonly && !reservationForm.formData.companions.modelValue.length">
+      <div class="static-alert alert-info-bordered text-gray1 mt-5 mb-4" v-if="!readonly && !reservationForm.formData.companions.modelValue.length">
         E' possibile aggiungere degli accompagnatori per questa prenotazione.
         Premere il pulsante "Aggiungi accompagnatore" ed inserire nome, cognome ed una email valida dove verrà inviato
         il pass per l'accesso.
