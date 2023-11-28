@@ -53,7 +53,8 @@ export default defineComponent({
       type: String
     },
     reloadAsap: Boolean,
-    isActive: Boolean
+    isActive: Boolean,
+    isPast: Boolean
   },
   setup (props, { emit }) {
     const http = inject('http') as HttpPlugin
@@ -109,7 +110,8 @@ export default defineComponent({
             componentProps: {
               title: 'Modifica prenotazione',
               eventId: props.eventId,
-              reservation: Object.assign({}, { ...unref(reservation) })
+              reservation: Object.assign({}, { ...unref(reservation) }),
+              isPast: props.isPast
             }
           })
 

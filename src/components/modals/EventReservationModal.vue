@@ -48,7 +48,7 @@
         Prenotazione in attesa di approvazione...
       </div>
 
-      <div class="mt-3 mb-3 border-bottom" v-if="$store.getters['auth/isAdmin']">
+      <div class="mt-3 mb-3 border-bottom" v-if="$store.getters['auth/isAdmin'] && !isPast">
         <club-button version="outline" color="warning" @click="updateStatus('pending' as EventReservationStatus)"
                      v-if="canPending">
           Rimetti in attesa
@@ -194,7 +194,8 @@ export default defineComponent({
     },
     reservation: {
       type: Object as PropType<GlobalEventReservation>
-    }
+    },
+    isPast: Boolean
   },
   setup (props) {
     const http = inject('http') as HttpPlugin
@@ -212,7 +213,7 @@ export default defineComponent({
     const canPending = computed(() => props.reservation && props.reservation?.status !== EventReservationStatus.PENDING)
     const showStatusAlert = computed(() => props.reservation && props.reservation?.statusUpdatedAt)
     const canDownloadPass = computed(() => props.reservation && props.reservation?.status === EventReservationStatus.ACCEPTED)
-    const canSendPassNotification = computed(() => props.reservation && props.reservation?.status === EventReservationStatus.ACCEPTED && props.reservation.passUrl)
+    const canSendPassNotification = computed(() => props.reservation && props.reservation?.status === EventReservationStatus.ACCEPTED && props.reservation.passUrl && !props.isPast)
 
     if (!props.reservation) {
       reservationForm.updateInitialFormData({

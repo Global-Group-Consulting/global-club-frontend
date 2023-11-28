@@ -65,6 +65,7 @@
         <div class="mb-5">
           <h4 class="sticky-text">La mia prenotazione</h4>
           <EventReservationsList :eventId="eventId"
+                                 :isPast="event?.isPast"
                                  :userId="$store.getters['auth/user']?._id"
                                  :reload-asap="mustReload.includes('user')"
                                  @update:data="onEventReservationsUpdate('user', $event)"
@@ -74,6 +75,7 @@
         <div v-if="$store.getters['auth/isAgent']">
           <h4 class="sticky-text">Prenotazioni clienti</h4>
           <EventReservationsList :eventId="eventId"
+                                 :isPast="event?.isPast"
                                  :userId="$store.getters['auth/user']?._id"
                                  :referenceAgent="$store.getters['auth/user']?._id"
                                  :reload-asap="mustReload.includes('clients')"
@@ -144,7 +146,7 @@ export default defineComponent({
                   componentProps: {
                     title: 'Prenotazione evento',
                     eventId: event.value?._id,
-                    user: store.getters['auth/user']
+                    user: store.getters['auth/user'],
                   }
                 })
 
