@@ -60,18 +60,21 @@
           <template v-slot:tabSlide_pending="{ onDataFetched, tab, isActive}">
             <EventReservationsList :eventId="eventId" status="pending"
                                    :isActive="isActive"
+                                   :isPast="event?.isPast"
                                    v-model:reloadAsap="tab.reloadAsap"
                                    @update:data="onEventReservationsUpdate(onDataFetched)"></EventReservationsList>
           </template>
           <template v-slot:tabSlide_accepted="{tab, onDataFetched, isActive}">
             <EventReservationsList :eventId="eventId" status="accepted"
                                    :isActive="isActive"
+                                   :isPast="event?.isPast"
                                    v-model:reloadAsap="tab.reloadAsap"
                                    @update:data="onEventReservationsUpdate(onDataFetched)"></EventReservationsList>
           </template>
           <template v-slot:tabSlide_rejected="{tab, onDataFetched, isActive}">
             <EventReservationsList :eventId="eventId" status="rejected"
                                    :isActive="isActive"
+                                   :isPast="event?.isPast"
                                    v-model:reloadAsap="tab.reloadAsap"
                                    @update:data="onEventReservationsUpdate(onDataFetched)"></EventReservationsList>
           </template>
