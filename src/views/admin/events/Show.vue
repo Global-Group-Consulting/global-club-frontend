@@ -99,13 +99,11 @@ import EventReservationsList from '@/components/news_events/EventReservationsLis
 import SimpleToolbar from '@/components/toolbars/SimpleToolbar.vue'
 import SimpleToolbarButton from '@/components/toolbars/SimpleToolbarButton.vue'
 import { modalController } from '@ionic/vue'
-import { UpdateOrderProductDto } from '@/@types/Order'
 import EventReservationModal from '@/components/modals/EventReservationModal.vue'
-import EventsList from '@/components/news_events/EventsList.vue'
 import Tabs from '@/components/tabs/Tabs.vue'
-import NewsList from '@/components/news_events/NewsList.vue'
 import { TabEntry } from '@/@types/TabEntry'
-import { EventReservationStatus } from '@/@enums/event.reservation.status'
+import { useStore } from 'vuex'
+import { storeKey } from '@/store'
 
 export default defineComponent({
   name: 'Show',
@@ -115,6 +113,7 @@ export default defineComponent({
       await fetchEvent()
       await fetchReservationsCounters()
     })
+    const store = useStore(storeKey)
 
     const http = inject('http') as HttpPlugin
     const router = useRoute()
@@ -168,6 +167,14 @@ export default defineComponent({
           if (result.role === 'ok' && activeTabEntry.value) {
             activeTabEntry.value.reloadAsap = true
           }
+        }
+      }, {
+        icon: '',
+        text: 'Scarica lista partecipazioni',
+        if: store.getters['auth/isAdmin'],
+        async click () {
+          const fileContent = await http.api.events.getExportAccesses(eventId)
+
         }
       }].filter(el => el.if)
     })

@@ -1,8 +1,10 @@
 import { BasicApisClass } from '@/plugins/httpCalls/basicApisClass'
-import { AxiosResponse } from 'axios'
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { GlobalEvent, GlobalEventReservation } from '@/@types/GlobalEvent'
 import { PaginatedResult } from '@/@types/Pagination'
 import { EventReservationStatus } from '@/@enums/event.reservation.status'
+// @ts-ignore
+import jsFileDownload from 'js-file-download'
 
 export class EventApis extends BasicApisClass {
   static baseUrl = super.baseUrl + 'news'
@@ -50,5 +52,24 @@ export class EventApis extends BasicApisClass {
       
       return resp?.data
     },
+  }
+  
+  static async getExportAccesses (eventId: string) {
+    const url = this.getUrl(`/events/${eventId}/accesses/export`)
+    
+    const resp: AxiosResponse<any> | undefined = await this.withLoader('get', url, {
+      responseType: 'blob',
+      headers: {
+        Accept: 'arraybuffer',
+      }
+    } as AxiosRequestConfig)
+    
+    if (resp?.data) {
+      const fileName = resp.headers["content-disposition"]?.split('filename=')[1] ?? 'export.xlsx'
+      
+      jsFileDownload(resp.data, fileName)
+    }
+    
+    return resp?.data
   }
 }
