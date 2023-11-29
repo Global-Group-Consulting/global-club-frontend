@@ -171,7 +171,7 @@ export default defineComponent({
       }, {
         icon: '',
         text: 'Scarica lista partecipazioni',
-        if: store.getters['auth/isAdmin'],
+        if: store.getters['auth/isAdmin'] && event.value?.isPast,
         async click () {
           const fileContent = await http.api.events.getExportAccesses(eventId)
 
