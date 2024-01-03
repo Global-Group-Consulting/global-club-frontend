@@ -1,6 +1,6 @@
 {
   "name": "global-club",
-  "version": "2.2.20",
+  "version": "2.2.21",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode development",
